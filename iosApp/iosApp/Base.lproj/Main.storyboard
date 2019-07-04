@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Q48-GL-W6X">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Debt View Contoller-->
+        <scene sceneID="IlS-yT-EKE">
+            <objects>
+                <viewController id="Q48-GL-W6X" customClass="DebtViewContoller" customModule="iosApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="T7b-J5-IVZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Введите число" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Li5-q6-3oN">
+                                <rect key="frame" x="16" y="20" width="343" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nqn-rz-5wi">
+                                <rect key="frame" x="146.5" y="58" width="82" height="30"/>
+                                <state key="normal" title="Рассчитать"/>
+                                <connections>
+                                    <action selector="onCalculateDebtTap:" destination="Q48-GL-W6X" eventType="touchUpInside" id="jQX-3I-zP0"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Результат" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFQ-mO-IHw">
+                                <rect key="frame" x="16" y="96" width="343" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Q0P-oH-Ssg" firstAttribute="trailing" secondItem="Li5-q6-3oN" secondAttribute="trailing" constant="16" id="1zu-55-6jE"/>
+                            <constraint firstItem="oFQ-mO-IHw" firstAttribute="top" secondItem="nqn-rz-5wi" secondAttribute="bottom" constant="8" id="3fF-5d-VFb"/>
+                            <constraint firstItem="oFQ-mO-IHw" firstAttribute="centerX" secondItem="nqn-rz-5wi" secondAttribute="centerX" id="3jJ-UI-POv"/>
+                            <constraint firstItem="Li5-q6-3oN" firstAttribute="leading" secondItem="Q0P-oH-Ssg" secondAttribute="leading" constant="16" id="7tI-0M-ylq"/>
+                            <constraint firstItem="nqn-rz-5wi" firstAttribute="top" secondItem="Li5-q6-3oN" secondAttribute="bottom" constant="8" id="7xf-rP-5hN"/>
+                            <constraint firstItem="oFQ-mO-IHw" firstAttribute="width" secondItem="Li5-q6-3oN" secondAttribute="width" id="8xA-FL-qYl"/>
+                            <constraint firstItem="Li5-q6-3oN" firstAttribute="top" secondItem="Q0P-oH-Ssg" secondAttribute="top" id="Ekb-O9-n5h"/>
+                            <constraint firstItem="nqn-rz-5wi" firstAttribute="centerX" secondItem="Li5-q6-3oN" secondAttribute="centerX" id="c81-1b-RiH"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Q0P-oH-Ssg"/>
+                    </view>
+                    <connections>
+                        <outlet property="debtView" destination="oFQ-mO-IHw" id="gjq-ZC-CDQ"/>
+                        <outlet property="loanField" destination="Li5-q6-3oN" id="gB6-KZ-bT3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sBe-uP-2mT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-738.39999999999998" y="117.39130434782609"/>
+        </scene>
+    </scenes>
+</document>

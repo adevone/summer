@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SelectorView">
+        <attr name="layout" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="EditTextWithError" >
+        <attr name="underlineWidth" format="dimension" />
+        <attr name="underlineColor" format="color" />
+        <attr name="underlineErrorColor" format="color" />
+        <attr name="textErrorColor" format="color" />
+        <attr name="placeholderErrorColor" format="color" />
+        <attr name="hideUnderline" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="LetterSpacingCompatTextView" >
+        <attr name="letterSpacing" format="float" />
+    </declare-styleable>
+
+</resources>
