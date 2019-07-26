@@ -1,30 +1,34 @@
 package summer
 
-import kotlinx.coroutines.*
-import summer.summer.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 import summer.log.logFor
 import summer.log.tagByClass
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KMutableProperty0
 
 abstract class SummerPresenter<
-        TViewState,
-        TViewMethods,
-        TRouter>(
+        TViewState : Any,
+        TViewMethods : Any,
+        TRouter : Any>(
     private val exceptionsHandler: ExceptionsHandler,
     private val stateHolder: StateHolder,
-    workContext: CoroutineContext,
-    private val uiContext: CoroutineContext
-) {
+    private val workContext: CoroutineContext,
+    uiContext: CoroutineContext
+) : CoroutineScope {
+
     protected abstract fun createViewStateProxy(vs: TViewState): TViewState
 
     private var _viewStateProxy: TViewState? = null
     protected val viewStateProxy: TViewState get() = _viewStateProxy!!
 
-    protected var _viewMethods: TViewMethods? = null
+    private var _viewMethods: TViewMethods? = null
     protected val viewMethods: TViewMethods get() = _viewMethods!!
 
-    protected var _router: TRouter? = null
+    private var _router: TRouter? = null
     protected val router: TRouter get() = _router!!
 
     private lateinit var owner: Any
@@ -89,7 +93,7 @@ abstract class SummerPresenter<
 
     protected open fun onEnter() {}
 
-    open fun onPop() {}
+    open fun onExit() {}
 
     open fun onAppear() {}
 
@@ -107,7 +111,7 @@ abstract class SummerPresenter<
         transform = transform,
         source = MixSource.Source.Just(source = this),
         mix = mix,
-        scope = scope
+        scope = this@SummerPresenter
     )
 
     protected fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> MixSource<TSourceEntity, Any?, TMixEntity, TSourceParams>.mix(
@@ -117,7 +121,7 @@ abstract class SummerPresenter<
         transform = transform,
         source = MixSource.Source.Mix(this),
         mix = mix,
-        scope = scope
+        scope = this@SummerPresenter
     )
 
     private class Subscription<TEntity, TParams>(
@@ -138,7 +142,7 @@ abstract class SummerPresenter<
     protected fun <TEntity, TParams> SummerSharedSource<TEntity, TParams>.executor(
         getLoadingProperty: (() -> KMutableProperty0<Boolean>)? = null,
         needShowLoading: suspend () -> Boolean = { true },
-        onError: suspend (Throwable) -> Unit = { e -> throw e },
+        onError: suspend (Throwable, _: TParams?) -> Unit = { e, _ -> throw e },
         onComplete: suspend (TEntity, _: TParams?) -> Unit = { _, _ -> }
     ): SharedSourceExecutor<TEntity, TParams> = SharedSourceExecutor(
         source = this,
@@ -152,8 +156,8 @@ abstract class SummerPresenter<
                 needShowLoading = needShowLoading
             )
         },
-        scope = scope,
-        uiContext = uiContext
+        scope = this@SummerPresenter,
+        workContext = workContext
     ).also { sharedSourceExecutor ->
         subscriptions += Subscription(this, sharedSourceExecutor)
     }
@@ -161,7 +165,7 @@ abstract class SummerPresenter<
     protected fun <T, TSourceEntity, TMixEntity, TSourceParams> MixSource<T, TSourceEntity, TMixEntity, TSourceParams>.executor(
         getLoadingProperty: (() -> KMutableProperty0<Boolean>)? = null,
         needShowLoading: suspend () -> Boolean = { true },
-        onError: suspend (Throwable) -> Unit = { e -> throw e },
+        onError: suspend (Throwable, _: TSourceParams) -> Unit = { e, _ -> throw e },
         onComplete: suspend (T, TSourceParams) -> Unit = { _, _ -> }
     ): MixSourceExecutor<T, TSourceParams> = MixSourceExecutor(
         source = this,
@@ -175,7 +179,7 @@ abstract class SummerPresenter<
                 needShowLoading = needShowLoading
             )
         },
-        uiContext = uiContext
+        scope = this@SummerPresenter
     ).also { mixSourceExecutor ->
         this.consumer = mixSourceExecutor
         subscriptions += Subscription(this.mix, this)
@@ -184,7 +188,7 @@ abstract class SummerPresenter<
     protected fun <TEntity, TParams> SummerSource<TEntity, TParams>.executor(
         getLoadingProperty: (() -> KMutableProperty0<Boolean>)? = null,
         needShowLoading: suspend () -> Boolean = { true },
-        onError: suspend (Throwable) -> Unit = { e -> throw e },
+        onError: suspend (Throwable, _: TParams) -> Unit = { e, _ -> throw e },
         onComplete: suspend (TEntity, _: TParams) -> Unit = { _, _ -> }
     ): SourceExecutor<TEntity, TParams> = SourceExecutor(
         source = this,
@@ -198,15 +202,15 @@ abstract class SummerPresenter<
                 needShowLoading = needShowLoading
             )
         },
-        scope = scope,
-        uiContext = uiContext
+        scope = this@SummerPresenter,
+        workContext = workContext
     )
 
     protected suspend fun <TEntity, TParams> handleDeferred(
         deferred: Deferred<TEntity>,
         params: TParams,
         onComplete: suspend (TEntity, TParams) -> Unit = { _, _ -> },
-        onError: suspend (Throwable) -> Unit,
+        onError: suspend (Throwable, _: TParams) -> Unit,
         getLoadingProperty: (() -> KMutableProperty0<Boolean>)? = null,
         needShowLoading: suspend () -> Boolean = { true }
     ) {
@@ -228,7 +232,7 @@ abstract class SummerPresenter<
             logger.info { "$this cancelled" }
         } catch (e: Throwable) {
             try {
-                onError(e)
+                onError(e, params)
             } catch (e: Throwable) {
                 try {
                     this@SummerPresenter.onError(e)
@@ -239,10 +243,12 @@ abstract class SummerPresenter<
         }
     }
 
-    suspend fun <TEntity> SummerSource<TEntity, Unit>.execute() = execute(Unit)
+    fun <TEntity> SourceExecutor<TEntity, Unit>.execute() = execute(Unit)
+    fun <TEntity> SharedSourceExecutor<TEntity, Unit>.execute() = execute(Unit)
+    fun <TEntity> MixSourceExecutor<TEntity, Unit>.execute() = execute(Unit)
 
     private val job = SupervisorJob()
-    private val scope = CoroutineScope(workContext + job)
+    override val coroutineContext = uiContext + job
 
     protected open val tag: String = tagByClass(this::class)
 

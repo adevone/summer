@@ -1,7 +1,11 @@
-package summer.summer
+package summer
 
-import kotlinx.coroutines.*
-import summer.SummerSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
 import summer.log.KLogging
 import kotlin.coroutines.CoroutineContext
 
@@ -9,17 +13,17 @@ class SourceExecutor<TEntity, TParams>(
     private val source: SummerSource<TEntity, TParams>,
     private val action: suspend (Deferred<TEntity>, TParams) -> Unit,
     private val scope: CoroutineScope,
-    private val uiContext: CoroutineContext
+    private val workContext: CoroutineContext
 ) {
     private var jobs = mutableMapOf<TParams, Job>()
     fun execute(params: TParams, cancelAll: Boolean = true) {
         if (cancelAll) {
             cancelAll()
         }
-        val job = GlobalScope.launch(uiContext) {
+        val job = scope.launch {
             try {
-                val deferred = scope.async {
-                    source.execute(params)
+                val deferred = async(workContext) {
+                    source(params)
                 }
                 action(deferred, params)
             } finally {

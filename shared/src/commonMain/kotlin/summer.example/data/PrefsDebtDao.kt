@@ -1,9 +1,9 @@
-package ru.napoleonit.example.data
+package summer.example.data
 
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.nullableFloat
-import ru.napoleonit.example.domain.debt.data.DebtDao
-import ru.napoleonit.example.entity.Debt
+import summer.example.domain.debt.data.DebtDao
+import summer.example.entity.Debt
 
 class PrefsDebtDao(settings: Settings) : DebtDao {
 

@@ -10,12 +10,12 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.di.erased.singleton
-import ru.napoleonit.example.domain.SharedUseCase
-import ru.napoleonit.example.presentation.base.BasePresenter
+import summer.ExceptionsHandler
+import summer.example.domain.SharedUseCase
+import summer.example.presentation.base.BasePresenter
 import summer.log.AndroidLogCollectorsFactory
 import summer.log.LogCollectorsProvider
 import summer.log.logCollectorsProvider
-import summer.summer.ExceptionsHandler
 
 class App : MultiDexApplication(), KodeinAware {
 

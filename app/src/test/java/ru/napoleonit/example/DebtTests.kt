@@ -6,15 +6,15 @@ import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.singleton
 import summer.example.di
-import ru.napoleonit.example.domain.debt.GetDebt
-import ru.napoleonit.example.entity.Debt
+import summer.example.domain.debt.GetDebt
+import summer.example.entity.Debt
 import ru.napoleonit.example.mock.MockKodeinAware
 import ru.napoleonit.example.mock.instance
 import ru.napoleonit.example.mock.mockModule
 import ru.napoleonit.example.mock.mockScope
-import ru.napoleonit.example.presentation.DebtPresenter
-import ru.napoleonit.example.presentation.DebtRouter
-import ru.napoleonit.example.presentation.DebtView
+import summer.example.presentation.DebtPresenter
+import summer.example.presentation.DebtRouter
+import summer.example.presentation.DebtView
 import kotlin.test.assertEquals
 
 class DebtTests : MockKodeinAware {

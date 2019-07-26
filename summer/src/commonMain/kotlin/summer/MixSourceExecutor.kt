@@ -1,19 +1,18 @@
-package summer.summer
+package summer
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import summer.log.KLogging
-import kotlin.coroutines.CoroutineContext
 
 class MixSourceExecutor<T, TSourceParams>(
     private val source: MixSource<T, *, *, TSourceParams>,
     private val action: suspend (Deferred<T>, TSourceParams) -> Unit,
-    private val uiContext: CoroutineContext
+    private val scope: CoroutineScope
 ) : MixSource.Consumer<T, TSourceParams> {
 
     override fun onObtain(deferred: Deferred<T>, sourceParams: TSourceParams) {
-        GlobalScope.launch(uiContext) {
+        scope.launch {
             action(deferred, sourceParams)
         }
     }

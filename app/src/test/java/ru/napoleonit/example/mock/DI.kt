@@ -10,9 +10,9 @@ import org.kodein.di.direct
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.di.erased.singleton
-import ru.napoleonit.example.domain.SharedUseCase
-import ru.napoleonit.example.domain.debt.data.DebtDao
-import ru.napoleonit.example.entity.Debt
+import summer.example.domain.SharedUseCase
+import summer.example.domain.debt.data.DebtDao
+import summer.example.entity.Debt
 
 val mockModule = Kodein.Module("mock") {
 

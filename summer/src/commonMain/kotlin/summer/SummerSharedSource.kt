@@ -12,7 +12,7 @@ abstract class SummerSharedSource<TEntity, TParams>(workContext: CoroutineContex
     private val lastParams = atomic<TParams?>(initial = null)
     protected val scope = CoroutineScope(SupervisorJob() + workContext)
 
-    protected abstract suspend fun update(
+    protected abstract suspend operator fun invoke(
         params: TParams,
         previous: TEntity
     ): TEntity
@@ -53,13 +53,13 @@ abstract class SummerSharedSource<TEntity, TParams>(workContext: CoroutineContex
         )
     }
 
-    fun execute(params: TParams) {
+    operator fun invoke(params: TParams) {
 
         val previousDeferred = getAsync()
 
         val deferred = scope.async {
             val previous = previousDeferred.await()
-            update(params, previous)
+            invoke(params, previous)
         }
 
         @Suppress("DeferredResultUnused")

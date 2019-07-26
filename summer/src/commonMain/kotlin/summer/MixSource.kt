@@ -1,11 +1,9 @@
-package summer.summer
+package summer
 
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import summer.SummerSharedSource
-import summer.SummerSource
 
 class MixSource<T, TSourceEntity, TMixEntity, TSourceParams>(
     private val transform: (TSourceEntity, TMixEntity) -> T,
@@ -68,7 +66,7 @@ class MixSource<T, TSourceEntity, TMixEntity, TSourceParams>(
                 params: TParams,
                 scope: CoroutineScope
             ): Deferred<TEntity> = scope.async {
-                source.execute(params)
+                source(params)
             }
         }
 

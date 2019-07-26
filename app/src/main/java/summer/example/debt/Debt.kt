@@ -1,12 +1,12 @@
 package summer.example.debt
 
 import kotlinx.android.synthetic.main.debt_fragment.*
-import ru.napoleonit.example.entity.Debt
-import ru.napoleonit.example.presentation.DebtPresenter
-import ru.napoleonit.example.presentation.DebtRouter
-import ru.napoleonit.example.presentation.DebtView
 import summer.example.R
 import summer.example.ScreenFragment
+import summer.example.entity.Debt
+import summer.example.presentation.DebtPresenter
+import summer.example.presentation.DebtRouter
+import summer.example.presentation.DebtView
 
 class DebtFragment : ScreenFragment<
         DebtView.State,

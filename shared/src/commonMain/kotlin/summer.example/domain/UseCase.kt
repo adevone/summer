@@ -1,4 +1,4 @@
-package ru.napoleonit.example.domain
+package summer.example.domain
 
 import summer.SummerSharedSource
 import summer.SummerSource

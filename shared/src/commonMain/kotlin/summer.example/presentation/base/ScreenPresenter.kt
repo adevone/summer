@@ -1,18 +1,18 @@
-package ru.napoleonit.example.presentation.base
+package summer.example.presentation.base
 
 import org.kodein.di.KodeinProperty
 import org.kodein.di.direct
 import org.kodein.di.erased.instance
-import summer.example.di
+import summer.ExceptionsHandler
+import summer.StateHolder
 import summer.SummerPresenter
-import summer.summer.ExceptionsHandler
-import summer.summer.StateHolder
+import summer.example.di
 import kotlin.coroutines.CoroutineContext
 
 abstract class ScreenPresenter<
-        TViewState,
-        TViewMethods,
-        TRouter>
+        TViewState : Any,
+        TViewMethods : Any,
+        TRouter : Any>
     : BasePresenter<TViewState, TViewMethods, TRouter>(
     di.direct.instance()
 ) {
@@ -24,9 +24,9 @@ abstract class ScreenPresenter<
 }
 
 abstract class BasePresenter<
-        TViewState,
-        TViewMethods,
-        TRouter>(
+        TViewState : Any,
+        TViewMethods : Any,
+        TRouter : Any>(
     dependencies: Dependencies
 ) : SummerPresenter<TViewState, TViewMethods, TRouter>(
     exceptionsHandler = dependencies.exceptionsHandler,

@@ -1,4 +1,4 @@
-package ru.napoleonit.example
+package summer.example
 
 import com.russhwolf.settings.AppleSettings
 import com.russhwolf.settings.Settings
@@ -8,11 +8,9 @@ import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.di.erased.singleton
 import platform.Foundation.NSUserDefaults
-import ru.napoleonit.example.domain.SharedUseCase
-import ru.napoleonit.example.presentation.base.BasePresenter
-import summer.example.di
-import summer.example.sharedModule
-import summer.summer.ExceptionsHandler
+import summer.ExceptionsHandler
+import summer.example.domain.SharedUseCase
+import summer.example.presentation.base.BasePresenter
 
 fun bind(
     userDefaults: NSUserDefaults

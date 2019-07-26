@@ -1,8 +1,8 @@
-package ru.napoleonit.example.domain.debt
+package summer.example.domain.debt
 
-import ru.napoleonit.example.domain.UseCase
-import ru.napoleonit.example.domain.debt.data.DebtDao
-import ru.napoleonit.example.entity.Debt
+import summer.example.domain.UseCase
+import summer.example.domain.debt.data.DebtDao
+import summer.example.entity.Debt
 
 interface GetDebt : UseCase<Debt, GetDebt.Params> {
 

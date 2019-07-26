@@ -9,12 +9,6 @@
 import UIKit
 import shared
 
-class IosConnectionChecker: Summer_mppConnectionChecker {
-    func isConnected() -> Bool {
-        return true
-    }
-}
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -22,8 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     override init() {
         IosDIKt.bind(
-            userDefaults: UserDefaults.standard,
-            connectionChecker: IosConnectionChecker()
+            userDefaults: UserDefaults.standard
         )
     }
 

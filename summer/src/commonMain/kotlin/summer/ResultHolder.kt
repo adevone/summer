@@ -1,4 +1,4 @@
-package summer.summer
+package summer
 
 abstract class ResultHolder<T> {
 

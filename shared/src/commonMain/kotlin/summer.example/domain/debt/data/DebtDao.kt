@@ -1,6 +1,6 @@
-package ru.napoleonit.example.domain.debt.data
+package summer.example.domain.debt.data
 
-import ru.napoleonit.example.entity.Debt
+import summer.example.entity.Debt
 
 interface DebtDao {
     var debt: Debt?

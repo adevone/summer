@@ -1,6 +1,6 @@
-const val summerVersion = "0.4.21"
+const val summerVersion = "0.4.30"
 
-const val kotlinVersion = "1.3.40"
+const val kotlinVersion = "1.3.41"
 const val multiplatformSettingVersion = "0.3.2"
 const val atomicfuVersion = "0.12.9"
 const val ktorVersion = "1.2.2"

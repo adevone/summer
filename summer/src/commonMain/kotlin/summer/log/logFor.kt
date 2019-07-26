@@ -13,9 +13,9 @@ fun logFor(tag: String): LogCollector = logCollectorsProvider.create(tag)
 
 fun logFor(clazz: KClass<*>): LogCollector = logCollectorsProvider.create(tagByClass(clazz))
 
-fun logFor(f: KFunction<*>) = logCollectorsProvider.create(f.name)
+fun logFor(f: KFunction<*>): LogCollector = logCollectorsProvider.create(f.name)
 
-fun logFor(p: KProperty<*>) = logCollectorsProvider.create(p.name)
+fun logFor(p: KProperty<*>): LogCollector = logCollectorsProvider.create(p.name)
 
 expect fun tagByNestedClass(clazz: KClass<*>): String
 

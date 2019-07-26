@@ -54,6 +54,7 @@ kotlin {
                 implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
 
                 implementation("summer:summer:$summerVersion")
+//                implementation(project(":summer"))
             }
         }
         getByName("androidMain") {

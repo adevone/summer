@@ -1,9 +1,9 @@
-package ru.napoleonit.example.presentation
+package summer.example.presentation
 
-import ru.napoleonit.example.domain.debt.GetDebt
-import ru.napoleonit.example.domain.debt.data.DebtDao
-import ru.napoleonit.example.entity.Debt
-import ru.napoleonit.example.presentation.base.ScreenPresenter
+import summer.example.domain.debt.GetDebt
+import summer.example.domain.debt.data.DebtDao
+import summer.example.entity.Debt
+import summer.example.presentation.base.ScreenPresenter
 
 class DebtPresenter : ScreenPresenter<
         DebtView.State,
@@ -13,7 +13,7 @@ class DebtPresenter : ScreenPresenter<
     private val debtDao: DebtDao by instance()
 
     override fun createViewStateProxy(vs: DebtView.State) = object : DebtView.State {
-        override var debt by store(vs::debt, initialValue = debtDao.debt)
+        override var debt by store(vs::debt, initialValue = null)
     }
 
     private val getDebtExecutor = get<GetDebt>()

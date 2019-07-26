@@ -1,4 +1,4 @@
-package summer.summer
+package summer
 
 /**
  * Обрабатывает ошибки в слое Presenter'ов

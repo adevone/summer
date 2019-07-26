@@ -15,6 +15,7 @@
 		F861D80C207FA4200085E80D /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F861D805207FA4200085E80D /* shared.framework */; };
 		F861D80D207FA4200085E80D /* shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F861D805207FA4200085E80D /* shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA6B81012299009D00C0BBBD /* DebtViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B81002299009D00C0BBBD /* DebtViewContoller.swift */; };
+		FA6E4D7E22CF674C00C78C27 /* ScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6E4D7D22CF674C00C78C27 /* ScreenViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,14 +50,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		03700B003A2CD948529DECC9 /* GetDebtUseCase.kt */ = {isa = PBXFileReference; includeInIndex = 1; name = GetDebtUseCase.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/domain/debt/GetDebtUseCase.kt; sourceTree = "<group>"; };
-		1D5B2CB2DEF25618FE19CFC5 /* DebtDao.kt */ = {isa = PBXFileReference; includeInIndex = 1; name = DebtDao.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/domain/debt/data/DebtDao.kt; sourceTree = "<group>"; };
-		1E421E743AAC920F0DE29231 /* Debt.kt */ = {isa = PBXFileReference; includeInIndex = 1; name = Debt.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/entity/Debt.kt; sourceTree = "<group>"; };
-		52A25CFFABD6C5EEFFD6C903 /* PrefsDebtDao.kt */ = {isa = PBXFileReference; includeInIndex = 1; name = PrefsDebtDao.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/data/PrefsDebtDao.kt; sourceTree = "<group>"; };
-		61D4A7E2A2AB37360EAB7583 /* IosDI.kt */ = {isa = PBXFileReference; includeInIndex = 1; name = IosDI.kt; path = ../shared/src/iosMain/kotlin/ru/napoleonit/example/IosDI.kt; sourceTree = "<group>"; };
-		98AA15EC15DA8F3DE3C4CB76 /* Debt.kt */ = {isa = PBXFileReference; includeInIndex = 1; name = Debt.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/presentation/Debt.kt; sourceTree = "<group>"; };
-		B95F4C6F3B7A157E401670CB /* ScreenPresenter.kt */ = {isa = PBXFileReference; includeInIndex = 1; name = ScreenPresenter.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/presentation/base/ScreenPresenter.kt; sourceTree = "<group>"; };
-		E1EE88167810204F17A61174 /* DI.kt */ = {isa = PBXFileReference; includeInIndex = 1; name = DI.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/DI.kt; sourceTree = "<group>"; };
+		03700B003A2CD948529DECC9 /* GetDebtUseCase.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = GetDebtUseCase.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/domain/debt/GetDebtUseCase.kt; sourceTree = "<group>"; };
+		1D5B2CB2DEF25618FE19CFC5 /* DebtDao.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DebtDao.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/domain/debt/data/DebtDao.kt; sourceTree = "<group>"; };
+		1E421E743AAC920F0DE29231 /* Debt.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Debt.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/entity/Debt.kt; sourceTree = "<group>"; };
+		52A25CFFABD6C5EEFFD6C903 /* PrefsDebtDao.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = PrefsDebtDao.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/data/PrefsDebtDao.kt; sourceTree = "<group>"; };
+		61D4A7E2A2AB37360EAB7583 /* IosDI.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = IosDI.kt; path = ../shared/src/iosMain/kotlin/ru/napoleonit/example/IosDI.kt; sourceTree = "<group>"; };
+		98AA15EC15DA8F3DE3C4CB76 /* Debt.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Debt.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/presentation/Debt.kt; sourceTree = "<group>"; };
+		B95F4C6F3B7A157E401670CB /* ScreenPresenter.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ScreenPresenter.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/presentation/base/ScreenPresenter.kt; sourceTree = "<group>"; };
+		E1EE88167810204F17A61174 /* DI.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DI.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/DI.kt; sourceTree = "<group>"; };
 		F861D7DD207FA40F0085E80D /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F861D7E0207FA40F0085E80D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F861D7E5207FA40F0085E80D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -68,6 +69,7 @@
 		F861D7F7207FA4100085E80D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F861D805207FA4200085E80D /* shared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA6B81002299009D00C0BBBD /* DebtViewContoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebtViewContoller.swift; sourceTree = "<group>"; };
+		FA6E4D7D22CF674C00C78C27 /* ScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -326,7 +328,7 @@
 		F861D7DF207FA40F0085E80D /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				FA6B81002299009D00C0BBBD /* DebtViewContoller.swift */,
+				FAA1678D22D4812C00B304F4 /* ui */,
 				F861D7E0207FA40F0085E80D /* AppDelegate.swift */,
 				F861D7E4207FA40F0085E80D /* Main.storyboard */,
 				F861D7E7207FA4100085E80D /* Assets.xcassets */,
@@ -343,6 +345,23 @@
 				F861D7F7207FA4100085E80D /* Info.plist */,
 			);
 			path = iosAppTests;
+			sourceTree = "<group>";
+		};
+		FAA1678D22D4812C00B304F4 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				FAA1678E22D4817800B304F4 /* base */,
+				FA6B81002299009D00C0BBBD /* DebtViewContoller.swift */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		FAA1678E22D4817800B304F4 /* base */ = {
+			isa = PBXGroup;
+			children = (
+				FA6E4D7D22CF674C00C78C27 /* ScreenViewController.swift */,
+			);
+			path = base;
 			sourceTree = "<group>";
 		};
 		FCB187BEF7432D35E867FC3C /* napoleonit */ = {
@@ -495,6 +514,7 @@
 			files = (
 				FA6B81012299009D00C0BBBD /* DebtViewContoller.swift in Sources */,
 				F861D7E1207FA40F0085E80D /* AppDelegate.swift in Sources */,
+				FA6E4D7E22CF674C00C78C27 /* ScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

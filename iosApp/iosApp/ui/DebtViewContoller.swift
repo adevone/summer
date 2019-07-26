@@ -10,7 +10,6 @@ import shared
 
 extension DebtViewContoller: DebtRouter {
     
-    
 }
 
 class DebtViewContoller: UIViewController, DebtViewState, DebtViewMethods  {

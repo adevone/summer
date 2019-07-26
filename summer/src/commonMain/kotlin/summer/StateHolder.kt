@@ -1,13 +1,12 @@
-package summer.summer
+package summer
 
-import summer.SummerPresenter
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 
 class StateHolder {
 
-    private val propertiesToRestore = mutableMapOf<SummerPresenter<*, *, *>, MutableList<PropertyToRestore<*>>>()
+    private val propertiesToRestore = mutableMapOf<SummerPresenter<*, *, *>, MutableList<PropertyToRestore<*, *>>>()
 
     private val storeManager = StoreDelegateManager<Any>(propertiesToRestore)
 
@@ -40,7 +39,7 @@ class StateHolder {
 }
 
 private class StoreDelegateManager<TKey>(
-    private val propertiesToRestore: MutableMap<SummerPresenter<*, *, *>, MutableList<PropertyToRestore<*>>>
+    private val propertiesToRestore: MutableMap<SummerPresenter<*, *, *>, MutableList<PropertyToRestore<*, *>>>
 ) {
     private var storedValuesByKey = mutableMapOf<TKey, MutableMap<String, Any?>>()
     private var isInitByKey = mutableMapOf<TKey, MutableMap<String, Unit>>()
@@ -68,7 +67,7 @@ private class StoreDelegateManager<TKey>(
             if (presenter !in propertiesToRestore) {
                 propertiesToRestore[presenter] = mutableListOf()
             }
-            propertiesToRestore[presenter]!! += PropertyToRestore(viewStateProperty, delegate, value)
+            propertiesToRestore[presenter]!!.add(PropertyToRestore(viewStateProperty, delegate, value))
         }
         return delegate
     }
@@ -123,9 +122,9 @@ private class StoreDelegateManager<TKey>(
     }
 }
 
-private class PropertyToRestore<T>(
+private class PropertyToRestore<T, TKey>(
     private val viewStateProperty: KMutableProperty0<T>,
-    private val delegate: StoreDelegateManager<*>.Delegate<T>,
+    private val delegate: StoreDelegateManager<TKey>.Delegate<T>,
     private val value: T
 ) {
     fun restore() {

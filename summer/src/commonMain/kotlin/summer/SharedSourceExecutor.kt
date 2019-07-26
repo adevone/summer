@@ -1,7 +1,9 @@
-package summer.summer
+package summer
 
-import kotlinx.coroutines.*
-import summer.SummerSharedSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import summer.log.KLogging
 import kotlin.coroutines.CoroutineContext
 
@@ -9,12 +11,12 @@ class SharedSourceExecutor<TEntity, in TParams>(
     private val source: SummerSharedSource<TEntity, TParams>,
     private val action: suspend (Deferred<TEntity>, TParams?) -> Unit,
     private val scope: CoroutineScope,
-    private val uiContext: CoroutineContext
+    private val workContext: CoroutineContext
 ) : SummerSharedSource.Observer<TEntity, TParams> {
 
     override fun onObtain(deferred: Deferred<TEntity>, params: TParams?) {
-        GlobalScope.launch(uiContext) {
-            val scopedDeferred = scope.async {
+        scope.launch {
+            val scopedDeferred = async(workContext) {
                 deferred.await()
             }
             action(scopedDeferred, params)
@@ -22,7 +24,7 @@ class SharedSourceExecutor<TEntity, in TParams>(
     }
 
     fun execute(params: TParams) {
-        source.execute(params)
+        source(params)
     }
 
     companion object : KLogging()

@@ -9,10 +9,10 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.widget.Toolbar
 import kotlinx.android.synthetic.main.debt_fragment.*
 import org.kodein.di.erased.instance
+import summer.StateHolder
 import summer.SummerPresenter
 import summer.android.SummerFragment
 import summer.example.debt.MainActivity
-import summer.summer.StateHolder
 
 abstract class ScreenFragment<
         TViewState : Any,

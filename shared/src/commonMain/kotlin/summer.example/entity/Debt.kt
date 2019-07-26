@@ -1,4 +1,4 @@
-package ru.napoleonit.example.entity
+package summer.example.entity
 
 data class Debt(
     val money: Float

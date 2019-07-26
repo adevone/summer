@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.fragment.app.Fragment
+import summer.StateHolder
 import summer.SummerPresenter
-import summer.summer.StateHolder
+import java.util.Collections.emptyList
 
 abstract class SummerFragment<
         TViewState : Any,
         TViewMethods : Any,
         TRouter : Any,
-        TPresenter : SummerPresenter<TViewState, TViewMethods, TRouter>> : Fragment() {
+        TPresenter : SummerPresenter<TViewState, TViewMethods, TRouter>> : androidx.fragment.app.Fragment() {
 
     protected abstract val stateHolder: StateHolder
 
@@ -61,7 +61,7 @@ abstract class SummerFragment<
         lifecycleComponents.forEach { it.onDestroyView() }
         lifecycleComponents = emptyList()
         viewState = null
-//        _presenter = null // иначе не получится получить доступ к onDestroyOwner()
+//        _presenter = null // если раскомментировать, то не получится получить доступ к onDestroyOwner() в onDestroy
     }
 
     @CallSuper
@@ -95,7 +95,7 @@ abstract class SummerFragment<
             parent = parent.parentFragment
         }
 
-        if (isRemoving || anyParentIsRemoving) presenter.onPop()
+        if (isRemoving || anyParentIsRemoving) presenter.onExit()
     }
 }
 
