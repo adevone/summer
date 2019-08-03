@@ -1,10 +1,6 @@
 package summer
 
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.*
 import summer.log.logFor
 import summer.log.tagByClass
 import kotlin.coroutines.CoroutineContext
@@ -206,7 +202,7 @@ abstract class SummerPresenter<
         workContext = workContext
     )
 
-    protected suspend fun <TEntity, TParams> handleDeferred(
+    private suspend fun <TEntity, TParams> handleDeferred(
         deferred: Deferred<TEntity>,
         params: TParams,
         onComplete: suspend (TEntity, TParams) -> Unit = { _, _ -> },
@@ -231,15 +227,15 @@ abstract class SummerPresenter<
         } catch (e: CancellationException) {
             logger.info { "$this cancelled" }
         } catch (e: Throwable) {
-            try {
-                onError(e, params)
-            } catch (e: Throwable) {
-                try {
-                    this@SummerPresenter.onError(e)
-                } catch (e: Throwable) {
-                    exceptionsHandler.handle(e)
-                }
-            }
+            onError(e, params)
+        }
+    }
+
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        try {
+            this@SummerPresenter.onError(e)
+        } catch (e: Throwable) {
+            exceptionsHandler.handle(e)
         }
     }
 
@@ -248,7 +244,7 @@ abstract class SummerPresenter<
     fun <TEntity> MixSourceExecutor<TEntity, Unit>.execute() = execute(Unit)
 
     private val job = SupervisorJob()
-    override val coroutineContext = uiContext + job
+    final override val coroutineContext = uiContext + job + coroutineExceptionHandler
 
     protected open val tag: String = tagByClass(this::class)
 
