@@ -244,7 +244,7 @@ abstract class SummerPresenter<
     fun <TEntity> MixSourceExecutor<TEntity, Unit>.execute() = execute(Unit)
 
     private val job = SupervisorJob()
-    override val coroutineContext = uiContext + job + coroutineExceptionHandler
+    final override val coroutineContext = uiContext + job + coroutineExceptionHandler
 
     protected open val tag: String = tagByClass(this::class)
 
