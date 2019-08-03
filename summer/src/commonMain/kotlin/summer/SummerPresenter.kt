@@ -13,7 +13,8 @@ abstract class SummerPresenter<
     private val exceptionsHandler: ExceptionsHandler,
     private val stateHolder: StateHolder,
     private val workContext: CoroutineContext,
-    uiContext: CoroutineContext
+    uiContext: CoroutineContext,
+    private val onError: (Throwable) -> Unit = { e -> throw e }
 ) : CoroutineScope {
 
     protected abstract fun createViewStateProxy(vs: TViewState): TViewState
@@ -94,11 +95,6 @@ abstract class SummerPresenter<
     open fun onAppear() {}
 
     open fun onDisappear() {}
-
-    protected open fun onError(e: Throwable) {
-        logger.error(e)
-        throw e
-    }
 
     protected fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> SummerSource<TSourceEntity, TSourceParams>.mix(
         mix: SummerSharedSource<TMixEntity, TMixParams>,
@@ -233,7 +229,7 @@ abstract class SummerPresenter<
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
         try {
-            this@SummerPresenter.onError(e)
+            onError(e)
         } catch (e: Throwable) {
             exceptionsHandler.handle(e)
         }
