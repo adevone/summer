@@ -3,14 +3,13 @@ package summer
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
-import kotlin.coroutines.CoroutineContext
 
-abstract class SummerReducer<TEntity, TParams>(workContext: CoroutineContext) {
+abstract class SummerReducer<TEntity, TParams>(
+    private val scope: CoroutineScope
+) {
     private val lastDeferred = atomic<Deferred<TEntity>?>(initial = null)
     private val lastParams = atomic<TParams?>(initial = null)
-    protected val scope = CoroutineScope(SupervisorJob() + workContext)
 
     protected abstract suspend operator fun invoke(
         params: TParams,
