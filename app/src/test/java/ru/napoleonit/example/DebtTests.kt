@@ -1,17 +1,14 @@
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.singleton
-import summer.example.di
-import summer.example.domain.debt.GetDebt
-import summer.example.entity.Debt
 import ru.napoleonit.example.mock.MockKodeinAware
 import ru.napoleonit.example.mock.instance
 import ru.napoleonit.example.mock.mockModule
-import ru.napoleonit.example.mock.mockScope
+import summer.example.di
+import summer.example.domain.debt.GetDebt
+import summer.example.entity.Debt
 import summer.example.presentation.DebtPresenter
 import summer.example.presentation.DebtRouter
 import summer.example.presentation.DebtView
@@ -22,14 +19,14 @@ class DebtTests : MockKodeinAware {
     @Test
     fun `is debt money for human valid`() = runBlocking {
         val getDebt = GetDebt.Impl(instance())
-        val debt = getDebt.execute(GetDebt.Params(isHuman = true, loan = 1f), mockScope).await()
+        val debt = getDebt(GetDebt.Params(isHuman = true, loan = 1f))
         assertEquals(100.500f, debt.money)
     }
 
     @Test
     fun `is debt money for non-human valid`() = runBlocking {
         val getDebt = GetDebt.Impl(instance())
-        val debt = getDebt.execute(GetDebt.Params(isHuman = false, loan = 1f), mockScope).await()
+        val debt = getDebt(GetDebt.Params(isHuman = false, loan = 1f))
         assertEquals(0f, debt.money)
     }
 
@@ -42,11 +39,8 @@ class DebtTests : MockKodeinAware {
             import(mockModule)
             bind<GetDebt>() with singleton {
                 object : GetDebt {
-                    override fun execute(
-                        params: GetDebt.Params,
-                        scope: CoroutineScope
-                    ) = scope.async {
-                        Debt(money = userMoney)
+                    override suspend fun invoke(params: GetDebt.Params): Debt {
+                        return Debt(money = userMoney)
                     }
                 }
             }

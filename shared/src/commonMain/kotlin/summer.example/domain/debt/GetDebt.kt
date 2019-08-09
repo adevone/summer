@@ -10,7 +10,7 @@ interface GetDebt : UseCase<Debt, GetDebt.Params> {
         private val debtDao: DebtDao
     ) : GetDebt {
 
-        override suspend fun execute(params: Params): Debt {
+        override suspend fun invoke(params: Params): Debt {
 
             val debt = Debt(
                 money = if (params.isHuman)
