@@ -8,9 +8,9 @@ import kotlinx.coroutines.async
 class MixSource<T, TSourceEntity, TMixEntity, TSourceParams>(
     private val transform: (TSourceEntity, TMixEntity) -> T,
     private val source: Source<TSourceEntity, TSourceParams>,
-    val mix: SummerSharedSource<TMixEntity, *>,
+    val mix: SummerReducer<TMixEntity, *>,
     private val scope: CoroutineScope
-) : SummerSharedSource.Observer<TMixEntity, Any?> {
+) : SummerReducer.Observer<TMixEntity, Any?> {
     private val lastDeferredAtomic = atomic<Deferred<T>?>(null)
 
     private val lastSourceDeferredAtomic = atomic<Deferred<TSourceEntity>?>(null)

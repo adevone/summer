@@ -101,7 +101,7 @@ abstract class SummerPresenter<
     }
 
     protected fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> SummerSource<TSourceEntity, TSourceParams>.mix(
-        mix: SummerSharedSource<TMixEntity, TMixParams>,
+        mix: SummerReducer<TMixEntity, TMixParams>,
         transform: (TSourceEntity, TMixEntity) -> T
     ) = MixSource(
         transform = transform,
@@ -111,7 +111,7 @@ abstract class SummerPresenter<
     )
 
     protected fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> MixSource<TSourceEntity, Any?, TMixEntity, TSourceParams>.mix(
-        mix: SummerSharedSource<TMixEntity, TMixParams>,
+        mix: SummerReducer<TMixEntity, TMixParams>,
         transform: (TSourceEntity, TMixEntity) -> T
     ) = MixSource(
         transform = transform,
@@ -121,8 +121,8 @@ abstract class SummerPresenter<
     )
 
     private class Subscription<TEntity, TParams>(
-        private val source: SummerSharedSource<TEntity, TParams>,
-        private val observer: SummerSharedSource.Observer<TEntity, TParams>
+        private val source: SummerReducer<TEntity, TParams>,
+        private val observer: SummerReducer.Observer<TEntity, TParams>
     ) {
         fun subscribe() {
             source.observe(observer)
@@ -135,12 +135,12 @@ abstract class SummerPresenter<
 
     private val subscriptions = mutableListOf<Subscription<*, *>>()
 
-    protected fun <TEntity, TParams> SummerSharedSource<TEntity, TParams>.executor(
+    protected fun <TEntity, TParams> SummerReducer<TEntity, TParams>.executor(
         getLoadingProperty: (() -> KMutableProperty0<Boolean>)? = null,
         needShowLoading: suspend () -> Boolean = { true },
         onError: suspend (Throwable, _: TParams?) -> Unit = { e, _ -> throw e },
         onComplete: suspend (TEntity, _: TParams?) -> Unit = { _, _ -> }
-    ): SharedSourceExecutor<TEntity, TParams> = SharedSourceExecutor(
+    ): ReducerExecutor<TEntity, TParams> = ReducerExecutor(
         source = this,
         action = { deferred, params ->
             handleDeferred(
@@ -240,7 +240,7 @@ abstract class SummerPresenter<
     }
 
     fun <TEntity> SourceExecutor<TEntity, Unit>.execute() = execute(Unit)
-    fun <TEntity> SharedSourceExecutor<TEntity, Unit>.execute() = execute(Unit)
+    fun <TEntity> ReducerExecutor<TEntity, Unit>.execute() = execute(Unit)
     fun <TEntity> MixSourceExecutor<TEntity, Unit>.execute() = execute(Unit)
 
     private val job = SupervisorJob()

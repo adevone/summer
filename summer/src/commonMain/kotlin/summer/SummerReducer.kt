@@ -7,7 +7,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlin.coroutines.CoroutineContext
 
-abstract class SummerSharedSource<TEntity, TParams>(workContext: CoroutineContext) {
+abstract class SummerReducer<TEntity, TParams>(workContext: CoroutineContext) {
     private val lastDeferred = atomic<Deferred<TEntity>?>(initial = null)
     private val lastParams = atomic<TParams?>(initial = null)
     protected val scope = CoroutineScope(SupervisorJob() + workContext)
@@ -22,7 +22,7 @@ abstract class SummerSharedSource<TEntity, TParams>(workContext: CoroutineContex
     suspend fun get(): TEntity = getAsync().await()
 
     fun <TDependEntity, TDependParams> depend(
-        source: SummerSharedSource<TDependEntity, TDependParams>,
+        source: SummerReducer<TDependEntity, TDependParams>,
         action: suspend (
             depend: TDependEntity,
             dependParams: TDependParams?,
