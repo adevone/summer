@@ -38,10 +38,10 @@ abstract class SummerExecutorInterceptor<TEntity, TParams> {
 
 class NoInterceptor<TEntity, TParams> : SummerExecutorInterceptor<TEntity, TParams>()
 
-class LoadingExecutorInterceptor<TParams>(
+class LoadingExecutorInterceptor<TEntity, TParams>(
     private val getProperty: suspend () -> KMutableProperty0<Boolean>,
     private val needShow: suspend (event: Event.Executed<TParams>) -> Boolean
-) : SummerExecutorInterceptor<Any?, TParams>() {
+) : SummerExecutorInterceptor<TEntity, TParams>() {
 
     override suspend fun onExecuted(event: Event.Executed<TParams>) {
         val property = getProperty()
