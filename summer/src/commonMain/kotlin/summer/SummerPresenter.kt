@@ -1,6 +1,9 @@
 package summer
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 import summer.log.logFor
 import summer.log.tagByClass
 import kotlin.coroutines.CoroutineContext
@@ -100,6 +103,23 @@ abstract class SummerPresenter<
         throw e
     }
 
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        try {
+            this@SummerPresenter.onError(e)
+        } catch (e: Throwable) {
+            exceptionsHandler.handle(e)
+        }
+    }
+
+    private val job = SupervisorJob()
+    final override val coroutineContext = uiContext + job + coroutineExceptionHandler
+
+    protected open val tag: String = tagByClass(this::class)
+
+    protected val logger by lazy { logFor(tag) }
+
+    private val executionManager = ExecutionManager(logger)
+
     protected fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> SummerSource<TSourceEntity, TSourceParams>.mix(
         mix: SummerReducer<TMixEntity, TMixParams>,
         transform: (TSourceEntity, TMixEntity) -> T
@@ -136,22 +156,15 @@ abstract class SummerPresenter<
     private val subscriptions = mutableListOf<Subscription<*, *>>()
 
     protected fun <TEntity, TParams> SummerReducer<TEntity, TParams>.executor(
-        getLoadingProperty: (() -> KMutableProperty0<Boolean>)? = null,
-        needShowLoading: suspend () -> Boolean = { true },
+        interceptor: SummerExecutorInterceptor<TEntity, TParams?> = NoInterceptor(),
         onError: suspend (Throwable, _: TParams?) -> Unit = { e, _ -> throw e },
         onComplete: suspend (TEntity, _: TParams?) -> Unit = { _, _ -> }
     ): ReducerExecutor<TEntity, TParams> = ReducerExecutor(
         source = this,
-        action = { deferred, params ->
-            handleDeferred(
-                deferred = deferred,
-                onComplete = onComplete,
-                params = params,
-                onError = onError,
-                getLoadingProperty = getLoadingProperty,
-                needShowLoading = needShowLoading
-            )
-        },
+        executionManager = executionManager,
+        interceptor = interceptor,
+        onError = onError,
+        onComplete = onComplete,
         scope = this@SummerPresenter,
         workContext = workContext
     ).also { sharedSourceExecutor ->
@@ -159,94 +172,37 @@ abstract class SummerPresenter<
     }
 
     protected fun <T, TSourceEntity, TMixEntity, TSourceParams> MixSource<T, TSourceEntity, TMixEntity, TSourceParams>.executor(
-        getLoadingProperty: (() -> KMutableProperty0<Boolean>)? = null,
-        needShowLoading: suspend () -> Boolean = { true },
+        interceptor: SummerExecutorInterceptor<T, TSourceParams> = NoInterceptor(),
         onError: suspend (Throwable, _: TSourceParams) -> Unit = { e, _ -> throw e },
         onComplete: suspend (T, TSourceParams) -> Unit = { _, _ -> }
     ): MixSourceExecutor<T, TSourceParams> = MixSourceExecutor(
         source = this,
-        action = { deferred, params ->
-            handleDeferred(
-                deferred = deferred,
-                onComplete = onComplete,
-                params = params,
-                onError = onError,
-                getLoadingProperty = getLoadingProperty,
-                needShowLoading = needShowLoading
-            )
-        },
-        scope = this@SummerPresenter
+        executionManager = executionManager,
+        interceptor = interceptor,
+        onError = onError,
+        onComplete = onComplete,
+        scope = this@SummerPresenter,
+        workContext = workContext
     ).also { mixSourceExecutor ->
         this.consumer = mixSourceExecutor
         subscriptions += Subscription(this.mix, this)
     }
 
     protected fun <TEntity, TParams> SummerSource<TEntity, TParams>.executor(
-        getLoadingProperty: (() -> KMutableProperty0<Boolean>)? = null,
-        needShowLoading: suspend () -> Boolean = { true },
+        interceptor: SummerExecutorInterceptor<TEntity, TParams> = NoInterceptor(),
         onError: suspend (Throwable, _: TParams) -> Unit = { e, _ -> throw e },
         onComplete: suspend (TEntity, _: TParams) -> Unit = { _, _ -> }
     ): SourceExecutor<TEntity, TParams> = SourceExecutor(
         source = this,
-        action = { deferred, params ->
-            handleDeferred(
-                deferred = deferred,
-                onComplete = onComplete,
-                params = params,
-                onError = onError,
-                getLoadingProperty = getLoadingProperty,
-                needShowLoading = needShowLoading
-            )
-        },
+        executionManager = executionManager,
+        interceptor = interceptor,
+        onError = onError,
+        onComplete = onComplete,
         scope = this@SummerPresenter,
         workContext = workContext
     )
 
-    private suspend fun <TEntity, TParams> handleDeferred(
-        deferred: Deferred<TEntity>,
-        params: TParams,
-        onComplete: suspend (TEntity, TParams) -> Unit = { _, _ -> },
-        onError: suspend (Throwable, _: TParams) -> Unit,
-        getLoadingProperty: (() -> KMutableProperty0<Boolean>)? = null,
-        needShowLoading: suspend () -> Boolean = { true }
-    ) {
-        try {
-            val result = if (getLoadingProperty != null) {
-                val isLoadingShowedProperty = getLoadingProperty()
-                val isLoadingShowed = needShowLoading()
-                isLoadingShowedProperty.set(isLoadingShowed)
-                try {
-                    deferred.await()
-                } finally {
-                    isLoadingShowedProperty.set(false)
-                }
-            } else {
-                deferred.await()
-            }
-            onComplete(result, params)
-        } catch (e: CancellationException) {
-            logger.info { "$this cancelled" }
-        } catch (e: Throwable) {
-            onError(e, params)
-        }
-    }
-
-    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
-        try {
-            this@SummerPresenter.onError(e)
-        } catch (e: Throwable) {
-            exceptionsHandler.handle(e)
-        }
-    }
-
     fun <TEntity> SourceExecutor<TEntity, Unit>.execute() = execute(Unit)
     fun <TEntity> ReducerExecutor<TEntity, Unit>.execute() = execute(Unit)
     fun <TEntity> MixSourceExecutor<TEntity, Unit>.execute() = execute(Unit)
-
-    private val job = SupervisorJob()
-    final override val coroutineContext = uiContext + job + coroutineExceptionHandler
-
-    protected open val tag: String = tagByClass(this::class)
-
-    protected val logger by lazy { logFor(tag) }
 }

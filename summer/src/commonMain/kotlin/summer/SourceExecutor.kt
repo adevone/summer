@@ -1,17 +1,18 @@
 package summer
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import summer.log.KLogging
 import kotlin.coroutines.CoroutineContext
 
-class SourceExecutor<TEntity, TParams>(
+class SourceExecutor<TEntity, TParams> internal constructor(
     private val source: SummerSource<TEntity, TParams>,
-    private val action: suspend (Deferred<TEntity>, TParams) -> Unit,
+    private val executionManager: ExecutionManager,
+    private val interceptor: SummerExecutorInterceptor<TEntity, TParams>,
+    private val onError: suspend (Throwable, _: TParams) -> Unit,
+    private val onComplete: suspend (TEntity, _: TParams) -> Unit,
     private val scope: CoroutineScope,
     private val workContext: CoroutineContext
 ) {
@@ -25,7 +26,13 @@ class SourceExecutor<TEntity, TParams>(
                 val deferred = async(workContext) {
                     source(params)
                 }
-                action(deferred, params)
+                executionManager.handleDeferred(
+                    deferred = deferred,
+                    params = params,
+                    interceptor = interceptor,
+                    onError = onError,
+                    onComplete = onComplete
+                )
             } finally {
                 jobs.remove(params)
             }
@@ -37,13 +44,13 @@ class SourceExecutor<TEntity, TParams>(
         jobs.forEach { (params, job) ->
             val willCancel = needCancel(params)
             if (willCancel) {
-                job.cancelChildren()
+                job.cancel()
             }
         }
     }
 
     fun cancel(params: TParams) {
-        jobs[params]?.cancelChildren()
+        jobs[params]?.cancel()
     }
 
     fun isAnyExecuted() = jobs.any { (_, job) -> job.isActive }

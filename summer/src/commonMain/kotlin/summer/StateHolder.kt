@@ -63,6 +63,7 @@ private class StoreDelegateManager<TKey>(
             if (viewStateProperty.name !in storedValuesByKey[key]!!) {
                 storedValuesByKey[key]!![viewStateProperty.name] = initialValue
             }
+            @Suppress("UNCHECKED_CAST")
             val value = storedValuesByKey[key]!![viewStateProperty.name] as T
             if (presenter !in propertiesToRestore) {
                 propertiesToRestore[presenter] = mutableListOf()
@@ -84,6 +85,7 @@ private class StoreDelegateManager<TKey>(
         override fun getValue(thisRef: Any, property: KProperty<*>): T {
             val isInit = isInitByKey[key]?.get(property.name) != null
             return if (isInit) {
+                @Suppress("UNCHECKED_CAST")
                 storedValuesByKey[key]?.get(property.name) as T
             } else {
                 initialValue

@@ -7,9 +7,12 @@ import kotlinx.coroutines.launch
 import summer.log.KLogging
 import kotlin.coroutines.CoroutineContext
 
-class ReducerExecutor<TEntity, in TParams>(
+class ReducerExecutor<TEntity, in TParams> internal constructor(
     private val source: SummerReducer<TEntity, TParams>,
-    private val action: suspend (Deferred<TEntity>, TParams?) -> Unit,
+    private val executionManager: ExecutionManager,
+    private val interceptor: SummerExecutorInterceptor<TEntity, TParams?>,
+    private val onError: suspend (Throwable, _: TParams?) -> Unit,
+    private val onComplete: suspend (TEntity, _: TParams?) -> Unit,
     private val scope: CoroutineScope,
     private val workContext: CoroutineContext
 ) : SummerReducer.Observer<TEntity, TParams> {
@@ -19,7 +22,13 @@ class ReducerExecutor<TEntity, in TParams>(
             val scopedDeferred = async(workContext) {
                 deferred.await()
             }
-            action(scopedDeferred, params)
+            executionManager.handleDeferred(
+                deferred = scopedDeferred,
+                params = params,
+                interceptor = interceptor,
+                onError = onError,
+                onComplete = onComplete
+            )
         }
     }
 
