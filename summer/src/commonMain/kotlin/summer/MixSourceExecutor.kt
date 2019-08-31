@@ -10,7 +10,7 @@ class MixSourceExecutor<T, TSourceParams> internal constructor(
     private val source: MixSource<T, *, *, TSourceParams>,
     private val executionManager: ExecutionManager,
     private val interceptor: SummerExecutorInterceptor<T, TSourceParams>,
-    private val onExecuted: suspend (_: TSourceParams) -> Unit,
+    private val onExecute: suspend (_: TSourceParams) -> Unit,
     private val onFailure: suspend (Throwable, _: TSourceParams) -> Unit,
     private val onSuccess: suspend (T, TSourceParams) -> Unit,
     private val scope: CoroutineScope,
@@ -25,7 +25,7 @@ class MixSourceExecutor<T, TSourceParams> internal constructor(
                     params = sourceParams,
                     interceptor = interceptor,
                     onFailure = onFailure,
-                    onExecuted = onExecuted,
+                    onExecute = onExecute,
                     onSuccess = onSuccess
                 )
             }

@@ -6,7 +6,7 @@ abstract class SummerExecutorInterceptor<TEntity, TParams> {
 
     open suspend fun onEvent(event: Event<TEntity, TParams>) {}
 
-    open suspend fun onExecuted(event: Event.Executed<TEntity, TParams>) {}
+    open suspend fun onExecute(event: Event.Executed<TEntity, TParams>) {}
 
     open suspend fun onCompleted(event: Event.Completed<TEntity, TParams>) {}
 
@@ -43,7 +43,7 @@ class LoadingExecutorInterceptor<TEntity, TParams>(
     private val needShow: suspend (event: Event.Executed<TEntity, TParams>) -> Boolean
 ) : SummerExecutorInterceptor<TEntity, TParams>() {
 
-    override suspend fun onExecuted(event: Event.Executed<TEntity, TParams>) {
+    override suspend fun onExecute(event: Event.Executed<TEntity, TParams>) {
         val property = getProperty()
         val needShowLoading = needShow(event)
         if (needShowLoading) {

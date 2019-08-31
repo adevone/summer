@@ -10,13 +10,13 @@ internal class ExecutionManager(
         deferred: Deferred<TEntity>,
         params: TParams,
         interceptor: SummerExecutorInterceptor<TEntity, TParams>,
-        onExecuted: suspend (_: TParams) -> Unit,
+        onExecute: suspend (_: TParams) -> Unit,
         onFailure: suspend (Throwable, _: TParams) -> Unit,
         onSuccess: suspend (TEntity, TParams) -> Unit
     ) {
         try {
-            interceptor.onExecuted(SummerExecutorInterceptor.Event.Executed(params))
-            onExecuted(params)
+            interceptor.onExecute(SummerExecutorInterceptor.Event.Executed(params))
+            onExecute(params)
             val result = try {
                 deferred.await()
             } catch (e: Throwable) {

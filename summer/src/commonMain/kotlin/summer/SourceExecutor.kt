@@ -10,7 +10,7 @@ class SourceExecutor<TEntity, TParams> internal constructor(
     private val source: SummerSource<TEntity, TParams>,
     private val executionManager: ExecutionManager,
     private val interceptor: SummerExecutorInterceptor<TEntity, TParams>,
-    private val onExecuted: suspend (_: TParams) -> Unit,
+    private val onExecute: suspend (_: TParams) -> Unit,
     private val onFailure: suspend (Throwable, _: TParams) -> Unit,
     private val onSuccess: suspend (TEntity, _: TParams) -> Unit,
     private val scope: CoroutineScope,
@@ -30,7 +30,7 @@ class SourceExecutor<TEntity, TParams> internal constructor(
                     deferred = deferred,
                     params = params,
                     interceptor = interceptor,
-                    onExecuted = onExecuted,
+                    onExecute = onExecute,
                     onFailure = onFailure,
                     onSuccess = onSuccess
                 )
