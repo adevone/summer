@@ -69,10 +69,10 @@ dependencies {
 
     implementation(project(":shared"))
 
-    implementation("summer:summer:$summerVersion")
-    implementation("summer:summer-androidx:$summerVersion")
-//    implementation(project(":summer"))
-//    implementation(project(":summer-androidx"))
+//    implementation("summer:summer:$summerVersion")
+//    implementation("summer:summer-androidx:$summerVersion")
+    implementation(project(":summer"))
+    implementation(project(":summer-androidx"))
 
     implementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")

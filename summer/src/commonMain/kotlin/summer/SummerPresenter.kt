@@ -3,7 +3,6 @@ package summer
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancelChildren
 import summer.log.logFor
 import summer.log.tagByClass
 import kotlin.coroutines.CoroutineContext
@@ -14,7 +13,7 @@ abstract class SummerPresenter<
         TViewMethods : Any,
         TRouter : Any>(
     private val exceptionsHandler: ExceptionsHandler,
-    private val stateHolder: StateHolder,
+    private val store: SummerStore,
     private val workContext: CoroutineContext,
     uiContext: CoroutineContext
 ) : CoroutineScope {
@@ -30,63 +29,51 @@ abstract class SummerPresenter<
     private var _router: TRouter? = null
     protected val router: TRouter get() = _router!!
 
-    private lateinit var owner: Any
+    fun onCreate() {
+        subscriptions.forEach { it.subscribe() }
+    }
 
-    private var isOwnerAlreadyPresent = false
-    fun beforeCreateView(owner: Any) {
-        isOwnerAlreadyPresent = stateHolder.isPresent(owner)
+    private var isDestroyed = false
+    fun onDestroy() {
+        isDestroyed = true
+        subscriptions.forEach { it.unsubscribe() }
+        subscriptions.clear()
+        job.cancel()
     }
 
     fun onCreateView(
         viewState: TViewState,
         viewMethods: TViewMethods,
-        router: TRouter,
-        owner: Any
+        router: TRouter
     ) {
-        this.owner = owner
         this._viewStateProxy = createViewStateProxy(viewState)
         this._viewMethods = viewMethods
         this._router = router
 
         // Некоторые проперти при изменении значений обращаются к presenter'у.
         // Поэтому presenter должен быть инициализирован в момент их установки
-        stateHolder.restoreProperties(this)
-        subscriptions.forEach { it.subscribe() }
-        if (!isOwnerAlreadyPresent) {
-            onEnter()
-        }
+        store.restore()
     }
 
-    private var isDestroyed = false
+    fun afterCreate() {
+        onEnter()
+    }
+
     fun onDestroyView() {
-        isDestroyed = true
-        subscriptions.forEach { it.unsubscribe() }
-        subscriptions.clear()
-        job.cancelChildren()
+        this._viewStateProxy = null
+        this._viewMethods = null
+        this._router = null
     }
-
-    fun onDestroyOwner() {
-        stateHolder.onDestroyOwner(owner)
-    }
-
-    protected fun <T> storeInSession(
-        viewStateProperty: KMutableProperty0<T>? = null,
-        initialValue: T
-    ): StoredProperty<T> = store(
-        viewStateProperty,
-        getOwner = { this::class },
-        initialValue = initialValue
-    )
 
     protected fun <T> store(
         viewStateProperty: KMutableProperty0<T>? = null,
-        getOwner: () -> Any = { owner },
         initialValue: T
-    ): StoredProperty<T> = stateHolder.store(
-        getKey = getOwner,
-        isPresenterDestroyed = { isDestroyed },
-        presenter = this,
-        viewStateProperty = viewStateProperty,
+    ) = store.store(
+        onSet = { value ->
+            if (!isDestroyed) {
+                viewStateProperty?.set(value)
+            }
+        },
         initialValue = initialValue
     )
 

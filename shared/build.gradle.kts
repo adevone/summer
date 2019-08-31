@@ -53,8 +53,8 @@ kotlin {
                 implementation("org.kodein.di:kodein-di-erased:$kodeinVersion")
                 implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
 
-                implementation("summer:summer:$summerVersion")
-//                implementation(project(":summer"))
+//                implementation("summer:summer:$summerVersion")
+                implementation(project(":summer"))
             }
         }
         getByName("androidMain") {

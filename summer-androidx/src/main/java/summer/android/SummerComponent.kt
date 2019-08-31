@@ -11,8 +11,6 @@ abstract class SummerComponent<
         TRouter : Any,
         TPresenter : SummerPresenter<TViewState, TViewMethods, TRouter>> {
 
-    protected abstract val key: String
-
     protected abstract val router: TRouter
     protected abstract val viewMethods: TViewMethods
 
@@ -25,19 +23,31 @@ abstract class SummerComponent<
         context: Context
     ): View
 
-    lateinit var view: View
-    fun onViewCreated(parentView: ViewGroup?, context: Context, parentOwner: Any) {
-        val owner = owner(parentOwner)
-        presenter.beforeCreateView(owner = owner)
-        view = createView(parentView, context)
+    fun onCreate() {
+        presenter.onCreate()
+    }
+
+    fun onDestroy() {
+        presenter.onDestroy()
+    }
+
+    private var _view: View? = null
+    val view: View get() = _view!!
+
+    fun onViewCreated(parentView: ViewGroup?, context: Context, isFirstViewCreation: Boolean) {
+        _view = createView(parentView, context)
         initView()
-        presenter.onCreateView(viewState, viewMethods, router, owner)
+        presenter.onCreateView(viewState, viewMethods, router)
+        if (isFirstViewCreation) {
+            presenter.afterCreate()
+        }
     }
 
     protected abstract fun initView()
 
     fun onDestroyView() {
         presenter.onDestroyView()
+        _view = null
     }
 
     fun onResume() {
@@ -47,11 +57,4 @@ abstract class SummerComponent<
     fun onPause() {
         presenter.onDisappear()
     }
-
-    fun owner(parentOwner: Any) = Owner(parentOwner, key)
-
-    data class Owner(
-        val parentOwner: Any,
-        val key: String
-    )
 }

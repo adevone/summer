@@ -9,7 +9,6 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.widget.Toolbar
 import kotlinx.android.synthetic.main.debt_fragment.*
 import org.kodein.di.erased.instance
-import summer.StateHolder
 import summer.SummerPresenter
 import summer.android.SummerFragment
 import summer.example.debt.MainActivity
@@ -21,8 +20,6 @@ abstract class ScreenFragment<
         TPresenter : SummerPresenter<TViewState, TViewMethods, TRouter>> :
     SummerFragment<TViewState, TViewMethods, TRouter, TPresenter>(),
     AppKodeinAware {
-
-    override val stateHolder by instance<StateHolder>()
 
     protected open val screenToolbar: Toolbar? get() = toolbar!!
     protected open val backButtonIconResource: Int? = null

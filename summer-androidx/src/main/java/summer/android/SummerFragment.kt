@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import summer.StateHolder
 import summer.SummerPresenter
 import java.util.Collections.emptyList
 
@@ -14,8 +13,6 @@ abstract class SummerFragment<
         TRouter : Any,
         TPresenter : SummerPresenter<TViewState, TViewMethods, TRouter>> : androidx.fragment.app.Fragment() {
 
-    protected abstract val stateHolder: StateHolder
-
     protected abstract val router: TRouter
     protected abstract val viewMethods: TViewMethods
 
@@ -23,6 +20,7 @@ abstract class SummerFragment<
 
     private var _presenter: TPresenter? = null
     protected val presenter: TPresenter get() = _presenter!!
+
     protected abstract fun createPresenter(): TPresenter
 
     protected abstract fun initView()
@@ -32,24 +30,32 @@ abstract class SummerFragment<
     protected open fun createComponents(): List<SummerComponent<*, *, *, *>> = emptyList()
     private var lifecycleComponents: List<SummerComponent<*, *, *, *>> = emptyList()
 
-    private val componentOwners = mutableListOf<SummerComponent.Owner>()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        _presenter = createPresenter()
+        lifecycleComponents = createComponents()
+        _presenter!!.onCreate()
+        lifecycleComponents.forEach { it.onCreate() }
+    }
+
+    private var isFirstViewCreation = true
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _presenter = createPresenter()
-        presenter.beforeCreateView(owner = this)
         initView()
         viewState = createViewState()
-        presenter.onCreateView(viewState!!, viewMethods, router, owner = this)
+        _presenter!!.onCreateView(viewState!!, viewMethods, router)
+        if (isFirstViewCreation) {
+            _presenter!!.afterCreate()
+        }
+        isFirstViewCreation = false
 
-        lifecycleComponents = createComponents()
-        componentOwners += lifecycleComponents.map { it.owner(parentOwner = this) }
         lifecycleComponents.forEach { component ->
             component.onViewCreated(
                 parentView = view as? ViewGroup,
                 context = context!!,
-                parentOwner = this
+                isFirstViewCreation = isFirstViewCreation
             )
         }
     }
@@ -57,9 +63,9 @@ abstract class SummerFragment<
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
-        _presenter!!.onDestroyView()
         lifecycleComponents.forEach { it.onDestroyView() }
         lifecycleComponents = emptyList()
+        _presenter!!.onDestroyView()
         viewState = null
 //        _presenter = null // если раскомментировать, то не получится получить доступ к onDestroyOwner() в onDestroy
     }
@@ -68,8 +74,8 @@ abstract class SummerFragment<
     override fun onDestroy() {
         notifyPresenterIfRemoving()
         super.onDestroy()
-        componentOwners.forEach { stateHolder.onDestroyOwner(it) }
-        _presenter?.onDestroyOwner()
+        lifecycleComponents.forEach { it.onDestroy() }
+        presenter.onDestroy()
     }
 
     @CallSuper

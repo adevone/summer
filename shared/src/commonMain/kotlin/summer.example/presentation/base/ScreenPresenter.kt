@@ -4,7 +4,7 @@ import org.kodein.di.KodeinProperty
 import org.kodein.di.direct
 import org.kodein.di.erased.instance
 import summer.ExceptionsHandler
-import summer.StateHolder
+import summer.InMemoryStore
 import summer.SummerPresenter
 import summer.example.di
 import kotlin.coroutines.CoroutineContext
@@ -30,13 +30,12 @@ abstract class BasePresenter<
     dependencies: Dependencies
 ) : SummerPresenter<TViewState, TViewMethods, TRouter>(
     exceptionsHandler = dependencies.exceptionsHandler,
-    stateHolder = dependencies.stateHolder,
+    store = InMemoryStore(),
     workContext = dependencies.workContext,
     uiContext = dependencies.uiContext
 ) {
     class Dependencies(
         val exceptionsHandler: ExceptionsHandler,
-        val stateHolder: StateHolder,
         val workContext: CoroutineContext,
         val uiContext: CoroutineContext
     )

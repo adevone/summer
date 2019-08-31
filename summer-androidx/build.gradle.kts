@@ -1,5 +1,3 @@
-import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -43,7 +41,8 @@ dependencies {
 
     implementation("androidx.appcompat:appcompat:1.0.2")
 
-    implementation("summer:summer:$summerVersion")
+//    implementation("summer:summer:$summerVersion")
+    implementation(project(":summer"))
 }
 
 val sourceJar by tasks.registering(Jar::class) {

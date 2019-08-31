@@ -41,7 +41,7 @@ class App : MultiDexApplication(), KodeinAware {
                 }
             }
 
-            bind() from singleton { BasePresenter.Dependencies(instance(), instance(), Dispatchers.IO, Dispatchers.Main) }
+            bind() from singleton { BasePresenter.Dependencies(instance(), Dispatchers.IO, Dispatchers.Main) }
             bind() from singleton { SharedUseCase.Dependencies(Dispatchers.IO) }
         }
 

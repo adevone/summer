@@ -4,7 +4,6 @@ import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.di.erased.singleton
-import summer.StateHolder
 import summer.example.data.PrefsDebtDao
 import summer.example.domain.debt.GetDebt
 import summer.example.domain.debt.data.DebtDao
@@ -18,7 +17,4 @@ val sharedModule = Kodein.Module("shared") {
 
     // prefs
     bind<DebtDao>() with singleton { PrefsDebtDao(instance()) }
-
-    // presentation
-    bind() from singleton { StateHolder() }
 }
