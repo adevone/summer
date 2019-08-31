@@ -41,8 +41,8 @@ dependencies {
 
     implementation("androidx.appcompat:appcompat:1.0.2")
 
-//    implementation("summer:summer:$summerVersion")
-    implementation(project(":summer"))
+    implementation("summer:summer:$summerVersion")
+//    implementation(project(":summer"))
 }
 
 val sourceJar by tasks.registering(Jar::class) {
