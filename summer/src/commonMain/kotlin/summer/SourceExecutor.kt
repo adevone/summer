@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import summer.log.KLogging
 import kotlin.coroutines.CoroutineContext
 
 class SourceExecutor<TEntity, TParams> internal constructor(
@@ -58,8 +57,6 @@ class SourceExecutor<TEntity, TParams> internal constructor(
     fun isAnyExecuted() = jobs.any { (_, job) -> job.isActive }
 
     fun isExecuted(params: TParams) = jobs[params]?.isActive
-
-    companion object : KLogging()
 }
 
 fun <TEntity> SourceExecutor<TEntity, Unit>.execute(

@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import summer.log.KLogging
 import kotlin.coroutines.CoroutineContext
 
 class MixSourceExecutor<T, TSourceParams> internal constructor(
@@ -37,8 +36,6 @@ class MixSourceExecutor<T, TSourceParams> internal constructor(
         @Suppress("DeferredResultUnused")
         source.obtain(params)
     }
-
-    companion object : KLogging()
 }
 
 fun <T> MixSourceExecutor<T, Unit>.execute() = execute(Unit)

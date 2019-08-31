@@ -3,8 +3,6 @@ package summer
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import summer.log.logFor
-import summer.log.tagByClass
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KMutableProperty0
 
@@ -15,8 +13,11 @@ abstract class SummerPresenter<
     private val exceptionsHandler: ExceptionsHandler,
     private val store: SummerStore,
     private val workContext: CoroutineContext,
-    uiContext: CoroutineContext
+    uiContext: CoroutineContext,
+    loggerFactory: SummerLogger.Factory
 ) : CoroutineScope {
+
+    private val logger = loggerFactory.get(this::class)
 
     protected abstract fun createViewStateProxy(vs: TViewState): TViewState
 
@@ -100,10 +101,6 @@ abstract class SummerPresenter<
 
     private val job = SupervisorJob()
     final override val coroutineContext = uiContext + job + coroutineExceptionHandler
-
-    protected open val tag: String = tagByClass(this::class)
-
-    protected val logger by lazy { logFor(tag) }
 
     private val executionManager = ExecutionManager(logger)
 

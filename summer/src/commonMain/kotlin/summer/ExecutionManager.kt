@@ -2,10 +2,9 @@ package summer
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Deferred
-import summer.log.LogCollector
 
 internal class ExecutionManager(
-    private val logger: LogCollector
+    private val logger: SummerLogger
 ) {
     suspend fun <TEntity, TParams> handleDeferred(
         deferred: Deferred<TEntity>,

@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import summer.log.KLogging
 import kotlin.coroutines.CoroutineContext
 
 class ReducerExecutor<TEntity, in TParams> internal constructor(
@@ -37,8 +36,6 @@ class ReducerExecutor<TEntity, in TParams> internal constructor(
     fun execute(params: TParams) {
         source(params)
     }
-
-    companion object : KLogging()
 }
 
 fun <TEntity> ReducerExecutor<TEntity, Unit>.execute() = execute(Unit)
