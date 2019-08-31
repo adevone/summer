@@ -11,8 +11,9 @@ class SourceExecutor<TEntity, TParams> internal constructor(
     private val source: SummerSource<TEntity, TParams>,
     private val executionManager: ExecutionManager,
     private val interceptor: SummerExecutorInterceptor<TEntity, TParams>,
-    private val onError: suspend (Throwable, _: TParams) -> Unit,
-    private val onComplete: suspend (TEntity, _: TParams) -> Unit,
+    private val onExecuted: suspend (_: TParams) -> Unit,
+    private val onFailure: suspend (Throwable, _: TParams) -> Unit,
+    private val onSuccess: suspend (TEntity, _: TParams) -> Unit,
     private val scope: CoroutineScope,
     private val workContext: CoroutineContext
 ) {
@@ -30,8 +31,9 @@ class SourceExecutor<TEntity, TParams> internal constructor(
                     deferred = deferred,
                     params = params,
                     interceptor = interceptor,
-                    onError = onError,
-                    onComplete = onComplete
+                    onExecuted = onExecuted,
+                    onFailure = onFailure,
+                    onSuccess = onSuccess
                 )
             } finally {
                 jobs.remove(params)

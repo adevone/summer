@@ -11,8 +11,9 @@ class ReducerExecutor<TEntity, in TParams> internal constructor(
     private val source: SummerReducer<TEntity, TParams>,
     private val executionManager: ExecutionManager,
     private val interceptor: SummerExecutorInterceptor<TEntity, TParams?>,
-    private val onError: suspend (Throwable, _: TParams?) -> Unit,
-    private val onComplete: suspend (TEntity, _: TParams?) -> Unit,
+    private val onExecuted: suspend (_: TParams?) -> Unit,
+    private val onFailure: suspend (Throwable, _: TParams?) -> Unit,
+    private val onSuccess: suspend (TEntity, _: TParams?) -> Unit,
     private val scope: CoroutineScope,
     private val workContext: CoroutineContext
 ) : SummerReducer.Observer<TEntity, TParams> {
@@ -26,8 +27,9 @@ class ReducerExecutor<TEntity, in TParams> internal constructor(
                 deferred = scopedDeferred,
                 params = params,
                 interceptor = interceptor,
-                onError = onError,
-                onComplete = onComplete
+                onFailure = onFailure,
+                onExecuted = onExecuted,
+                onSuccess = onSuccess
             )
         }
     }

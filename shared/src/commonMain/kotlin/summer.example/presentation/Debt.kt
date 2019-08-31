@@ -18,7 +18,7 @@ class DebtPresenter : ScreenPresenter<
 
     private val getDebtExecutor = get<GetDebt>()
         .executor(
-            onComplete = { debt, _ ->
+            onSuccess = { debt, _ ->
                 viewStateProxy.debt = debt
             }
         )

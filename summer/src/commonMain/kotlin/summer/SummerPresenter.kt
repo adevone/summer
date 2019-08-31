@@ -157,14 +157,16 @@ abstract class SummerPresenter<
 
     protected fun <TEntity, TParams> SummerReducer<TEntity, TParams>.executor(
         interceptor: SummerExecutorInterceptor<TEntity, TParams?> = NoInterceptor(),
-        onError: suspend (Throwable, _: TParams?) -> Unit = { e, _ -> throw e },
-        onComplete: suspend (TEntity, _: TParams?) -> Unit = { _, _ -> }
+        onExecuted: suspend (_: TParams?) -> Unit,
+        onFailure: suspend (Throwable, _: TParams?) -> Unit = { e, _ -> throw e },
+        onSuccess: suspend (TEntity, _: TParams?) -> Unit = { _, _ -> }
     ): ReducerExecutor<TEntity, TParams> = ReducerExecutor(
         source = this,
         executionManager = executionManager,
         interceptor = interceptor,
-        onError = onError,
-        onComplete = onComplete,
+        onExecuted = onExecuted,
+        onFailure = onFailure,
+        onSuccess = onSuccess,
         scope = this@SummerPresenter,
         workContext = workContext
     ).also { sharedSourceExecutor ->
@@ -173,14 +175,16 @@ abstract class SummerPresenter<
 
     protected fun <T, TSourceEntity, TMixEntity, TSourceParams> MixSource<T, TSourceEntity, TMixEntity, TSourceParams>.executor(
         interceptor: SummerExecutorInterceptor<T, TSourceParams> = NoInterceptor(),
-        onError: suspend (Throwable, _: TSourceParams) -> Unit = { e, _ -> throw e },
-        onComplete: suspend (T, TSourceParams) -> Unit = { _, _ -> }
+        onExecuted: suspend (_: TSourceParams) -> Unit = { _ -> },
+        onFailure: suspend (Throwable, _: TSourceParams) -> Unit = { e, _ -> throw e },
+        onSuccess: suspend (T, TSourceParams) -> Unit = { _, _ -> }
     ): MixSourceExecutor<T, TSourceParams> = MixSourceExecutor(
         source = this,
         executionManager = executionManager,
         interceptor = interceptor,
-        onError = onError,
-        onComplete = onComplete,
+        onExecuted = onExecuted,
+        onFailure = onFailure,
+        onSuccess = onSuccess,
         scope = this@SummerPresenter,
         workContext = workContext
     ).also { mixSourceExecutor ->
@@ -190,14 +194,16 @@ abstract class SummerPresenter<
 
     protected fun <TEntity, TParams> SummerSource<TEntity, TParams>.executor(
         interceptor: SummerExecutorInterceptor<TEntity, TParams> = NoInterceptor(),
-        onError: suspend (Throwable, _: TParams) -> Unit = { e, _ -> throw e },
-        onComplete: suspend (TEntity, _: TParams) -> Unit = { _, _ -> }
+        onExecuted: suspend (_: TParams) -> Unit = { _ -> },
+        onFailure: suspend (Throwable, _: TParams) -> Unit = { e, _ -> throw e },
+        onSuccess: suspend (TEntity, _: TParams) -> Unit = { _, _ -> }
     ): SourceExecutor<TEntity, TParams> = SourceExecutor(
         source = this,
         executionManager = executionManager,
         interceptor = interceptor,
-        onError = onError,
-        onComplete = onComplete,
+        onExecuted = onExecuted,
+        onFailure = onFailure,
+        onSuccess = onSuccess,
         scope = this@SummerPresenter,
         workContext = workContext
     )
