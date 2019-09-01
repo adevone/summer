@@ -141,7 +141,7 @@ abstract class SummerPresenter<
 
     protected fun <TEntity, TParams> SummerReducer<TEntity, TParams>.executor(
         interceptor: SummerExecutorInterceptor<TEntity, TParams?> = NoInterceptor(),
-        onExecute: suspend (_: TParams?) -> Unit,
+        onExecute: suspend (_: TParams?) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TParams?) -> Unit = { e, _ -> throw e },
         onSuccess: suspend (TEntity, _: TParams?) -> Unit = { _, _ -> }
     ): ReducerExecutor<TEntity, TParams> = ReducerExecutor(
