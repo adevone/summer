@@ -20,10 +20,14 @@ internal class ExecutionManager(
             val result = try {
                 deferred.await()
             } catch (e: Throwable) {
-                interceptor.onFailure(SummerExecutorInterceptor.Event.Completed.Failure(e, params))
+                val event = SummerExecutorInterceptor.Event.Completed.Failure<TEntity, TParams>(e, params)
+                interceptor.onCompleted(event)
+                interceptor.onFailure(event)
                 throw e
             }
-            interceptor.onSuccess(SummerExecutorInterceptor.Event.Completed.Success(result, params))
+            val event = SummerExecutorInterceptor.Event.Completed.Success(result, params)
+            interceptor.onCompleted(event)
+            interceptor.onSuccess(event)
             onSuccess(result, params)
         } catch (e: CancellationException) {
             logger.info { "$this cancelled" }
