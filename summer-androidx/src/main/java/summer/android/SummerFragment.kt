@@ -32,10 +32,10 @@ abstract class SummerFragment<
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _presenter = createPresenter()
         lifecycleComponents = createComponents()
-        _presenter!!.onCreate()
+        _presenter = createPresenter()
         lifecycleComponents.forEach { it.onCreate() }
+        _presenter!!.onCreate()
     }
 
     private var isFirstViewCreation = true
@@ -45,12 +45,6 @@ abstract class SummerFragment<
         super.onViewCreated(view, savedInstanceState)
         initView()
         viewState = createViewState()
-        _presenter!!.onCreateView(viewState!!, viewMethods, router)
-        if (isFirstViewCreation) {
-            _presenter!!.afterCreate()
-        }
-        isFirstViewCreation = false
-
         lifecycleComponents.forEach { component ->
             component.onViewCreated(
                 parentView = view as? ViewGroup,
@@ -58,14 +52,19 @@ abstract class SummerFragment<
                 isFirstViewCreation = isFirstViewCreation
             )
         }
+        _presenter!!.onCreateView(viewState!!, viewMethods, router)
+        if (isFirstViewCreation) {
+            _presenter!!.afterCreate()
+        }
+        isFirstViewCreation = false
     }
 
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
+        _presenter!!.onDestroyView()
         lifecycleComponents.forEach { it.onDestroyView() }
         lifecycleComponents = emptyList()
-        _presenter!!.onDestroyView()
         viewState = null
 //        _presenter = null // если раскомментировать, то не получится получить доступ к onDestroyOwner() в onDestroy
     }
@@ -74,8 +73,8 @@ abstract class SummerFragment<
     override fun onDestroy() {
         notifyPresenterIfRemoving()
         super.onDestroy()
-        lifecycleComponents.forEach { it.onDestroy() }
         presenter.onDestroy()
+        lifecycleComponents.forEach { it.onDestroy() }
     }
 
     @CallSuper
@@ -101,7 +100,10 @@ abstract class SummerFragment<
             parent = parent.parentFragment
         }
 
-        if (isRemoving || anyParentIsRemoving) presenter.onExit()
+        if (isRemoving || anyParentIsRemoving) {
+            presenter.onExit()
+            lifecycleComponents.forEach { it.onExit() }
+        }
     }
 }
 

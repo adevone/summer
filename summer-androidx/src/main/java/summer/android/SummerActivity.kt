@@ -23,6 +23,7 @@ abstract class SummerActivity<
         super.onCreate(savedInstanceState)
         presenter = createPresenter()
         initView()
+        presenter.onCreate()
         presenter.onCreateView(viewState, viewMethods, router)
         presenter.afterCreate()
     }

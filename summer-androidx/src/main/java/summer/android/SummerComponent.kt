@@ -57,4 +57,8 @@ abstract class SummerComponent<
     fun onPause() {
         presenter.onDisappear()
     }
+
+    fun onExit() {
+        presenter.onExit()
+    }
 }
