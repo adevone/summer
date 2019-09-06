@@ -66,6 +66,15 @@ abstract class SummerPresenter<
         this._router = null
     }
 
+    protected fun <TEntity, TParams> loadingInterceptor(
+        getProperty: suspend () -> KMutableProperty0<Boolean>,
+        needShow: suspend (event: SummerExecutorInterceptor.Event.Executed<TEntity, TParams>) -> Boolean
+    ): LoadingExecutorInterceptor<TEntity, TParams> = LoadingExecutorInterceptor(
+        getProperty = getProperty,
+        needShow = needShow,
+        uiScope = this
+    )
+
     protected fun <T> store(
         viewStateProperty: KMutableProperty0<T>? = null,
         initialValue: T
