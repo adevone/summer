@@ -1,10 +1,13 @@
 package summer
 
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.withContext
 
 internal class ExecutionManager(
-    private val logger: SummerLogger
+    private val logger: SummerLogger,
+    private val uiScope: CoroutineScope
 ) {
     suspend fun <TEntity, TParams> handleDeferred(
         deferred: Deferred<TEntity>,
@@ -15,28 +18,36 @@ internal class ExecutionManager(
         onSuccess: suspend (TEntity, TParams) -> Unit
     ) {
         try {
-            val executedEvent = SummerExecutorInterceptor.Event.Executed<TEntity, TParams>(params)
-            interceptor.onEvent(executedEvent)
-            interceptor.onExecute(executedEvent)
-            onExecute(params)
+            withContext(uiScope.coroutineContext) {
+                val executedEvent = SummerExecutorInterceptor.Event.Executed<TEntity, TParams>(params)
+                interceptor.onEvent(executedEvent)
+                interceptor.onExecute(executedEvent)
+                onExecute(params)
+            }
             val result = try {
                 deferred.await()
             } catch (e: Throwable) {
-                val event = SummerExecutorInterceptor.Event.Completed.Failure<TEntity, TParams>(e, params)
-                interceptor.onEvent(event)
-                interceptor.onCompleted(event)
-                interceptor.onFailure(event)
+                withContext(uiScope.coroutineContext) {
+                    val event = SummerExecutorInterceptor.Event.Completed.Failure<TEntity, TParams>(e, params)
+                    interceptor.onEvent(event)
+                    interceptor.onCompleted(event)
+                    interceptor.onFailure(event)
+                }
                 throw e
             }
-            val successEvent = SummerExecutorInterceptor.Event.Completed.Success(result, params)
-            interceptor.onEvent(successEvent)
-            interceptor.onCompleted(successEvent)
-            interceptor.onSuccess(successEvent)
-            onSuccess(result, params)
+            withContext(uiScope.coroutineContext) {
+                val successEvent = SummerExecutorInterceptor.Event.Completed.Success(result, params)
+                interceptor.onEvent(successEvent)
+                interceptor.onCompleted(successEvent)
+                interceptor.onSuccess(successEvent)
+                onSuccess(result, params)
+            }
         } catch (e: CancellationException) {
             logger.info { "$this cancelled" }
         } catch (e: Throwable) {
-            onFailure(e, params)
+            withContext(uiScope.coroutineContext) {
+                onFailure(e, params)
+            }
         }
     }
 }

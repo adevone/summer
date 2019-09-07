@@ -1,7 +1,5 @@
 package summer
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import kotlin.reflect.KMutableProperty0
 
 abstract class SummerExecutorInterceptor<TEntity, TParams> {
@@ -42,24 +40,19 @@ class NoInterceptor<TEntity, TParams> : SummerExecutorInterceptor<TEntity, TPara
 
 class LoadingExecutorInterceptor<TEntity, TParams>(
     private val getProperty: suspend () -> KMutableProperty0<Boolean>,
-    private val needShow: suspend (event: Event.Executed<TEntity, TParams>) -> Boolean,
-    private val uiScope: CoroutineScope
+    private val needShow: suspend (event: Event.Executed<TEntity, TParams>) -> Boolean
 ) : SummerExecutorInterceptor<TEntity, TParams>() {
 
     override suspend fun onExecute(event: Event.Executed<TEntity, TParams>) {
-        uiScope.launch {
-            val property = getProperty()
-            val needShowLoading = needShow(event)
-            if (needShowLoading) {
-                property.set(true)
-            }
+        val property = getProperty()
+        val needShowLoading = needShow(event)
+        if (needShowLoading) {
+            property.set(true)
         }
     }
 
     override suspend fun onCompleted(event: Event.Completed<TEntity, TParams>) {
-        uiScope.launch {
-            val property = getProperty()
-            property.set(false)
-        }
+        val property = getProperty()
+        property.set(false)
     }
 }

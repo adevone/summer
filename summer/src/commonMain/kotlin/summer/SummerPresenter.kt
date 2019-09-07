@@ -71,8 +71,7 @@ abstract class SummerPresenter<
         needShow: suspend (event: SummerExecutorInterceptor.Event.Executed<TEntity, TParams>) -> Boolean
     ): LoadingExecutorInterceptor<TEntity, TParams> = LoadingExecutorInterceptor(
         getProperty = getProperty,
-        needShow = needShow,
-        uiScope = this
+        needShow = needShow
     )
 
     protected fun <T> store(
@@ -111,7 +110,10 @@ abstract class SummerPresenter<
     private val job = SupervisorJob()
     final override val coroutineContext = uiContext + job + coroutineExceptionHandler
 
-    private val executionManager = ExecutionManager(logger)
+    // coroutineContext is final and initialized earlier
+    // than passing this as CoroutineScope in ExecutionManager
+    @Suppress("LeakingThis")
+    private val executionManager = ExecutionManager(logger, uiScope = this)
 
     protected fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> SummerSource<TSourceEntity, TSourceParams>.mix(
         mix: SummerReducer<TMixEntity, TMixParams>,

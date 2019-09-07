@@ -55,7 +55,7 @@ publishing {
             groupId = "summer"
             artifactId = "summer-androidx"
             version = summerVersion
-//            artifact(tasks.named("sourceJar"))
+            artifact(tasks.getByName("sourceJar"))
             artifact("$buildDir/outputs/aar/summer-androidx-release.aar")
         }
     }
