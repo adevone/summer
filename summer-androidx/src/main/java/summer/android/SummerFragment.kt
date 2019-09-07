@@ -32,8 +32,8 @@ abstract class SummerFragment<
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycleComponents = createComponents()
         _presenter = createPresenter()
+        lifecycleComponents = createComponents()
         lifecycleComponents.forEach { it.onCreate() }
         _presenter!!.onCreate()
     }
