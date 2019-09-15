@@ -51,6 +51,9 @@ abstract class SummerPresenter<
         this._viewMethods = viewMethods
         this._router = router
 
+        // In after create because some properties call presenter in initView and
+        // presenter must be initialized at this moment
+        //
         // Некоторые проперти при изменении значений обращаются к presenter'у.
         // Поэтому presenter должен быть инициализирован в момент их установки
         store.restore()
