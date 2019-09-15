@@ -55,8 +55,8 @@ abstract class SummerFragment<
         _presenter!!.onCreateView(viewState!!, viewMethods, router)
         if (isFirstViewCreation) {
             _presenter!!.afterCreate()
+            isFirstViewCreation = false
         }
-        isFirstViewCreation = false
     }
 
     @CallSuper
