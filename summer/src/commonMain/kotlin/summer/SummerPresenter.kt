@@ -68,7 +68,7 @@ abstract class SummerPresenter<
 
     protected fun <TEntity, TParams> loadingInterceptor(
         getProperty: suspend () -> KMutableProperty0<Boolean>,
-        needShow: suspend (event: SummerExecutorInterceptor.Event.Executed<TEntity, TParams>) -> Boolean
+        needShow: suspend (event: SummerExecutorInterceptor.Event.Executed<TEntity, TParams>) -> Boolean = { true }
     ): LoadingExecutorInterceptor<TEntity, TParams> = LoadingExecutorInterceptor(
         getProperty = getProperty,
         needShow = needShow
