@@ -66,7 +66,6 @@ abstract class SummerFragment<
         lifecycleComponents.forEach { it.onDestroyView() }
         lifecycleComponents = emptyList()
         viewState = null
-//        _presenter = null // если раскомментировать, то не получится получить доступ к onDestroyOwner() в onDestroy
     }
 
     @CallSuper
