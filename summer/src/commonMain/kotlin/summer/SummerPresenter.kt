@@ -24,8 +24,7 @@ abstract class SummerPresenter<
     private var _viewStateProxy: TViewState? = null
     protected val viewStateProxy: TViewState get() = _viewStateProxy!!
 
-    private var _viewMethods: TViewMethods? = null
-    protected val viewMethods: TViewMethods get() = _viewMethods!!
+    protected var viewMethods: TViewMethods? = null
 
     private var _router: TRouter? = null
     protected val router: TRouter get() = _router!!
@@ -48,7 +47,7 @@ abstract class SummerPresenter<
         router: TRouter
     ) {
         this._viewStateProxy = createViewStateProxy(viewState)
-        this._viewMethods = viewMethods
+        this.viewMethods = viewMethods
         this._router = router
 
         // Placed there because presenter methods may be called in initView.
@@ -58,11 +57,11 @@ abstract class SummerPresenter<
 
     fun onDestroyView() {
         this._viewStateProxy = null
-        this._viewMethods = null
+        this.viewMethods = null
         this._router = null
     }
 
-    protected fun <TEntity, TParams> loadingInterceptor(
+    fun <TEntity, TParams> loadingInterceptor(
         getProperty: suspend () -> KMutableProperty0<Boolean>,
         needShow: suspend (event: SummerExecutorInterceptor.Event.Executed<TEntity, TParams>) -> Boolean = { true }
     ): LoadingExecutorInterceptor<TEntity, TParams> = LoadingExecutorInterceptor(
@@ -140,7 +139,7 @@ abstract class SummerPresenter<
     @Suppress("LeakingThis")
     private val executionManager = ExecutionManager(logger, uiScope = this)
 
-    protected fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> SummerSource<TSourceEntity, TSourceParams>.mix(
+    fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> SummerSource<TSourceEntity, TSourceParams>.mix(
         mix: SummerReducer<TMixEntity, TMixParams>,
         transform: (TSourceEntity, TMixEntity) -> T
     ) = MixSource(
@@ -150,7 +149,7 @@ abstract class SummerPresenter<
         scope = this@SummerPresenter
     )
 
-    protected fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> MixSource<TSourceEntity, Any?, TMixEntity, TSourceParams>.mix(
+    fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> MixSource<TSourceEntity, Any?, TMixEntity, TSourceParams>.mix(
         mix: SummerReducer<TMixEntity, TMixParams>,
         transform: (TSourceEntity, TMixEntity) -> T
     ) = MixSource(
@@ -175,7 +174,7 @@ abstract class SummerPresenter<
 
     private val subscriptions = mutableListOf<Subscription<*, *>>()
 
-    protected fun <TEntity, TParams> SummerReducer<TEntity, TParams>.executor(
+    fun <TEntity, TParams> SummerReducer<TEntity, TParams>.executor(
         interceptor: SummerExecutorInterceptor<TEntity, TParams?> = NoInterceptor(),
         onExecute: suspend (_: TParams?) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TParams?) -> Unit = { e, _ -> throw e },
@@ -193,7 +192,7 @@ abstract class SummerPresenter<
         subscriptions += Subscription(this, sharedSourceExecutor)
     }
 
-    protected fun <T, TSourceEntity, TMixEntity, TSourceParams> MixSource<T, TSourceEntity, TMixEntity, TSourceParams>.executor(
+    fun <T, TSourceEntity, TMixEntity, TSourceParams> MixSource<T, TSourceEntity, TMixEntity, TSourceParams>.executor(
         interceptor: SummerExecutorInterceptor<T, TSourceParams> = NoInterceptor(),
         onExecute: suspend (_: TSourceParams) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TSourceParams) -> Unit = { e, _ -> throw e },
@@ -212,7 +211,7 @@ abstract class SummerPresenter<
         subscriptions += Subscription(this.mix, this)
     }
 
-    protected fun <TEntity, TParams> SummerSource<TEntity, TParams>.executor(
+    fun <TEntity, TParams> SummerSource<TEntity, TParams>.executor(
         interceptor: SummerExecutorInterceptor<TEntity, TParams> = NoInterceptor(),
         onExecute: suspend (_: TParams) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TParams) -> Unit = { e, _ -> throw e },
