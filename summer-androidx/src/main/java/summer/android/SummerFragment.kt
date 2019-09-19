@@ -54,7 +54,7 @@ abstract class SummerFragment<
         }
         _presenter!!.onCreateView(viewState!!, viewMethods, router)
         if (isFirstViewCreation) {
-            _presenter!!.afterCreate()
+            _presenter!!.entered()
             isFirstViewCreation = false
         }
     }
@@ -79,7 +79,7 @@ abstract class SummerFragment<
     @CallSuper
     override fun onResume() {
         super.onResume()
-        presenter.onAppear()
+        presenter.appeared()
         lifecycleComponents.forEach { it.onResume() }
     }
 
@@ -87,7 +87,7 @@ abstract class SummerFragment<
     override fun onPause() {
         super.onPause()
         lifecycleComponents.forEach { it.onPause() }
-        presenter.onDisappear()
+        presenter.disappeared()
     }
 
     private fun notifyPresenterIfRemoving() {
@@ -100,7 +100,7 @@ abstract class SummerFragment<
         }
 
         if (isRemoving || anyParentIsRemoving) {
-            presenter.onExit()
+            presenter.exited()
             lifecycleComponents.forEach { it.onExit() }
         }
     }

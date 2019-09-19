@@ -25,7 +25,7 @@ abstract class SummerActivity<
         initView()
         presenter.onCreate()
         presenter.onCreateView(viewState, viewMethods, router)
-        presenter.afterCreate()
+        presenter.entered()
     }
 
     abstract fun initView()
@@ -38,11 +38,11 @@ abstract class SummerActivity<
 
     override fun onResume() {
         super.onResume()
-        presenter.onAppear()
+        presenter.appeared()
     }
 
     override fun onPause() {
         super.onPause()
-        presenter.onDisappear()
+        presenter.disappeared()
     }
 }

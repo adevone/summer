@@ -39,7 +39,7 @@ abstract class SummerComponent<
         initView()
         presenter.onCreateView(viewState, viewMethods, router)
         if (isFirstViewCreation) {
-            presenter.afterCreate()
+            presenter.entered()
         }
     }
 
@@ -51,14 +51,14 @@ abstract class SummerComponent<
     }
 
     fun onResume() {
-        presenter.onAppear()
+        presenter.appeared()
     }
 
     fun onPause() {
-        presenter.onDisappear()
+        presenter.disappeared()
     }
 
     fun onExit() {
-        presenter.onExit()
+        presenter.exited()
     }
 }

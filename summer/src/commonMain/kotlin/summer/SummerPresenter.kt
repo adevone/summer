@@ -11,7 +11,7 @@ abstract class SummerPresenter<
         TViewMethods : Any,
         TRouter : Any>(
     private val exceptionsHandler: ExceptionsHandler,
-    private val store: SummerStore,
+    private val localStore: SummerStore,
     private val workContext: CoroutineContext,
     uiContext: CoroutineContext,
     loggerFactory: SummerLogger.Factory
@@ -53,11 +53,7 @@ abstract class SummerPresenter<
 
         // Placed there because presenter methods may be called in initView.
         // Presenter must be initialized at that moment
-        store.restore()
-    }
-
-    fun afterCreate() {
-        onEnter()
+        stores.forEach { it.restore() }
     }
 
     fun onDestroyView() {
@@ -77,6 +73,17 @@ abstract class SummerPresenter<
     protected fun <T> store(
         viewStateProperty: KMutableProperty0<T>? = null,
         initialValue: T
+    ) = storeIn(
+        viewStateProperty,
+        initialValue,
+        localStore
+    )
+
+    private val stores = mutableSetOf<SummerStore>()
+    protected fun <T> storeIn(
+        viewStateProperty: KMutableProperty0<T>? = null,
+        initialValue: T,
+        store: SummerStore
     ) = store.store(
         onSet = { value ->
             if (!isDestroyed) {
@@ -84,15 +91,33 @@ abstract class SummerPresenter<
             }
         },
         initialValue = initialValue
-    )
+    ).also {
+        stores.add(store)
+    }
+
+    fun entered() {
+        onEnter()
+    }
+
+    fun appeared() {
+        onAppear()
+    }
+
+    fun disappeared() {
+        onDisappear()
+    }
+
+    fun exited() {
+        onExit()
+    }
 
     protected open fun onEnter() {}
 
-    open fun onExit() {}
+    protected open fun onExit() {}
 
-    open fun onAppear() {}
+    protected open fun onAppear() {}
 
-    open fun onDisappear() {}
+    protected open fun onDisappear() {}
 
     protected open fun onError(e: Throwable) {
         logger.error(e)
