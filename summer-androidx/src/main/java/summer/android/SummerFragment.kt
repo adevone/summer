@@ -64,7 +64,6 @@ abstract class SummerFragment<
         super.onDestroyView()
         _presenter!!.onDestroyView()
         lifecycleComponents.forEach { it.onDestroyView() }
-        lifecycleComponents = emptyList()
         viewState = null
     }
 
@@ -74,6 +73,7 @@ abstract class SummerFragment<
         super.onDestroy()
         presenter.onDestroy()
         lifecycleComponents.forEach { it.onDestroy() }
+        lifecycleComponents = emptyList()
     }
 
     @CallSuper
