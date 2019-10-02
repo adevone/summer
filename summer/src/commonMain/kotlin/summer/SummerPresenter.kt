@@ -56,7 +56,8 @@ abstract class SummerPresenter<
     }
 
     fun onDestroyView() {
-        this._viewStateProxy = null
+        this.propertyHolders.forEach { it.destroy() }
+        this.propertyHolders.clear()
         this.viewMethods = null
         this._router = null
     }
@@ -78,20 +79,38 @@ abstract class SummerPresenter<
         localStore
     )
 
+    private val propertyHolders = mutableListOf<ViewStatePropertyHolder<*>>()
+
+    private class ViewStatePropertyHolder<T>(
+        private var viewStateProperty: KMutableProperty0<T>?
+    ) {
+        fun set(value: T) {
+            viewStateProperty?.set(value)
+        }
+
+        fun destroy() {
+            viewStateProperty = null
+        }
+    }
+
     private val stores = mutableSetOf<SummerStore>()
     protected fun <T> storeIn(
         viewStateProperty: KMutableProperty0<T>? = null,
         initialValue: T,
         store: SummerStore
-    ) = store.store(
-        onSet = { value ->
-            if (!isDestroyed) {
-                viewStateProperty?.set(value)
-            }
-        },
-        initialValue = initialValue
-    ).also {
-        stores.add(store)
+    ): SummerStore.DelegateProvider<T> {
+        val propertyHolder = ViewStatePropertyHolder(viewStateProperty)
+        propertyHolders.add(propertyHolder)
+        return store.store(
+            onSet = { value ->
+                if (!isDestroyed) {
+                    propertyHolder.set(value)
+                }
+            },
+            initialValue = initialValue
+        ).also {
+            stores.add(store)
+        }
     }
 
     fun entered() {
