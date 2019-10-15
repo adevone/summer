@@ -11,7 +11,7 @@ abstract class SummerReducer<TEntity, TParams>(
     private val lastDeferred = atomic<Deferred<TEntity>?>(initial = null)
     private val lastParams = atomic<TParams?>(initial = null)
 
-    protected abstract suspend operator fun invoke(
+    protected abstract suspend fun next(
         params: TParams,
         previous: TEntity
     ): TEntity
@@ -58,7 +58,7 @@ abstract class SummerReducer<TEntity, TParams>(
 
         val deferred = scope.async {
             val previous = previousDeferred.await()
-            invoke(params, previous)
+            next(params, previous)
         }
 
         @Suppress("DeferredResultUnused")
