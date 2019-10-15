@@ -35,7 +35,7 @@ abstract class SummerFragment<
         _presenter = createPresenter()
         lifecycleComponents = createComponents()
         lifecycleComponents.forEach { it.onCreate() }
-        _presenter!!.onCreate()
+        _presenter!!.created()
     }
 
     private var isFirstViewCreation = true
@@ -52,7 +52,7 @@ abstract class SummerFragment<
                 isFirstViewCreation = isFirstViewCreation
             )
         }
-        _presenter!!.onCreateView(viewState!!, viewMethods, router)
+        _presenter!!.viewCreated(viewState!!, viewMethods, router)
         if (isFirstViewCreation) {
             _presenter!!.entered()
             isFirstViewCreation = false
@@ -62,7 +62,7 @@ abstract class SummerFragment<
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
-        _presenter!!.onDestroyView()
+        _presenter!!.viewDestroyed()
         lifecycleComponents.forEach { it.onDestroyView() }
         viewState = null
     }
@@ -71,7 +71,7 @@ abstract class SummerFragment<
     override fun onDestroy() {
         notifyPresenterIfRemoving()
         super.onDestroy()
-        presenter.onDestroy()
+        presenter.destroyed()
         lifecycleComponents.forEach { it.onDestroy() }
         lifecycleComponents = emptyList()
     }

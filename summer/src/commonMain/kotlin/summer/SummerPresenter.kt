@@ -29,18 +29,18 @@ abstract class SummerPresenter<
     private var _router: TRouter? = null
     protected val router: TRouter get() = _router!!
 
-    fun onCreate() {
+    fun created() {
         subscriptions.forEach { it.subscribe() }
     }
 
-    fun onDestroy() {
+    fun destroyed() {
         storesController.onDestroy()
         subscriptions.forEach { it.unsubscribe() }
         subscriptions.clear()
         job.cancel()
     }
 
-    fun onCreateView(
+    fun viewCreated(
         viewState: TViewState,
         viewMethods: TViewMethods,
         router: TRouter
@@ -54,7 +54,7 @@ abstract class SummerPresenter<
         storesController.onMirrorConnect()
     }
 
-    fun onDestroyView() {
+    fun viewDestroyed() {
         storesController.onMirrorDisconnect()
         this.viewMethods = null
         this._router = null

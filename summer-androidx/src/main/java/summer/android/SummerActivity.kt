@@ -23,8 +23,8 @@ abstract class SummerActivity<
         super.onCreate(savedInstanceState)
         presenter = createPresenter()
         initView()
-        presenter.onCreate()
-        presenter.onCreateView(viewState, viewMethods, router)
+        presenter.created()
+        presenter.viewCreated(viewState, viewMethods, router)
         presenter.entered()
     }
 
@@ -32,8 +32,8 @@ abstract class SummerActivity<
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDestroyView()
-        presenter.onDestroy()
+        presenter.viewDestroyed()
+        presenter.destroyed()
     }
 
     override fun onResume() {

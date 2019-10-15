@@ -1,4 +1,4 @@
-const val summerVersion = "0.6.17"
+const val summerVersion = "0.6.18"
 
 const val kotlinVersion = "1.3.50"
 const val multiplatformSettingVersion = "0.3.3"

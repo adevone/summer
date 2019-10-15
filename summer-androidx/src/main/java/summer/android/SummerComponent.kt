@@ -24,11 +24,11 @@ abstract class SummerComponent<
     ): View
 
     fun onCreate() {
-        presenter.onCreate()
+        presenter.created()
     }
 
     fun onDestroy() {
-        presenter.onDestroy()
+        presenter.destroyed()
     }
 
     private var _view: View? = null
@@ -37,7 +37,7 @@ abstract class SummerComponent<
     fun onViewCreated(parentView: ViewGroup?, context: Context, isFirstViewCreation: Boolean) {
         _view = createView(parentView, context)
         initView()
-        presenter.onCreateView(viewState, viewMethods, router)
+        presenter.viewCreated(viewState, viewMethods, router)
         if (isFirstViewCreation) {
             presenter.entered()
         }
@@ -46,7 +46,7 @@ abstract class SummerComponent<
     protected abstract fun initView()
 
     fun onDestroyView() {
-        presenter.onDestroyView()
+        presenter.viewDestroyed()
         _view = null
     }
 
