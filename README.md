@@ -6,7 +6,7 @@ Project targets to standardization and nice IDE support
 
 Example of feature written using Summer:
 
-Common:
+Common, Kotlin:
 ```
 class GetDay : UseCase<String, GetDay.Params> {
     
@@ -76,8 +76,13 @@ class CalendarPresenter(
         onSuccess = { dayName, _ ->
             viewStateProxy.dayName = dayName        
         },
-        onFailure = {
+        // Also you can handle exceptions in presenter onFailure method 
+        onFailure = { e ->
             viewMethods?.showError()
+            
+            // rethrow exception if you need to handle it
+            // in presenter onFailure method
+            throw e
         }
     )
 }
@@ -97,9 +102,68 @@ class BasePresenter<TViewState, TViewMethods, TRouter> :
     ) 
 ```
 
-Android:
+Android, Kotlin:
+```
+class CalendarFragment : SummerFragment<
+    CalendarView.State, 
+    CalendarView.Methods, 
+    CalendarRouter,
+    CalendarPresenter
+>(R.layout.calendar_fragment) {
+
+    override fun createPresenter() = CalendarPresenter(...)
+
+    override var router = object : CalendarRouter {
+        
+    }
+
+    override fun createViewState() = object : CalendarView.State {
+    
+        override var isLoading: Boolean by didSet {
+            progressBar.isVisible = isLoading
+        }
+        
+        override var dayName: String by didSet {
+            dayNameView.text = dayName
+        }
+    }
+    
+    override var viewMethods = object : CalendarView.Methods {
+        
+        override fun showError() {
+            snackbar("Error occurred")
+        }
+    }
+}
 ```
 
+iOS, Swift:
+```
+class CalendarViewController: SummerViewController<CalendarPresenter>, CalendarViewState, CalendarViewMethods, CalendarRouter {
+
+    @IBOutlet weak var loadingSpinner: UISpinner!
+    @IBOutlet weak var dayNameLabel: UILabel!
+
+    override func createPresenter(): CalendarPresenter {
+        return CalendarPresenter(...)
+    }
+
+    var isLoading = false {
+        didSet {
+            loadingSpinner.isHidden = !isLoading
+        }
+    }    
+    
+    var dayName = "" {
+        didSet {
+            dayNameLabel.text = dayName
+        }
+    }
+    
+    func showError() {
+        print("Error occurred!")
+    }
+}
 ```
 
 ### Содержание
@@ -109,17 +173,12 @@ Android:
 4) Тесты на бизнес-логику уровня приложения
 5) Тест на презентационную бизнес-логику
 
-### How to start
-1) Скопируйте содержание `gradle.properties.example` в файл `gradle.properties`
-2) Допишите в `gradle.properties` ваши доступы к maven
-2) Откройте проект с помощью Android Studio
-
 ### Convenient custom scope
 ```
 ((file[app]:src/main//*||file[app]:src/debug//*||file[app]:src/release//*)&&!*.iml||file[shared_commonMain]:*/||file[buildSrc]:*/||file[shared]:.gitignore||file[eshop]:build.gradle.kts||file[eshop_iosMain]:*/||file[app]:build.gradle.kts)&&!file[buildSrc]:buildSrc.iml||file:.gitignore||file:build.gradle.kts||file:gradle.properties||file:settings.gradle.kts||file:README.md||file[shared_iosMain]:*/||file[app]:src/test/java//*
 ```
 
-### Шаблон для feature presentation 
+### Feature presentation template 
 ```
 #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
 #end
@@ -159,7 +218,7 @@ interface ${NAME}Router {
 }
 ```
 
-### Шаблон для feature fragment
+### Feature fragment template
 ```
 #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
 #end
@@ -187,6 +246,7 @@ class ${NAME}Fragment : ScreenFragment<
 
     override val viewMethods = object : ${NAME}View.Methods {
 
+        override 
     }
 
     override fun createPresenter() = ${NAME}Presenter()

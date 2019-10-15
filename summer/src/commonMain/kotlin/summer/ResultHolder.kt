@@ -1,7 +1,7 @@
 package summer
 
 /**
- * Allows call presenter from another presenter for result
+ * Allows presenter to call another presenter for result
  *
  * Example:
  *

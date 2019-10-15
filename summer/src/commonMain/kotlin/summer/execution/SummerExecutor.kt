@@ -26,7 +26,7 @@ abstract class SummerExecutor(
     private val logger = loggerFactory.get(this::class)
 
     /**
-     * Must be called when receiver of execution result did created.
+     * Must be called when receiver of execution result was created.
      * [SummerPresenter] is receiver by default in this library
      */
     fun receiverCreated() {
@@ -34,7 +34,7 @@ abstract class SummerExecutor(
     }
 
     /**
-     * Must be called when receiver of execution result did destroyed.
+     * Must be called when receiver of execution result was destroyed.
      * [SummerPresenter] is receiver by default in this library
      */
     fun receiverDestroyed() {
@@ -159,7 +159,7 @@ abstract class SummerExecutor(
     /**
      * @return [MixSource] that mixes [this] with [mix].
      * Triggers every times when executed or
-     * [mix] produces new value (but only when called at least once)
+     * [mix] produces new value (but only after being called at least once)
      */
     fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> SummerSource<TSourceEntity, TSourceParams>.mix(
         mix: SummerReducer<TMixEntity, TMixParams>,
@@ -174,7 +174,7 @@ abstract class SummerExecutor(
     /**
      * @return [MixSource] that mixes [this] with [mix].
      * Triggers every times when executed or
-     * [mix] produces new value (but only when called at least once)
+     * [mix] produces new value (but only after being called at least once)
      */
     fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> MixSource<TSourceEntity, Any?, TMixEntity, TSourceParams>.mix(
         mix: SummerReducer<TMixEntity, TMixParams>,

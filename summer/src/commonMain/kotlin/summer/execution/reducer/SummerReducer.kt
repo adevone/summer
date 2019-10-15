@@ -7,7 +7,6 @@ import kotlinx.coroutines.async
 
 /**
  * Source that can produce new state from previous one.
- * Can be used as
  *
  * Example (counter):
  *
@@ -69,7 +68,7 @@ abstract class SummerReducer<TEntity, TParams>(
     protected abstract suspend fun initial(): TEntity
 
     /**
-     * Called every times when [invoke] called
+     * Called every times when [invoke] is called
      * @return new value that can depend from previous
      */
     protected abstract suspend fun next(
@@ -81,7 +80,7 @@ abstract class SummerReducer<TEntity, TParams>(
     private val lastParams = atomic<TParams?>(initial = null)
 
     /**
-     * External interface of reducer. Can be used for call it
+     * External interface of reducer. Can be used to call it. Creates new operation
      */
     operator fun invoke(params: TParams) {
 
@@ -104,13 +103,13 @@ abstract class SummerReducer<TEntity, TParams>(
 
     /**
      * Get current value of reducer
-     * @return result of last operation before this call of [get]
+     * @return result of last created operation before the call of [get]
      */
     suspend fun get(): TEntity = getAsync().await()
 
     /**
-     * Depend from another [SummerReducer]
-     * @param action specifies which action will performs on each new value of [source].
+     * Depend on another [SummerReducer]
+     * @param action specifies which action will be performed on each new value of [source].
      * [action] triggers first times immediately after [depend] call
      */
     fun <TDependEntity, TDependParams> depend(

@@ -71,7 +71,7 @@ class SourceExecutor<TEntity, TParams> internal constructor(
     }
 
     /**
-     * Cancels all executions with params that confirms [needCancel] predicate
+     * Cancels all executions with params that matches [needCancel] predicate
      */
     fun cancelAll(needCancel: (params: TParams) -> Boolean = { true }) {
         jobs.forEach { (params, jobs) ->
@@ -85,7 +85,7 @@ class SourceExecutor<TEntity, TParams> internal constructor(
     }
 
     /**
-     * @return true if any execution in process now
+     * @return true if any execution is in process now
      */
     fun isAnyExecuted(): Boolean {
         return jobs.any { (_, jobs) ->
@@ -96,7 +96,7 @@ class SourceExecutor<TEntity, TParams> internal constructor(
     }
 
     /**
-     * @return true if any execution with [params] in process now
+     * @return true if any execution with [params] is in process now
      */
     fun isAnyExecuted(params: TParams): Boolean {
         return jobs[params]?.any { job ->

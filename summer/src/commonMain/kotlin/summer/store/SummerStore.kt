@@ -10,12 +10,12 @@ import kotlin.reflect.KProperty
 interface SummerStore {
 
     /**
-     * Provide delegate for that will store passed values in this store
+     * Provides delegate that will store passed values in this store
      */
     fun <T> store(onSet: (T) -> Unit, initialValue: T): DelegateProvider<T>
 
     /**
-     * Must call store.onSet for each property that was set
+     * Must call [store].onSet for each property that was set
      */
     fun restore()
 
@@ -29,7 +29,7 @@ interface SummerStore {
 
 /**
  * Default store that can be passed to [SummerPresenter.storeIn] or [SummerPresenter.localStore]
- * Stores values in memory and don't restores them after app relaunch
+ * Stores values in memory and doesn't restores them after app relaunch
  */
 class InMemoryStore : SummerStore {
 
@@ -88,11 +88,7 @@ class InMemoryStore : SummerStore {
         }
 
         /**
-         * If [SummerPresenter] some property was set before [SummerPresenter.created]
-         * it must not be restored
-         *
-         * Если какая-то property была установлена из SummerPresenter.initView,
-         * то её не нужно восстанавливать
+         * If some property was set before [SummerPresenter.created] it must not be restored
          */
         var wasSet = false
 
