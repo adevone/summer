@@ -1,6 +1,7 @@
 package summer
 
 import summer.execution.SummerExecutor
+import summer.store.InMemoryStore
 import summer.store.SummerStore
 import summer.store.SummerStoresController
 import kotlin.coroutines.CoroutineContext
@@ -18,18 +19,35 @@ abstract class SummerPresenter<
         TViewState,
         TViewMethods,
         TRouter>(
+    uiContext: CoroutineContext = defaultUiContext,
+    workContext: CoroutineContext = defaultWorkContext,
+    loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
     /**
      * Store created specifically for this presenter. Must not be reused
      */
-    private val localStore: SummerStore,
-    workContext: CoroutineContext,
-    uiContext: CoroutineContext,
-    loggerFactory: SummerLogger.Factory
+    private val localStore: SummerStore = InMemoryStore()
 ) : SummerExecutor(
     mainContext = uiContext,
     workContext = workContext,
     loggerFactory = loggerFactory
 ) {
+    constructor(dependencies: Dependencies) : this(
+        uiContext = dependencies.uiContext,
+        workContext = dependencies.workContext,
+        loggerFactory = dependencies.loggerFactory,
+        localStore = dependencies.localStore
+    )
+
+    /**
+     * Convenient form of arguments if some kind on IoC container used
+     */
+    class Dependencies(
+        val uiContext: CoroutineContext = defaultUiContext,
+        val workContext: CoroutineContext = defaultWorkContext,
+        val loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
+        val localStore: SummerStore = InMemoryStore()
+    )
+
     private val storesController = SummerStoresController()
 
     /**

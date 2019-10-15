@@ -2,8 +2,8 @@ package summer.example.domain
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import summer.SummerReducer
-import summer.SummerSource
+import summer.execution.reducer.SummerReducer
+import summer.execution.source.SummerSource
 import kotlin.coroutines.CoroutineContext
 
 typealias UseCase<TEntity, TParams> = SummerSource<TEntity, TParams>

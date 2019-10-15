@@ -1,9 +1,9 @@
 package ru.napoleonit.example.mock
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
-import nap.SummerPresenter
-import nap.summer.ExceptionsHandler
-import nap.summer.StateHolder
+import summer.SummerPresenter
+import summer.SummerLogger
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.direct
@@ -13,6 +13,8 @@ import org.kodein.di.erased.singleton
 import summer.example.domain.SharedUseCase
 import summer.example.domain.debt.data.DebtDao
 import summer.example.entity.Debt
+import summer.example.presentation.base.BasePresenter
+import kotlin.reflect.KClass
 
 val mockModule = Kodein.Module("mock") {
 
@@ -21,20 +23,28 @@ val mockModule = Kodein.Module("mock") {
         override var loan: Float? = null
     }
 
-    bind<DebtDao>() with singleton { mockDebtDao }
+    bind<SummerLogger.Factory>() with singleton {
+        object : SummerLogger.Factory {
+            override fun get(forClass: KClass<*>): SummerLogger {
+                val tag = forClass.java.simpleName
+                return object : SummerLogger {
 
-    // presentation
-    bind<ExceptionsHandler>() with singleton {
-        object : ExceptionsHandler {
-            override fun handle(e: Throwable) {
-                throw e
+                    override fun info(formatMessage: () -> String) {
+                        println(tag + ": " + formatMessage())
+                    }
+
+                    override fun error(e: Throwable) {
+                        println(tag + ": " + Log.getStackTraceString(e))
+                    }
+                }
             }
         }
     }
 
-    bind() from singleton { SummerPresenter.Dependencies(instance(), instance(), Dispatchers.Unconfined, Dispatchers.Unconfined) }
+    bind<DebtDao>() with singleton { mockDebtDao }
+
+    bind() from singleton { BasePresenter.Dependencies(Dispatchers.Unconfined, Dispatchers.Unconfined, instance()) }
     bind() from singleton { SharedUseCase.Dependencies(Dispatchers.Unconfined) }
-    bind() from singleton { StateHolder() }
 }
 
 private val mockKodein = Kodein {

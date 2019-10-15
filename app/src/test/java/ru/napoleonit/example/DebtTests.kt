@@ -52,11 +52,10 @@ class DebtTests : MockKodeinAware {
             override var debt: Debt? = null
         }
 
-        debtPresenter.onCreateView(
+        debtPresenter.viewCreated(
             viewState = state,
             viewMethods = object : DebtView.Methods {},
-            router = object : DebtRouter {},
-            owner = Unit
+            router = object : DebtRouter {}
         )
 
         debtPresenter.onCalculateDebtClick(loan = 1f)

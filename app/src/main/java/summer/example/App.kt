@@ -11,7 +11,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.di.erased.singleton
-import summer.ExceptionsHandler
 import summer.SummerLogger
 import summer.example.domain.SharedUseCase
 import summer.example.presentation.base.BasePresenter
@@ -31,15 +30,6 @@ class App : MultiDexApplication(), KodeinAware {
             // data
             bind<Settings>() with singleton { AndroidSettings(PreferenceManager.getDefaultSharedPreferences(applicationContext)) }
 
-            // common
-            bind<ExceptionsHandler>() with singleton {
-                object : ExceptionsHandler {
-                    override fun handle(e: Throwable) {
-                        // handle them all!
-                    }
-                }
-            }
-
             bind<SummerLogger.Factory>() with singleton {
                 object : SummerLogger.Factory {
                     override fun get(forClass: KClass<*>): SummerLogger {
@@ -58,7 +48,7 @@ class App : MultiDexApplication(), KodeinAware {
                 }
             }
 
-            bind() from singleton { BasePresenter.Dependencies(instance(), Dispatchers.IO, Dispatchers.Main, instance()) }
+            bind() from singleton { BasePresenter.Dependencies(Dispatchers.IO, Dispatchers.Main, instance()) }
             bind() from singleton { SharedUseCase.Dependencies(Dispatchers.IO) }
         }
 

@@ -3,11 +3,10 @@ package summer.example.presentation.base
 import org.kodein.di.KodeinProperty
 import org.kodein.di.direct
 import org.kodein.di.erased.instance
-import summer.ExceptionsHandler
-import summer.InMemoryStore
 import summer.SummerLogger
 import summer.SummerPresenter
 import summer.example.di
+import summer.store.InMemoryStore
 import kotlin.coroutines.CoroutineContext
 
 abstract class ScreenPresenter<
@@ -30,14 +29,12 @@ abstract class BasePresenter<
         TRouter : Any>(
     dependencies: Dependencies
 ) : SummerPresenter<TViewState, TViewMethods, TRouter>(
-    exceptionsHandler = dependencies.exceptionsHandler,
-    store = InMemoryStore(),
+    localStore = InMemoryStore(),
     workContext = dependencies.workContext,
     uiContext = dependencies.uiContext,
     loggerFactory = dependencies.loggerFactory
 ) {
     class Dependencies(
-        val exceptionsHandler: ExceptionsHandler,
         val workContext: CoroutineContext,
         val uiContext: CoroutineContext,
         val loggerFactory: SummerLogger.Factory
