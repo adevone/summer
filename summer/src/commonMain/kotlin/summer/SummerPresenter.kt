@@ -7,10 +7,9 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KMutableProperty0
 
 abstract class SummerPresenter<
-        TViewState : Any,
-        TViewMethods : Any,
-        TRouter : Any>(
-    private val exceptionsHandler: ExceptionsHandler,
+        TViewState,
+        TViewMethods,
+        TRouter>(
     private val localStore: SummerStore,
     private val workContext: CoroutineContext,
     uiContext: CoroutineContext,
@@ -18,6 +17,7 @@ abstract class SummerPresenter<
 ) : CoroutineScope {
 
     private val logger = loggerFactory.get(this::class)
+    private val storeManager = SummerStoreController()
 
     protected abstract fun createViewStateProxy(vs: TViewState): TViewState
 
@@ -33,9 +33,8 @@ abstract class SummerPresenter<
         subscriptions.forEach { it.subscribe() }
     }
 
-    private var isDestroyed = false
     fun onDestroy() {
-        isDestroyed = true
+        storeManager.onDestroy()
         subscriptions.forEach { it.unsubscribe() }
         subscriptions.clear()
         job.cancel()
@@ -50,14 +49,13 @@ abstract class SummerPresenter<
         this.viewMethods = viewMethods
         this._router = router
 
-        // Placed there because presenter methods may be called in initView.
+        // onConnect call placed there because presenter methods may be called in initView.
         // Presenter must be initialized at that moment
-        stores.forEach { it.restore() }
+        storeManager.onMirrorConnect()
     }
 
     fun onDestroyView() {
-        this.propertyHolders.forEach { it.destroy() }
-        this.propertyHolders.clear()
+        storeManager.onMirrorDisconnect()
         this.viewMethods = null
         this._router = null
     }
@@ -73,45 +71,11 @@ abstract class SummerPresenter<
     protected fun <T> store(
         viewStateProperty: KMutableProperty0<T>? = null,
         initialValue: T
-    ) = storeIn(
-        viewStateProperty,
-        initialValue,
-        localStore
+    ) = storeManager.storeIn(
+        mirrorProperty = viewStateProperty,
+        initialValue = initialValue,
+        store = localStore
     )
-
-    private val propertyHolders = mutableListOf<ViewStatePropertyHolder<*>>()
-
-    private class ViewStatePropertyHolder<T>(
-        private var viewStateProperty: KMutableProperty0<T>?
-    ) {
-        fun set(value: T) {
-            viewStateProperty?.set(value)
-        }
-
-        fun destroy() {
-            viewStateProperty = null
-        }
-    }
-
-    private val stores = mutableSetOf<SummerStore>()
-    protected fun <T> storeIn(
-        viewStateProperty: KMutableProperty0<T>? = null,
-        initialValue: T,
-        store: SummerStore
-    ): SummerStore.DelegateProvider<T> {
-        val propertyHolder = ViewStatePropertyHolder(viewStateProperty)
-        propertyHolders.add(propertyHolder)
-        return store.store(
-            onSet = { value ->
-                if (!isDestroyed) {
-                    propertyHolder.set(value)
-                }
-            },
-            initialValue = initialValue
-        ).also {
-            stores.add(store)
-        }
-    }
 
     fun entered() {
         onEnter()
@@ -139,15 +103,10 @@ abstract class SummerPresenter<
 
     protected open fun onError(e: Throwable) {
         logger.error(e)
-        throw e
     }
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
-        try {
-            this@SummerPresenter.onError(e)
-        } catch (e: Throwable) {
-            exceptionsHandler.handle(e)
-        }
+        this@SummerPresenter.onError(e)
     }
 
     private val job = SupervisorJob()
