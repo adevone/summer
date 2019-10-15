@@ -8,7 +8,7 @@ import kotlin.coroutines.CoroutineContext
 
 class MixSourceExecutor<T, TSourceParams> internal constructor(
     private val source: MixSource<T, *, *, TSourceParams>,
-    private val executionManager: ExecutionManager,
+    private val deferredExecutor: DeferredExecutor,
     private val interceptor: SummerExecutorInterceptor<T, TSourceParams>,
     private val onExecute: suspend (_: TSourceParams) -> Unit,
     private val onFailure: suspend (Throwable, _: TSourceParams) -> Unit,
@@ -20,7 +20,7 @@ class MixSourceExecutor<T, TSourceParams> internal constructor(
     override fun onObtain(deferred: Deferred<T>, sourceParams: TSourceParams) {
         scope.launch {
             withContext(coroutineContext + workContext) {
-                executionManager.handleDeferred(
+                deferredExecutor.execute(
                     deferred = deferred,
                     params = sourceParams,
                     interceptor = interceptor,

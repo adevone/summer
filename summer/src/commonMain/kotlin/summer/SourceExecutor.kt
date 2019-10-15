@@ -8,7 +8,7 @@ import kotlin.coroutines.CoroutineContext
 
 class SourceExecutor<TEntity, TParams> internal constructor(
     private val source: SummerSource<TEntity, TParams>,
-    private val executionManager: ExecutionManager,
+    private val deferredExecutor: DeferredExecutor,
     private val interceptor: SummerExecutorInterceptor<TEntity, TParams>,
     private val onExecute: suspend (_: TParams) -> Unit,
     private val onFailure: suspend (Throwable, _: TParams) -> Unit,
@@ -26,7 +26,7 @@ class SourceExecutor<TEntity, TParams> internal constructor(
                 val deferred = async(workContext) {
                     source(params)
                 }
-                executionManager.handleDeferred(
+                deferredExecutor.execute(
                     deferred = deferred,
                     params = params,
                     interceptor = interceptor,

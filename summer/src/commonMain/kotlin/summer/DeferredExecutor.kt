@@ -5,11 +5,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
 
-internal class ExecutionManager(
+internal class DeferredExecutor(
     private val logger: SummerLogger,
     private val uiScope: CoroutineScope
 ) {
-    suspend fun <TEntity, TParams> handleDeferred(
+    suspend fun <TEntity, TParams> execute(
         deferred: Deferred<TEntity>,
         params: TParams,
         interceptor: SummerExecutorInterceptor<TEntity, TParams>,

@@ -8,7 +8,7 @@ import kotlin.coroutines.CoroutineContext
 
 class ReducerExecutor<TEntity, in TParams> internal constructor(
     private val source: SummerReducer<TEntity, TParams>,
-    private val executionManager: ExecutionManager,
+    private val deferredExecutor: DeferredExecutor,
     private val interceptor: SummerExecutorInterceptor<TEntity, TParams?>,
     private val onExecute: suspend (_: TParams?) -> Unit,
     private val onFailure: suspend (Throwable, _: TParams?) -> Unit,
@@ -22,7 +22,7 @@ class ReducerExecutor<TEntity, in TParams> internal constructor(
             val scopedDeferred = async(workContext) {
                 deferred.await()
             }
-            executionManager.handleDeferred(
+            deferredExecutor.execute(
                 deferred = scopedDeferred,
                 params = params,
                 interceptor = interceptor,

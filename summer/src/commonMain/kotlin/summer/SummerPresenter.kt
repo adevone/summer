@@ -113,9 +113,9 @@ abstract class SummerPresenter<
     final override val coroutineContext = uiContext + job + coroutineExceptionHandler
 
     // coroutineContext is final and initialized earlier
-    // than passing this as CoroutineScope in ExecutionManager
+    // than passing this as CoroutineScope in DeferredExecutor
     @Suppress("LeakingThis")
-    private val executionManager = ExecutionManager(logger, uiScope = this)
+    private val executionManager = DeferredExecutor(logger, uiScope = this)
 
     fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> SummerSource<TSourceEntity, TSourceParams>.mix(
         mix: SummerReducer<TMixEntity, TMixParams>,
@@ -159,7 +159,7 @@ abstract class SummerPresenter<
         onSuccess: suspend (TEntity, _: TParams?) -> Unit = { _, _ -> }
     ): ReducerExecutor<TEntity, TParams> = ReducerExecutor(
         source = this,
-        executionManager = executionManager,
+        deferredExecutor = executionManager,
         interceptor = interceptor,
         onExecute = onExecute,
         onFailure = onFailure,
@@ -177,7 +177,7 @@ abstract class SummerPresenter<
         onSuccess: suspend (T, TSourceParams) -> Unit = { _, _ -> }
     ): MixSourceExecutor<T, TSourceParams> = MixSourceExecutor(
         source = this,
-        executionManager = executionManager,
+        deferredExecutor = executionManager,
         interceptor = interceptor,
         onExecute = onExecute,
         onFailure = onFailure,
@@ -196,7 +196,7 @@ abstract class SummerPresenter<
         onSuccess: suspend (TEntity, _: TParams) -> Unit = { _, _ -> }
     ): SourceExecutor<TEntity, TParams> = SourceExecutor(
         source = this,
-        executionManager = executionManager,
+        deferredExecutor = executionManager,
         interceptor = interceptor,
         onExecute = onExecute,
         onFailure = onFailure,
