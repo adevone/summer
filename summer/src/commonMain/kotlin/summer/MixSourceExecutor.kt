@@ -20,7 +20,7 @@ class MixSourceExecutor<T, TSourceParams> internal constructor(
 
     override fun onObtain(deferred: Deferred<T>, sourceParams: TSourceParams) {
         scope.launch {
-            withContext(coroutineContext + workContext) {
+            withContext(workContext) {
                 deferredExecutor.execute(
                     deferred = deferred,
                     params = sourceParams,
