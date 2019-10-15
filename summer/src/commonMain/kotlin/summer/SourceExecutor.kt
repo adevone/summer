@@ -6,17 +6,20 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Does not support multithreading
+ */
 class SourceExecutor<TEntity, TParams> internal constructor(
     private val source: SummerSource<TEntity, TParams>,
     private val deferredExecutor: DeferredExecutor,
     private val interceptor: SummerExecutorInterceptor<TEntity, TParams>,
     private val onExecute: suspend (_: TParams) -> Unit,
     private val onFailure: suspend (Throwable, _: TParams) -> Unit,
+    private val onCancel: suspend (TParams) -> Unit,
     private val onSuccess: suspend (TEntity, _: TParams) -> Unit,
     private val scope: CoroutineScope,
     private val workContext: CoroutineContext
 ) {
-    private var jobs = mutableMapOf<TParams, Job>()
     fun execute(params: TParams, cancelAll: Boolean = true) {
         if (cancelAll) {
             cancelAll()
@@ -31,37 +34,58 @@ class SourceExecutor<TEntity, TParams> internal constructor(
                     params = params,
                     interceptor = interceptor,
                     onExecute = onExecute,
+                    onSuccess = onSuccess,
                     onFailure = onFailure,
-                    onSuccess = onSuccess
+                    onCancel = onCancel
                 )
             } finally {
                 jobs.remove(params)
             }
         }
-        jobs[params] = job
+        onExecute(job, params)
+    }
+
+    private var jobs = mutableMapOf<TParams, MutableList<Job>>()
+    private fun onExecute(job: Job, params: TParams) {
+        if (params !in jobs) jobs[params] = mutableListOf()
+        jobs[params]!!.add(job)
     }
 
     fun cancelAll(needCancel: (params: TParams) -> Boolean = { true }) {
-        jobs.forEach { (params, job) ->
-            val willCancel = needCancel(params)
-            if (willCancel) {
-                job.cancel()
+        jobs.forEach { (params, jobs) ->
+            jobs.forEach { job ->
+                val willCancel = needCancel(params)
+                if (willCancel) {
+                    job.cancel()
+                }
             }
         }
     }
 
     fun cancel(params: TParams) {
-        jobs[params]?.cancel()
+        jobs[params]?.forEach { job ->
+            job.cancel()
+        }
     }
 
-    fun isAnyExecuted() = jobs.any { (_, job) -> job.isActive }
+    fun isAnyExecuted(): Boolean {
+        return jobs.any { (_, jobs) ->
+            jobs.any { job ->
+                job.isActive
+            }
+        }
+    }
 
-    fun isExecuted(params: TParams) = jobs[params]?.isActive
+    fun isAnyExecuted(params: TParams): Boolean {
+        return jobs[params]?.any { job ->
+            job.isActive
+        } == true
+    }
 }
 
 fun <TEntity> SourceExecutor<TEntity, Unit>.execute(
     cancelAll: Boolean = true
 ) = execute(
-    Unit,
-    cancelAll
+    params = Unit,
+    cancelAll = cancelAll
 )

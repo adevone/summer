@@ -115,7 +115,7 @@ abstract class SummerPresenter<
     // coroutineContext is final and initialized earlier
     // than passing this as CoroutineScope in DeferredExecutor
     @Suppress("LeakingThis")
-    private val executionManager = DeferredExecutor(logger, uiScope = this)
+    private val executionManager = DeferredExecutor(uiScope = this)
 
     fun <TSourceEntity, TSourceParams, TMixEntity, TMixParams, T> SummerSource<TSourceEntity, TSourceParams>.mix(
         mix: SummerReducer<TMixEntity, TMixParams>,
@@ -156,6 +156,7 @@ abstract class SummerPresenter<
         interceptor: SummerExecutorInterceptor<TEntity, TParams?> = NoInterceptor(),
         onExecute: suspend (_: TParams?) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TParams?) -> Unit = { e, _ -> throw e },
+        onCancel: suspend (TParams?) -> Unit = { params -> logger.info { "$this cancelled, params=$params" } },
         onSuccess: suspend (TEntity, _: TParams?) -> Unit = { _, _ -> }
     ): ReducerExecutor<TEntity, TParams> = ReducerExecutor(
         source = this,
@@ -163,6 +164,7 @@ abstract class SummerPresenter<
         interceptor = interceptor,
         onExecute = onExecute,
         onFailure = onFailure,
+        onCancel = onCancel,
         onSuccess = onSuccess,
         scope = this@SummerPresenter,
         workContext = workContext
@@ -174,6 +176,7 @@ abstract class SummerPresenter<
         interceptor: SummerExecutorInterceptor<T, TSourceParams> = NoInterceptor(),
         onExecute: suspend (_: TSourceParams) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TSourceParams) -> Unit = { e, _ -> throw e },
+        onCancel: suspend (TSourceParams) -> Unit = { sourceParams -> logger.info { "$this cancelled, sourceParams=$sourceParams" } },
         onSuccess: suspend (T, TSourceParams) -> Unit = { _, _ -> }
     ): MixSourceExecutor<T, TSourceParams> = MixSourceExecutor(
         source = this,
@@ -181,6 +184,7 @@ abstract class SummerPresenter<
         interceptor = interceptor,
         onExecute = onExecute,
         onFailure = onFailure,
+        onCancel = onCancel,
         onSuccess = onSuccess,
         scope = this@SummerPresenter,
         workContext = workContext
@@ -193,6 +197,7 @@ abstract class SummerPresenter<
         interceptor: SummerExecutorInterceptor<TEntity, TParams> = NoInterceptor(),
         onExecute: suspend (_: TParams) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TParams) -> Unit = { e, _ -> throw e },
+        onCancel: suspend (TParams) -> Unit = { params -> logger.info { "$this cancelled, params=$params " } },
         onSuccess: suspend (TEntity, _: TParams) -> Unit = { _, _ -> }
     ): SourceExecutor<TEntity, TParams> = SourceExecutor(
         source = this,
@@ -200,6 +205,7 @@ abstract class SummerPresenter<
         interceptor = interceptor,
         onExecute = onExecute,
         onFailure = onFailure,
+        onCancel = onCancel,
         onSuccess = onSuccess,
         scope = this@SummerPresenter,
         workContext = workContext

@@ -6,15 +6,15 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.withContext
 
 internal class DeferredExecutor(
-    private val logger: SummerLogger,
     private val uiScope: CoroutineScope
 ) {
     suspend fun <TEntity, TParams> execute(
         deferred: Deferred<TEntity>,
         params: TParams,
         interceptor: SummerExecutorInterceptor<TEntity, TParams>,
-        onExecute: suspend (_: TParams) -> Unit,
-        onFailure: suspend (Throwable, _: TParams) -> Unit,
+        onExecute: suspend (TParams) -> Unit,
+        onFailure: suspend (Throwable, TParams) -> Unit,
+        onCancel: suspend (TParams) -> Unit,
         onSuccess: suspend (TEntity, TParams) -> Unit
     ) {
         try {
@@ -43,7 +43,7 @@ internal class DeferredExecutor(
                 onSuccess(result, params)
             }
         } catch (e: CancellationException) {
-            logger.info { "$this cancelled" }
+            onCancel(params)
         } catch (e: Throwable) {
             withContext(uiScope.coroutineContext) {
                 onFailure(e, params)
