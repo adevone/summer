@@ -17,13 +17,13 @@ import kotlin.coroutines.CoroutineContext
 class SourceExecutor<TEntity, TParams> internal constructor(
     private val source: SummerSource<TEntity, TParams>,
     private val deferredExecutor: DeferredExecutor,
+    private val workContext: CoroutineContext,
     private val interceptor: SummerExecutorInterceptor<TEntity, TParams>,
     private val onExecute: suspend (_: TParams) -> Unit,
     private val onFailure: suspend (Throwable, _: TParams) -> Unit,
     private val onCancel: suspend (TParams) -> Unit,
     private val onSuccess: suspend (TEntity, _: TParams) -> Unit,
-    private val scope: CoroutineScope,
-    private val workContext: CoroutineContext
+    private val scope: CoroutineScope
 ) {
     /**
      * Executes [source]. Emits in [onSuccess] or [onFailure] value only if

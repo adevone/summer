@@ -3,6 +3,6 @@ package summer
 import kotlin.coroutines.CoroutineContext
 
 expect val defaultUiContext: CoroutineContext
-expect val defaultWorkContext: CoroutineContext
+expect val defaultBackgroundContext: CoroutineContext
 
 expect object DefaultLoggerFactory : SummerLogger.Factory

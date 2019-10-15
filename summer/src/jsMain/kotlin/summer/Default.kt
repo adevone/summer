@@ -5,7 +5,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 
 actual val defaultUiContext: CoroutineContext = Dispatchers.Unconfined
-actual val defaultWorkContext: CoroutineContext = Dispatchers.Unconfined
+actual val defaultBackgroundContext: CoroutineContext = Dispatchers.Unconfined
 
 actual object DefaultLoggerFactory : SummerLogger.Factory {
 

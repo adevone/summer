@@ -19,7 +19,7 @@ import kotlin.reflect.KMutableProperty0
  */
 abstract class SummerExecutor(
     mainContext: CoroutineContext,
-    private val workContext: CoroutineContext,
+    private val defaultWorkContext: CoroutineContext,
     loggerFactory: SummerLogger.Factory
 ) : CoroutineScope {
 
@@ -78,6 +78,7 @@ abstract class SummerExecutor(
      */
     fun <TEntity, TParams> SummerSource<TEntity, TParams>.executor(
         interceptor: SummerExecutorInterceptor<TEntity, TParams> = NoInterceptor(),
+        workContext: CoroutineContext = defaultWorkContext,
         onExecute: suspend (_: TParams) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TParams) -> Unit = { e, _ -> throw e },
         onCancel: suspend (TParams) -> Unit = { params -> logger.info { "$this cancelled, params=$params " } },
@@ -85,13 +86,13 @@ abstract class SummerExecutor(
     ): SourceExecutor<TEntity, TParams> = SourceExecutor(
         source = this,
         deferredExecutor = executionManager,
+        workContext = workContext,
         interceptor = interceptor,
         onExecute = onExecute,
         onFailure = onFailure,
         onCancel = onCancel,
         onSuccess = onSuccess,
-        scope = this@SummerExecutor,
-        workContext = workContext
+        scope = this@SummerExecutor
     )
 
     private class Subscription<TEntity, TParams>(
@@ -114,6 +115,7 @@ abstract class SummerExecutor(
      */
     fun <TEntity, TParams> SummerReducer<TEntity, TParams>.executor(
         interceptor: SummerExecutorInterceptor<TEntity, TParams?> = NoInterceptor(),
+        workContext: CoroutineContext = defaultWorkContext,
         onExecute: suspend (_: TParams?) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TParams?) -> Unit = { e, _ -> throw e },
         onCancel: suspend (TParams?) -> Unit = { params -> logger.info { "$this cancelled, params=$params" } },
@@ -121,13 +123,13 @@ abstract class SummerExecutor(
     ): ReducerExecutor<TEntity, TParams> = ReducerExecutor(
         source = this,
         deferredExecutor = executionManager,
+        workContext = workContext,
         interceptor = interceptor,
         onExecute = onExecute,
         onFailure = onFailure,
         onCancel = onCancel,
         onSuccess = onSuccess,
-        scope = this@SummerExecutor,
-        workContext = workContext
+        scope = this@SummerExecutor
     ).also { sharedSourceExecutor ->
         subscriptions += Subscription(this, sharedSourceExecutor)
     }
@@ -150,7 +152,7 @@ abstract class SummerExecutor(
         onCancel = onCancel,
         onSuccess = onSuccess,
         scope = this@SummerExecutor,
-        workContext = workContext
+        workContext = defaultWorkContext
     ).also { mixSourceExecutor ->
         this.consumer = mixSourceExecutor
         subscriptions += Subscription(this.mix, this)

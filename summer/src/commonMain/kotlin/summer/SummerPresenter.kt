@@ -20,7 +20,7 @@ abstract class SummerPresenter<
         TViewMethods,
         TRouter>(
     uiContext: CoroutineContext = defaultUiContext,
-    workContext: CoroutineContext = defaultWorkContext,
+    defaultWorkContext: CoroutineContext = defaultBackgroundContext,
     loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
     /**
      * Store created specifically for this presenter. Must not be reused
@@ -28,12 +28,12 @@ abstract class SummerPresenter<
     private val localStore: SummerStore = InMemoryStore()
 ) : SummerExecutor(
     mainContext = uiContext,
-    workContext = workContext,
+    defaultWorkContext = defaultWorkContext,
     loggerFactory = loggerFactory
 ) {
     constructor(dependencies: Dependencies) : this(
         uiContext = dependencies.uiContext,
-        workContext = dependencies.workContext,
+        defaultWorkContext = dependencies.workContext,
         loggerFactory = dependencies.loggerFactory,
         localStore = dependencies.localStore
     )
@@ -43,7 +43,7 @@ abstract class SummerPresenter<
      */
     class Dependencies(
         val uiContext: CoroutineContext = defaultUiContext,
-        val workContext: CoroutineContext = defaultWorkContext,
+        val workContext: CoroutineContext = defaultBackgroundContext,
         val loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
         val localStore: SummerStore = InMemoryStore()
     )
