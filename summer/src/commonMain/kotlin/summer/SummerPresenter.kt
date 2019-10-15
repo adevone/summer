@@ -35,7 +35,6 @@ abstract class SummerPresenter<
     }
 
     fun destroyed() {
-        storesController.destroy()
         receiverDestroyed()
     }
 

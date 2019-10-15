@@ -16,20 +16,12 @@ class SummerStoresController {
         mirrorPropertyHolders.add(propertyHolder)
         return store.store(
             onSet = { value ->
-                if (!isDestroyed) {
-                    propertyHolder.set(value)
-                }
+                propertyHolder.setIfNotEmpty(value)
             },
             initialValue = initialValue
         ).also {
             stores.add(store)
         }
-    }
-
-    private var isDestroyed = false
-
-    fun destroy() {
-        isDestroyed = true
     }
 
     fun onMirrorConnect() {
@@ -45,7 +37,7 @@ class SummerStoresController {
 private class MirrorPropertyHolder<T>(
     private var property: KMutableProperty0<T>?
 ) {
-    fun set(value: T) {
+    fun setIfNotEmpty(value: T) {
         property?.set(value)
     }
 
