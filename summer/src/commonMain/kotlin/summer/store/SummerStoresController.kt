@@ -28,7 +28,7 @@ class SummerStoresController {
 
     private var isDestroyed = false
 
-    fun onDestroy() {
+    fun destroy() {
         isDestroyed = true
     }
 
