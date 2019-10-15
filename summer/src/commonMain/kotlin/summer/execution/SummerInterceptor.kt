@@ -1,17 +1,38 @@
 package summer.execution
 
+import summer.execution.mix.MixSourceExecutor
+import summer.execution.reducer.ReducerExecutor
+import summer.execution.source.SourceExecutor
 import kotlin.reflect.KMutableProperty0
 
+/**
+ * Allows intercept executors ([SourceExecutor], [MixSourceExecutor] or [ReducerExecutor]) events
+ */
 abstract class SummerExecutorInterceptor<TEntity, TParams> {
 
+    /**
+     * Called every times when any event occurred
+     */
     open suspend fun onEvent(event: Event<TEntity, TParams>) {}
 
+    /**
+     * Called immediately after executor execution
+     */
     open suspend fun onExecute(event: Event.Executed<TEntity, TParams>) {}
 
+    /**
+     * Called when execution successfully completed or failed
+     */
     open suspend fun onCompleted(event: Event.Completed<TEntity, TParams>) {}
 
+    /**
+     * Called when execution successfully completed
+     */
     open suspend fun onSuccess(event: Event.Completed.Success<TEntity, TParams>) {}
 
+    /**
+     * Called when execution failed
+     */
     open suspend fun onFailure(event: Event.Completed.Failure<TEntity, TParams>) {}
 
     sealed class Event<TEntity, TParams> {
@@ -36,8 +57,15 @@ abstract class SummerExecutorInterceptor<TEntity, TParams> {
     }
 }
 
+/**
+ * Do not intercept any events. Can be used as stub
+ */
 class NoInterceptor<TEntity, TParams> : SummerExecutorInterceptor<TEntity, TParams>()
 
+/**
+ * Emits true in result of [getProperty] when executor executed but only if [needShow] returned true
+ * Emits false in result of [getProperty] when execution completed with any result (success or failure)
+ */
 class LoadingExecutorInterceptor<TEntity, TParams>(
     private val getProperty: suspend () -> KMutableProperty0<Boolean>,
     private val needShow: suspend (event: Event.Executed<TEntity, TParams>) -> Boolean

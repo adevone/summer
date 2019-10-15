@@ -4,10 +4,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import summer.SummerPresenter
 import summer.execution.DeferredExecutor
+import summer.execution.SummerExecutor
 import summer.execution.SummerExecutorInterceptor
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Executes [SummerReducer] in [workContext] and returns value in [scope] context
+ * Must be used from exactly one thread
+ */
 class ReducerExecutor<TEntity, in TParams> internal constructor(
     private val source: SummerReducer<TEntity, TParams>,
     private val deferredExecutor: DeferredExecutor,
@@ -19,6 +25,15 @@ class ReducerExecutor<TEntity, in TParams> internal constructor(
     private val scope: CoroutineScope,
     private val workContext: CoroutineContext
 ) : SummerReducer.Observer<TEntity, TParams> {
+
+    /**
+     * Executes [source]. Emits value in [onSuccess] or [onFailure] only if
+     * parent [SummerPresenter] (or any another [SummerExecutor])
+     * is not destroyed
+     */
+    fun execute(params: TParams) {
+        source(params)
+    }
 
     override fun onObtain(deferred: Deferred<TEntity>, params: TParams?) {
         scope.launch {
@@ -35,10 +50,6 @@ class ReducerExecutor<TEntity, in TParams> internal constructor(
                 onSuccess = onSuccess
             )
         }
-    }
-
-    fun execute(params: TParams) {
-        source(params)
     }
 }
 

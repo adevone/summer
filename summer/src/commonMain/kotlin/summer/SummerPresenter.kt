@@ -1,6 +1,7 @@
 package summer
 
 import summer.execution.SummerExecutor
+import summer.store.SummerStore
 import summer.store.SummerStoresController
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KMutableProperty0
@@ -11,7 +12,7 @@ import kotlin.reflect.KMutableProperty0
  * [summer.execution.reducer.SummerReducer] or [summer.execution.mix.MixSource])
  *
  * Should not be used as direct parent of feature presenters.
- * You should create your own base presenter for project.
+ * You should create your own base presenter in your project.
  */
 abstract class SummerPresenter<
         TViewState,

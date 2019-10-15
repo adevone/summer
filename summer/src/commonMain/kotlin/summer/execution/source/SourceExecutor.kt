@@ -4,12 +4,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import summer.SummerPresenter
 import summer.execution.DeferredExecutor
+import summer.execution.SummerExecutor
 import summer.execution.SummerExecutorInterceptor
 import kotlin.coroutines.CoroutineContext
 
 /**
- * Does not support multithreading
+ * Executes [SourceExecutor] in [workContext] and returns value in [scope] context
+ * Must be used from exactly one thread
  */
 class SourceExecutor<TEntity, TParams> internal constructor(
     private val source: SummerSource<TEntity, TParams>,
@@ -22,6 +25,11 @@ class SourceExecutor<TEntity, TParams> internal constructor(
     private val scope: CoroutineScope,
     private val workContext: CoroutineContext
 ) {
+    /**
+     * Executes [source]. Emits in [onSuccess] or [onFailure] value only if
+     * parent [SummerPresenter] (or any another [SummerExecutor])
+     * is not destroyed
+     */
     fun execute(params: TParams, cancelAll: Boolean = true) {
         if (cancelAll) {
             cancelAll()
@@ -53,6 +61,18 @@ class SourceExecutor<TEntity, TParams> internal constructor(
         jobs[params]!!.add(job)
     }
 
+    /**
+     * Cancels all executions with [params]
+     */
+    fun cancelAll(params: TParams) {
+        jobs[params]?.forEach { job ->
+            job.cancel()
+        }
+    }
+
+    /**
+     * Cancels all executions with params that confirms [needCancel] predicate
+     */
     fun cancelAll(needCancel: (params: TParams) -> Boolean = { true }) {
         jobs.forEach { (params, jobs) ->
             jobs.forEach { job ->
@@ -64,12 +84,9 @@ class SourceExecutor<TEntity, TParams> internal constructor(
         }
     }
 
-    fun cancel(params: TParams) {
-        jobs[params]?.forEach { job ->
-            job.cancel()
-        }
-    }
-
+    /**
+     * @return true if any execution in process now
+     */
     fun isAnyExecuted(): Boolean {
         return jobs.any { (_, jobs) ->
             jobs.any { job ->
@@ -78,6 +95,9 @@ class SourceExecutor<TEntity, TParams> internal constructor(
         }
     }
 
+    /**
+     * @return true if any execution with [params] in process now
+     */
     fun isAnyExecuted(params: TParams): Boolean {
         return jobs[params]?.any { job ->
             job.isActive

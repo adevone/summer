@@ -7,6 +7,10 @@ import kotlinx.coroutines.async
 import summer.execution.reducer.SummerReducer
 import summer.execution.source.SummerSource
 
+/**
+ * Mix of [SummerSource] or another [MixSource] with [SummerReducer]
+ * Triggers when [source] executes or [mix] produces new value
+ */
 class MixSource<T, TSourceEntity, TMixEntity, TSourceParams>(
     private val transform: (TSourceEntity, TMixEntity) -> T,
     private val source: Source<TSourceEntity, TSourceParams>,
@@ -64,6 +68,7 @@ class MixSource<T, TSourceEntity, TMixEntity, TSourceParams>(
         class Just<TEntity, TParams>(
             private val source: SummerSource<TEntity, TParams>
         ) : Source<TEntity, TParams>() {
+
             override fun executeAsync(
                 params: TParams,
                 scope: CoroutineScope
@@ -75,6 +80,7 @@ class MixSource<T, TSourceEntity, TMixEntity, TSourceParams>(
         class Mix<T, TSourceParams>(
             private val mixSource: MixSource<T, *, *, TSourceParams>
         ) : Source<T, TSourceParams>() {
+
             override fun executeAsync(
                 params: TSourceParams,
                 scope: CoroutineScope
