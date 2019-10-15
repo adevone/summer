@@ -166,13 +166,6 @@ class CalendarViewController: SummerViewController<CalendarPresenter>, CalendarV
 }
 ```
 
-### Содержание
-1) Android и iOS приложения с общим кодом
-2) Схема Clean Architecture (VIPER) на summer
-3) Пример работы с данными
-4) Тесты на бизнес-логику уровня приложения
-5) Тест на презентационную бизнес-логику
-
 ### Convenient custom scope
 ```
 ((file[app]:src/main//*||file[app]:src/debug//*||file[app]:src/release//*)&&!*.iml||file[shared_commonMain]:*/||file[buildSrc]:*/||file[shared]:.gitignore||file[eshop]:build.gradle.kts||file[eshop_iosMain]:*/||file[app]:build.gradle.kts)&&!file[buildSrc]:buildSrc.iml||file:.gitignore||file:build.gradle.kts||file:gradle.properties||file:settings.gradle.kts||file:README.md||file[shared_iosMain]:*/||file[app]:src/test/java//*
