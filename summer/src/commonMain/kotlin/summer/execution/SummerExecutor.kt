@@ -46,7 +46,7 @@ abstract class SummerExecutor(
     /**
      * Called on each unhandled error in any executor
      */
-    protected open fun onError(e: Throwable) {
+    protected open fun onFailure(e: Throwable) {
         logger.error(e)
     }
 
@@ -62,7 +62,7 @@ abstract class SummerExecutor(
     )
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
-        this@SummerExecutor.onError(e)
+        this@SummerExecutor.onFailure(e)
     }
 
     private val job = SupervisorJob()
