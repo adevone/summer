@@ -2,7 +2,7 @@
 
 Summer is Model-View-Presenter library with kotlin-multiplatform support. It can be used to share presenters between iOS and Android apps.  
 Summer does not use code generation and thus have not significant effort on compilation time.  
-Project targets to standardization and nice IDE support
+Project aims at standardization and nice IDE support
 
 Example of feature written using Summer:
 
@@ -47,7 +47,7 @@ class CalendarPresenter(
     private val defaultDayName = "Loading..."
     
     // Proxy that allows to restore state and 
-    // set properties even if view does not exists.
+    // set properties even if view does not exist.
     // Summer plugin provides convenient intentions to write it easy
     override fun createViewStateProxy() = object : {
     
@@ -63,7 +63,7 @@ class CalendarPresenter(
         override var dayName by store(vs::dayName, initialValue = "Loading...")
     }
     
-    // Called when user sees screen first times 
+    // Called when user sees screen for the first time 
     override fun onEnter() {
         getDayExecutor.execute(GetDay.Params(number = 1))
     }
@@ -141,7 +141,7 @@ iOS, Swift:
 ```
 class CalendarViewController: SummerViewController<CalendarPresenter>, CalendarViewState, CalendarViewMethods, CalendarRouter {
 
-    @IBOutlet weak var loadingSpinner: UISpinner!
+    @IBOutlet weak var loadingSpinner: UIView!
     @IBOutlet weak var dayNameLabel: UILabel!
 
     override func createPresenter(): CalendarPresenter {
