@@ -2,7 +2,7 @@ package summer
 
 import kotlin.reflect.KMutableProperty0
 
-class SummerStoreController {
+class SummerStoresController {
 
     private val mirrorPropertyHolders = mutableListOf<MirrorPropertyHolder<*>>()
     private val stores = mutableSetOf<SummerStore>()

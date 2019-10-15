@@ -17,7 +17,7 @@ abstract class SummerPresenter<
 ) : CoroutineScope {
 
     private val logger = loggerFactory.get(this::class)
-    private val storeController = SummerStoreController()
+    private val storesController = SummerStoresController()
 
     protected abstract fun createViewStateProxy(vs: TViewState): TViewState
 
@@ -34,7 +34,7 @@ abstract class SummerPresenter<
     }
 
     fun onDestroy() {
-        storeController.onDestroy()
+        storesController.onDestroy()
         subscriptions.forEach { it.unsubscribe() }
         subscriptions.clear()
         job.cancel()
@@ -51,11 +51,11 @@ abstract class SummerPresenter<
 
         // onConnect call placed there because presenter methods may be called in initView.
         // Presenter must be initialized at that moment
-        storeController.onMirrorConnect()
+        storesController.onMirrorConnect()
     }
 
     fun onDestroyView() {
-        storeController.onMirrorDisconnect()
+        storesController.onMirrorDisconnect()
         this.viewMethods = null
         this._router = null
     }
@@ -71,7 +71,7 @@ abstract class SummerPresenter<
     protected fun <T> store(
         viewStateProperty: KMutableProperty0<T>? = null,
         initialValue: T
-    ) = storeController.storeIn(
+    ) = storesController.storeIn(
         mirrorProperty = viewStateProperty,
         initialValue = initialValue,
         store = localStore
