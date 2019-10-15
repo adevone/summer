@@ -3,6 +3,17 @@ package summer
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import summer.execution.DeferredExecutor
+import summer.execution.LoadingExecutorInterceptor
+import summer.execution.NoInterceptor
+import summer.execution.SummerExecutorInterceptor
+import summer.execution.mix.MixSource
+import summer.execution.mix.MixSourceExecutor
+import summer.execution.reducer.ReducerExecutor
+import summer.execution.reducer.SummerReducer
+import summer.execution.source.SourceExecutor
+import summer.execution.source.SummerSource
+import summer.store.SummerStoresController
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KMutableProperty0
 
@@ -60,21 +71,23 @@ abstract class SummerPresenter<
         this._router = null
     }
 
-    fun <TEntity, TParams> loadingInterceptor(
-        getProperty: suspend () -> KMutableProperty0<Boolean>,
-        needShow: suspend (event: SummerExecutorInterceptor.Event.Executed<TEntity, TParams>) -> Boolean = { true }
-    ): LoadingExecutorInterceptor<TEntity, TParams> = LoadingExecutorInterceptor(
-        getProperty = getProperty,
-        needShow = needShow
-    )
-
     protected fun <T> store(
         viewStateProperty: KMutableProperty0<T>? = null,
         initialValue: T
+    ) = storeIn(
+        viewStateProperty = viewStateProperty,
+        initialValue = initialValue,
+        store = localStore
+    )
+
+    protected fun <T> storeIn(
+        viewStateProperty: KMutableProperty0<T>? = null,
+        initialValue: T,
+        store: SummerStore
     ) = storesController.storeIn(
         mirrorProperty = viewStateProperty,
         initialValue = initialValue,
-        store = localStore
+        store = store
     )
 
     fun entered() {
@@ -92,6 +105,14 @@ abstract class SummerPresenter<
     fun exited() {
         onExit()
     }
+
+    fun <TEntity, TParams> loadingInterceptor(
+        getProperty: suspend () -> KMutableProperty0<Boolean>,
+        needShow: suspend (event: SummerExecutorInterceptor.Event.Executed<TEntity, TParams>) -> Boolean = { true }
+    ): LoadingExecutorInterceptor<TEntity, TParams> = LoadingExecutorInterceptor(
+        getProperty = getProperty,
+        needShow = needShow
+    )
 
     protected open fun onEnter() {}
 

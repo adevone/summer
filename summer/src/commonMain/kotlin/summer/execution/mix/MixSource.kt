@@ -1,9 +1,11 @@
-package summer
+package summer.execution.mix
 
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
+import summer.execution.reducer.SummerReducer
+import summer.execution.source.SummerSource
 
 class MixSource<T, TSourceEntity, TMixEntity, TSourceParams>(
     private val transform: (TSourceEntity, TMixEntity) -> T,

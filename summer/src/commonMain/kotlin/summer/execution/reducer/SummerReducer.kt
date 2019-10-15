@@ -1,4 +1,4 @@
-package summer
+package summer.execution.reducer
 
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope

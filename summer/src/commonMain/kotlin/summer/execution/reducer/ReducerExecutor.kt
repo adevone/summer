@@ -1,9 +1,11 @@
-package summer
+package summer.execution.reducer
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import summer.execution.DeferredExecutor
+import summer.execution.SummerExecutorInterceptor
 import kotlin.coroutines.CoroutineContext
 
 class ReducerExecutor<TEntity, in TParams> internal constructor(

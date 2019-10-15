@@ -1,5 +1,6 @@
-package summer
+package summer.store
 
+import summer.SummerStore
 import kotlin.reflect.KMutableProperty0
 
 class SummerStoresController {
