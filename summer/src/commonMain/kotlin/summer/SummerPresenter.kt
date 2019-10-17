@@ -31,6 +31,9 @@ abstract class SummerPresenter<
     defaultWorkContext = defaultWorkContext,
     loggerFactory = loggerFactory
 ) {
+    /**
+     * Convenient constructor if IoC container used
+     */
     constructor(dependencies: Dependencies) : this(
         uiContext = dependencies.uiContext,
         defaultWorkContext = dependencies.workContext,
@@ -38,9 +41,6 @@ abstract class SummerPresenter<
         localStore = dependencies.localStore
     )
 
-    /**
-     * Convenient form of arguments if some kind on IoC container used
-     */
     class Dependencies(
         val uiContext: CoroutineContext = defaultUiContext,
         val workContext: CoroutineContext = defaultBackgroundContext,
