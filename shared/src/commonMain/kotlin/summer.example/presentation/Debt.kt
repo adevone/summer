@@ -5,6 +5,21 @@ import summer.example.domain.debt.data.DebtDao
 import summer.example.entity.Debt
 import summer.example.presentation.base.ScreenPresenter
 
+object DebtView {
+
+    interface State {
+        var debt: Debt?
+    }
+
+    interface Methods {
+
+    }
+}
+
+interface DebtRouter {
+
+}
+
 class DebtPresenter : ScreenPresenter<
         DebtView.State,
         DebtView.Methods,
@@ -27,19 +42,4 @@ class DebtPresenter : ScreenPresenter<
         debtDao.loan = loan
         getDebtExecutor.execute(GetDebt.Params(isHuman = true, loan = loan))
     }
-}
-
-object DebtView {
-
-    interface State {
-        var debt: Debt?
-    }
-
-    interface Methods {
-
-    }
-}
-
-interface DebtRouter {
-
 }

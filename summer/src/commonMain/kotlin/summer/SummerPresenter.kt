@@ -48,7 +48,19 @@ abstract class SummerPresenter<
         val localStore: SummerStore = InMemoryStore()
     )
 
-    private val storesController = SummerStoresController()
+    /**
+     * Must be called when presenter is created. Must be called exactly once
+     */
+    fun created() {
+        receiverCreated()
+    }
+
+    /**
+     * Must be called when presenter is destroyed. Must be called exactly once
+     */
+    fun destroyed() {
+        receiverDestroyed()
+    }
 
     /**
      * Create proxy for view state. Proxy must contain all properties defined in TViewState.
@@ -79,19 +91,7 @@ abstract class SummerPresenter<
     private var _router: TRouter? = null
     protected val router: TRouter get() = _router!!
 
-    /**
-     * Must be called when presenter is created. Must be called exactly once
-     */
-    fun created() {
-        receiverCreated()
-    }
-
-    /**
-     * Must be called when presenter is destroyed. Must be called exactly once
-     */
-    fun destroyed() {
-        receiverDestroyed()
-    }
+    private val storesController = SummerStoresController()
 
     /**
      * Must be called when view is created. May be called multiple times
