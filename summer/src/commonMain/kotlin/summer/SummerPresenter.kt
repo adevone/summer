@@ -1,6 +1,8 @@
 package summer
 
 import summer.execution.SummerExecutor
+import summer.view.SummerViewController
+import summer.view.SummerViewStateProxyProvider
 import summer.store.InMemoryStore
 import summer.store.SummerStore
 import summer.store.SummerStoresController
@@ -15,10 +17,7 @@ import kotlin.reflect.KMutableProperty0
  * Should not be used as direct parent of feature presenters.
  * You should create your own base presenter in your project.
  */
-abstract class SummerPresenter<
-        TViewState,
-        TViewMethods,
-        TRouter>(
+abstract class SummerPresenter<TViewState, TViewMethods>(
     uiContext: CoroutineContext = defaultUiContext,
     defaultWorkContext: CoroutineContext = defaultBackgroundContext,
     loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
@@ -30,93 +29,36 @@ abstract class SummerPresenter<
     mainContext = uiContext,
     defaultWorkContext = defaultWorkContext,
     loggerFactory = loggerFactory
-) {
-    /**
-     * Convenient constructor if IoC container used
-     */
-    constructor(dependencies: Dependencies) : this(
-        uiContext = dependencies.uiContext,
-        defaultWorkContext = dependencies.workContext,
-        loggerFactory = dependencies.loggerFactory,
-        localStore = dependencies.localStore
-    )
-
-    class Dependencies(
-        val uiContext: CoroutineContext = defaultUiContext,
-        val workContext: CoroutineContext = defaultBackgroundContext,
-        val loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
-        val localStore: SummerStore = InMemoryStore()
-    )
-
-    /**
-     * Must be called when presenter is created. Must be called exactly once
-     */
-    fun created() {
-        receiverCreated()
-    }
-
-    /**
-     * Must be called when presenter is destroyed. Must be called exactly once
-     */
-    fun destroyed() {
-        receiverDestroyed()
-    }
-
-    /**
-     * Create proxy for view state. Proxy must contain all properties defined in TViewState.
-     * Properties of proxy must use delegates created by [store] of [storeIn] methods
-     *
-     * You can use summer plugin to make overriding of this method easier
-     *
-     * Example:
-     *
-     * object FeatureView {
-     *
-     *     interface State {
-     *         var prop: Int
-     *     }
-     * }
-     *
-     * override fun createViewStateProxy(vs: FeatureView.State) = object : FeatureView.State {
-     *     override var prop by store(vs::prop, initialValue = 0)
-     * }
-     */
-    protected abstract fun createViewStateProxy(vs: TViewState): TViewState
-
-    private var _viewStateProxy: TViewState? = null
-    protected val viewStateProxy: TViewState get() = _viewStateProxy!!
-
-    protected var viewMethods: TViewMethods? = null
-
-    private var _router: TRouter? = null
-    protected val router: TRouter get() = _router!!
+), SummerViewStateProxyProvider<TViewState> {
 
     private val storesController = SummerStoresController()
+    private val stateHolder = SummerViewController<TViewState, TViewMethods>(storesController)
+
+    protected val viewStateProxy: TViewState
+        get() = stateHolder.viewStateProxy ?: throw ViewStateDoesNotExistException()
+
+    protected val viewMethods: TViewMethods?
+        get() = stateHolder.viewMethods
 
     /**
      * Must be called when view is created. May be called multiple times
      */
     fun viewCreated(
         viewState: TViewState,
-        viewMethods: TViewMethods,
-        router: TRouter
+        viewMethods: TViewMethods
     ) {
-        this._viewStateProxy = createViewStateProxy(viewState)
-        this.viewMethods = viewMethods
-        this._router = router
-
-        // onConnect call placed there because presenter methods may be called in initView.
-        // Presenter must be initialized at that moment
-        storesController.onMirrorConnect()
+        stateHolder.viewCreated(
+            viewState,
+            viewMethods,
+            viewStateProxyProvider = this
+        )
     }
 
     /**
      * Must be called when view is destroyed. May be called multiple times
      */
     fun viewDestroyed() {
-        storesController.onMirrorDisconnect()
-        this.viewMethods = null
-        this._router = null
+        stateHolder.viewDestroyed()
     }
 
     /**
@@ -153,6 +95,20 @@ abstract class SummerPresenter<
         initialValue = initialValue,
         store = store
     )
+
+    /**
+     * Must be called when presenter is created. Must be called exactly once
+     */
+    fun created() {
+        super.receiverCreated()
+    }
+
+    /**
+     * Must be called when presenter is destroyed. Must be called exactly once
+     */
+    fun destroyed() {
+        super.receiverDestroyed()
+    }
 
     /**
      * Must be called when user sees view for the first time
@@ -203,4 +159,25 @@ abstract class SummerPresenter<
      * It may happen when user pops view from stack or switches to another app
      */
     protected open fun onDisappear() {}
+
+    /**
+     * Convenient constructor if IoC container used
+     */
+    constructor(dependencies: Dependencies) : this(
+        uiContext = dependencies.uiContext,
+        defaultWorkContext = dependencies.workContext,
+        loggerFactory = dependencies.loggerFactory,
+        localStore = dependencies.localStore
+    )
+
+    class Dependencies(
+        val uiContext: CoroutineContext = defaultUiContext,
+        val workContext: CoroutineContext = defaultBackgroundContext,
+        val loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
+        val localStore: SummerStore = InMemoryStore()
+    )
 }
+
+class ViewStateDoesNotExistException : IllegalStateException(
+    "can not use viewStateProxy when view does not exist"
+)
