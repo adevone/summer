@@ -2,17 +2,17 @@ package summer.store
 
 import kotlin.reflect.KMutableProperty0
 
-class SummerStoresController {
+class SummerStoresSubscriber {
 
-    private val mirrorPropertyHolders = mutableListOf<MirrorPropertyHolder<*>>()
+    private val observerPropertyHolders = mutableListOf<ObserverPropertyHolder<*>>()
     private val stores = mutableSetOf<SummerStore>()
     fun <T> storeIn(
         mirrorProperty: KMutableProperty0<T>? = null,
         initialValue: T,
         store: SummerStore
     ): SummerStore.DelegateProvider<T> {
-        val propertyHolder = MirrorPropertyHolder(mirrorProperty)
-        mirrorPropertyHolders.add(propertyHolder)
+        val propertyHolder = ObserverPropertyHolder(mirrorProperty)
+        observerPropertyHolders.add(propertyHolder)
         return store.store(
             onSet = { value ->
                 propertyHolder.setIfNotEmpty(value)
@@ -23,17 +23,17 @@ class SummerStoresController {
         }
     }
 
-    fun onMirrorConnect() {
+    fun onObserverConnect() {
         stores.forEach { it.restore() }
     }
 
-    fun onMirrorDisconnect() {
-        this.mirrorPropertyHolders.forEach { it.destroy() }
-        this.mirrorPropertyHolders.clear()
+    fun onObserverDisconnect() {
+        this.observerPropertyHolders.forEach { it.destroy() }
+        this.observerPropertyHolders.clear()
     }
 }
 
-private class MirrorPropertyHolder<T>(
+private class ObserverPropertyHolder<T>(
     private var property: KMutableProperty0<T>?
 ) {
     fun setIfNotEmpty(value: T) {

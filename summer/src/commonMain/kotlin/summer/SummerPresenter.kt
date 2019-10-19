@@ -5,7 +5,7 @@ import summer.view.SummerViewController
 import summer.view.SummerViewStateProxyProvider
 import summer.store.InMemoryStore
 import summer.store.SummerStore
-import summer.store.SummerStoresController
+import summer.store.SummerStoresSubscriber
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KMutableProperty0
 
@@ -31,7 +31,7 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
     loggerFactory = loggerFactory
 ), SummerViewStateProxyProvider<TViewState> {
 
-    private val storesController = SummerStoresController()
+    private val storesController = SummerStoresSubscriber()
     private val stateHolder = SummerViewController<TViewState, TViewMethods>(storesController)
 
     protected val viewStateProxy: TViewState
