@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import summer.SummerPresenter
 import summer.SummerPresenterWithRouter
@@ -12,7 +13,11 @@ import java.util.Collections.emptyList
 abstract class SummerFragment<
         TViewState : Any,
         TViewMethods : Any,
-        TPresenter : SummerPresenter<TViewState, TViewMethods>> : Fragment() {
+        TPresenter : SummerPresenter<TViewState, TViewMethods>> : Fragment {
+
+    constructor() : super()
+
+    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
     protected abstract val viewMethods: TViewMethods
 
@@ -114,7 +119,11 @@ abstract class SummerFragmentWithRouter<
     : SummerFragment<
         TViewState,
         TViewMethods,
-        TPresenter>() {
+        TPresenter> {
+
+    constructor() : super()
+
+    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
     protected abstract val router: TRouter
 
