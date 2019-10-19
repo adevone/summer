@@ -128,19 +128,3 @@ abstract class SummerFragmentWithRouter<
         super.onDestroy()
     }
 }
-
-
-abstract class ArgsSummerFragment<
-        TViewState : Any,
-        TViewMethods : Any,
-        TPresenter : SummerPresenter<TViewState, TViewMethods>,
-        TArgs> : SummerFragment<
-        TViewState,
-        TViewMethods,
-        TPresenter>(), ArgsFragmentFeature<TArgs> {
-
-    @Suppress("LeakingThis")
-    override val fragment = this
-
-    override var argsBackingField: TArgs? = null
-}

@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlinx-serialization")
     id("maven")
     id("maven-publish")
     id("kotlinx-atomicfu")
@@ -32,7 +31,6 @@ android {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
     implementation("org.jetbrains.kotlinx:atomicfu:$atomicfuVersion")
