@@ -3,32 +3,38 @@ package summer.android
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import summer.SummerPresenter
+import summer.SummerPresenterWithRouter
 
 abstract class SummerActivity<
-        TViewState : Any,
-        TViewMethods : Any,
-        TRouter : Any,
-        TPresenter : SummerPresenter<TViewState, TViewMethods, TRouter>> : AppCompatActivity() {
+        TViewState,
+        TViewMethods,
+        TPresenter : SummerPresenter<TViewState, TViewMethods>> : AppCompatActivity() {
 
-    abstract val router: TRouter
-    abstract val viewState: TViewState
-    abstract val viewMethods: TViewMethods
+    protected abstract val viewState: TViewState
+    protected abstract val viewMethods: TViewMethods
 
-    abstract fun createPresenter(): TPresenter
+    protected abstract fun createPresenter(): TPresenter
 
-    lateinit var presenter: TPresenter
+    protected lateinit var presenter: TPresenter
 
+    /**
+     * Use initView in user code instead
+     */
     @Suppress("UNCHECKED_CAST")
-    override fun onCreate(savedInstanceState: Bundle?) {
+    final override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = createPresenter()
         initView()
         presenter.created()
-        presenter.viewCreated(viewState, viewMethods, router)
+        initPresenterView()
         presenter.entered()
     }
 
-    abstract fun initView()
+    internal open fun initPresenterView() {
+        presenter.viewCreated(viewState, viewMethods)
+    }
+
+    protected abstract fun initView()
 
     override fun onDestroy() {
         super.onDestroy()
@@ -44,5 +50,25 @@ abstract class SummerActivity<
     override fun onPause() {
         super.onPause()
         presenter.disappeared()
+    }
+}
+
+abstract class SummerActivityWithRouter<
+        TViewState,
+        TViewMethods,
+        TRouter,
+        TPresenter : SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>>
+    : SummerActivity<TViewState, TViewMethods, TPresenter>() {
+
+    protected abstract val router: TRouter
+
+    override fun initPresenterView() {
+        super.initPresenterView()
+        presenter.routerCreated(router)
+    }
+
+    override fun onDestroy() {
+        presenter.routerDestroyed()
+        super.onDestroy()
     }
 }

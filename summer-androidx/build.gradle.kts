@@ -39,7 +39,7 @@ dependencies {
 
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
 
-    implementation("androidx.appcompat:appcompat:1.0.2")
+    implementation("androidx.appcompat:appcompat:1.1.0")
 
     implementation("summer:summer:$summerVersion")
 //    implementation(project(":summer"))
