@@ -22,11 +22,11 @@ abstract class SummerComponent<
         context: Context
     ): View
 
-    fun onCreate() {
+    open fun onCreate() {
         presenter.created()
     }
 
-    fun onDestroy() {
+    open fun onDestroy() {
         presenter.destroyed()
     }
 
@@ -36,19 +36,15 @@ abstract class SummerComponent<
     fun onViewCreated(parentView: ViewGroup?, context: Context, isFirstViewCreation: Boolean) {
         _view = createView(parentView, context)
         initView()
-        initPresenterView()
+        presenter.viewCreated(viewState, viewMethods)
         if (isFirstViewCreation) {
             presenter.entered()
         }
     }
 
-    internal open fun initPresenterView() {
-        presenter.viewCreated(viewState, viewMethods)
-    }
-
     protected abstract fun initView()
 
-    open fun onDestroyView() {
+    fun onDestroyView() {
         presenter.viewDestroyed()
         _view = null
     }
@@ -78,13 +74,13 @@ abstract class SummerComponentWithRouter<
 
     protected abstract val router: TRouter
 
-    override fun initPresenterView() {
-        super.initPresenterView()
+    override fun onCreate() {
+        super.onCreate()
         presenter.routerCreated(router)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
         presenter.viewDestroyed()
+        super.onDestroy()
     }
 }

@@ -4,16 +4,16 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.fragment.app.Fragment
 import summer.SummerPresenter
+import summer.SummerPresenterWithRouter
 import java.util.Collections.emptyList
 
 abstract class SummerFragment<
         TViewState : Any,
         TViewMethods : Any,
-        TRouter : Any,
-        TPresenter : SummerPresenter<TViewState, TViewMethods, TRouter>> : androidx.fragment.app.Fragment() {
+        TPresenter : SummerPresenter<TViewState, TViewMethods>> : Fragment() {
 
-    protected abstract val router: TRouter
     protected abstract val viewMethods: TViewMethods
 
     protected abstract fun createViewState(): TViewState
@@ -27,8 +27,8 @@ abstract class SummerFragment<
 
     protected var viewState: TViewState? = null
 
-    protected open fun createComponents(): List<SummerComponent<*, *, *, *>> = emptyList()
-    private var lifecycleComponents: List<SummerComponent<*, *, *, *>> = emptyList()
+    protected open fun createComponents(): List<SummerComponent<*, *, *>> = emptyList()
+    private var lifecycleComponents: List<SummerComponent<*, *, *>> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +52,7 @@ abstract class SummerFragment<
                 isFirstViewCreation = isFirstViewCreation
             )
         }
-        _presenter!!.viewCreated(viewState!!, viewMethods, router)
+        presenter.viewCreated(viewState!!, viewMethods)
         if (isFirstViewCreation) {
             _presenter!!.entered()
             isFirstViewCreation = false
@@ -106,15 +106,37 @@ abstract class SummerFragment<
     }
 }
 
-abstract class ArgsSummerFragment<
+abstract class SummerFragmentWithRouter<
         TViewState : Any,
         TViewMethods : Any,
         TRouter : Any,
-        TPresenter : SummerPresenter<TViewState, TViewMethods, TRouter>,
+        TPresenter : SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>>
+    : SummerFragment<
+        TViewState,
+        TViewMethods,
+        TPresenter>() {
+
+    protected abstract val router: TRouter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter.routerCreated(router)
+    }
+
+    override fun onDestroy() {
+        presenter.routerDestroyed()
+        super.onDestroy()
+    }
+}
+
+
+abstract class ArgsSummerFragment<
+        TViewState : Any,
+        TViewMethods : Any,
+        TPresenter : SummerPresenter<TViewState, TViewMethods>,
         TArgs> : SummerFragment<
         TViewState,
         TViewMethods,
-        TRouter,
         TPresenter>(), ArgsFragmentFeature<TArgs> {
 
     @Suppress("LeakingThis")
