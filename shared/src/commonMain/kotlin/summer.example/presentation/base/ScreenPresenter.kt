@@ -3,14 +3,14 @@ package summer.example.presentation.base
 import org.kodein.di.KodeinProperty
 import org.kodein.di.direct
 import org.kodein.di.erased.instance
-import summer.SummerPresenter
+import summer.SummerPresenterWithRouter
 import summer.example.di
 
 abstract class ScreenPresenter<
         TViewState : Any,
         TViewMethods : Any,
         TRouter : Any>
-    : SummerPresenter<TViewState, TViewMethods, TRouter>() {
+    : SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>() {
 
     open fun onBackClick(): Boolean = false
 

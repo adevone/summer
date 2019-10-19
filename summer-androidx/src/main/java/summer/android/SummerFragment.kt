@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import summer.DidSetMixin
 import summer.SummerPresenter
 import summer.SummerPresenterWithRouter
 import java.util.Collections.emptyList
@@ -109,6 +110,8 @@ abstract class SummerFragment<
             lifecycleComponents.forEach { it.onExit() }
         }
     }
+
+    companion object : DidSetMixin()
 }
 
 abstract class SummerFragmentWithRouter<

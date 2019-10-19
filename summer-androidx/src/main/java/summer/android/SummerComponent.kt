@@ -3,6 +3,7 @@ package summer.android
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import summer.DidSetMixin
 import summer.SummerPresenter
 import summer.SummerPresenterWithRouter
 
@@ -60,6 +61,8 @@ abstract class SummerComponent<
     fun onExit() {
         presenter.exited()
     }
+
+    companion object : DidSetMixin()
 }
 
 abstract class SummerComponentWithRouter<

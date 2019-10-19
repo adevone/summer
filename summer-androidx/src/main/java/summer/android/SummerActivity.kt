@@ -2,6 +2,7 @@ package summer.android
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import summer.DidSetMixin
 import summer.SummerPresenter
 import summer.SummerPresenterWithRouter
 
@@ -51,6 +52,8 @@ abstract class SummerActivity<
         super.onPause()
         presenter.disappeared()
     }
+
+    companion object : DidSetMixin()
 }
 
 abstract class SummerActivityWithRouter<
