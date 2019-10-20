@@ -1,4 +1,29 @@
+[![](https://jitpack.io/v/adevone/summer.svg)](https://jitpack.io/#adevone/summer)
+
 # Summer
+
+Gradle dependencies:
+```
+// in settings.gradle
+enableFeaturePreview("GRADLE_METADATA")
+
+// in root build.gradle
+allprojects {
+    repositories {
+        ...
+        maven { url = uri("https://jitpack.io") }
+    }
+}
+
+dependencies {
+
+    // library itself
+    implementation("com.github.adevone.summer:summer:0.7.8")
+    
+    // android part containing SummerActivity and SummerFragment
+    implementation("com.github.adevone.summer:summer-androidx:0.7.8")
+}
+```
 
 Summer is Model-View-Presenter library with kotlin-multiplatform support. It can be used to share presenters between iOS and Android apps.  
 Summer does not use code generation and thus have not significant effort on compilation time.  
