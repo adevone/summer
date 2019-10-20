@@ -1,7 +1,9 @@
 enableFeaturePreview("GRADLE_METADATA")
 
-include(":app")
-include(":shared")
+if (System.getenv("JITPACK") != "true") {
+    include(":app")
+    include(":shared")
+}
 include(":summer")
-include(":summer-kodein")
+//include(":summer-kodein")
 include(":summer-androidx")
