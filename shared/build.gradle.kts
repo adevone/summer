@@ -75,10 +75,10 @@ kotlin {
 
 tasks.create("copyFramework") {
     val buildType = project.findProperty("kotlin.build.type")?.toString() ?: "DEBUG"
-    dependsOn("link${buildType.toLowerCase().capitalize()}FrameworkIosSim")
-
+    val targetName = if (buildType == "DEBUG") "iosX64" else "iosArm64"
+    dependsOn("link${buildType.toLowerCase().capitalize()}Framework${targetName.capitalize()}")
     doLast {
-        val target = kotlin.targets.getByName("iosSim") as KotlinNativeTarget
+        val target = kotlin.targets.getByName(targetName) as KotlinNativeTarget
         val srcFile = target.binaries.getFramework(buildType).outputFile
         val targetDir = project.property("configuration.build.dir")!!
         copy {

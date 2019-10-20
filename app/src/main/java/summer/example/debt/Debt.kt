@@ -12,7 +12,7 @@ class DebtFragment : ScreenFragment<
         DebtView.State,
         DebtView.Methods,
         DebtRouter,
-        DebtPresenter>() {
+        DebtPresenter>(R.layout.debt_fragment) {
 
     override val router = object : DebtRouter {
 
@@ -20,12 +20,10 @@ class DebtFragment : ScreenFragment<
 
     override fun createViewState() = object : DebtView.State {
 
-        override var debt: Debt? = null
-            set(debt) {
-                val money = debt?.money ?: 0f
-                debtView.text = getString(R.string.debt, money)
-                field = debt
-            }
+        override var debt: Debt? by didSetNotNull { debt ->
+            val money = debt.money
+            debtView.text = getString(R.string.debt, money)
+        }
     }
 
     override val viewMethods = object : DebtView.Methods {
@@ -33,8 +31,6 @@ class DebtFragment : ScreenFragment<
     }
 
     override fun createPresenter() = DebtPresenter()
-
-    override val layoutRes = R.layout.debt_fragment
 
     override fun initView() {
         calculateButton.setOnClickListener {

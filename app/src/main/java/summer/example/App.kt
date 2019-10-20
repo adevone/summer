@@ -13,7 +13,6 @@ import org.kodein.di.erased.instance
 import org.kodein.di.erased.singleton
 import summer.SummerLogger
 import summer.example.domain.SharedUseCase
-import summer.example.presentation.base.BasePresenter
 import kotlin.reflect.KClass
 
 class App : MultiDexApplication(), KodeinAware {
@@ -47,9 +46,6 @@ class App : MultiDexApplication(), KodeinAware {
                     }
                 }
             }
-
-            bind() from singleton { BasePresenter.Dependencies(Dispatchers.IO, Dispatchers.Main, instance()) }
-            bind() from singleton { SharedUseCase.Dependencies(Dispatchers.IO) }
         }
 
         kodeinAware = this

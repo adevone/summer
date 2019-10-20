@@ -32,6 +32,7 @@ class DebtViewContoller: UIViewController, DebtViewState, DebtViewMethods  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter.onCreateView(viewState: self, viewMethods: self, router: self, owner: self)
+        presenter.viewCreated(viewState: self, viewMethods: self)
+        presenter.routerCreated(router: self)
     }
 }

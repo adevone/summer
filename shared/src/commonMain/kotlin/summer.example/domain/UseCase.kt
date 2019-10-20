@@ -1,22 +1,12 @@
 package summer.example.domain
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import summer.execution.reducer.SummerReducer
 import summer.execution.source.SummerSource
-import kotlin.coroutines.CoroutineContext
+import summer.execution.reducer.SummerReducer
 
 typealias UseCase<TEntity, TParams> = SummerSource<TEntity, TParams>
 
-abstract class SharedUseCase<TEntity, TParams>(
-    dependencies: Dependencies
-) : SummerReducer<TEntity, TParams>(
-    CoroutineScope(dependencies.workContext + SupervisorJob())
-) {
-    class Dependencies(
-        val workContext: CoroutineContext
-    )
-}
+typealias SharedUseCase<TEntity, TParams> = SummerReducer<TEntity, TParams>
 
 abstract class Reducer<TEntity, TParams>(
     scope: CoroutineScope
