@@ -69,7 +69,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$coroutinesVersion")
             }
         }
-        getByName("iosSimMain").dependsOn(getByName("iosMain"))
+        getByName("iossimMain").dependsOn(getByName("iosMain"))
     }
 }
 
