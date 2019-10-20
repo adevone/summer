@@ -26,7 +26,7 @@ xcode {
 }
 
 kotlin {
-    iosArm64("ios") {
+    iosArm64 {
         binaries {
             framework {
                 freeCompilerArgs.add("-Xobjc-generics")
@@ -34,7 +34,7 @@ kotlin {
             }
         }
     }
-    iosX64("iossim") {
+    iosX64 {
         binaries {
             framework {
                 freeCompilerArgs.add("-Xobjc-generics")
@@ -64,12 +64,12 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
             }
         }
-        getByName("iosMain") {
+        getByName("iosArm64Main") {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$coroutinesVersion")
             }
         }
-        getByName("iossimMain").dependsOn(getByName("iosMain"))
+        getByName("iosX64Main").dependsOn(getByName("iosArm64Main"))
     }
 }
 
