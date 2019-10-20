@@ -43,7 +43,7 @@ val sourceJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
 }
 
-group = "summer"
+group = "com.github.adevone"
 version = summerVersion
 
 publishing {
@@ -54,15 +54,6 @@ publishing {
             version = summerVersion
             artifact(tasks.getByName("sourceJar"))
             artifact("$buildDir/outputs/aar/summer-androidx-release.aar")
-        }
-    }
-    repositories {
-        maven {
-            url = uri(project.extra["REPO_URL"].toString() + "/" + project.extra["REPO_KEY"].toString())
-            credentials {
-                username = project.extra["REPO_USERNAME"].toString()
-                password = project.extra["REPO_ENCRYPTED_PASSWORD"].toString()
-            }
         }
     }
 }
