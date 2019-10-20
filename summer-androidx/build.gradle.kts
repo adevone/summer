@@ -1,9 +1,13 @@
+import com.jfrog.bintray.gradle.BintrayExtension
+import java.util.Properties
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
     id("maven")
     id("maven-publish")
     id("kotlinx-atomicfu")
+    id("com.jfrog.bintray")
 }
 
 android {
@@ -34,8 +38,8 @@ dependencies {
 
     implementation("androidx.appcompat:appcompat:1.1.0")
 
-//    implementation("summer:summer:$summerVersion")
-    implementation(project(":summer"))
+    implementation("com.github.adevone.summer:summer:$summerVersion")
+//    implementation(project(":summer"))
 }
 
 val sourceJar by tasks.registering(Jar::class) {
@@ -49,11 +53,28 @@ version = summerVersion
 publishing {
     publications {
         create<MavenPublication>("summerAndroidX") {
-            groupId = "summer"
-            artifactId = "summer-androidx"
+            groupId = project.group.toString()
+            artifactId = project.name
             version = summerVersion
             artifact(tasks.getByName("sourceJar"))
-            artifact("$buildDir/outputs/aar/summer-androidx-release.aar")
+            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
         }
     }
+}
+
+bintray {
+    val propsStream = File(rootProject.rootDir, "bintray.properties").inputStream()
+    val bintrayProps = Properties().apply {
+        load(propsStream)
+    }
+    user = bintrayProps.getProperty("USERNAME")
+    key = bintrayProps.getProperty("API_KEY")
+    pkg(closureOf<BintrayExtension.PackageConfig> {
+        repo = "summer"
+        name = project.name
+        userOrg = "adevone"
+        setLicenses("MIT")
+        vcsUrl = "https://github.com/adevone/summer"
+    })
+    setPublications("summerAndroidX")
 }

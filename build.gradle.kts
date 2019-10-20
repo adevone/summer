@@ -12,6 +12,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
         classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:$atomicfuVersion")
         classpath("co.touchlab:kotlinxcodesync:0.1.5")
+        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+")
     }
 }
 
@@ -31,6 +32,7 @@ subprojects {
         maven(url = "https://kotlin.bintray.com/ktor")
         maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
         maven(url = "https://dl.bintray.com/russhwolf/multiplatform-settings")
+        maven(url = "https://adevone.bintray.com/summer")
         maven {
             url = uri("https://jitpack.io")
 //            content {
@@ -38,6 +40,7 @@ subprojects {
 //                excludeGroupByRegex("org\\.kodein.*")
 //            }
         }
+
 //        maven(url = "https://dl.bintray.com/kodein-framework/Kodein-DI")
     }
 }

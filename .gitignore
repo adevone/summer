@@ -2,4 +2,5 @@
 /.gradle/
 /build/
 **.iml
-local.properties
+/local.properties
+/bintray.properties

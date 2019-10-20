@@ -1,3 +1,5 @@
+import java.util.*
+
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("maven-publish")
@@ -66,3 +68,22 @@ kotlin {
 
 group = "com.github.adevone.summer"
 version = summerVersion
+
+publishing {
+
+    val propsStream = File(rootProject.rootDir, "bintray.properties").inputStream()
+    val bintrayProps = Properties().apply {
+        load(propsStream)
+    }
+
+    repositories {
+        maven("https://api.bintray.com/maven/adevone/summer/summer/;publish=0") {
+            name = "bintray"
+
+            credentials {
+                username = bintrayProps.getProperty("USERNAME")
+                password = bintrayProps.getProperty("API_KEY")
+            }
+        }
+    }
+}
