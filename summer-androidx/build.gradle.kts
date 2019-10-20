@@ -6,11 +6,6 @@ plugins {
     id("kotlinx-atomicfu")
 }
 
-//val libraryGroupId = "ru.napoleonit"
-//val libraryArtifactId = "summer-android"
-//val libraryVersion = rootProject.ext.summer_version
-//val libraryFileName = "summer-android-release.aar"
-
 android {
     compileSdkVersion(targetVersion)
 
@@ -47,6 +42,9 @@ val sourceJar by tasks.registering(Jar::class) {
     from(android.sourceSets.getByName("main").java.srcDirs)
     archiveClassifier.set("sources")
 }
+
+group = "summer"
+version = summerVersion
 
 publishing {
     publications {
