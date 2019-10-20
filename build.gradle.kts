@@ -39,13 +39,6 @@ subprojects {
 //            }
         }
 //        maven(url = "https://dl.bintray.com/kodein-framework/Kodein-DI")
-        maven {
-            url = uri(project.extra["REPO_URL"].toString() + "/" + project.extra["REPO_KEY"].toString())
-            credentials {
-                username = project.extra["REPO_USERNAME"].toString()
-                password = project.extra["REPO_ENCRYPTED_PASSWORD"].toString()
-            }
-        }
     }
 }
 
