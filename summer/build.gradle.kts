@@ -12,7 +12,7 @@ kotlin {
             }
         }
     }
-    iosX64("iosSim")  {
+    iosX64("iossim")  {
         binaries {
             framework {
                 freeCompilerArgs.add("-Xobjc-generics")
