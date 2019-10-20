@@ -1,4 +1,4 @@
-const val summerVersion = "0.7.7"
+const val summerVersion = "0.7.8"
 
 // library dependencies
 const val kotlinVersion = "1.3.50"
