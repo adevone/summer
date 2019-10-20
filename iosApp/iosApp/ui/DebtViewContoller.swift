@@ -12,9 +12,11 @@ extension DebtViewContoller: DebtRouter {
     
 }
 
-class DebtViewContoller: UIViewController, DebtViewState, DebtViewMethods  {
+class DebtViewContoller: ScreenViewController<DebtViewState, DebtViewMethods, DebtRouter, DebtPresenter>, DebtViewState, DebtViewMethods  {
     
-    private let presenter = DebtPresenter()
+    override func createPresenter() -> DebtPresenter {
+        return DebtPresenter()
+    }
     
     @IBOutlet weak var debtView: UILabel!
     @IBOutlet weak var loanField: UITextField!
