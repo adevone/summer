@@ -43,7 +43,7 @@ val sourceJar by tasks.registering(Jar::class) {
     archiveClassifier.set("sources")
 }
 
-group = "com.github.adevone"
+group = "com.github.adevone.summer"
 version = summerVersion
 
 publishing {

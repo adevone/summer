@@ -58,19 +58,19 @@ dependencies {
     implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
 
     implementation("com.google.android.material:material:1.0.0")
-    implementation("androidx.appcompat:appcompat:1.0.2")
+    implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     implementation("androidx.recyclerview:recyclerview:1.0.0")
 
     implementation("androidx.multidex:multidex:2.0.1")
 
-    implementation("androidx.core:core-ktx:1.1.0-beta01")
+    implementation("androidx.core:core-ktx:1.1.0")
 
     implementation(project(":shared"))
 
-    implementation("summer:summer:$summerVersion")
-    implementation("summer:summer-androidx:$summerVersion")
+    implementation("com.github.adevone.summer:summer:$summerVersion")
+    implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
 //    implementation(project(":summer"))
 //    implementation(project(":summer-androidx"))
 
