@@ -3,7 +3,9 @@ package summer.execution.reducer
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
+import summer.defaultBackgroundContext
 
 /**
  * Source that can produce new state from previous one.
@@ -58,7 +60,7 @@ import kotlinx.coroutines.async
  * }
  */
 abstract class SummerReducer<TEntity, TParams>(
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope = CoroutineScope(defaultBackgroundContext + SupervisorJob())
 ) {
     /**
      * Called on first [next], [get] or [depend] call
