@@ -58,16 +58,9 @@ object CalendarView {
     }
 }
 
-interface CalendarRouter {
-
-}
-
 class CalendarPresenter(
     getDay: GetDay
-) : BasePresenter<
-    CalendarView.State, 
-    CalendarView.Methods, 
-    CalendarRouter> {
+) : BasePresenter<CalendarView.State, CalendarView.Methods> {
     
     private val defaultDayName = "Monday"
     
@@ -118,8 +111,8 @@ class CalendarPresenter(
 
 typealias UseCase = SummerSource
 
-class BasePresenter<TViewState, TViewMethods, TRouter> : 
-    SummerPresenter<TViewState, TViewMethods, TRouter>() 
+class BasePresenter<TViewState, TViewMethods> : 
+    SummerPresenter<TViewState, TViewMethods>() 
 ```
 
 Android, Kotlin:
@@ -132,10 +125,6 @@ class CalendarFragment : SummerFragment<
 >(R.layout.calendar_fragment) {
 
     override fun createPresenter() = CalendarPresenter(...)
-
-    override var router = object : CalendarRouter {
-        
-    }
 
     override fun createViewState() = object : CalendarView.State {
     
@@ -159,7 +148,7 @@ class CalendarFragment : SummerFragment<
 
 iOS, Swift:
 ```swift
-class CalendarViewController: SummerViewController<CalendarPresenter>, CalendarViewState, CalendarViewMethods, CalendarRouter {
+class CalendarViewController: SummerViewController<CalendarPresenter>, CalendarViewState, CalendarViewMethods {
 
     @IBOutlet weak var loadingSpinner: UIView!
     @IBOutlet weak var dayNameLabel: UILabel!
