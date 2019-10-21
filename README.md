@@ -11,7 +11,7 @@ enableFeaturePreview("GRADLE_METADATA")
 allprojects {
     repositories {
         ...
-        maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://adevone.bintray.com/summer") }
     }
 }
 
