@@ -63,7 +63,7 @@ interface CalendarRouter {
 }
 
 class CalendarPresenter(
-    private val getDay: GetDay
+    getDay: GetDay
 ) : BasePresenter<
     CalendarView.State, 
     CalendarView.Methods, 
@@ -74,7 +74,7 @@ class CalendarPresenter(
     // Proxy that allows to restore state and 
     // set properties even if view does not exist.
     // Summer plugin provides convenient intentions to write it easy
-    override fun createViewStateProxy() = object : {
+    override fun createViewStateProxy(vs: CalendarView.State) = object : CalendarView.State {
     
         // Initial values are automatically emitted to view when it is created.
         // No matter in which state view was. Presenter will change
@@ -119,12 +119,7 @@ class CalendarPresenter(
 typealias UseCase = SummerSource
 
 class BasePresenter<TViewState, TViewMethods, TRouter> : 
-    SummerPresenter<TViewState, TViewMethods, TRouter>(
-        localStore = InMemoryStore(),
-        workContext = Dispatchers.IO,
-        uiContext = Dispatchers.Main,
-        loggerFactory = <...>
-    ) 
+    SummerPresenter<TViewState, TViewMethods, TRouter>() 
 ```
 
 Android, Kotlin:
