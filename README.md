@@ -3,7 +3,7 @@
 # Summer
 
 Gradle dependencies:
-```
+```kotlin
 // in settings.gradle
 enableFeaturePreview("GRADLE_METADATA")
 
@@ -32,7 +32,7 @@ Project aims at standardization and nice IDE support
 Example of feature written using Summer:
 
 Common, Kotlin:
-```
+```kotlin
 class GetDay : UseCase<String, GetDay.Params> {
     
     override suspend fun invoke(): String = when (params.number) {
@@ -128,7 +128,7 @@ class BasePresenter<TViewState, TViewMethods, TRouter> :
 ```
 
 Android, Kotlin:
-```
+```kotlin
 class CalendarFragment : SummerFragment<
     CalendarView.State, 
     CalendarView.Methods, 
@@ -163,7 +163,7 @@ class CalendarFragment : SummerFragment<
 ```
 
 iOS, Swift:
-```
+```swift
 class CalendarViewController: SummerViewController<CalendarPresenter>, CalendarViewState, CalendarViewMethods, CalendarRouter {
 
     @IBOutlet weak var loadingSpinner: UIView!
@@ -197,7 +197,7 @@ class CalendarViewController: SummerViewController<CalendarPresenter>, CalendarV
 ```
 
 ### Feature presentation template 
-```
+```kotlin
 #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
 #end
 #parse("File Header.java")
@@ -237,7 +237,7 @@ interface ${NAME}Router {
 ```
 
 ### Feature fragment template
-```
+```kotlin
 #if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
 #end
 #parse("File Header.java")
