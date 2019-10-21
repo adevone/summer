@@ -1,4 +1,4 @@
-[![](https://jitpack.io/v/adevone/summer.svg)](https://jitpack.io/#adevone/summer)
+[ ![Download](https://api.bintray.com/packages/adevone/summer/summer/images/download.svg) ](https://bintray.com/adevone/summer/summer/_latestVersion)
 
 # Summer
 
@@ -18,10 +18,10 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:0.7.8")
+    implementation("com.github.adevone.summer:summer:0.7.20")
     
     // android part containing SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:0.7.8")
+    implementation("com.github.adevone.summer:summer-androidx:0.7.20")
 }
 ```
 
