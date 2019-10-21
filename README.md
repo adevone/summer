@@ -69,7 +69,7 @@ class CalendarPresenter(
     CalendarView.Methods, 
     CalendarRouter> {
     
-    private val defaultDayName = "Loading..."
+    private val defaultDayName = "Monday"
     
     // Proxy that allows to restore state and 
     // set properties even if view does not exist.
@@ -85,7 +85,7 @@ class CalendarPresenter(
         // or presenter constructor params.
         // Any presenter properties can be used as initial values
         // for state properties
-        override var dayName by store(vs::dayName, initialValue = "Loading...")
+        override var dayName by store(vs::dayName, initialValue = defaultDayName)
     }
     
     // Called when user sees screen for the first time 
