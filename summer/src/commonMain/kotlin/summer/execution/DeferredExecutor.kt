@@ -43,7 +43,9 @@ internal class DeferredExecutor(
                 onSuccess(result, params)
             }
         } catch (e: CancellationException) {
-            onCancel(params)
+            withContext(uiScope.coroutineContext) {
+                onCancel(params)
+            }
         } catch (e: Throwable) {
             withContext(uiScope.coroutineContext) {
                 onFailure(e, params)
