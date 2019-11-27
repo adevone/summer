@@ -23,7 +23,7 @@ interface SummerViewStateProxyProvider<TViewState> {
      *     override var prop by store({ ::prop }, initial = 0)
      * }
      */
-    var viewStateProxy: TViewState
+    val viewStateProxy: TViewState
 }
 
 class SummerStoresController<TViewState, TViewMethods> : ViewStateShorthandProvider<TViewState> {
