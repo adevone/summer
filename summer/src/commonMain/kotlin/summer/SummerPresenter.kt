@@ -1,11 +1,11 @@
 package summer
 
 import summer.execution.SummerExecutor
-import summer.view.SummerViewController
-import summer.view.SummerViewStateProxyProvider
 import summer.store.InMemoryStore
+import summer.store.GetMirrorProperty
 import summer.store.SummerStore
-import summer.store.SummerStoresSubscriber
+import summer.store.SummerStoresController
+import summer.store.SummerViewStateProxyProvider
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KMutableProperty0
 
@@ -31,14 +31,10 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
     loggerFactory = loggerFactory
 ), SummerViewStateProxyProvider<TViewState> {
 
-    private val storesController = SummerStoresSubscriber()
-    private val stateHolder = SummerViewController<TViewState, TViewMethods>(storesController)
-
-    protected val viewStateProxy: TViewState
-        get() = stateHolder.viewStateProxy ?: throw ViewStateDoesNotExistException()
+    private val storesController = SummerStoresController<TViewState, TViewMethods>()
 
     protected val viewMethods: TViewMethods?
-        get() = stateHolder.viewMethods
+        get() = storesController.viewMethods
 
     /**
      * Must be called when view is created. May be called multiple times
@@ -47,10 +43,9 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
         viewState: TViewState,
         viewMethods: TViewMethods
     ) {
-        stateHolder.viewCreated(
+        storesController.viewCreated(
             viewState,
-            viewMethods,
-            viewStateProxyProvider = this
+            viewMethods
         )
     }
 
@@ -58,18 +53,18 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
      * Must be called when view is destroyed. May be called multiple times
      */
     fun viewDestroyed() {
-        stateHolder.viewDestroyed()
+        storesController.viewDestroyed()
     }
 
     /**
      * Shorthand for [storeIn] with [localStore] of this presenter
      */
     protected fun <T> store(
-        viewStateProperty: KMutableProperty0<T>? = null,
-        initialValue: T
+        getMirrorProperty: GetMirrorProperty<TViewState, T>? = null,
+        initial: T
     ) = storeIn(
-        viewStateProperty = viewStateProperty,
-        initialValue = initialValue,
+        getMirrorProperty = getMirrorProperty,
+        initial = initial,
         store = localStore
     )
 
@@ -87,12 +82,12 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
      * @return stored property delegate
      */
     protected fun <T> storeIn(
-        viewStateProperty: KMutableProperty0<T>? = null,
-        initialValue: T,
+        getMirrorProperty: GetMirrorProperty<TViewState, T>? = null,
+        initial: T,
         store: SummerStore
     ) = storesController.storeIn(
-        mirrorProperty = viewStateProperty,
-        initialValue = initialValue,
+        getMirrorProperty = getMirrorProperty,
+        initial = initial,
         store = store
     )
 
@@ -177,7 +172,3 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
         val localStore: SummerStore = InMemoryStore()
     )
 }
-
-class ViewStateDoesNotExistException : IllegalStateException(
-    "can not use viewStateProxy when view does not exist"
-)

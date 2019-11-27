@@ -12,7 +12,7 @@ interface SummerStore {
     /**
      * Provides delegate that will store passed values in this store
      */
-    fun <T> store(onSet: (T) -> Unit, initialValue: T): DelegateProvider<T>
+    fun <T> store(onSet: (T) -> Unit, initial: T): DelegateProvider<T>
 
     /**
      * Must call [store].onSet for each property that was set
@@ -37,8 +37,8 @@ class InMemoryStore : SummerStore {
     private var storedValuesByKey = mutableMapOf<String, Any?>()
     private var isInitByKey = mutableMapOf<String, Unit>()
 
-    override fun <T> store(onSet: (T) -> Unit, initialValue: T): SummerStore.DelegateProvider<T> {
-        return InMemoryDelegateProvider(onSet, initialValue)
+    override fun <T> store(onSet: (T) -> Unit, initial: T): SummerStore.DelegateProvider<T> {
+        return InMemoryDelegateProvider(onSet, initial)
     }
 
     override fun restore() {
@@ -48,7 +48,7 @@ class InMemoryStore : SummerStore {
 
     private inner class InMemoryDelegateProvider<T>(
         private val onSet: (T) -> Unit,
-        private val initialValue: T
+        private val initial: T
     ) : SummerStore.DelegateProvider<T> {
 
         override fun provideDelegate(
@@ -57,24 +57,24 @@ class InMemoryStore : SummerStore {
         ): ReadWriteProperty<Any?, T> {
             val delegate = Delegate(
                 onSet = onSet,
-                initialValue = initialValue
+                initial = initial
             )
             if (prop.name !in storedValuesByKey) {
-                storedValuesByKey[prop.name] = initialValue
+                storedValuesByKey[prop.name] = initial
             }
             @Suppress("UNCHECKED_CAST")
             val value = storedValuesByKey[prop.name] as T
             propertiesToRestore.add(PropertyToRestore(prop.name, onSet, delegate, value))
             return Delegate(
                 onSet = onSet,
-                initialValue = initialValue
+                initial = initial
             )
         }
     }
 
     private inner class Delegate<T>(
         private val onSet: (T) -> Unit,
-        private val initialValue: T
+        private val initial: T
     ) : ReadWriteProperty<Any?, T> {
 
         override fun getValue(thisRef: Any?, property: KProperty<*>): T {
@@ -83,7 +83,7 @@ class InMemoryStore : SummerStore {
                 @Suppress("UNCHECKED_CAST")
                 storedValuesByKey[property.name] as T
             } else {
-                initialValue
+                initial
             }
         }
 

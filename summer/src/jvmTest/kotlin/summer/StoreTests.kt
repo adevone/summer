@@ -19,7 +19,7 @@ class StoreTests {
             onSet = { value ->
                 actualValue = value
             },
-            initialValue = ""
+            initial = ""
         )
 
         property = expectedValue
@@ -39,7 +39,7 @@ class StoreTests {
             @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
             var property by store.store(
                 onSet = {},
-                initialValue = ""
+                initial = ""
             )
 
             @Suppress("UNUSED_VALUE")
@@ -51,7 +51,7 @@ class StoreTests {
             onSet = { value ->
                 actualValue = value
             },
-            initialValue = ""
+            initial = ""
         )
 
         store.restore()
@@ -73,7 +73,7 @@ class StoreTests {
             onSet = { value ->
                 actualValue = value
             },
-            initialValue = expectedValue
+            initial = expectedValue
         )
 
         store.restore()
