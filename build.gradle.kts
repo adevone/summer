@@ -7,12 +7,12 @@ buildscript {
         maven(url = "https://kotlin.bintray.com/kotlinx")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.4.1")
+        classpath("com.android.tools.build:gradle:3.5.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
         classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:$atomicfuVersion")
         classpath("co.touchlab:kotlinxcodesync:0.1.5")
-        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+")
+        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
     }
 }
 
@@ -32,7 +32,7 @@ subprojects {
         maven(url = "https://kotlin.bintray.com/ktor")
         maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
         maven(url = "https://dl.bintray.com/russhwolf/multiplatform-settings")
-        maven(url = "https://adevone.bintray.com/summer")
+        maven(url = "https://dl.bintray.com/summermpp/summer")
         maven {
             url = uri("https://jitpack.io")
 //            content {

@@ -72,7 +72,7 @@ bintray {
     pkg(closureOf<BintrayExtension.PackageConfig> {
         repo = "summer"
         name = project.name
-        userOrg = "adevone"
+        userOrg = "summermpp"
         setLicenses("MIT")
         vcsUrl = "https://github.com/adevone/summer"
     })

@@ -77,7 +77,7 @@ publishing {
     }
 
     repositories {
-        maven("https://api.bintray.com/maven/adevone/summer/summer/;publish=0") {
+        maven("https://api.bintray.com/maven/summermpp/summer/summer/;publish=0") {
             name = "bintray"
 
             credentials {
