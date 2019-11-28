@@ -26,7 +26,7 @@ interface SummerViewStateProxyProvider<TViewState> {
     val viewStateProxy: TViewState
 }
 
-class SummerStoresController<TViewState, TViewMethods> : ViewStateShorthandProvider<TViewState> {
+class SummerStoresController<TViewState, TViewMethods> {
 
     var viewState: TViewState? = null
     var viewMethods: TViewMethods? = null
@@ -39,8 +39,9 @@ class SummerStoresController<TViewState, TViewMethods> : ViewStateShorthandProvi
     ): SummerStore.DelegateProvider<T> {
         return store.store(
             onSet = { value ->
-                if (viewState != null && getMirrorProperty != null) {
-                    val property = this.getMirrorProperty()
+                val currentViewState = viewState
+                if (currentViewState != null && getMirrorProperty != null) {
+                    val property = getMirrorProperty(currentViewState)
                     property.set(value)
                 }
             },
@@ -49,9 +50,6 @@ class SummerStoresController<TViewState, TViewMethods> : ViewStateShorthandProvi
             stores.add(store)
         }
     }
-
-    override val vs: TViewState
-        get() = viewState ?: throw AssertionError("viewState nullability is not checked")
 
     /**
      * Must be called when view is created. May be called multiple times
@@ -77,8 +75,4 @@ class SummerStoresController<TViewState, TViewMethods> : ViewStateShorthandProvi
     }
 }
 
-typealias GetMirrorProperty<TViewState, T> = ViewStateShorthandProvider<TViewState>.() -> KMutableProperty0<T>
-
-interface ViewStateShorthandProvider<TViewState> {
-    val vs: TViewState
-}
+typealias GetMirrorProperty<TViewState, T> = (TViewState) -> KMutableProperty0<T>

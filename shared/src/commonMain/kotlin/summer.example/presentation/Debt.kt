@@ -28,7 +28,7 @@ class DebtPresenter : ScreenPresenter<
     private val debtDao: DebtDao by instance()
 
     override val viewStateProxy = object : DebtView.State {
-        override var debt by store({ vs::debt }, initial = null)
+        override var debt by store({ it::debt }, initial = null)
     }
 
     private val getDebtExecutor = get<GetDebt>()
