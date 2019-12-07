@@ -1,13 +1,12 @@
 package summer
 
 import summer.execution.SummerExecutor
-import summer.store.InMemoryStore
 import summer.store.GetMirrorProperty
+import summer.store.InMemoryStore
 import summer.store.SummerStore
 import summer.store.SummerStoresController
 import summer.store.SummerViewStateProxyProvider
 import kotlin.coroutines.CoroutineContext
-import kotlin.reflect.KMutableProperty0
 
 /**
  * Base presenter. Allows to restore view state and
@@ -46,6 +45,21 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
         storesController.viewCreated(
             viewState,
             viewMethods
+        )
+    }
+
+    /**
+     * Same as [viewCreated] but with unsafe typecast.
+     * Used when view can not pass typed [viewState] and [viewMethods]
+     */
+    fun viewCreatedUnsafe(
+        viewState: Any,
+        viewMethods: Any
+    ) {
+        @Suppress("UNCHECKED_CAST")
+        viewCreated(
+            viewState as TViewState,
+            viewMethods as TViewMethods
         )
     }
 
