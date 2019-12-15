@@ -43,7 +43,6 @@ class InMemoryStore : SummerStore {
 
     override fun restore() {
         propertiesToRestore.forEach { it.restore() }
-        propertiesToRestore.clear()
     }
 
     private inner class InMemoryDelegateProvider<T>(
