@@ -9,16 +9,18 @@ kotlin {
     jvm()
     iosArm64  {
         binaries {
-            framework {
-                freeCompilerArgs.add("-Xobjc-generics")
-            }
+            framework()
+        }
+        compilations.forEach { compilation ->
+            compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
         }
     }
     iosX64  {
         binaries {
-            framework {
-                freeCompilerArgs.add("-Xobjc-generics")
-            }
+            framework()
+        }
+        compilations.forEach { compilation ->
+            compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
         }
     }
     js()

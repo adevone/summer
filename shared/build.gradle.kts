@@ -29,17 +29,21 @@ kotlin {
     iosArm64 {
         binaries {
             framework {
-                freeCompilerArgs.add("-Xobjc-generics")
                 embedBitcode("disable")
             }
+        }
+        compilations.forEach { compilation ->
+            compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
         }
     }
     iosX64 {
         binaries {
             framework {
-                freeCompilerArgs.add("-Xobjc-generics")
                 embedBitcode("disable")
             }
+        }
+        compilations.forEach { compilation ->
+            compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
         }
     }
     android()
