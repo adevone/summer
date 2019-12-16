@@ -33,7 +33,7 @@ interface SummerStore {
  */
 class InMemoryStore : SummerStore {
 
-    private val propertiesToRestore = mutableListOf<PropertyToRestore<*>>()
+    private val delegates = mutableListOf<Delegate<*>>()
     private var storedValuesByKey = mutableMapOf<String, Any?>()
     private var isInitByKey = mutableMapOf<String, Unit>()
 
@@ -42,7 +42,7 @@ class InMemoryStore : SummerStore {
     }
 
     override fun restore() {
-        propertiesToRestore.forEach { it.restore() }
+        delegates.forEach { it.restore() }
     }
 
     private inner class InMemoryDelegateProvider<T>(
@@ -54,24 +54,21 @@ class InMemoryStore : SummerStore {
             thisRef: Any?,
             prop: KProperty<*>
         ): ReadWriteProperty<Any?, T> {
-            val delegate = Delegate(
-                onSet = onSet,
-                initial = initial
-            )
             if (prop.name !in storedValuesByKey) {
                 storedValuesByKey[prop.name] = initial
             }
-            @Suppress("UNCHECKED_CAST")
-            val value = storedValuesByKey[prop.name] as T
-            propertiesToRestore.add(PropertyToRestore(prop.name, onSet, delegate, value))
-            return Delegate(
+            val delegate = Delegate(
+                propName = prop.name,
                 onSet = onSet,
                 initial = initial
             )
+            delegates.add(delegate)
+            return delegate
         }
     }
 
     private inner class Delegate<T>(
+        private val propName: String,
         private val onSet: (T) -> Unit,
         private val initial: T
     ) : ReadWriteProperty<Any?, T> {
@@ -86,31 +83,20 @@ class InMemoryStore : SummerStore {
             }
         }
 
-        /**
-         * If some property was set before [SummerPresenter.created] it must not be restored
-         */
-        var wasSet = false
-
         override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
             storedValuesByKey[property.name] = value
             isInitByKey[property.name] = Unit
             onSet(value)
-            wasSet = true
         }
-    }
 
-    private class PropertyToRestore<T>(
-        private val propName: String,
-        private val onSet: (T) -> Unit,
-        private val delegate: Delegate<T>,
-        private val value: T
-    ) {
         fun restore() {
-            if (!delegate.wasSet) {
-                onSet(value)
-            }
+            @Suppress("UNCHECKED_CAST")
+            val value = storedValuesByKey[propName] as T
+            onSet(value)
         }
-
-        override fun toString() = "$propName=$value"
     }
+
+    override fun toString() = "propertiesToRestore=${delegates.joinToString()}, " +
+            "storedValuesByKey=${storedValuesByKey.entries.joinToString { (key, value) -> "$key=$value" }}, " +
+            "isInitByKey=${isInitByKey.entries.joinToString { (key, isInit) -> "$key isInit=$isInit" }}"
 }
