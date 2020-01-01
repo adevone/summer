@@ -1,5 +1,6 @@
 package summer
 
+import summer.execution.LifecycleSummerExecutor
 import summer.execution.SummerExecutor
 import summer.view.SummerViewController
 import summer.view.SummerViewStateProxyProvider
@@ -18,18 +19,16 @@ import kotlin.reflect.KMutableProperty0
  * You should create your own base presenter in your project.
  */
 abstract class SummerPresenter<TViewState, TViewMethods>(
-    uiContext: CoroutineContext = defaultUiContext,
-    defaultWorkContext: CoroutineContext = defaultBackgroundContext,
-    loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
+    private val executor: LifecycleSummerExecutor = SummerExecutor(
+        uiContext = defaultUiContext,
+        defaultWorkContext = defaultBackgroundContext,
+        loggerFactory = DefaultLoggerFactory
+    ),
     /**
      * Store created specifically for this presenter. Must not be reused
      */
     private val localStore: SummerStore = InMemoryStore()
-) : SummerExecutor(
-    mainContext = uiContext,
-    defaultWorkContext = defaultWorkContext,
-    loggerFactory = loggerFactory
-), SummerViewStateProxyProvider<TViewState> {
+) : SummerExecutor by executor, SummerViewStateProxyProvider<TViewState> {
 
     private val storesController = SummerStoresSubscriber()
     private val stateHolder = SummerViewController<TViewState, TViewMethods>(storesController)
@@ -100,14 +99,14 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
      * Must be called when presenter is created. Must be called exactly once
      */
     fun created() {
-        super.receiverCreated()
+        executor.receiverCreated()
     }
 
     /**
      * Must be called when presenter is destroyed. Must be called exactly once
      */
     fun destroyed() {
-        super.receiverDestroyed()
+        executor.receiverDestroyed()
     }
 
     /**
@@ -164,9 +163,11 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
      * Convenient constructor if IoC container used
      */
     constructor(dependencies: Dependencies) : this(
-        uiContext = dependencies.uiContext,
-        defaultWorkContext = dependencies.workContext,
-        loggerFactory = dependencies.loggerFactory,
+        executor = SummerExecutor(
+            uiContext = dependencies.uiContext,
+            defaultWorkContext = dependencies.workContext,
+            loggerFactory = dependencies.loggerFactory
+        ),
         localStore = dependencies.localStore
     )
 

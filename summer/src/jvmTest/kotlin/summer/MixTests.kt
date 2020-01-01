@@ -1,6 +1,7 @@
 package summer
 
 import kotlinx.coroutines.Dispatchers
+import summer.execution.LifecycleSummerExecutor
 import summer.execution.SummerExecutor
 import summer.execution.mix.execute
 import summer.execution.reducer.SummerReducer
@@ -26,7 +27,7 @@ class MixTests {
 
         lateinit var actualResult: String
 
-        val summerExecutor = object : SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {
+        val summerExecutor = object : LifecycleSummerExecutor by SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {
 
             val reducer = object : SummerReducer<String, Unit>(this) {
 
@@ -71,7 +72,7 @@ class MixTests {
 
         lateinit var actualResult: String
 
-        val summerExecutor = object : SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {
+        val summerExecutor = object : LifecycleSummerExecutor by SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {
 
             val reducer = object : SummerReducer<String, Unit>(this) {
 

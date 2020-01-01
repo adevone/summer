@@ -84,3 +84,15 @@ class LoadingExecutorInterceptor<TEntity, TParams>(
         property.set(false)
     }
 }
+
+/**
+ * Factory method for [LoadingExecutorInterceptor]
+ */
+@Suppress("FunctionName")
+fun <TEntity, TParams> LoadingInterceptor(
+    getProperty: suspend () -> KMutableProperty0<Boolean>,
+    needShow: suspend (event: SummerExecutorInterceptor.Event.Executed<TEntity, TParams>) -> Boolean = { true }
+): LoadingExecutorInterceptor<TEntity, TParams> = LoadingExecutorInterceptor(
+    getProperty = getProperty,
+    needShow = needShow
+)

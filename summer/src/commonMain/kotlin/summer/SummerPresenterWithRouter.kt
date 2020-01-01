@@ -1,5 +1,6 @@
 package summer
 
+import summer.execution.SummerExecutor
 import summer.store.InMemoryStore
 import summer.store.SummerStore
 import kotlin.coroutines.CoroutineContext
@@ -13,9 +14,11 @@ abstract class SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>(
      */
     localStore: SummerStore = InMemoryStore()
 ) : SummerPresenter<TViewState, TViewMethods>(
-    uiContext,
-    defaultWorkContext,
-    loggerFactory,
+    SummerExecutor(
+        uiContext = uiContext,
+        defaultWorkContext = defaultWorkContext,
+        loggerFactory = loggerFactory
+    ),
     localStore
 ) {
     protected val router: TRouter

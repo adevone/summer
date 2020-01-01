@@ -53,4 +53,7 @@ class MixSourceExecutor<T, TSourceParams> internal constructor(
     }
 }
 
+/**
+ * Shorthand for [MixSourceExecutor.execute] when MixSourceExecutor.TSourceParams is Unit
+ */
 fun <T> MixSourceExecutor<T, Unit>.execute() = execute(Unit)

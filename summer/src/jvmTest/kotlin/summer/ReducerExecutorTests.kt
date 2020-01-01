@@ -1,6 +1,8 @@
 package summer
 
 import kotlinx.coroutines.Dispatchers
+import summer.execution.DefaultSummerExecutor
+import summer.execution.LifecycleSummerExecutor
 import summer.execution.SummerExecutor
 import summer.execution.reducer.SummerReducer
 import java.lang.RuntimeException
@@ -17,7 +19,7 @@ class ReducerExecutorTests {
 
         lateinit var actualResult: String
 
-        val summerExecutor = object : SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {
+        val summerExecutor = object : LifecycleSummerExecutor by SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {
 
             val reducer = object : SummerReducer<String, Unit>(this) {
 
@@ -49,7 +51,7 @@ class ReducerExecutorTests {
 
         lateinit var throwable: Throwable
 
-        val summerExecutor = object : SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {
+        val summerExecutor = object : LifecycleSummerExecutor by SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {
 
             val reducer = object : SummerReducer<String, Unit>(this) {
 

@@ -3,6 +3,7 @@ package summer.execution
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import summer.SummerLogger
 import summer.SummerPresenter
 import summer.execution.mix.MixSource
@@ -12,66 +13,18 @@ import summer.execution.reducer.SummerReducer
 import summer.execution.source.SourceExecutor
 import summer.execution.source.SummerSource
 import kotlin.coroutines.CoroutineContext
-import kotlin.reflect.KMutableProperty0
 
 /**
  * Manages executions of sources ([SummerSource], [SummerReducer], [MixSource])
  */
-abstract class SummerExecutor(
-    mainContext: CoroutineContext,
-    private val defaultWorkContext: CoroutineContext,
-    loggerFactory: SummerLogger.Factory
-) : CoroutineScope {
+interface SummerExecutor : CoroutineScope {
 
-    private val logger = loggerFactory.get(this::class)
-
-    /**
-     * Must be called when receiver of execution result was created.
-     * [SummerPresenter] is receiver by default in this library
-     */
-    fun receiverCreated() {
-        subscriptions.forEach { it.subscribe() }
-    }
-
-    /**
-     * Must be called when receiver of execution result was destroyed.
-     * [SummerPresenter] is receiver by default in this library
-     */
-    fun receiverDestroyed() {
-        subscriptions.forEach { it.unsubscribe() }
-        subscriptions.clear()
-        job.cancel()
-    }
+    val defaultWorkContext: CoroutineContext
 
     /**
      * Called on each unhandled error in any executor
      */
-    protected open fun onFailure(e: Throwable) {
-        logger.error(e)
-    }
-
-    /**
-     * Factory method for [LoadingExecutorInterceptor]
-     */
-    fun <TEntity, TParams> loadingInterceptor(
-        getProperty: suspend () -> KMutableProperty0<Boolean>,
-        needShow: suspend (event: SummerExecutorInterceptor.Event.Executed<TEntity, TParams>) -> Boolean = { true }
-    ): LoadingExecutorInterceptor<TEntity, TParams> = LoadingExecutorInterceptor(
-        getProperty = getProperty,
-        needShow = needShow
-    )
-
-    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
-        this@SummerExecutor.onFailure(e)
-    }
-
-    private val job = SupervisorJob()
-    final override val coroutineContext = mainContext + job + coroutineExceptionHandler
-
-    // coroutineContext is final and initialized earlier
-    // than passing this as CoroutineScope in DeferredExecutor
-    @Suppress("LeakingThis")
-    private val executionManager = DeferredExecutor(uiScope = this)
+    fun onFailure(e: Throwable)
 
     /**
      * Factory method for [SourceExecutor]
@@ -81,34 +34,9 @@ abstract class SummerExecutor(
         workContext: CoroutineContext = defaultWorkContext,
         onExecute: suspend (_: TParams) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TParams) -> Unit = { e, _ -> throw e },
-        onCancel: suspend (TParams) -> Unit = { params -> logger.info { "$this cancelled, params=$params " } },
+        onCancel: suspend (TParams) -> Unit = { _ -> },
         onSuccess: suspend (TEntity, _: TParams) -> Unit = { _, _ -> }
-    ): SourceExecutor<TEntity, TParams> = SourceExecutor(
-        source = this,
-        deferredExecutor = executionManager,
-        workContext = workContext,
-        interceptor = interceptor,
-        onExecute = onExecute,
-        onFailure = onFailure,
-        onCancel = onCancel,
-        onSuccess = onSuccess,
-        scope = this@SummerExecutor
-    )
-
-    private class Subscription<TEntity, TParams>(
-        private val source: SummerReducer<TEntity, TParams>,
-        private val observer: SummerReducer.Observer<TEntity, TParams>
-    ) {
-        fun subscribe() {
-            source.observe(observer)
-        }
-
-        fun unsubscribe() {
-            source.unsubscribe(observer)
-        }
-    }
-
-    private val subscriptions = mutableListOf<Subscription<*, *>>()
+    ): SourceExecutor<TEntity, TParams>
 
     /**
      * Factory method for [ReducerExecutor]
@@ -118,21 +46,9 @@ abstract class SummerExecutor(
         workContext: CoroutineContext = defaultWorkContext,
         onExecute: suspend (_: TParams?) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TParams?) -> Unit = { e, _ -> throw e },
-        onCancel: suspend (TParams?) -> Unit = { params -> logger.info { "$this cancelled, params=$params" } },
+        onCancel: suspend (TParams?) -> Unit = { _ -> },
         onSuccess: suspend (TEntity, _: TParams?) -> Unit = { _, _ -> }
-    ): ReducerExecutor<TEntity, TParams> = ReducerExecutor(
-        source = this,
-        deferredExecutor = executionManager,
-        workContext = workContext,
-        interceptor = interceptor,
-        onExecute = onExecute,
-        onFailure = onFailure,
-        onCancel = onCancel,
-        onSuccess = onSuccess,
-        scope = this@SummerExecutor
-    ).also { sharedSourceExecutor ->
-        subscriptions += Subscription(this, sharedSourceExecutor)
-    }
+    ): ReducerExecutor<TEntity, TParams>
 
     /**
      * Factory method for [MixSourceExecutor]
@@ -141,22 +57,9 @@ abstract class SummerExecutor(
         interceptor: SummerExecutorInterceptor<T, TSourceParams> = NoInterceptor(),
         onExecute: suspend (_: TSourceParams) -> Unit = { _ -> },
         onFailure: suspend (Throwable, _: TSourceParams) -> Unit = { e, _ -> throw e },
-        onCancel: suspend (TSourceParams) -> Unit = { sourceParams -> logger.info { "$this cancelled, sourceParams=$sourceParams" } },
+        onCancel: suspend (TSourceParams) -> Unit = { _ -> },
         onSuccess: suspend (T, TSourceParams) -> Unit = { _, _ -> }
-    ): MixSourceExecutor<T, TSourceParams> = MixSourceExecutor(
-        source = this,
-        deferredExecutor = executionManager,
-        interceptor = interceptor,
-        onExecute = onExecute,
-        onFailure = onFailure,
-        onCancel = onCancel,
-        onSuccess = onSuccess,
-        scope = this@SummerExecutor,
-        workContext = defaultWorkContext
-    ).also { mixSourceExecutor ->
-        this.consumer = mixSourceExecutor
-        subscriptions += Subscription(this.mix, this)
-    }
+    ): MixSourceExecutor<T, TSourceParams>
 
     /**
      * @return [MixSource] that mixes [this] with [mix].
@@ -187,19 +90,145 @@ abstract class SummerExecutor(
         mix = mix,
         scope = this@SummerExecutor
     )
+}
+
+interface LifecycleSummerExecutor : SummerExecutor{
+    /**
+     * Must be called when receiver of execution result was created.
+     * [SummerPresenter] is receiver by default in this library
+     */
+    fun receiverCreated()
 
     /**
-     * Shorthand for [SourceExecutor.execute] when SourceExecutor.TParams is Unit
+     * Must be called when receiver of execution result was destroyed.
+     * [SummerPresenter] is receiver by default in this library
      */
-    fun <TEntity> SourceExecutor<TEntity, Unit>.execute() = execute(Unit)
+    fun receiverDestroyed()
+}
+
+@Suppress("FunctionName")
+fun SummerExecutor(
+    uiContext: CoroutineContext,
+    defaultWorkContext: CoroutineContext,
+    loggerFactory: SummerLogger.Factory
+) : LifecycleSummerExecutor = DefaultSummerExecutor(
+    uiContext, defaultWorkContext, loggerFactory
+)
+
+class DefaultSummerExecutor(
+    mainContext: CoroutineContext,
+    override val defaultWorkContext: CoroutineContext,
+    loggerFactory: SummerLogger.Factory
+) : CoroutineScope, LifecycleSummerExecutor {
+
+    private val logger = loggerFactory.get(this::class)
 
     /**
-     * Shorthand for [ReducerExecutor.execute] when ReducerExecutor.TParams is Unit
+     * Must be called when receiver of execution result was created.
+     * [SummerPresenter] is receiver by default in this library
      */
-    fun <TEntity> ReducerExecutor<TEntity, Unit>.execute() = execute(Unit)
+    override fun receiverCreated() {
+        subscriptions.forEach { it.subscribe() }
+    }
 
     /**
-     * Shorthand for [MixSourceExecutor.execute] when MixSourceExecutor.TSourceParams is Unit
+     * Must be called when receiver of execution result was destroyed.
+     * [SummerPresenter] is receiver by default in this library
      */
-    fun <TEntity> MixSourceExecutor<TEntity, Unit>.execute() = execute(Unit)
+    override fun receiverDestroyed() {
+        subscriptions.forEach { it.unsubscribe() }
+        subscriptions.clear()
+        job.cancel()
+    }
+
+    override fun onFailure(e: Throwable) {
+        logger.error(e)
+    }
+
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, e ->
+        this@DefaultSummerExecutor.onFailure(e)
+    }
+
+    private val job = SupervisorJob()
+    override val coroutineContext = mainContext + job + coroutineExceptionHandler
+
+    // coroutineContext is final and initialized earlier
+    // than passing this as CoroutineScope in DeferredExecutor
+    private val executionManager = DeferredExecutor(uiScope = this)
+
+    override fun <TEntity, TParams> SummerSource<TEntity, TParams>.executor(
+        interceptor: SummerExecutorInterceptor<TEntity, TParams>,
+        workContext: CoroutineContext,
+        onExecute: suspend (_: TParams) -> Unit,
+        onFailure: suspend (Throwable, _: TParams) -> Unit,
+        onCancel: suspend (TParams) -> Unit,
+        onSuccess: suspend (TEntity, _: TParams) -> Unit
+    ): SourceExecutor<TEntity, TParams> = SourceExecutor(
+        source = this,
+        deferredExecutor = executionManager,
+        workContext = workContext,
+        interceptor = interceptor,
+        onExecute = onExecute,
+        onFailure = onFailure,
+        onCancel = onCancel,
+        onSuccess = onSuccess,
+        scope = this@DefaultSummerExecutor
+    )
+
+    private class Subscription<TEntity, TParams>(
+        private val source: SummerReducer<TEntity, TParams>,
+        private val observer: SummerReducer.Observer<TEntity, TParams>
+    ) {
+        fun subscribe() {
+            source.observe(observer)
+        }
+
+        fun unsubscribe() {
+            source.unsubscribe(observer)
+        }
+    }
+
+    private val subscriptions = mutableListOf<Subscription<*, *>>()
+
+    override fun <TEntity, TParams> SummerReducer<TEntity, TParams>.executor(
+        interceptor: SummerExecutorInterceptor<TEntity, TParams?>,
+        workContext: CoroutineContext,
+        onExecute: suspend (_: TParams?) -> Unit,
+        onFailure: suspend (Throwable, _: TParams?) -> Unit,
+        onCancel: suspend (TParams?) -> Unit,
+        onSuccess: suspend (TEntity, _: TParams?) -> Unit
+    ): ReducerExecutor<TEntity, TParams> = ReducerExecutor(
+        source = this,
+        deferredExecutor = executionManager,
+        workContext = workContext,
+        interceptor = interceptor,
+        onExecute = onExecute,
+        onFailure = onFailure,
+        onCancel = onCancel,
+        onSuccess = onSuccess,
+        scope = this@DefaultSummerExecutor
+    ).also { sharedSourceExecutor ->
+        subscriptions += Subscription(this, sharedSourceExecutor)
+    }
+
+    override fun <T, TSourceEntity, TMixEntity, TSourceParams> MixSource<T, TSourceEntity, TMixEntity, TSourceParams>.executor(
+        interceptor: SummerExecutorInterceptor<T, TSourceParams>,
+        onExecute: suspend (_: TSourceParams) -> Unit,
+        onFailure: suspend (Throwable, _: TSourceParams) -> Unit,
+        onCancel: suspend (TSourceParams) -> Unit,
+        onSuccess: suspend (T, TSourceParams) -> Unit
+    ): MixSourceExecutor<T, TSourceParams> = MixSourceExecutor(
+        source = this,
+        deferredExecutor = executionManager,
+        interceptor = interceptor,
+        onExecute = onExecute,
+        onFailure = onFailure,
+        onCancel = onCancel,
+        onSuccess = onSuccess,
+        scope = this@DefaultSummerExecutor,
+        workContext = defaultWorkContext
+    ).also { mixSourceExecutor ->
+        this.consumer = mixSourceExecutor
+        subscriptions += Subscription(this.mix, this)
+    }
 }

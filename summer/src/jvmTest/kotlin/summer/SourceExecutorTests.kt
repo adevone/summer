@@ -3,9 +3,8 @@ package summer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import summer.execution.DeferredExecutor
-import summer.execution.NoInterceptor
-import summer.execution.SummerExecutor
+import kotlinx.coroutines.runBlocking
+import summer.execution.*
 import summer.execution.source.SourceExecutor
 import summer.execution.source.SummerSource
 import summer.execution.source.execute
@@ -23,7 +22,7 @@ class SourceExecutorTests {
 
         val expectedResult = "test"
 
-        val scope = object : SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {}
+        val scope = SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory)
         val deferredExecutor = DeferredExecutor(scope)
 
         val source = object : SummerSource<String, Unit> {
@@ -56,7 +55,7 @@ class SourceExecutorTests {
     @Test
     fun fail() {
 
-        val scope = object : SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {}
+        val scope = SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory)
         val deferredExecutor = DeferredExecutor(scope)
 
         val source = object : SummerSource<String, Unit> {
@@ -89,7 +88,7 @@ class SourceExecutorTests {
     @Test
     fun cancel() {
 
-        val scope = object : SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {}
+        val scope = SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory)
         val deferredExecutor = DeferredExecutor(scope)
 
         val source = object : SummerSource<String, Unit> {
@@ -128,7 +127,7 @@ class SourceExecutorTests {
     @Test
     fun cancelBeforeLaunch() {
 
-        val scope = object : SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {}
+        val scope = SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory)
         val deferredExecutor = DeferredExecutor(scope)
 
         val source = object : SummerSource<String, Unit> {

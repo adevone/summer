@@ -53,4 +53,7 @@ class ReducerExecutor<TEntity, in TParams> internal constructor(
     }
 }
 
+/**
+ * Shorthand for [ReducerExecutor.execute] when ReducerExecutor.TParams is Unit
+ */
 fun <TEntity> ReducerExecutor<TEntity, Unit>.execute() = execute(Unit)

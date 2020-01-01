@@ -111,3 +111,8 @@ fun <TEntity> SourceExecutor<TEntity, Unit>.execute(
     params = Unit,
     cancelAll = cancelAll
 )
+
+/**
+ * Shorthand for [SourceExecutor.execute] when SourceExecutor.TParams is Unit
+ */
+fun <TEntity> SourceExecutor<TEntity, Unit>.execute() = execute(Unit)
