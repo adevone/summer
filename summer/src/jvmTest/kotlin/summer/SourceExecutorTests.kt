@@ -167,4 +167,41 @@ class SourceExecutorTests {
         assertFalse(isOnSuccessCalled)
         assertFalse(isOnCancelCalled)
     }
+
+    @Test
+    fun `OnFailure method should not be called if onFailure hook is not throw exception`() {
+
+        var wasOnFailureMethodCalled = false
+        val scope = object : SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {
+            override fun onFailure(e: Throwable) {
+                wasOnFailureMethodCalled = true
+            }
+        }
+        val deferredExecutor = DeferredExecutor(scope)
+
+        val source = object : SummerSource<String, Unit> {
+
+            override suspend fun invoke(params: Unit): String {
+                throw RuntimeException()
+            }
+        }
+
+        val executor = SourceExecutor(
+            source = source,
+            deferredExecutor = deferredExecutor,
+            interceptor = NoInterceptor(),
+            onExecute = {},
+            onFailure = { e, _ ->
+                //just do nothing
+            },
+            onCancel = {},
+            onSuccess = { _, _ -> },
+            scope = scope,
+            workContext = Dispatchers.Unconfined
+        )
+
+        executor.execute()
+
+        assertFalse { wasOnFailureMethodCalled }
+    }
 }
