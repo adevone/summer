@@ -3,6 +3,7 @@ package summer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import summer.execution.DeferredExecutor
 import summer.execution.NoInterceptor
 import summer.execution.SummerExecutor
@@ -87,7 +88,7 @@ class SourceExecutorTests {
     }
 
     @Test
-    fun cancel() {
+    fun cancel() = runBlocking {
 
         val scope = object : SummerExecutor(Dispatchers.Unconfined, Dispatchers.Unconfined, loggersFactory) {}
         val deferredExecutor = DeferredExecutor(scope)
@@ -119,7 +120,7 @@ class SourceExecutorTests {
         )
 
         executor.execute()
-        scope.cancel()
+        executor.cancelAll()
 
         assertNull(throwable)
         assertTrue(isCancelled)
