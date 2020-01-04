@@ -37,16 +37,19 @@ class MixSourceExecutor<T, TSourceParams> internal constructor(
     }
 
     override fun onObtain(deferred: Deferred<T>, sourceParams: TSourceParams) {
-        scope.launch {
+        deferredExecutor.launch(
+            initialScope = scope,
+            params = sourceParams,
+            onFailure = onFailure
+        ) {
             withContext(workContext) {
                 deferredExecutor.execute(
                     deferred = deferred,
                     params = sourceParams,
                     interceptor = interceptor,
-                    onFailure = onFailure,
                     onExecute = onExecute,
-                    onCancel = onCancel,
-                    onSuccess = onSuccess
+                    onSuccess = onSuccess,
+                    onCancel = onCancel
                 )
             }
         }

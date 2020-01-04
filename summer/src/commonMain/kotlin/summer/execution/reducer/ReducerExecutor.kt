@@ -3,7 +3,6 @@ package summer.execution.reducer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import summer.SummerPresenter
 import summer.execution.DeferredExecutor
 import summer.execution.SummerExecutor
@@ -36,7 +35,11 @@ class ReducerExecutor<TEntity, in TParams> internal constructor(
     }
 
     override fun onObtain(deferred: Deferred<TEntity>, params: TParams?) {
-        scope.launch {
+        deferredExecutor.launch(
+            initialScope = scope,
+            params = params,
+            onFailure = onFailure
+        ) {
             val scopedDeferred = async(workContext) {
                 deferred.await()
             }
@@ -44,10 +47,9 @@ class ReducerExecutor<TEntity, in TParams> internal constructor(
                 deferred = scopedDeferred,
                 params = params,
                 interceptor = interceptor,
-                onFailure = onFailure,
                 onExecute = onExecute,
-                onCancel = onCancel,
-                onSuccess = onSuccess
+                onSuccess = onSuccess,
+                onCancel = onCancel
             )
         }
     }
