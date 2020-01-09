@@ -42,27 +42,20 @@ internal class DeferredExecutor(
             withContext(uiScope.coroutineContext) {
                 onCancel(params)
             }
-        } /*catch (e: Throwable) {
-            withContext(uiScope.coroutineContext) {
-                onFailure(e, params)
-            }
-        }*/
-    }
-
-    /**
-     * Decorate [initialScope] Run specified suspend block inside wp
-     */
-    fun <TParams> launch(
-        initialScope: CoroutineScope,
-        params: TParams,
-        onFailure: suspend (Throwable, TParams) -> Unit,
-        block: suspend CoroutineScope.() -> Unit
-    ) : Job {
-        val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            initialScope.launch {
-                onFailure(throwable, params)
-            }
         }
-        return (initialScope + coroutineExceptionHandler).launch(block = block)
     }
+}
+
+/**
+ * Decorate receiver [CoroutineScope] with [CoroutineExceptionHandler].
+ * @param onFailure called inside receiver [CoroutineScope].
+ */
+internal fun CoroutineScope.withErrorHandler(onFailure: suspend (Throwable) -> Unit): CoroutineScope {
+    val scope = this
+    val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        scope.launch {
+            onFailure(throwable)
+        }
+    }
+    return scope + coroutineExceptionHandler
 }

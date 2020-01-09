@@ -5,6 +5,7 @@ import summer.SummerPresenter
 import summer.execution.DeferredExecutor
 import summer.execution.SummerExecutor
 import summer.execution.SummerExecutorInterceptor
+import summer.execution.withErrorHandler
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -31,11 +32,11 @@ class SourceExecutor<TEntity, TParams> internal constructor(
         if (cancelAll) {
             cancelAll()
         }
-        val job = deferredExecutor.launch(
-            initialScope = scope,
-            params = params,
-            onFailure = onFailure
-        ) {
+        val job = scope.withErrorHandler(
+            onFailure = { e ->
+                onFailure(e, params)
+            }
+        ).launch {
             try {
                 val deferred = async(workContext) {
                     source(params)

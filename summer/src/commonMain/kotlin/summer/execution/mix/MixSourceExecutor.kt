@@ -1,13 +1,11 @@
 package summer.execution.mix
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import summer.SummerPresenter
 import summer.execution.DeferredExecutor
 import summer.execution.SummerExecutor
 import summer.execution.SummerExecutorInterceptor
+import summer.execution.withErrorHandler
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -37,11 +35,11 @@ class MixSourceExecutor<T, TSourceParams> internal constructor(
     }
 
     override fun onObtain(deferred: Deferred<T>, sourceParams: TSourceParams) {
-        deferredExecutor.launch(
-            initialScope = scope,
-            params = sourceParams,
-            onFailure = onFailure
-        ) {
+        scope.withErrorHandler(
+            onFailure = { e ->
+                onFailure(e, sourceParams)
+            }
+        ).launch {
             withContext(workContext) {
                 deferredExecutor.execute(
                     deferred = deferred,
