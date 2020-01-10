@@ -1,9 +1,6 @@
 package summer.execution
 
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 internal class DeferredExecutor(
     private val uiScope: CoroutineScope
@@ -13,9 +10,8 @@ internal class DeferredExecutor(
         params: TParams,
         interceptor: SummerExecutorInterceptor<TEntity, TParams>,
         onExecute: suspend (TParams) -> Unit,
-        onFailure: suspend (Throwable, TParams) -> Unit,
-        onCancel: suspend (TParams) -> Unit,
-        onSuccess: suspend (TEntity, TParams) -> Unit
+        onSuccess: suspend (TEntity, TParams) -> Unit,
+        onCancel: suspend (TParams) -> Unit
     ) {
         try {
             withContext(uiScope.coroutineContext) {
@@ -46,10 +42,20 @@ internal class DeferredExecutor(
             withContext(uiScope.coroutineContext) {
                 onCancel(params)
             }
-        } catch (e: Throwable) {
-            withContext(uiScope.coroutineContext) {
-                onFailure(e, params)
-            }
         }
     }
+}
+
+/**
+ * Decorate receiver [CoroutineScope] with [CoroutineExceptionHandler].
+ * @param onFailure called inside receiver [CoroutineScope].
+ */
+internal fun CoroutineScope.withErrorHandler(onFailure: suspend (Throwable) -> Unit): CoroutineScope {
+    val scope = this
+    val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        scope.launch {
+            onFailure(throwable)
+        }
+    }
+    return scope + coroutineExceptionHandler
 }

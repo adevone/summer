@@ -1,13 +1,11 @@
 package summer.execution.source
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import summer.SummerPresenter
 import summer.execution.DeferredExecutor
 import summer.execution.SummerExecutor
 import summer.execution.SummerExecutorInterceptor
+import summer.execution.withErrorHandler
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -34,7 +32,11 @@ class SourceExecutor<TEntity, TParams> internal constructor(
         if (cancelAll) {
             cancelAll()
         }
-        val job = scope.launch {
+        val job = scope.withErrorHandler(
+            onFailure = { e ->
+                onFailure(e, params)
+            }
+        ).launch {
             try {
                 val deferred = async(workContext) {
                     source(params)
@@ -45,7 +47,6 @@ class SourceExecutor<TEntity, TParams> internal constructor(
                     interceptor = interceptor,
                     onExecute = onExecute,
                     onSuccess = onSuccess,
-                    onFailure = onFailure,
                     onCancel = onCancel
                 )
             } finally {
