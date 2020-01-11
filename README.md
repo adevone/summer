@@ -1,5 +1,5 @@
-[ ![Download](https://api.bintray.com/packages/summermpp/summer/summer/images/download.svg) ](https://bintray.com/summermpp/summer/summer/_latestVersion)
-[ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-androidx/images/download.svg) ](https://bintray.com/summermpp/summer/summer-androidx/_latestVersion)
+Common: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer/images/download.svg) ](https://bintray.com/summermpp/summer/summer/_latestVersion)
+AndroidX: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-androidx/images/download.svg) ](https://bintray.com/summermpp/summer/summer-androidx/_latestVersion)
 
 # Summer
 
