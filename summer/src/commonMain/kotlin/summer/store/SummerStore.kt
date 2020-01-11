@@ -12,7 +12,7 @@ interface SummerStore {
     /**
      * Provides delegate that will store passed values in this store
      */
-    fun <T> store(onSet: (T) -> Unit, initialValue: T): DelegateProvider<T>
+    fun <T> store(onSet: (T) -> Unit, initial: T): DelegateProvider<T>
 
     /**
      * Must call [store].onSet for each property that was set
@@ -33,48 +33,44 @@ interface SummerStore {
  */
 class InMemoryStore : SummerStore {
 
-    private val propertiesToRestore = mutableListOf<PropertyToRestore<*>>()
+    private val delegates = mutableListOf<Delegate<*>>()
     private var storedValuesByKey = mutableMapOf<String, Any?>()
     private var isInitByKey = mutableMapOf<String, Unit>()
 
-    override fun <T> store(onSet: (T) -> Unit, initialValue: T): SummerStore.DelegateProvider<T> {
-        return InMemoryDelegateProvider(onSet, initialValue)
+    override fun <T> store(onSet: (T) -> Unit, initial: T): SummerStore.DelegateProvider<T> {
+        return InMemoryDelegateProvider(onSet, initial)
     }
 
     override fun restore() {
-        propertiesToRestore.forEach { it.restore() }
-        propertiesToRestore.clear()
+        delegates.forEach { it.restore() }
     }
 
     private inner class InMemoryDelegateProvider<T>(
         private val onSet: (T) -> Unit,
-        private val initialValue: T
+        private val initial: T
     ) : SummerStore.DelegateProvider<T> {
 
         override fun provideDelegate(
             thisRef: Any?,
             prop: KProperty<*>
         ): ReadWriteProperty<Any?, T> {
-            val delegate = Delegate(
-                onSet = onSet,
-                initialValue = initialValue
-            )
             if (prop.name !in storedValuesByKey) {
-                storedValuesByKey[prop.name] = initialValue
+                storedValuesByKey[prop.name] = initial
             }
-            @Suppress("UNCHECKED_CAST")
-            val value = storedValuesByKey[prop.name] as T
-            propertiesToRestore.add(PropertyToRestore(prop.name, onSet, delegate, value))
-            return Delegate(
+            val delegate = Delegate(
+                propName = prop.name,
                 onSet = onSet,
-                initialValue = initialValue
+                initial = initial
             )
+            delegates.add(delegate)
+            return delegate
         }
     }
 
     private inner class Delegate<T>(
+        private val propName: String,
         private val onSet: (T) -> Unit,
-        private val initialValue: T
+        private val initial: T
     ) : ReadWriteProperty<Any?, T> {
 
         override fun getValue(thisRef: Any?, property: KProperty<*>): T {
@@ -83,35 +79,24 @@ class InMemoryStore : SummerStore {
                 @Suppress("UNCHECKED_CAST")
                 storedValuesByKey[property.name] as T
             } else {
-                initialValue
+                initial
             }
         }
-
-        /**
-         * If some property was set before [SummerPresenter.created] it must not be restored
-         */
-        var wasSet = false
 
         override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
             storedValuesByKey[property.name] = value
             isInitByKey[property.name] = Unit
             onSet(value)
-            wasSet = true
         }
-    }
 
-    private class PropertyToRestore<T>(
-        private val propName: String,
-        private val onSet: (T) -> Unit,
-        private val delegate: Delegate<T>,
-        private val value: T
-    ) {
         fun restore() {
-            if (!delegate.wasSet) {
-                onSet(value)
-            }
+            @Suppress("UNCHECKED_CAST")
+            val value = storedValuesByKey[propName] as T
+            onSet(value)
         }
-
-        override fun toString() = "$propName=$value"
     }
+
+    override fun toString() = "propertiesToRestore=${delegates.joinToString()}, " +
+            "storedValuesByKey=${storedValuesByKey.entries.joinToString { (key, value) -> "$key=$value" }}, " +
+            "isInitByKey=${isInitByKey.entries.joinToString { (key, isInit) -> "$key isInit=$isInit" }}"
 }

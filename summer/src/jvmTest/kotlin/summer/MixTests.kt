@@ -13,7 +13,6 @@ class MixTests {
     @Test
     fun sourceExecuted() {
 
-
         val sourceValue = "test"
         val reducerValue = "test2"
 

@@ -31,6 +31,15 @@ abstract class SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>(
     }
 
     /**
+     * Same as [routerCreated] but with unsafe typecast.
+     * Used when view can not pass typed [router]
+     */
+    fun routerCreatedUnsafe(router: Any) {
+        @Suppress("UNCHECKED_CAST")
+        routerCreated(router as TRouter)
+    }
+
+    /**
      * Must be called before router will destroyed. May be called multiple times
      */
     fun routerDestroyed() {
