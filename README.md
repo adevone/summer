@@ -239,7 +239,7 @@ class ${NAME}Fragment : ScreenFragment<
         ${NAME}View.State,
         ${NAME}View.Methods,
         ${NAME}Router,
-        ${NAME}Presenter>() {
+        ${NAME}Presenter>(R.layout.TODO()) {
 
     override val router = object : ${NAME}Router {
 
@@ -255,10 +255,6 @@ class ${NAME}Fragment : ScreenFragment<
 
     override fun createPresenter() = ${NAME}Presenter()
     
-    override val layoutRes = R.layout.TODO()
-    
-    override val screenToolbar get() = TODO("not implemented")
-
     override fun initView() {
 
     }
