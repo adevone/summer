@@ -1,6 +1,8 @@
 Common: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer/images/download.svg) ](https://bintray.com/summermpp/summer/summer/_latestVersion)
 AndroidX: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-androidx/images/download.svg) ](https://bintray.com/summermpp/summer/summer-androidx/_latestVersion)
 
+# Status: Under development. iOS part is subject of change 
+
 # Intellij IDEA / Android Studio plugin
 [Plugin page](https://github.com/adevone/summer-plugin)
 
