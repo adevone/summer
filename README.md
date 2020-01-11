@@ -18,10 +18,10 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:0.7.20")
+    implementation("com.github.adevone.summer:summer:0.8.12")
     
     // android part containing SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:0.7.20")
+    implementation("com.github.adevone.summer:summer-androidx:0.8.12")
 }
 ```
 
@@ -67,18 +67,18 @@ class CalendarPresenter(
     // Proxy that allows to restore state and 
     // set properties even if view does not exist.
     // Summer plugin provides convenient intentions to write it easy
-    override fun createViewStateProxy(vs: CalendarView.State) = object : CalendarView.State {
+    override fun viewStateProxy = object : CalendarView.State {
     
         // Initial values are automatically emitted to view when it is created.
         // No matter in which state view was. Presenter will change
         // it to consistent state automatically
-        override var isLoading by store(vs::isLoading, initialValue = true)
+        override var isLoading by store({ it::isLoading }, initial = true)
         
         // You can get default values from prefs 
         // or presenter constructor params.
         // Any presenter properties can be used as initial values
         // for state properties
-        override var dayName by store(vs::dayName, initialValue = defaultDayName)
+        override var dayName by store({ it::dayName }, initial = defaultDayName)
     }
     
     // Called when user sees screen for the first time 
@@ -186,20 +186,14 @@ class CalendarViewController: SummerViewController<CalendarPresenter>, CalendarV
 #end
 #parse("File Header.java")
 
-import summer.log.KLogging
 import summer.example.presentation.base.ScreenPresenter
 
 class ${NAME}Presenter : ScreenPresenter<
         ${NAME}View.State, 
         ${NAME}View.Methods, 
-        ${NAME}View.InitialState, 
         ${NAME}Router>() {
-        
-    override val viewInitialState = ${NAME}View.InitialState(
-        
-    )
     
-    override fun createViewStateProxy(vs: ${NAME}View.State) = object : ${NAME}View.State {
+    override val viewStateProxy = object : ${NAME}View.State {
 
     }
 }
@@ -226,11 +220,11 @@ interface ${NAME}Router {
 #end
 #parse("File Header.java")
 
-import ru.napoleonit.example.R
-import ru.napoleonit.example.presentation.${NAME}Presenter
-import ru.napoleonit.example.presentation.${NAME}Router
-import ru.napoleonit.example.presentation.${NAME}View
-import ru.napoleonit.example.ui.ScreenFragment
+import summer.example.R
+import summer.example.presentation.${NAME}Presenter
+import summer.example.presentation.${NAME}Router
+import summer.example.presentation.${NAME}View
+import summer.example.ui.ScreenFragment
 
 class ${NAME}Fragment : ScreenFragment<
         ${NAME}View.State,
@@ -248,7 +242,6 @@ class ${NAME}Fragment : ScreenFragment<
 
     override val viewMethods = object : ${NAME}View.Methods {
 
-        override 
     }
 
     override fun createPresenter() = ${NAME}Presenter()
