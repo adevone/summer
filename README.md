@@ -151,15 +151,19 @@ class CalendarFragment : SummerFragment<
 }
 ```
 
+[BaseController](https://gist.github.com/adevone/685ec7a397b22f47c2171e79ae5c0966) (Subject of change)
+
 iOS, Swift:
 ```swift
-class CalendarViewController: SummerViewController<CalendarPresenter>, CalendarViewState, CalendarViewMethods {
+class CalendarViewController: BaseController<CalendarViewState, CalendarViewMethods>, CalendarViewState, CalendarViewMethods {
 
     @IBOutlet weak var loadingSpinner: UIView!
     @IBOutlet weak var dayNameLabel: UILabel!
 
-    override func createPresenter(): CalendarPresenter {
-        return CalendarPresenter(...)
+    private let presenter = CalendarPresenter(...)
+
+    override func getPresenter(): SummerSummerPresenter<CalendarViewState, CalendarViewMethods> {
+        return presenter
     }
 
     var isLoading = false {
