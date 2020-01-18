@@ -1,10 +1,9 @@
 package summer
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import summer.execution.reducer.SummerReducer
+import summer.execution.reducer.asFlow
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -118,5 +117,51 @@ class ReducerTests {
         sourceReducer(Unit)
 
         assertTrue(isNextCalled)
+    }
+
+    @Test
+    fun `Reducer as flow should emit value from reducer next method after first reducer invocation`() = runBlocking {
+        val scope = CoroutineScope(Dispatchers.Unconfined)
+        val initialValue = "initial"
+        val nextValue = "nextValue"
+        val sourceReducer = object : SummerReducer<String, Unit>(scope) {
+
+            override suspend fun initial(): String = initialValue
+
+            override suspend fun next(params: Unit, previous: String): String = nextValue
+        }
+
+        val flow = sourceReducer.asFlow()
+
+        sourceReducer(Unit)
+
+        launch {
+            flow.collect { value ->
+                assertTrue { value == nextValue }
+                cancel()
+            }
+        }.join()
+    }
+
+    @Test
+    fun `Reducer as flow should emit value from reducer initial method if call collect before first reducer invocation`() = runBlocking {
+        val scope = CoroutineScope(Dispatchers.Unconfined)
+        val initialValue = "initial"
+        val nextValue = "nextValue"
+        val sourceReducer = object : SummerReducer<String, Unit>(scope) {
+
+            override suspend fun initial(): String = initialValue
+
+            override suspend fun next(params: Unit, previous: String): String = nextValue
+        }
+
+        launch {
+            sourceReducer
+                .asFlow()
+                .collect { value ->
+                    assertTrue { value == initialValue }
+                    cancel()
+                }
+        }.join()
     }
 }
