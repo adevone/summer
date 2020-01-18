@@ -1,10 +1,10 @@
 package summer.execution.reducer
 
 import kotlinx.atomicfu.atomic
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import summer.defaultBackgroundContext
 
 /**
@@ -176,5 +176,23 @@ abstract class SummerReducer<TEntity, TParams>(
 
     internal interface Observer<TEntity, in TParams> {
         fun onObtain(deferred: Deferred<TEntity>, params: TParams?)
+    }
+}
+
+/**
+ * Convenient extension for work with [SummerReducer] as with [Flow].
+ */
+@ExperimentalCoroutinesApi
+fun <TEntity, TParams> SummerReducer<TEntity, TParams>.asFlow(): Flow<TEntity> = callbackFlow {
+    val observer = object : SummerReducer.Observer<TEntity, TParams> {
+        override fun onObtain(deferred: Deferred<TEntity>, params: TParams?) {
+            launch {
+                send(deferred.await())
+            }
+        }
+    }
+    observe(observer)
+    awaitClose {
+        unsubscribe(observer)
     }
 }
