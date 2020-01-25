@@ -3,6 +3,10 @@ package summer.execution
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import summer.SummerLogger
 import summer.SummerPresenter
 import summer.execution.mix.MixSource
@@ -187,6 +191,31 @@ abstract class SummerExecutor(
         mix = mix,
         scope = this@SummerExecutor
     )
+
+    /**
+     * Await each deferred value produces by [FlowableSource],
+     * and wrap it with exception handling.
+     * [block] called if exception was thrown during awaiting value.
+     * If [block] throw an exception, then global [onFailure] method is called.
+     */
+    fun <TEntity, TParams> FlowableSource<TEntity, TParams>.flow(
+        block: suspend FlowCollector<TEntity>.(Throwable) -> Unit = { e -> throw e }
+    ): Flow<TEntity> = flow<TEntity> {
+        flow()
+            .collect { deferred ->
+                val value: TEntity = try {
+                    deferred.await()
+                } catch (e: Throwable) {
+                    try {
+                        block(e)
+                    } catch (e: Throwable) {
+                        onFailure(e)
+                    }
+                    return@collect
+                }
+                emit(value)
+            }
+    }
 
     /**
      * Shorthand for [SourceExecutor.execute] when SourceExecutor.TParams is Unit
