@@ -1,13 +1,12 @@
 package summer.execution
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.flow
+import summer.defaultBackgroundContext
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -33,39 +32,45 @@ import kotlin.coroutines.CoroutineContext
     ) {
         ...
         override fun onEnter() {
-            launch {
-                getOfferClusters
-                    .flow() // [SummerExecutor.flow] extension.
-                    .onEach { clusters ->
-                        viewStateProxy.clusters = clusters
-                    }
-                    .catch { e ->
-                        logger.error(e)
-                    }
-                    .collect()
-            }
+            getOfferClusters
+                .flow() // [SummerExecutor.flow] extension.
+                .catch { e ->
+                    logger.error(e)
+                }
+                .onEach { products ->
+                    viewStateProxy.products = products
+                }
+                .launchIn(this)
         }
     }
  */
 
 abstract class FlowableSource<TEntity, TParams>(
-    private val workContext: CoroutineContext
-) {
+    coroutineScope: CoroutineScope = CoroutineScope(defaultBackgroundContext + SupervisorJob())
+) : CoroutineScope by coroutineScope {
+
+    constructor(
+        workContext: CoroutineContext = defaultBackgroundContext
+    ) : this(CoroutineScope(workContext + SupervisorJob()))
+
+    constructor(
+        parentScope: CoroutineScope,
+        workContext: CoroutineContext = defaultBackgroundContext
+    ) : this(parentScope + workContext)
+
     private var lastParams: TParams? = null
     private val channel = ConflatedBroadcastChannel<Deferred<TEntity>>()
 
-    protected val scope = CoroutineScope(workContext)
-
-    protected abstract suspend fun next(params: TParams): TEntity
+    protected abstract suspend fun next(params: TParams, previousResult: PreviousResult<TEntity>?): TEntity
 
     /**
      * @return new [Flow] of deferred value.
      * Each time a new value is produced (calling [invoke] or [emit] methods),
      * it is sent to all non completed flow.
      * Deferred value use to expose all exceptions to subscription site.
-     * Use [SummerExecutor.flow] extension to get unwrapped [Flow] of [TEntity].
+     * Use [SummerExecutor.flow] extension to get flow of awaited [TEntity].
      */
-    internal fun flow(): Flow<Deferred<TEntity>> = channel.asFlow().flowOn(workContext)
+    internal fun flow(): Flow<Deferred<TEntity>> = channel.asFlow()
 
     /**
      * Trigger computation of a new value.
@@ -78,13 +83,30 @@ abstract class FlowableSource<TEntity, TParams>(
     /**
      * Send new value to all [Flow] received from [flow] method.
      */
-    fun emit(computeNext: suspend (TParams) -> TEntity) {
+    fun emit(computeNext: suspend (params: TParams, previousResult: PreviousResult<TEntity>?) -> TEntity) {
         lastParams?.let { params ->
-            val deferred = scope.async {
-                computeNext(params)
+            launch {
+                val previousResult = getPreviousResult()
+                val deferred = async {
+                    computeNext(params, previousResult)
+                }
+                channel.send(deferred)
             }
-            channel.offer(deferred)
         }
+    }
+
+    private suspend fun getPreviousResult(): PreviousResult<TEntity>? {
+        val previousDeferred = channel.valueOrNull ?: return null
+        return try {
+            PreviousResult.Success(previousDeferred.await())
+        } catch (e: Throwable) {
+            PreviousResult.Failure(e)
+        }
+    }
+
+    sealed class PreviousResult<TEntity> {
+        data class Success<TEntity>(val result: TEntity) : PreviousResult<TEntity>()
+        data class Failure<TEntity>(val exception: Throwable) : PreviousResult<TEntity>()
     }
 }
 
@@ -97,25 +119,25 @@ abstract class FlowableSource<TEntity, TParams>(
   class ProductsFlow (
        workContext: CoroutineContext,
        private val getProducts: GetProducts,
-       private val getFilter: GetFilter
+       private val filterStore: FilterStore
   ) : FlowableUseCase<List<Product>, ProductsFlow.Params>(workContext) {
 
         init {
             scope.launch {
-                dependOn(getFilter.flow()) { params, filter ->
-                    getClusters(params.region, filter)
+                dependOn(filterStore.flow()) { params, filter ->
+                    getProducts(params.region, filter)
                 }
             }
         }
 
-        override suspend fun next(params: Params): List<Product> {
+        override suspend fun next(params: Params, previousResult: PreviousResult<List<Product>>?): List<Product> {
             return getProducts(
                 region = params.region,
-                filter = getFilter.value
+                filter = filterStore.value
             )
         }
 
-        private suspend fun getProducts(region: MapRegion, filter: Filter) : List<Cluster> {
+        private suspend fun getProducts(region: MapRegion, filter: Filter) : List<Product> {
             return getProducts(
                 GetProducts.Params(
                     region = region,
@@ -129,11 +151,11 @@ abstract class FlowableSource<TEntity, TParams>(
  */
 suspend fun <TEntity, TParams, TDependEntity> FlowableSource<TEntity, TParams>.dependOn(
     flow: Flow<TDependEntity>,
-    computeNext: suspend (TParams, TDependEntity) -> TEntity
+    computeNext: suspend (TParams, TDependEntity, FlowableSource.PreviousResult<TEntity>?) -> TEntity
 ) {
     flow.collect { dependEntity ->
-        this@dependOn.emit { params ->
-            computeNext(params, dependEntity)
+        this@dependOn.emit { params, previousResult ->
+            computeNext(params, dependEntity, previousResult)
         }
     }
 }

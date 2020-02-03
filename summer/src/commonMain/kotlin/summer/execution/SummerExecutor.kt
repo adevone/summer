@@ -201,20 +201,19 @@ abstract class SummerExecutor(
     fun <TEntity, TParams> FlowableSource<TEntity, TParams>.flow(
         block: suspend FlowCollector<TEntity>.(Throwable) -> Unit = { e -> throw e }
     ): Flow<TEntity> = flow<TEntity> {
-        flow()
-            .collect { deferred ->
-                val value: TEntity = try {
-                    deferred.await()
+        flow().collect { deferred ->
+            val value: TEntity = try {
+                deferred.await()
+            } catch (e: Throwable) {
+                try {
+                    block(e)
                 } catch (e: Throwable) {
-                    try {
-                        block(e)
-                    } catch (e: Throwable) {
-                        onFailure(e)
-                    }
-                    return@collect
+                    onFailure(e)
                 }
-                emit(value)
+                return@collect
             }
+            emit(value)
+        }
     }
 
     /**
