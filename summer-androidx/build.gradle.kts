@@ -34,8 +34,6 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:atomicfu:$atomicfuVersion")
 
-    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
-
     implementation("androidx.appcompat:appcompat:1.1.0")
 
     implementation("com.github.adevone.summer:summer:$summerVersion")

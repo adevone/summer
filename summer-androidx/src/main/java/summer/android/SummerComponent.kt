@@ -3,7 +3,6 @@ package summer.android
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import summer.DidSetMixin
 import summer.SummerPresenter
 import summer.SummerPresenterWithRouter
 

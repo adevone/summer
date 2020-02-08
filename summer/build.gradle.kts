@@ -3,6 +3,7 @@ import java.util.*
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("maven-publish")
+    id("kotlinx-atomicfu")
 }
 
 kotlin {
@@ -29,19 +30,13 @@ kotlin {
         commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serializationVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-
-                implementation("org.jetbrains.kotlinx:atomicfu:$atomicfuVersion")
-
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion")
             }
         }
         getByName("jvmMain"){
             dependencies {
                 implementation(kotlin("stdlib"))
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
-                implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
         getByName("jvmTest") {
@@ -53,14 +48,12 @@ kotlin {
         getByName("jsMain"){
             dependencies {
                 implementation(kotlin("stdlib-js"))
-                implementation("io.ktor:ktor-client-core-js:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutinesVersion")
             }
         }
         getByName("iosArm64Main"){
             dependencies {
-                implementation("io.ktor:ktor-client-core-native:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$coroutinesVersion")
             }
         }
 
