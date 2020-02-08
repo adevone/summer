@@ -25,10 +25,10 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:0.8.12")
+    implementation("com.github.adevone.summer:summer:0.8.16")
     
     // android part containing SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:0.8.12")
+    implementation("com.github.adevone.summer:summer-androidx:0.8.16")
 }
 ```
 
