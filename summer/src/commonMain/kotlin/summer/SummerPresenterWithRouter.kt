@@ -17,7 +17,7 @@ abstract class SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>(
     defaultWorkContext,
     loggerFactory,
     localStore
-), UnsafeLifecycleOwnerWithRouter {
+), UnsafePresenterLifecycleOwnerWithRouter {
 
     protected val router: TRouter
         get() = _router ?: throw RouterDoesNotExistException()
@@ -48,7 +48,7 @@ class RouterDoesNotExistException : IllegalStateException(
 /**
  * Same as [UnsafePresenterLifecycleOwner] but with router events
  */
-interface UnsafeLifecycleOwnerWithRouter : UnsafePresenterLifecycleOwner {
+interface UnsafePresenterLifecycleOwnerWithRouter : UnsafePresenterLifecycleOwner {
 
     /**
      * Same as [SummerPresenterWithRouter.routerCreated] but with unsafe typecast.
