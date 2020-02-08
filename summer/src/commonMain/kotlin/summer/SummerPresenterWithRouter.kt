@@ -17,7 +17,8 @@ abstract class SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>(
     defaultWorkContext,
     loggerFactory,
     localStore
-) {
+), UnsafeLifecycleOwnerWithRouter {
+
     protected val router: TRouter
         get() = _router ?: throw RouterDoesNotExistException()
 
@@ -30,19 +31,12 @@ abstract class SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>(
         this._router = router
     }
 
-    /**
-     * Same as [routerCreated] but with unsafe typecast.
-     * Used when view can not pass typed [router]
-     */
-    fun routerCreatedUnsafe(router: Any) {
+    override fun routerCreatedUnsafe(router: Any) {
         @Suppress("UNCHECKED_CAST")
         routerCreated(router as TRouter)
     }
 
-    /**
-     * Must be called before router will destroyed. May be called multiple times
-     */
-    fun routerDestroyed() {
+    override fun routerDestroyed() {
         this._router = null
     }
 }
@@ -50,3 +44,20 @@ abstract class SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>(
 class RouterDoesNotExistException : IllegalStateException(
     "can not use router when it does not exist"
 )
+
+/**
+ * Same as [UnsafePresenterLifecycleOwner] but with router events
+ */
+interface UnsafeLifecycleOwnerWithRouter : UnsafePresenterLifecycleOwner {
+
+    /**
+     * Same as [SummerPresenterWithRouter.routerCreated] but with unsafe typecast.
+     * Used when view can not pass typed [router]
+     */
+    fun routerCreatedUnsafe(router: Any)
+
+    /**
+     * Must be called before router will destroyed. May be called multiple times
+     */
+    fun routerDestroyed()
+}

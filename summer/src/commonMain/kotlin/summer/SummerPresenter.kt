@@ -28,7 +28,7 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
     mainContext = uiContext,
     defaultWorkContext = defaultWorkContext,
     loggerFactory = loggerFactory
-), SummerViewStateProxyProvider<TViewState> {
+), SummerViewStateProxyProvider<TViewState>, UnsafePresenterLifecycleOwner {
 
     private val storesController = SummerStoresController<TViewState, TViewMethods>()
 
@@ -48,11 +48,7 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
         )
     }
 
-    /**
-     * Same as [viewCreated] but with unsafe typecast.
-     * Used when view can not pass typed [viewState] and [viewMethods]
-     */
-    fun viewCreatedUnsafe(
+    override fun viewCreatedUnsafe(
         viewState: Any,
         viewMethods: Any
     ) {
@@ -63,10 +59,7 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
         )
     }
 
-    /**
-     * Must be called when view is destroyed. May be called multiple times
-     */
-    fun viewDestroyed() {
+    override fun viewDestroyed() {
         storesController.viewDestroyed()
     }
 
@@ -105,45 +98,27 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
         store = store
     )
 
-    /**
-     * Must be called when presenter is created. Must be called exactly once
-     */
-    fun created() {
+    override fun created() {
         super.receiverCreated()
     }
 
-    /**
-     * Must be called when presenter is destroyed. Must be called exactly once
-     */
-    fun destroyed() {
+    override fun destroyed() {
         super.receiverDestroyed()
     }
 
-    /**
-     * Must be called when user sees view for the first time
-     */
-    fun entered() {
+    override fun entered() {
         onEnter()
     }
 
-    /**
-     * Must be called when view popped from stack
-     */
-    fun exited() {
+    override  fun exited() {
         onExit()
     }
 
-    /**
-     * Must be called every time when view appears (see [onAppear])
-     */
-    fun appeared() {
+    override fun appeared() {
         onAppear()
     }
 
-    /**
-     * Must be called every time when view disappears (see [onDisappear])
-     */
-    fun disappeared() {
+    override fun disappeared() {
         onDisappear()
     }
 
@@ -185,4 +160,52 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
         val loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
         val localStore: SummerStore = InMemoryStore()
     )
+}
+
+/**
+ * Non-generic protocol that can be used to call lifecycle events of [SummerPresenterWithRouter]
+ * in languages without covariant types support (like Swift)
+ */
+interface UnsafePresenterLifecycleOwner {
+
+    /**
+     * Same as [SummerPresenter.viewCreated] but with unsafe typecast.
+     * Used when view can not pass typed [viewState] and [viewMethods]
+     */
+    fun viewCreatedUnsafe(viewState: Any, viewMethods: Any)
+
+    /**
+     * Must be called when view is destroyed. May be called multiple times
+     */
+    fun viewDestroyed()
+
+    /**
+     * Must be called when presenter is destroyed. Must be called exactly once
+     */
+    fun destroyed()
+
+    /**
+     * Must be called when presenter is created. Must be called exactly once
+     */
+    fun created()
+
+    /**
+     * Must be called when user sees view for the first time
+     */
+    fun entered()
+
+    /**
+     * Must be called every time when view appears (see [SummerPresenter.onAppear])
+     */
+    fun appeared()
+
+    /**
+     * Must be called every time when view disappears (see [SummerPresenter.onDisappear])
+     */
+    fun disappeared()
+
+    /**
+     * Must be called when view popped from stack
+     */
+    fun exited()
 }
