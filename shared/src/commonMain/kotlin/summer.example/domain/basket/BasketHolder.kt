@@ -1,4 +1,4 @@
-package summer.example.domain.shoppingCart
+package summer.example.domain.basket
 
 import summer.example.domain.EventsEmitter
 import summer.example.entity.Basket

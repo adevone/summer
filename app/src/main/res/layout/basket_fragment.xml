@@ -12,7 +12,7 @@
         app:title="Корзина" />
 
     <TextView
-        android:id="@+id/shoppingCart"
+        android:id="@+id/basketView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -8,7 +8,7 @@ import summer.example.domain.about.GetAbout
 import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.domain.frameworks.GetSpring
 import summer.example.domain.frameworks.GetSummer
-import summer.example.domain.shoppingCart.BasketHolder
+import summer.example.domain.basket.BasketHolder
 
 lateinit var di: Kodein
 

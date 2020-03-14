@@ -2,7 +2,7 @@ package summer.example.presentation
 
 import org.kodein.di.erased.instance
 import summer.example.domain.frameworks.GetAllFrameworkItems
-import summer.example.domain.shoppingCart.BasketHolder
+import summer.example.domain.basket.BasketHolder
 import summer.example.entity.Basket
 import summer.example.entity.Framework
 import summer.example.presentation.base.ScreenPresenter

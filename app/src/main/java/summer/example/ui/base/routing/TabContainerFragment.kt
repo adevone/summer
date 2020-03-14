@@ -10,7 +10,7 @@ import org.kodein.di.erased.instance
 import summer.example.AppKodeinAware
 import summer.example.ui.about.AboutFragment
 import summer.example.ui.frameworks.FrameworksFragment
-import summer.example.ui.shoppingCart.ShoppingCartFragment
+import summer.example.ui.basket.BasketFragment
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.Router
@@ -47,7 +47,7 @@ class TabContainerFragment : ArgsFragment<TabContainerFragment.Args>(), AppKodei
             val screen = when (args.item) {
                 Tab.Frameworks -> FrameworksFragment.Args().toScreen()
                 Tab.About -> AboutFragment.Args().toScreen()
-                Tab.Basket -> ShoppingCartFragment.Args().toScreen()
+                Tab.Basket -> BasketFragment.Args().toScreen()
             }
 
             cicerone.router.replaceScreen(screen)
