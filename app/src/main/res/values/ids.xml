@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="frameworksItem" type="id" />
+    <item name="aboutItem" type="id" />
+    <item name="basketItem" type="id" />
+</resources>

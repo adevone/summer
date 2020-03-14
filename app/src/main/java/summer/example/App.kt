@@ -1,19 +1,18 @@
 package summer.example
 
-import android.preference.PreferenceManager
-import android.util.Log
 import androidx.multidex.MultiDexApplication
-import com.russhwolf.settings.AndroidSettings
-import com.russhwolf.settings.Settings
-import kotlinx.coroutines.Dispatchers
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.erased.bind
-import org.kodein.di.erased.instance
 import org.kodein.di.erased.singleton
-import summer.SummerLogger
-import summer.example.domain.SharedUseCase
-import kotlin.reflect.KClass
+import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.Router
+import summer.example.ui.base.routing.LocalCiceroneHolder
 
 class App : MultiDexApplication(), KodeinAware {
 
@@ -23,29 +22,18 @@ class App : MultiDexApplication(), KodeinAware {
         super.onCreate()
 
         di = Kodein {
-
             import(sharedModule)
 
-            // data
-            bind<Settings>() with singleton { AndroidSettings(PreferenceManager.getDefaultSharedPreferences(applicationContext)) }
+            bind<HttpClient>() with singleton { HttpClient(OkHttp) }
+            bind<Json>() with singleton { Json(JsonConfiguration.Stable.copy(isLenient = true)) }
 
-            bind<SummerLogger.Factory>() with singleton {
-                object : SummerLogger.Factory {
-                    override fun get(forClass: KClass<*>): SummerLogger {
-                        val tag = forClass.java.simpleName
-                        return object : SummerLogger {
+            // navigation
 
-                            override fun info(formatMessage: () -> String) {
-                                Log.i(tag, formatMessage())
-                            }
+            val cicerone = Cicerone.create()
 
-                            override fun error(e: Throwable) {
-                                Log.e(tag, Log.getStackTraceString(e))
-                            }
-                        }
-                    }
-                }
-            }
+            bind<Router>() with singleton { cicerone.router }
+            bind<NavigatorHolder>() with singleton { cicerone.navigatorHolder }
+            bind<LocalCiceroneHolder>() with singleton { LocalCiceroneHolder() }
         }
 
         kodeinAware = this

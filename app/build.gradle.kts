@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions")
+    id("kotlinx-serialization")
 }
 
 androidExtensions {
@@ -54,18 +55,31 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
+    implementation("io.ktor:ktor-client-core:$ktorVersion") {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
+    }
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion") {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
+    }
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+
     implementation("org.kodein.di:kodein-di-erased-jvm:$kodeinVersion")
     implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
 
-    implementation("com.google.android.material:material:1.0.0")
+    implementation("com.google.android.material:material:1.1.0")
     implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("androidx.recyclerview:recyclerview:1.0.0")
+    implementation("androidx.recyclerview:recyclerview:1.1.0")
+
+    implementation("com.squareup.picasso:picasso:2.71828")
+
+    implementation("ru.terrakok.cicerone:cicerone:5.1.0")
 
     implementation("androidx.multidex:multidex:2.0.1")
 
-    implementation("androidx.core:core-ktx:1.1.0")
+    implementation("androidx.core:core-ktx:1.2.0")
 
     implementation(project(":shared"))
 

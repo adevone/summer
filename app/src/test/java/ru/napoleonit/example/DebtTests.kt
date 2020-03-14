@@ -1,3 +1,5 @@
+package ru.napoleonit.example
+
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.kodein.di.Kodein
