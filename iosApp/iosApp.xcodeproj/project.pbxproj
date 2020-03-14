@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,6 +25,7 @@
 		FA698179241D375A0027B8A8 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA698178241D375A0027B8A8 /* MainController.swift */; };
 		FA69817B241D38590027B8A8 /* frameworks_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FA69817A241D38590027B8A8 /* frameworks_icon.png */; };
 		FA69817D241D388D0027B8A8 /* basket_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FA69817C241D388D0027B8A8 /* basket_icon.png */; };
+		FA69817F241D5B160027B8A8 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA69817E241D5B150027B8A8 /* UITableView+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		FA698178241D375A0027B8A8 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		FA69817A241D38590027B8A8 /* frameworks_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frameworks_icon.png; sourceTree = "<group>"; };
 		FA69817C241D388D0027B8A8 /* basket_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = basket_icon.png; sourceTree = "<group>"; };
+		FA69817E241D5B150027B8A8 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
 		FE272355D40BE60DA43E890D /* Pods-iosAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosAppTests.debug.xcconfig"; path = "Target Support Files/Pods-iosAppTests/Pods-iosAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -410,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				FA69816A241D2CED0027B8A8 /* BaseController.swift */,
+				FA69817E241D5B150027B8A8 /* UITableView+Extensions.swift */,
 			);
 			path = base;
 			sourceTree = "<group>";
@@ -655,6 +658,7 @@
 				F861D7E1207FA40F0085E80D /* AppDelegate.swift in Sources */,
 				FA698179241D375A0027B8A8 /* MainController.swift in Sources */,
 				FA698173241D327E0027B8A8 /* AboutController.swift in Sources */,
+				FA69817F241D5B160027B8A8 /* UITableView+Extensions.swift in Sources */,
 				FA698171241D32690027B8A8 /* FrameworksController.swift in Sources */,
 				FA69816B241D2CED0027B8A8 /* BaseController.swift in Sources */,
 				FA698175241D329E0027B8A8 /* BasketConrtoller.swift in Sources */,

@@ -1,6 +1,7 @@
 package summer.example.ui.base
 
 import android.os.Bundle
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -18,12 +19,12 @@ abstract class ScreenFragment<
         TViewMethods : Any,
         TRouter : Any,
         TPresenter : SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>,
-        TArgs> :
+        TArgs>(@LayoutRes layoutRes: Int) :
     SummerFragmentWithRouter<
             TViewState,
             TViewMethods,
             TRouter,
-            TPresenter>(),
+            TPresenter>(layoutRes),
     BackButtonListener,
     AppKodeinAware,
     ArgsFragmentFeature<TArgs> {

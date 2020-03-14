@@ -18,9 +18,13 @@ extension BasketController: BasketRouter {
 
 class BasketController: BaseController, BasketViewState {
     
+    @IBOutlet weak var basketLabel: UILabel!
+    
     var items: [Basket.Item] = [] {
         didSet {
-            
+            basketLabel.text = items
+                .map { item in "\(item.framework.name)=\(item.quantity)" }
+                .joined(separator: "\n")
         }
     }
     
