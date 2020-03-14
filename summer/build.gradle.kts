@@ -8,7 +8,7 @@ plugins {
 
 kotlin {
     jvm()
-    iosArm64  {
+    iosArm64 {
         binaries {
             framework()
         }
@@ -16,7 +16,7 @@ kotlin {
             compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
         }
     }
-    iosX64  {
+    iosX64 {
         binaries {
             framework()
         }
@@ -33,7 +33,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion")
             }
         }
-        getByName("jvmMain"){
+        getByName("jvmMain") {
             dependencies {
                 implementation(kotlin("stdlib"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
@@ -45,13 +45,13 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
             }
         }
-        getByName("jsMain"){
+        getByName("jsMain") {
             dependencies {
                 implementation(kotlin("stdlib-js"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutinesVersion")
             }
         }
-        getByName("iosArm64Main"){
+        getByName("iosArm64Main") {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$coroutinesVersion")
             }
