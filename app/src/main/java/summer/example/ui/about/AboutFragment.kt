@@ -20,7 +20,7 @@ class AboutFragment : ScreenFragment<
         AboutView.Methods,
         AboutRouter,
         AboutPresenter,
-        AboutFragment.Args>() {
+        AboutFragment.Args>(R.layout.about_fragment) {
 
     override val router = object : AboutRouter {}
 
@@ -50,16 +50,6 @@ class AboutFragment : ScreenFragment<
     }
 
     override val screenToolbar get() = toolbar!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = inflater.inflate(
-        R.layout.about_fragment,
-        container,
-        false
-    )!!
 
     override val argsSerializer = Args.serializer()
 

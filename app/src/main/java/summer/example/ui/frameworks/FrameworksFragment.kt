@@ -21,7 +21,7 @@ class FrameworksFragment : ScreenFragment<
         FrameworksView.Methods,
         FrameworksRouter,
         FrameworksPresenter,
-        FrameworksFragment.Args>() {
+        FrameworksFragment.Args>(R.layout.frameworks_fragment) {
 
     override val router = object : FrameworksRouter {
 
@@ -44,16 +44,6 @@ class FrameworksFragment : ScreenFragment<
     }
 
     override val screenToolbar get() = toolbar!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = inflater.inflate(
-        R.layout.frameworks_fragment,
-        container,
-        false
-    )!!
 
     private lateinit var frameworksAdapter: FrameworksAdapter
 

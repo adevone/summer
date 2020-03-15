@@ -18,7 +18,7 @@ class BasketFragment : ScreenFragment<
         BasketView.Methods,
         BasketRouter,
         BasketPresenter,
-        BasketFragment.Args>() {
+        BasketFragment.Args>(R.layout.basket_fragment) {
 
     override val router = object : BasketRouter {
 
@@ -38,16 +38,6 @@ class BasketFragment : ScreenFragment<
     }
 
     override fun createPresenter() = BasketPresenter()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = inflater.inflate(
-        R.layout.basket_fragment,
-        container,
-        false
-    )!!
 
     override val screenToolbar get() = toolbar!!
 

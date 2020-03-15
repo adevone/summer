@@ -1,8 +1,5 @@
 package summer.example.ui.frameworks
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.framework_details_fragment.*
 import kotlinx.serialization.Serializable
@@ -19,7 +16,7 @@ class FrameworkDetailsFragment : ScreenFragment<
         FrameworkDetailsView.Methods,
         FrameworkDetailsRouter,
         FrameworkDetailsPresenter,
-        FrameworkDetailsFragment.Args>() {
+        FrameworkDetailsFragment.Args>(R.layout.framework_details_fragment) {
 
     override val router = object : FrameworkDetailsRouter {}
 
@@ -43,16 +40,6 @@ class FrameworkDetailsFragment : ScreenFragment<
     }
 
     override val screenToolbar get() = toolbar!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = inflater.inflate(
-        R.layout.framework_details_fragment,
-        container,
-        false
-    )!!
 
     override val argsSerializer = Args.serializer()
 
