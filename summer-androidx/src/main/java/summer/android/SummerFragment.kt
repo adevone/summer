@@ -28,8 +28,6 @@ abstract class SummerFragment<
 
     protected abstract fun createPresenter(): TPresenter
 
-    protected abstract fun initView()
-
     protected var viewState: TViewState? = null
 
     protected open fun createComponents(): List<SummerComponent<*, *, *>> = emptyList()
@@ -44,24 +42,32 @@ abstract class SummerFragment<
     }
 
     private var isFirstViewCreation = true
+    private var isViewCreating = false
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        isViewCreating = true
         super.onViewCreated(view, savedInstanceState)
-        initView()
-        viewState = createViewState()
-        lifecycleComponents.forEach { component ->
-            component.onViewCreated(
-                parentView = view as? ViewGroup,
-                context = context!!,
-                isFirstViewCreation = isFirstViewCreation
-            )
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (isViewCreating) {
+            viewState = createViewState()
+            lifecycleComponents.forEach { component ->
+                component.onViewCreated(
+                    parentView = view as? ViewGroup,
+                    context = context!!,
+                    isFirstViewCreation = isFirstViewCreation
+                )
+            }
+            presenter.viewCreated(viewState!!, viewMethods)
+            if (isFirstViewCreation) {
+                _presenter!!.entered()
+                isFirstViewCreation = false
+            }
         }
-        presenter.viewCreated(viewState!!, viewMethods)
-        if (isFirstViewCreation) {
-            _presenter!!.entered()
-            isFirstViewCreation = false
-        }
+        isViewCreating = false
     }
 
     @CallSuper

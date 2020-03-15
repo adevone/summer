@@ -17,24 +17,27 @@ abstract class SummerActivity<
 
     protected lateinit var presenter: TPresenter
 
-    /**
-     * Use initView in user code instead
-     */
-    @Suppress("UNCHECKED_CAST")
-    final override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var isCreating = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        isCreating = true
         presenter = createPresenter()
-        initView()
-        presenter.created()
-        initPresenterView()
-        presenter.entered()
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (isCreating) {
+            presenter.created()
+            initPresenterView()
+            presenter.entered()
+        }
+        isCreating = false
     }
 
     internal open fun initPresenterView() {
         presenter.viewCreated(viewState, viewMethods)
     }
-
-    protected abstract fun initView()
 
     override fun onDestroy() {
         super.onDestroy()
