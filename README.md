@@ -25,10 +25,10 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:0.8.16")
+    implementation("com.github.adevone.summer:summer:0.8.17")
     
     // android part containing SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:0.8.16")
+    implementation("com.github.adevone.summer:summer-androidx:0.8.17")
 }
 ```
 
@@ -42,15 +42,11 @@ Common, Kotlin:
 ```kotlin
 class GetDay : UseCase<String, GetDay.Params> {
     
-    override suspend fun invoke(): String = when (params.number) {
+    override suspend fun invoke(number: Int): String = when (number) {
         1 -> "Monday"
         2 -> "Thursday"
         else -> "Another day"
-    } 
-    
-    data class Params(
-        val number: Int
-    )
+    }
 }
 
 object CalendarView {
@@ -67,14 +63,14 @@ object CalendarView {
 
 class CalendarPresenter(
     getDay: GetDay
-) : BasePresenter<CalendarView.State, CalendarView.Methods> {
+) : SummerPresenter<CalendarView.State, CalendarView.Methods> {
     
     private val defaultDayName = "Monday"
     
     // Proxy that allows to restore state and 
     // set properties even if view does not exist.
     // Summer plugin provides convenient intentions to write it easy
-    override fun viewStateProxy = object : CalendarView.State {
+    override val viewStateProxy = object : CalendarView.State {
     
         // Initial values are automatically emitted to view when it is created.
         // No matter in which state view was. Presenter will change
@@ -90,36 +86,16 @@ class CalendarPresenter(
     
     // Called when user sees screen for the first time 
     override fun onEnter() {
-        getDayExecutor.execute(GetDay.Params(number = 1))
+        launch {
+            val day = getDay(number = 1)
+            viewStateProxy.dayName = dayName
+        }
     }
     
-    private val getDayExecutor = getDay.executor(
-        interceptor = loadingInterceptor(
-            getProperty = { viewStateProxy::isLoading },
-            needShow = { viewStateProxy.dayName.isEmpty() }
-        ),
-        onSuccess = { dayName, _ ->
-            viewStateProxy.dayName = dayName        
-        },
-        // Also you can handle exceptions in presenter onFailure method 
-        onFailure = { e ->
-            viewMethods?.showError()
-            
-            // rethrow exception if you need to handle it
-            // in presenter onFailure method
-            throw e
-        }
-    )
-}
-
-
-
-// Base classes and interfaces should be in user project to make it more flexible
-
-typealias UseCase = SummerSource
-
-class BasePresenter<TViewState, TViewMethods> : 
-    SummerPresenter<TViewState, TViewMethods>() 
+    override fun onFailure(e: Throwable) {
+        viewMethods?.showError()
+    }
+} 
 ```
 
 Android, Kotlin:
@@ -157,16 +133,18 @@ class CalendarFragment : SummerFragment<
 
 iOS, Swift:
 ```swift
-class CalendarViewController: BaseController<CalendarViewState, CalendarViewMethods>, CalendarViewState, CalendarViewMethods {
+extension CalendarViewController: CalendarViewMethods {
+    
+    func showError() {
+        print("Error occurred!")
+    }
+    
+}
+
+class CalendarViewController: BaseController, CalendarViewState {
 
     @IBOutlet weak var loadingSpinner: UIView!
     @IBOutlet weak var dayNameLabel: UILabel!
-
-    private let presenter = CalendarPresenter(...)
-
-    override func getPresenter(): SummerSummerPresenter<CalendarViewState, CalendarViewMethods> {
-        return presenter
-    }
 
     var isLoading = false {
         didSet {
@@ -180,9 +158,15 @@ class CalendarViewController: BaseController<CalendarViewState, CalendarViewMeth
         }
     }
     
-    func showError() {
-        print("Error occurred!")
+    private var presenter: CalendarPresenter! {
+        didSet { setPresenter(presenter) }
     }
+    
+    override func viewDidLoad() {
+        presenter = CalendarPresenter()
+        super.viewDidLoad()
+    }
+    
 }
 ```
 
@@ -256,9 +240,5 @@ class ${NAME}Fragment : ScreenFragment<
     }
 
     override fun createPresenter() = ${NAME}Presenter()
-    
-    override fun initView() {
-
-    }
 }
 ```
