@@ -62,12 +62,12 @@ abstract class SummerPresenter<TView>(
     private val stores = mutableSetOf<SummerStore>()
 
     /**
-     * Shorthand for [storeIn] with [localStore] of this presenter
+     * Shorthand for [stateIn] with [localStore] of this presenter
      */
-    protected fun <T> store(
+    protected fun <T> state(
         getMirrorProperty: GetMirrorProperty<TView, T>? = null,
         initial: T
-    ) = storeIn(
+    ) = stateIn(
         getMirrorProperty = getMirrorProperty,
         initial = initial,
         store = localStore
@@ -86,12 +86,12 @@ abstract class SummerPresenter<TView>(
      *
      * @return stored property delegate
      */
-    fun <T> storeIn(
+    fun <T> stateIn(
         getMirrorProperty: GetMirrorProperty<TView, T>? = null,
         initial: T,
         store: SummerStore
-    ): SummerStore.DelegateProvider<T> {
-        return store.store(
+    ): SummerStore.StateDelegate<T> {
+        return store.createState(
             onSet = { value ->
                 val currentViewState = view
                 if (currentViewState != null && getMirrorProperty != null) {

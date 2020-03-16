@@ -15,7 +15,7 @@ class StoreTests {
         val expectedValue = "test"
 
         lateinit var actualValue: String
-        var property by store.store(
+        var property by store.createState(
             onSet = { value ->
                 actualValue = value
             },
@@ -37,7 +37,7 @@ class StoreTests {
 
         {
             @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-            var property by store.store(
+            var property by store.createState(
                 onSet = {},
                 initial = ""
             )
@@ -47,7 +47,7 @@ class StoreTests {
         }() // to allow multiple variables with name "property"
 
         lateinit var actualValue: String
-        val property by store.store(
+        val property by store.createState(
             onSet = { value ->
                 actualValue = value
             },
@@ -69,7 +69,7 @@ class StoreTests {
 
         lateinit var actualValue: String
 
-        val property by store.store(
+        val property by store.createState(
             onSet = { value ->
                 actualValue = value
             },

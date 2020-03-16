@@ -12,23 +12,23 @@ interface SummerStore {
     /**
      * Provides delegate that will store passed values in this store
      */
-    fun <T> store(onSet: (T) -> Unit, initial: T): DelegateProvider<T>
+    fun <T> createState(onSet: (T) -> Unit, initial: T): StateDelegate<T>
 
     /**
-     * Must call [store].onSet for each property that was set
+     * Must call [createState].onSet for each property that was set
      */
     fun restore()
 
     /**
-     * Interface for delegate provided by [store]
+     * Interface for delegate provided by [createState]
      */
-    interface DelegateProvider<T> {
+    interface StateDelegate<T> {
         operator fun provideDelegate(thisRef: Any?, prop: KProperty<*>): ReadWriteProperty<Any?, T>
     }
 }
 
 /**
- * Default store that can be passed to [SummerPresenter.storeIn] or [SummerPresenter.localStore]
+ * Default store that can be passed to [SummerPresenter.stateIn] or [SummerPresenter.localStore]
  * Stores values in memory and doesn't restores them after app relaunch
  */
 class InMemoryStore : SummerStore {
@@ -37,18 +37,18 @@ class InMemoryStore : SummerStore {
     private var storedValuesByKey = mutableMapOf<String, Any?>()
     private var isInitByKey = mutableMapOf<String, Unit>()
 
-    override fun <T> store(onSet: (T) -> Unit, initial: T): SummerStore.DelegateProvider<T> {
-        return InMemoryDelegateProvider(onSet, initial)
+    override fun <T> createState(onSet: (T) -> Unit, initial: T): SummerStore.StateDelegate<T> {
+        return InMemoryStateDelegate(onSet, initial)
     }
 
     override fun restore() {
         delegates.forEach { it.restore() }
     }
 
-    private inner class InMemoryDelegateProvider<T>(
+    private inner class InMemoryStateDelegate<T>(
         private val onSet: (T) -> Unit,
         private val initial: T
-    ) : SummerStore.DelegateProvider<T> {
+    ) : SummerStore.StateDelegate<T> {
 
         override fun provideDelegate(
             thisRef: Any?,
