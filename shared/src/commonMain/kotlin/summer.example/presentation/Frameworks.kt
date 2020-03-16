@@ -23,7 +23,7 @@ class FrameworksPresenter : ScreenPresenter<FrameworksView>(), BasketHolder.List
 
     override val viewProxy = object : FrameworksView {
         override var items by store({ it::items }, initial = emptyList())
-        override val toDetails = event { it.toDetails }.doOnlyWhenAttached()
+        override val toDetails = event { it.toDetails }.doExactlyOnce()
     }
 
     override fun onAppear() {

@@ -4,10 +4,10 @@ class DoOnlyWhenAttachedStrategy<TView>(
     private val getView: () -> TView?
 ) : SummerEventStrategy<TView> {
 
-    override fun called(getAction: (TView) -> (() -> Unit)) {
+    override fun called(applyArgs: (TView) -> (() -> Unit)) {
         val view = getView()
         if (view != null) {
-            val action = getAction(view)
+            val action = applyArgs(view)
             action()
         }
     }

@@ -1,7 +1,9 @@
 package summer
 
+import summer.events.DoExactlyOnceStrategy
 import summer.events.DoOnlyWhenAttachedStrategy
 import summer.events.EventFactory
+import summer.events.SummerEvent
 import summer.execution.SummerExecutor
 import summer.store.InMemoryStore
 import summer.store.SummerStore
@@ -29,7 +31,9 @@ abstract class SummerPresenter<TView>(
     defaultWorkContext = defaultWorkContext,
     loggerFactory = loggerFactory
 ), SummerViewProxyProvider<TView>, UnsafePresenterLifecycleOwner,
-    EventFactory<TView>, DoOnlyWhenAttachedStrategy.Factory<TView> {
+    EventFactory<TView>,
+    DoOnlyWhenAttachedStrategy.Factory<TView>,
+    DoExactlyOnceStrategy.Factory<TView> {
 
     override var view: TView? = null
 
@@ -42,6 +46,7 @@ abstract class SummerPresenter<TView>(
         // restore call placed there because presenter methods may be called due view initialization.
         // restore must be called after initView
         stores.forEach { it.restore() }
+        events.forEach { it.viewCreated(view) }
     }
 
     override fun viewCreatedUnsafe(view: Any) {
@@ -50,8 +55,11 @@ abstract class SummerPresenter<TView>(
     }
 
     override fun viewDestroyed() {
+        events.forEach { it.viewDestroyed() }
         this.view = null
     }
+
+    private val stores = mutableSetOf<SummerStore>()
 
     /**
      * Shorthand for [storeIn] with [localStore] of this presenter
@@ -97,7 +105,11 @@ abstract class SummerPresenter<TView>(
         }
     }
 
-    private val stores = mutableSetOf<SummerStore>()
+    private val events = mutableListOf<SummerEvent<TView>>()
+
+    override fun eventCreated(event: SummerEvent<TView>) {
+        events.add(event)
+    }
 
     override fun created() {
         super.receiverCreated()
