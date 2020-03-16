@@ -8,17 +8,13 @@ interface MainView {
     var selectedTab: Tab?
 }
 
-interface MainRouter {
-
-}
-
 class MainPresenter : ScreenPresenter<MainView>() {
 
     private val allTabs = Tab.values().toList()
 
     override val viewProxy = object : MainView {
-        override var tabs by store({ it::tabs }, initial = allTabs)
-        override var selectedTab by store({ it::selectedTab }, initial = allTabs.first())
+        override var tabs by state({ it::tabs }, initial = allTabs)
+        override var selectedTab by state({ it::selectedTab }, initial = allTabs.first())
     }
 
     fun onMenuItemClick(tab: Tab) {

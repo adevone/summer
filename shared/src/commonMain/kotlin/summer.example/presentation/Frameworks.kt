@@ -12,17 +12,13 @@ interface FrameworksView {
     val toDetails: (framework: Framework) -> Unit
 }
 
-interface FrameworksRouter {
-    fun toDetails(framework: Framework)
-}
-
 class FrameworksPresenter : ScreenPresenter<FrameworksView>(), BasketHolder.Listener {
 
     private val basketHolder: BasketHolder by instance()
     private val getAllFrameworkItems: GetAllFrameworkItems by instance()
 
     override val viewProxy = object : FrameworksView {
-        override var items by store({ it::items }, initial = emptyList())
+        override var items by state({ it::items }, initial = emptyList())
         override val toDetails = event { it.toDetails }.doExactlyOnce()
     }
 

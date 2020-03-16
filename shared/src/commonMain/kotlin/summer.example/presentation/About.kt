@@ -10,19 +10,15 @@ import summer.example.presentation.base.withLoading
 
 interface AboutView : LoadingView {
     var about: About?
-    val doSomething: (smth: String) -> Unit
 }
-
-interface AboutRouter
 
 class AboutPresenter : ScreenPresenter<AboutView>() {
 
     private val getAbout: GetAbout by instance()
 
     override val viewProxy = object : AboutView {
-        override var about by store({ it::about }, initial = null)
-        override var isLoading by store({ it::isLoading }, initial = true)
-        override val doSomething = event { it.doSomething }.doOnlyWhenAttached()
+        override var about by state({ it::about }, initial = null)
+        override var isLoading by state({ it::isLoading }, initial = true)
     }
 
     override fun onAppear() {

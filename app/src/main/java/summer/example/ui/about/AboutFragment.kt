@@ -26,10 +26,6 @@ class AboutFragment : ScreenFragment<
             Picasso.get().load(about.logoUrl).into(logoView)
         }
 
-        override val doSomething = { smth: String ->
-            println(smth)
-        }
-
         override var isLoading: Boolean by didSet {
             if (isLoading) {
                 loadingView.visibility = View.VISIBLE

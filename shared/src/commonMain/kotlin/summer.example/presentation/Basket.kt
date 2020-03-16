@@ -9,16 +9,12 @@ interface BasketView {
     var items: List<Basket.Item>
 }
 
-interface BasketRouter {
-
-}
-
 class BasketPresenter : ScreenPresenter<BasketView>(), BasketHolder.Listener {
 
     private val basketHolder: BasketHolder by instance()
 
     override val viewProxy = object : BasketView {
-        override var items by store({ it::items }, initial = emptyList())
+        override var items by state({ it::items }, initial = emptyList())
     }
 
     override fun onAppear() {

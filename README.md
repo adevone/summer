@@ -75,13 +75,13 @@ class CalendarPresenter(
         // Initial values are automatically emitted to view when it is created.
         // No matter in which state view was. Presenter will change
         // it to consistent state automatically
-        override var isLoading by store({ it::isLoading }, initial = true)
+        override var isLoading by state({ it::isLoading }, initial = true)
         
         // You can get default values from prefs 
         // or presenter constructor params.
         // Any presenter properties can be used as initial values
         // for state properties
-        override var dayName by store({ it::dayName }, initial = defaultDayName)
+        override var dayName by state({ it::dayName }, initial = defaultDayName)
     }
     
     // Called when user sees screen for the first time 
