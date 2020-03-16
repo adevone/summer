@@ -1,10 +1,7 @@
 package summer.example.ui.frameworks
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.frameworks_fragment.*
 import kotlinx.serialization.Serializable
@@ -12,7 +9,6 @@ import summer.example.R
 import summer.example.entity.Basket
 import summer.example.entity.Framework
 import summer.example.presentation.FrameworksPresenter
-import summer.example.presentation.FrameworksRouter
 import summer.example.presentation.FrameworksView
 import summer.example.ui.base.ScreenFragment
 import summer.example.ui.base.routing.ScreenArgs

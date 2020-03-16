@@ -8,7 +8,6 @@ import kotlinx.serialization.Serializable
 import summer.example.R
 import summer.example.entity.Basket
 import summer.example.presentation.BasketPresenter
-import summer.example.presentation.BasketRouter
 import summer.example.presentation.BasketView
 import summer.example.ui.base.ScreenFragment
 import summer.example.ui.base.routing.ScreenArgs
