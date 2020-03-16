@@ -3,7 +3,6 @@ package summer
 import summer.events.DoExactlyOnceStrategy
 import summer.events.DoOnlyWhenAttachedStrategy
 import summer.events.EventFactory
-import summer.events.RepeatLastStrategy
 import summer.events.SummerEvent
 import summer.execution.SummerExecutor
 import summer.store.InMemoryStore
@@ -34,8 +33,7 @@ abstract class SummerPresenter<TView>(
 ), SummerViewProxyProvider<TView>, UnsafePresenterLifecycleOwner,
     EventFactory<TView>,
     DoOnlyWhenAttachedStrategy.Factory<TView>,
-    DoExactlyOnceStrategy.Factory<TView>,
-    RepeatLastStrategy.Factory<TView> {
+    DoExactlyOnceStrategy.Factory<TView> {
 
     override var view: TView? = null
 
