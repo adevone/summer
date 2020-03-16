@@ -2,6 +2,7 @@ package summer.example.ui.frameworks
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.frameworks_fragment.*
@@ -17,38 +18,29 @@ import summer.example.ui.base.routing.ScreenArgs
 import summer.example.ui.base.routing.toScreen
 
 class FrameworksFragment : ScreenFragment<
-        FrameworksView.State,
-        FrameworksView.Methods,
-        FrameworksRouter,
+        FrameworksView,
         FrameworksPresenter,
         FrameworksFragment.Args>(R.layout.frameworks_fragment) {
 
-    override val router = object : FrameworksRouter {
-
-        override fun toDetails(framework: Framework) {
-            ciceroneRouter.navigateTo(FrameworkDetailsFragment.Args(framework).toScreen())
-        }
-    }
-
     override fun createPresenter() = FrameworksPresenter()
 
-    override fun createViewState() = object : FrameworksView.State {
+    override fun createViewState() = object : FrameworksView {
 
         override var items: List<Basket.Item> by didSet {
             frameworksAdapter.submitList(items)
         }
-    }
 
-    override val viewMethods = object : FrameworksView.Methods {
-
+        override val toDetails = { framework: Framework ->
+            ciceroneRouter.navigateTo(FrameworkDetailsFragment.Args(framework).toScreen())
+        }
     }
 
     override val screenToolbar get() = toolbar!!
 
     private lateinit var frameworksAdapter: FrameworksAdapter
 
-    override fun initView() {
-        super.initView()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         frameworksAdapter = FrameworksAdapter(presenter)
         frameworksView.adapter = frameworksAdapter
         (frameworksView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false

@@ -12,14 +12,11 @@ import java.util.Collections.emptyList
 
 abstract class SummerFragment<
         TViewState : Any,
-        TViewMethods : Any,
-        TPresenter : SummerPresenter<TViewState, TViewMethods>> : Fragment {
+        TPresenter : SummerPresenter<TViewState>> : Fragment {
 
     constructor() : super()
 
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
-
-    protected abstract val viewMethods: TViewMethods
 
     protected abstract fun createViewState(): TViewState
 
@@ -30,8 +27,8 @@ abstract class SummerFragment<
 
     protected var viewState: TViewState? = null
 
-    protected open fun createComponents(): List<SummerComponent<*, *, *>> = emptyList()
-    private var lifecycleComponents: List<SummerComponent<*, *, *>> = emptyList()
+    protected open fun createComponents(): List<SummerComponent<*, *>> = emptyList()
+    private var lifecycleComponents: List<SummerComponent<*, *>> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +58,7 @@ abstract class SummerFragment<
                     isFirstViewCreation = isFirstViewCreation
                 )
             }
-            presenter.viewCreated(viewState!!, viewMethods)
+            presenter.viewCreated(viewState!!)
             if (isFirstViewCreation) {
                 _presenter!!.entered()
                 isFirstViewCreation = false
@@ -121,12 +118,10 @@ abstract class SummerFragment<
 
 abstract class SummerFragmentWithRouter<
         TViewState : Any,
-        TViewMethods : Any,
         TRouter : Any,
-        TPresenter : SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>>
+        TPresenter : SummerPresenterWithRouter<TViewState, TRouter>>
     : SummerFragment<
         TViewState,
-        TViewMethods,
         TPresenter> {
 
     constructor() : super()

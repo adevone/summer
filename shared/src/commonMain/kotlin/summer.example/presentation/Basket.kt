@@ -5,30 +5,19 @@ import summer.example.domain.basket.BasketHolder
 import summer.example.entity.Basket
 import summer.example.presentation.base.ScreenPresenter
 
-object BasketView {
-
-    interface State {
-        var items: List<Basket.Item>
-    }
-
-    interface Methods {
-
-    }
+interface BasketView {
+    var items: List<Basket.Item>
 }
 
 interface BasketRouter {
 
 }
 
-class BasketPresenter : ScreenPresenter<
-        BasketView.State,
-        BasketView.Methods,
-        BasketRouter>(),
-    BasketHolder.Listener {
+class BasketPresenter : ScreenPresenter<BasketView>(), BasketHolder.Listener {
 
     private val basketHolder: BasketHolder by instance()
 
-    override val viewStateProxy = object : BasketView.State {
+    override val viewProxy = object : BasketView {
         override var items by store({ it::items }, initial = emptyList())
     }
 
@@ -43,6 +32,6 @@ class BasketPresenter : ScreenPresenter<
     }
 
     override fun onBasketUpdate(basket: Basket) {
-        viewStateProxy.items = basket.items
+        viewProxy.items = basket.items
     }
 }

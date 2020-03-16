@@ -3,37 +3,31 @@ package summer.example.presentation
 import summer.example.entity.Framework
 import summer.example.presentation.base.ScreenPresenter
 
-object FrameworkDetailsView {
-
-    interface State {
-        var framework: Framework?
-    }
-
-    interface Methods {
-        fun notifyAboutName(frameworkName: String)
-    }
+interface FrameworkDetailsView {
+    var framework: Framework?
+    val notifyAboutName: (frameworkName: String) -> Unit
+    val notifyAboutName2: (a: String, b: String) -> Unit
+    val toMain: (isFromBasket: Boolean) -> Unit
 }
-
-interface FrameworkDetailsRouter
 
 class FrameworkDetailsPresenter(
     private val framework: Framework
-) : ScreenPresenter<
-        FrameworkDetailsView.State,
-        FrameworkDetailsView.Methods,
-        FrameworkDetailsRouter>() {
+) : ScreenPresenter<FrameworkDetailsView>() {
 
-    override val viewStateProxy = object : FrameworkDetailsView.State {
+    override val viewProxy = object : FrameworkDetailsView {
         override var framework by store({ it::framework }, initial = null)
+        override val notifyAboutName = event { it.notifyAboutName }.doOnlyWhenAttached()
+        override val notifyAboutName2 = event { it.notifyAboutName2 }.repeatLast()
+        override val toMain = event { it.toMain }.repeatOnlyOnce()
     }
 
     override fun onEnter() {
         super.onEnter()
-        viewStateProxy.framework = framework
+        viewProxy.framework = framework
     }
 
     override fun onAppear() {
         super.onAppear()
-        viewMethods?.notifyAboutName(framework.name)
+        viewProxy.notifyAboutName(framework.name)
     }
 }

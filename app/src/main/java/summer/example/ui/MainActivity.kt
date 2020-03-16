@@ -1,5 +1,6 @@
 package summer.example.ui
 
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.Menu
@@ -8,31 +9,22 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.core.os.postDelayed
 import kotlinx.android.synthetic.main.activity_main.*
-import summer.android.SummerActivityWithRouter
+import summer.android.SummerActivity
 import summer.example.AppKodeinAware
 import summer.example.R
 import summer.example.entity.Tab
 import summer.example.presentation.MainPresenter
-import summer.example.presentation.MainRouter
 import summer.example.presentation.MainView
 import summer.example.ui.base.routing.BackButtonListener
 import summer.example.ui.base.routing.TabContainerFragment
 import summer.example.ui.base.routing.toScreen
 
-class MainActivity : SummerActivityWithRouter<
-        MainView.State,
-        MainView.Methods,
-        MainRouter,
-        MainPresenter>(),
+class MainActivity : SummerActivity<MainView, MainPresenter>(),
     AppKodeinAware {
 
     override fun createPresenter() = MainPresenter()
 
-    override val router = object : MainRouter {
-
-    }
-
-    override val viewState = object : MainView.State {
+    override val view = object : MainView {
 
         override var tabs: List<Tab> by didSet {
             bottomNavigationView.menu.clear()
@@ -105,11 +97,8 @@ class MainActivity : SummerActivityWithRouter<
         Tab.Basket -> "Корзина"
     }
 
-    override val viewMethods = object : MainView.Methods {
-
-    }
-
-    override fun initView() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
 

@@ -14,17 +14,11 @@ import summer.example.ui.base.ScreenFragment
 import summer.example.ui.base.routing.ScreenArgs
 
 class BasketFragment : ScreenFragment<
-        BasketView.State,
-        BasketView.Methods,
-        BasketRouter,
+        BasketView,
         BasketPresenter,
         BasketFragment.Args>(R.layout.basket_fragment) {
 
-    override val router = object : BasketRouter {
-
-    }
-
-    override fun createViewState() = object : BasketView.State {
+    override fun createViewState() = object : BasketView {
 
         override var items: List<Basket.Item> by didSet {
             basketView.text = items.joinToString(separator = "\n") { item ->
@@ -33,17 +27,9 @@ class BasketFragment : ScreenFragment<
         }
     }
 
-    override val viewMethods = object : BasketView.Methods {
-
-    }
-
     override fun createPresenter() = BasketPresenter()
 
     override val screenToolbar get() = toolbar!!
-
-    override fun initView() {
-
-    }
 
     override val argsSerializer = Args.serializer()
 

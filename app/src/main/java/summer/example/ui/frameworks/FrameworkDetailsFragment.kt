@@ -6,36 +6,32 @@ import kotlinx.serialization.Serializable
 import summer.example.R
 import summer.example.entity.Framework
 import summer.example.presentation.FrameworkDetailsPresenter
-import summer.example.presentation.FrameworkDetailsRouter
 import summer.example.presentation.FrameworkDetailsView
 import summer.example.ui.base.ScreenFragment
 import summer.example.ui.base.routing.ScreenArgs
 
 class FrameworkDetailsFragment : ScreenFragment<
-        FrameworkDetailsView.State,
-        FrameworkDetailsView.Methods,
-        FrameworkDetailsRouter,
+        FrameworkDetailsView,
         FrameworkDetailsPresenter,
         FrameworkDetailsFragment.Args>(R.layout.framework_details_fragment) {
-
-    override val router = object : FrameworkDetailsRouter {}
 
     override fun createPresenter() = FrameworkDetailsPresenter(
         framework = args.framework
     )
 
-    override fun createViewState() = object : FrameworkDetailsView.State {
+    override fun createViewState() = object : FrameworkDetailsView {
 
         override var framework: Framework? by didSet {
             nameView.text = framework?.name ?: ""
             versionView.text = framework?.version ?: ""
         }
-    }
 
-    override val viewMethods = object : FrameworkDetailsView.Methods {
-
-        override fun notifyAboutName(frameworkName: String) {
+        override var notifyAboutName = { frameworkName: String ->
             Toast.makeText(context, frameworkName, Toast.LENGTH_LONG).show()
+        }
+
+        override val notifyAboutName2 = { a: String, b: String ->
+            Toast.makeText(context, a + b, Toast.LENGTH_LONG).show()
         }
     }
 

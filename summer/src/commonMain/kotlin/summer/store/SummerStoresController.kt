@@ -2,7 +2,7 @@ package summer.store
 
 import kotlin.reflect.KMutableProperty0
 
-interface SummerViewStateProxyProvider<TViewState> {
+interface SummerViewProxyProvider<TView> {
 
     /**
      * Create proxy for view state. Proxy must contain all properties defined in TViewState.
@@ -23,23 +23,22 @@ interface SummerViewStateProxyProvider<TViewState> {
      *     override var prop by store({ ::prop }, initial = 0)
      * }
      */
-    val viewStateProxy: TViewState
+    val viewProxy: TView
 }
 
-class SummerStoresController<TViewState, TViewMethods> {
+class SummerStoresController<TView> {
 
-    var viewState: TViewState? = null
-    var viewMethods: TViewMethods? = null
+    var view: TView? = null
 
     private val stores = mutableSetOf<SummerStore>()
     fun <T> storeIn(
-        getMirrorProperty: GetMirrorProperty<TViewState, T>? = null,
+        getMirrorProperty: GetMirrorProperty<TView, T>? = null,
         initial: T,
         store: SummerStore
     ): SummerStore.DelegateProvider<T> {
         return store.store(
             onSet = { value ->
-                val currentViewState = viewState
+                val currentViewState = view
                 if (currentViewState != null && getMirrorProperty != null) {
                     val property = getMirrorProperty(currentViewState)
                     property.set(value)
@@ -54,12 +53,8 @@ class SummerStoresController<TViewState, TViewMethods> {
     /**
      * Must be called when view is created. May be called multiple times
      */
-    fun viewCreated(
-        viewState: TViewState,
-        viewMethods: TViewMethods
-    ) {
-        this.viewState = viewState
-        this.viewMethods = viewMethods
+    fun viewCreated(view: TView) {
+        this.view = view
 
         // onObserverConnect call placed there because presenter methods may be called in initView.
         // onObserverConnect must be called after initView
@@ -70,9 +65,8 @@ class SummerStoresController<TViewState, TViewMethods> {
      * Must be called before view destroying. May be called multiple times
      */
     fun viewDestroyed() {
-        this.viewState = null
-        this.viewMethods = null
+        this.view = null
     }
 }
 
-typealias GetMirrorProperty<TViewState, T> = (TViewState) -> KMutableProperty0<T>
+typealias GetMirrorProperty<TView, T> = (TView) -> KMutableProperty0<T>

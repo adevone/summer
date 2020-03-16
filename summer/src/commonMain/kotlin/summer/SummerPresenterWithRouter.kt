@@ -4,7 +4,7 @@ import summer.store.InMemoryStore
 import summer.store.SummerStore
 import kotlin.coroutines.CoroutineContext
 
-abstract class SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>(
+abstract class SummerPresenterWithRouter<TView, TRouter>(
     uiContext: CoroutineContext = defaultUiContext,
     defaultWorkContext: CoroutineContext = defaultBackgroundContext,
     loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
@@ -12,7 +12,7 @@ abstract class SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>(
      * Store created specifically for this presenter. Must not be reused
      */
     localStore: SummerStore = InMemoryStore()
-) : SummerPresenter<TViewState, TViewMethods>(
+) : SummerPresenter<TView>(
     uiContext,
     defaultWorkContext,
     loggerFactory,

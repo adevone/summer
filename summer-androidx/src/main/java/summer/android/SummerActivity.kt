@@ -6,12 +6,10 @@ import summer.SummerPresenter
 import summer.SummerPresenterWithRouter
 
 abstract class SummerActivity<
-        TViewState,
-        TViewMethods,
-        TPresenter : SummerPresenter<TViewState, TViewMethods>> : AppCompatActivity() {
+        TView,
+        TPresenter : SummerPresenter<TView>> : AppCompatActivity() {
 
-    protected abstract val viewState: TViewState
-    protected abstract val viewMethods: TViewMethods
+    protected abstract val view: TView
 
     protected abstract fun createPresenter(): TPresenter
 
@@ -36,7 +34,7 @@ abstract class SummerActivity<
     }
 
     internal open fun initPresenterView() {
-        presenter.viewCreated(viewState, viewMethods)
+        presenter.viewCreated(view)
     }
 
     override fun onDestroy() {
@@ -60,10 +58,9 @@ abstract class SummerActivity<
 
 abstract class SummerActivityWithRouter<
         TViewState,
-        TViewMethods,
         TRouter,
-        TPresenter : SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>>
-    : SummerActivity<TViewState, TViewMethods, TPresenter>() {
+        TPresenter : SummerPresenterWithRouter<TViewState, TRouter>>
+    : SummerActivity<TViewState, TPresenter>() {
 
     protected abstract val router: TRouter
 

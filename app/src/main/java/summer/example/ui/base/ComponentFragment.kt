@@ -1,18 +1,16 @@
 package summer.example.ui.base
 
-import summer.SummerPresenterWithRouter
-import summer.android.SummerFragmentWithRouter
+import summer.SummerPresenter
+import summer.android.SummerFragment
 import summer.example.AppKodeinAware
 import summer.example.ui.ArgsFragmentFeature
 import summer.example.ui.base.routing.RouterProvider
 
 abstract class ComponentFragment<
-        TViewState : Any,
-        TViewMethods : Any,
-        TRouter : Any,
-        TPresenter : SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>,
+        TView : Any,
+        TPresenter : SummerPresenter<TView>,
         TArgs> :
-    SummerFragmentWithRouter<TViewState, TViewMethods, TRouter, TPresenter>(),
+    SummerFragment<TView, TPresenter>(),
     RouterProvider,
     AppKodeinAware,
     ArgsFragmentFeature<TArgs> {

@@ -1,36 +1,29 @@
 package summer.example.presentation
 
 import org.kodein.di.erased.instance
-import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.domain.basket.BasketHolder
+import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.entity.Basket
 import summer.example.entity.Framework
 import summer.example.presentation.base.ScreenPresenter
 
-object FrameworksView {
-
-    interface State {
-        var items: List<Basket.Item>
-    }
-
-    interface Methods
+interface FrameworksView {
+    var items: List<Basket.Item>
+    val toDetails: (framework: Framework) -> Unit
 }
 
 interface FrameworksRouter {
     fun toDetails(framework: Framework)
 }
 
-class FrameworksPresenter : ScreenPresenter<
-        FrameworksView.State,
-        FrameworksView.Methods,
-        FrameworksRouter>(),
-    BasketHolder.Listener {
+class FrameworksPresenter : ScreenPresenter<FrameworksView>(), BasketHolder.Listener {
 
     private val basketHolder: BasketHolder by instance()
     private val getAllFrameworkItems: GetAllFrameworkItems by instance()
 
-    override val viewStateProxy = object : FrameworksView.State {
+    override val viewProxy = object : FrameworksView {
         override var items by store({ it::items }, initial = emptyList())
+        override val toDetails = event { it.toDetails }.doOnlyWhenAttached()
     }
 
     override fun onAppear() {
@@ -45,7 +38,7 @@ class FrameworksPresenter : ScreenPresenter<
     }
 
     fun onFrameworkClick(framework: Framework) {
-        router.toDetails(framework)
+        viewProxy.toDetails(framework)
     }
 
     fun onIncreaseClick(framework: Framework) {
@@ -62,6 +55,6 @@ class FrameworksPresenter : ScreenPresenter<
 
     private fun updateFrameworks() {
         val frameworks = getAllFrameworkItems(springVersion = "5.0")
-        viewStateProxy.items = frameworks
+        viewProxy.items = frameworks
     }
 }

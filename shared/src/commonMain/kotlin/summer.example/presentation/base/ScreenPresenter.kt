@@ -1,14 +1,8 @@
 package summer.example.presentation.base
 
-import summer.SummerPresenterWithRouter
+import summer.SummerPresenter
 import summer.example.AppKodeinAware
 
-abstract class ScreenPresenter<
-        TViewState : Any,
-        TViewMethods : Any,
-        TRouter : Any> :
-    SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>(),
-    AppKodeinAware {
-
+abstract class ScreenPresenter<TView : Any> : SummerPresenter<TView>(), AppKodeinAware {
     open fun onBackClick(): Boolean = false
 }

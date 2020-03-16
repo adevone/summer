@@ -5,7 +5,7 @@ import summer.store.GetMirrorProperty
 import summer.store.InMemoryStore
 import summer.store.SummerStore
 import summer.store.SummerStoresController
-import summer.store.SummerViewStateProxyProvider
+import summer.store.SummerViewProxyProvider
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -16,7 +16,7 @@ import kotlin.coroutines.CoroutineContext
  * Should not be used as direct parent of feature presenters.
  * You should create your own base presenter in your project.
  */
-abstract class SummerPresenter<TViewState, TViewMethods>(
+abstract class SummerPresenter<TView>(
     uiContext: CoroutineContext = defaultUiContext,
     defaultWorkContext: CoroutineContext = defaultBackgroundContext,
     loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
@@ -28,35 +28,20 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
     mainContext = uiContext,
     defaultWorkContext = defaultWorkContext,
     loggerFactory = loggerFactory
-), SummerViewStateProxyProvider<TViewState>, UnsafePresenterLifecycleOwner {
+), SummerViewProxyProvider<TView>, UnsafePresenterLifecycleOwner {
 
-    private val storesController = SummerStoresController<TViewState, TViewMethods>()
-
-    protected val viewMethods: TViewMethods?
-        get() = storesController.viewMethods
+    private val storesController = SummerStoresController<TView>()
 
     /**
      * Must be called when view is created. May be called multiple times
      */
-    fun viewCreated(
-        viewState: TViewState,
-        viewMethods: TViewMethods
-    ) {
-        storesController.viewCreated(
-            viewState,
-            viewMethods
-        )
+    fun viewCreated(view: TView) {
+        storesController.viewCreated(view)
     }
 
-    override fun viewCreatedUnsafe(
-        viewState: Any,
-        viewMethods: Any
-    ) {
+    override fun viewCreatedUnsafe(view: Any) {
         @Suppress("UNCHECKED_CAST")
-        viewCreated(
-            viewState as TViewState,
-            viewMethods as TViewMethods
-        )
+        viewCreated(view as TView)
     }
 
     override fun viewDestroyed() {
@@ -67,7 +52,7 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
      * Shorthand for [storeIn] with [localStore] of this presenter
      */
     protected fun <T> store(
-        getMirrorProperty: GetMirrorProperty<TViewState, T>? = null,
+        getMirrorProperty: GetMirrorProperty<TView, T>? = null,
         initial: T
     ) = storeIn(
         getMirrorProperty = getMirrorProperty,
@@ -89,7 +74,7 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
      * @return stored property delegate
      */
     protected fun <T> storeIn(
-        getMirrorProperty: GetMirrorProperty<TViewState, T>? = null,
+        getMirrorProperty: GetMirrorProperty<TView, T>? = null,
         initial: T,
         store: SummerStore
     ) = storesController.storeIn(
@@ -97,6 +82,142 @@ abstract class SummerPresenter<TViewState, TViewMethods>(
         initial = initial,
         store = store
     )
+
+    protected fun <TFunction> event(which: (TView) -> TFunction): EventBuilder<TFunction> {
+        return EventBuilder(getFunction = which)
+    }
+
+    protected inner class EventBuilder<TFunction>(
+        val getFunction: (TView) -> TFunction
+    )
+
+    protected fun <T1> EventBuilder<(T1) -> Unit>.doOnlyWhenAttached(): DoOnlyWhenAttachedEvent1<T1> {
+        return DoOnlyWhenAttachedEvent1(this.getFunction)
+    }
+
+    protected fun <T1, T2> EventBuilder<(T1, T2) -> Unit>.doOnlyWhenAttached(): DoOnlyWhenAttachedEvent2<T1, T2> {
+        return DoOnlyWhenAttachedEvent2(this.getFunction)
+    }
+
+    inner class DoOnlyWhenAttachedEvent1<T1>(
+        private val getFunction: (TView) -> ((T1) -> Unit)
+    ) : (T1) -> Unit {
+
+        override fun invoke(p1: T1) {
+            storesController.view?.let { viewState ->
+                val action = getFunction(viewState)
+                action(p1)
+            }
+        }
+    }
+
+    inner class DoOnlyWhenAttachedEvent2<T1, T2>(
+        private val getFunction: (TView) -> ((T1, T2) -> Unit)
+    ) : (T1, T2) -> Unit {
+
+        override fun invoke(p1: T1, p2: T2) {
+            storesController.view?.let { viewState ->
+                val action = getFunction(viewState)
+                action(p1, p2)
+            }
+        }
+    }
+
+    protected fun <T1> EventBuilder<(T1) -> Unit>.repeatOnlyOnce(): RepeatOnlyOnceEvent1<T1> {
+        return RepeatOnlyOnceEvent1(this.getFunction)
+    }
+
+    protected fun <T1, T2> EventBuilder<(T1, T2) -> Unit>.repeatOnlyOnce(): RepeatOnlyOnceEvent2<T1, T2> {
+        return RepeatOnlyOnceEvent2(this.getFunction)
+    }
+
+    inner class RepeatOnlyOnceEvent1<T1>(
+        private val getFunction: (TView) -> ((T1) -> Unit)
+    ) : (T1) -> Unit {
+
+        override fun invoke(p1: T1) {
+            storesController.view?.let { viewState ->
+                val action = getFunction(viewState)
+                action(p1)
+            }
+        }
+    }
+
+    inner class RepeatOnlyOnceEvent2<T1, T2>(
+        private val getFunction: (TView) -> ((T1, T2) -> Unit)
+    ) : (T1, T2) -> Unit {
+
+        override fun invoke(p1: T1, p2: T2) {
+            storesController.view?.let { viewState ->
+                val action = getFunction(viewState)
+                action(p1, p2)
+            }
+        }
+    }
+
+    protected fun <T1> EventBuilder<(T1) -> Unit>.repeatLast(): RepeatLastEvent1<T1> {
+        return RepeatLastEvent1(this.getFunction)
+    }
+
+    protected fun <T1, T2> EventBuilder<(T1, T2) -> Unit>.repeatLast(): RepeatLastEvent2<T1, T2> {
+        return RepeatLastEvent2(this.getFunction)
+    }
+
+    inner class RepeatLastEvent1<T1>(
+        private val getFunction: (TView) -> ((T1) -> Unit)
+    ) : (T1) -> Unit {
+
+        override fun invoke(p1: T1) {
+            storesController.view?.let { viewState ->
+                val action = getFunction(viewState)
+                action(p1)
+            }
+        }
+    }
+
+    inner class RepeatLastEvent2<T1, T2>(
+        private val getFunction: (TView) -> ((T1, T2) -> Unit)
+    ) : (T1, T2) -> Unit {
+
+        override fun invoke(p1: T1, p2: T2) {
+            storesController.view?.let { viewState ->
+                val action = getFunction(viewState)
+                action(p1, p2)
+            }
+        }
+    }
+
+    protected fun <T1> EventBuilder<(T1) -> Unit>.repeatAll(): RepeatAllEvent1<T1> {
+        return RepeatAllEvent1(this.getFunction)
+    }
+
+    protected fun <T1, T2> EventBuilder<(T1, T2) -> Unit>.repeatAll(): RepeatAllEvent2<T1, T2> {
+        return RepeatAllEvent2(this.getFunction)
+    }
+
+    inner class RepeatAllEvent1<T1>(
+        private val getFunction: (TView) -> ((T1) -> Unit)
+    ) : (T1) -> Unit {
+
+        override fun invoke(p1: T1) {
+            storesController.view?.let { viewState ->
+                val action = getFunction(viewState)
+                action(p1)
+            }
+        }
+    }
+
+    inner class RepeatAllEvent2<T1, T2>(
+        private val getFunction: (TView) -> ((T1, T2) -> Unit)
+    ) : (T1, T2) -> Unit {
+
+        override fun invoke(p1: T1, p2: T2) {
+            storesController.view?.let { viewState ->
+                val action = getFunction(viewState)
+                action(p1, p2)
+            }
+        }
+    }
 
     override fun created() {
         super.receiverCreated()
@@ -170,9 +291,9 @@ interface UnsafePresenterLifecycleOwner {
 
     /**
      * Same as [SummerPresenter.viewCreated] but with unsafe typecast.
-     * Used when view can not pass typed [viewState] and [viewMethods]
+     * Used when view can not pass typed [view]
      */
-    fun viewCreatedUnsafe(viewState: Any, viewMethods: Any)
+    fun viewCreatedUnsafe(view: Any)
 
     /**
      * Must be called when view is destroyed. May be called multiple times

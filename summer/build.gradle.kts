@@ -24,7 +24,6 @@ kotlin {
             compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
         }
     }
-    js()
 
     sourceSets {
         commonMain {
@@ -43,12 +42,6 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
-            }
-        }
-        getByName("jsMain") {
-            dependencies {
-                implementation(kotlin("stdlib-js"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$coroutinesVersion")
             }
         }
         getByName("iosArm64Main") {

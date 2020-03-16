@@ -7,15 +7,12 @@ import summer.SummerPresenter
 import summer.SummerPresenterWithRouter
 
 abstract class SummerComponent<
-        TViewState : Any,
-        TViewMethods : Any,
-        TPresenter : SummerPresenter<TViewState, TViewMethods>> {
-
-    protected abstract val viewMethods: TViewMethods
+        TView : Any,
+        TPresenter : SummerPresenter<TView>> {
 
     protected abstract val presenter: TPresenter
 
-    protected abstract var viewState: TViewState
+    protected abstract var viewState: TView
 
     protected abstract fun createView(
         parentView: ViewGroup?,
@@ -36,7 +33,7 @@ abstract class SummerComponent<
     fun onViewCreated(parentView: ViewGroup?, context: Context, isFirstViewCreation: Boolean) {
         _view = createView(parentView, context)
         initView()
-        presenter.viewCreated(viewState, viewMethods)
+        presenter.viewCreated(viewState)
         if (isFirstViewCreation) {
             presenter.entered()
         }
@@ -66,12 +63,10 @@ abstract class SummerComponent<
 
 abstract class SummerComponentWithRouter<
         TViewState : Any,
-        TViewMethods : Any,
         TRouter : Any,
-        TPresenter : SummerPresenterWithRouter<TViewState, TViewMethods, TRouter>>
+        TPresenter : SummerPresenterWithRouter<TViewState, TRouter>>
     : SummerComponent<
         TViewState,
-        TViewMethods,
         TPresenter>() {
 
     protected abstract val router: TRouter
