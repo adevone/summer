@@ -25,10 +25,10 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:0.8.17")
+    implementation("com.github.adevone.summer:summer:0.11.3")
     
     // android part containing SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:0.8.17")
+    implementation("com.github.adevone.summer:summer-androidx:0.11.3")
 }
 ```
 
@@ -40,37 +40,31 @@ Example of feature written using Summer:
 
 Common, Kotlin:
 ```kotlin
-class GetDay : UseCase<String, GetDay.Params> {
+class GetDay {
     
-    override suspend fun invoke(number: Int): String = when (number) {
+    operator fun invoke(number: Int): String = when (number) {
         1 -> "Monday"
         2 -> "Thursday"
         else -> "Another day"
     }
 }
 
-object CalendarView {
-
-    interface State {
-        var isLoading: Boolean
-        var dayName: String
-    }
-    
-    interface Methods {
-        fun showError()
-    }
+interface CalendarView {
+    var isLoading: Boolean
+    var dayName: String
+    val showError: () -> Unit
 }
 
 class CalendarPresenter(
     getDay: GetDay
-) : SummerPresenter<CalendarView.State, CalendarView.Methods> {
+) : SummerPresenter<CalendarView> {
     
     private val defaultDayName = "Monday"
     
     // Proxy that allows to restore state and 
     // set properties even if view does not exist.
     // Summer plugin provides convenient intentions to write it easy
-    override val viewStateProxy = object : CalendarView.State {
+    override val viewProxy = object : CalendarView.State {
     
         // Initial values are automatically emitted to view when it is created.
         // No matter in which state view was. Presenter will change
@@ -82,18 +76,23 @@ class CalendarPresenter(
         // Any presenter properties can be used as initial values
         // for state properties
         override var dayName by state({ it::dayName }, initial = defaultDayName)
+        
+        // Events can be delivered to view using various strategies.
+        // 4 is present out-of-box. `doOnlyWhenAttached` means that
+        // action will be executed only if view attached now.
+        // If view is not attached than event wont repeated if
+        // this strategy used.
+        override val showError = event { it.showError }.doOnlyWhenAttached()
     }
     
     // Called when user sees screen for the first time 
     override fun onEnter() {
-        launch {
+        try {
             val day = getDay(number = 1)
-            viewStateProxy.dayName = dayName
+            viewProxy.dayName = dayName
+        } catch (e: Exception) {
+            viewProxy.showError()        
         }
-    }
-    
-    override fun onFailure(e: Throwable) {
-        viewMethods?.showError()
     }
 } 
 ```
@@ -101,15 +100,13 @@ class CalendarPresenter(
 Android, Kotlin:
 ```kotlin
 class CalendarFragment : SummerFragment<
-    CalendarView.State, 
-    CalendarView.Methods, 
-    CalendarRouter,
+    CalendarView
     CalendarPresenter
 >(R.layout.calendar_fragment) {
 
     override fun createPresenter() = CalendarPresenter(...)
 
-    override fun createViewState() = object : CalendarView.State {
+    override fun createViewState() = object : CalendarView {
     
         override var isLoading: Boolean by didSet {
             progressBar.isVisible = isLoading
@@ -118,11 +115,8 @@ class CalendarFragment : SummerFragment<
         override var dayName: String by didSet {
             dayNameView.text = dayName
         }
-    }
-    
-    override var viewMethods = object : CalendarView.Methods {
         
-        override fun showError() {
+        override val showError = {
             snackbar("Error occurred")
         }
     }
@@ -133,15 +127,7 @@ class CalendarFragment : SummerFragment<
 
 iOS, Swift:
 ```swift
-extension CalendarViewController: CalendarViewMethods {
-    
-    func showError() {
-        print("Error occurred!")
-    }
-    
-}
-
-class CalendarViewController: BaseController, CalendarViewState {
+class CalendarViewController: BaseController, CalendarView {
 
     @IBOutlet weak var loadingSpinner: UIView!
     @IBOutlet weak var dayNameLabel: UILabel!
@@ -156,6 +142,10 @@ class CalendarViewController: BaseController, CalendarViewState {
         didSet {
             dayNameLabel.text = dayName
         }
+    }
+    
+    var showError: () -> Void = {
+        print("Error occurred!")
     }
     
     private var presenter: CalendarPresenter! {
@@ -173,72 +163,4 @@ class CalendarViewController: BaseController, CalendarViewState {
 ### Convenient custom scope
 ```
 ((file[app]:src/main//*||file[app]:src/debug//*||file[app]:src/release//*)&&!*.iml||file[shared_commonMain]:*/||file[buildSrc]:*/||file[shared]:.gitignore||file[eshop]:build.gradle.kts||file[eshop_iosMain]:*/||file[app]:build.gradle.kts)&&!file[buildSrc]:buildSrc.iml||file:.gitignore||file:build.gradle.kts||file:gradle.properties||file:settings.gradle.kts||file:README.md||file[shared_iosMain]:*/||file[app]:src/test/java//*
-```
-
-### Feature presentation template 
-```kotlin
-#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
-#end
-#parse("File Header.java")
-
-import summer.example.presentation.base.ScreenPresenter
-
-class ${NAME}Presenter : ScreenPresenter<
-        ${NAME}View.State, 
-        ${NAME}View.Methods, 
-        ${NAME}Router>() {
-    
-    override val viewStateProxy = object : ${NAME}View.State {
-
-    }
-}
-
-object ${NAME}View {
-
-    interface State {
-        
-    }
-    
-    interface Methods {
-        
-    }
-}
-
-interface ${NAME}Router {
-    
-}
-```
-
-### Feature fragment template
-```kotlin
-#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
-#end
-#parse("File Header.java")
-
-import summer.example.R
-import summer.example.presentation.${NAME}Presenter
-import summer.example.presentation.${NAME}Router
-import summer.example.presentation.${NAME}View
-import summer.example.ui.ScreenFragment
-
-class ${NAME}Fragment : ScreenFragment<
-        ${NAME}View.State,
-        ${NAME}View.Methods,
-        ${NAME}Router,
-        ${NAME}Presenter>(R.layout.TODO()) {
-
-    override val router = object : ${NAME}Router {
-
-    }
-
-    override fun createViewState() = object : ${NAME}View.State {
-
-    }
-
-    override val viewMethods = object : ${NAME}View.Methods {
-
-    }
-
-    override fun createPresenter() = ${NAME}Presenter()
-}
 ```
