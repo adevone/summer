@@ -29,10 +29,6 @@ class FrameworkDetailsFragment : ScreenFragment<
         override var notifyAboutName = { frameworkName: String ->
             Toast.makeText(context, frameworkName, Toast.LENGTH_LONG).show()
         }
-
-        override val notifyAboutName2 = { a: String, b: String ->
-            Toast.makeText(context, a + b, Toast.LENGTH_LONG).show()
-        }
     }
 
     override val screenToolbar get() = toolbar!!

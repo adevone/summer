@@ -6,8 +6,6 @@ import summer.example.presentation.base.ScreenPresenter
 interface FrameworkDetailsView {
     var framework: Framework?
     val notifyAboutName: (frameworkName: String) -> Unit
-    val notifyAboutName2: (a: String, b: String) -> Unit
-    val toMain: (isFromBasket: Boolean) -> Unit
 }
 
 class FrameworkDetailsPresenter(
@@ -17,8 +15,6 @@ class FrameworkDetailsPresenter(
     override val viewProxy = object : FrameworkDetailsView {
         override var framework by store({ it::framework }, initial = null)
         override val notifyAboutName = event { it.notifyAboutName }.doOnlyWhenAttached()
-        override val notifyAboutName2 = event { it.notifyAboutName2 }.repeatLast()
-        override val toMain = event { it.toMain }.repeatOnlyOnce()
     }
 
     override fun onEnter() {

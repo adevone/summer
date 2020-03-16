@@ -1,12 +1,12 @@
 package summer
 
+import summer.events.DoOnlyWhenAttachedStrategy
+import summer.events.EventFactory
 import summer.execution.SummerExecutor
-import summer.store.GetMirrorProperty
 import summer.store.InMemoryStore
 import summer.store.SummerStore
-import summer.store.SummerStoresController
-import summer.store.SummerViewProxyProvider
 import kotlin.coroutines.CoroutineContext
+import kotlin.reflect.KMutableProperty0
 
 /**
  * Base presenter. Allows to restore view state and
@@ -28,15 +28,20 @@ abstract class SummerPresenter<TView>(
     mainContext = uiContext,
     defaultWorkContext = defaultWorkContext,
     loggerFactory = loggerFactory
-), SummerViewProxyProvider<TView>, UnsafePresenterLifecycleOwner {
+), SummerViewProxyProvider<TView>, UnsafePresenterLifecycleOwner,
+    EventFactory<TView>, DoOnlyWhenAttachedStrategy.Factory<TView> {
 
-    private val storesController = SummerStoresController<TView>()
+    override var view: TView? = null
 
     /**
      * Must be called when view is created. May be called multiple times
      */
     fun viewCreated(view: TView) {
-        storesController.viewCreated(view)
+        this.view = view
+
+        // restore call placed there because presenter methods may be called due view initialization.
+        // restore must be called after initView
+        stores.forEach { it.restore() }
     }
 
     override fun viewCreatedUnsafe(view: Any) {
@@ -45,7 +50,7 @@ abstract class SummerPresenter<TView>(
     }
 
     override fun viewDestroyed() {
-        storesController.viewDestroyed()
+        this.view = null
     }
 
     /**
@@ -73,151 +78,26 @@ abstract class SummerPresenter<TView>(
      *
      * @return stored property delegate
      */
-    protected fun <T> storeIn(
+    fun <T> storeIn(
         getMirrorProperty: GetMirrorProperty<TView, T>? = null,
         initial: T,
         store: SummerStore
-    ) = storesController.storeIn(
-        getMirrorProperty = getMirrorProperty,
-        initial = initial,
-        store = store
-    )
-
-    protected fun <TFunction> event(which: (TView) -> TFunction): EventBuilder<TFunction> {
-        return EventBuilder(getFunction = which)
-    }
-
-    protected inner class EventBuilder<TFunction>(
-        val getFunction: (TView) -> TFunction
-    )
-
-    protected fun <T1> EventBuilder<(T1) -> Unit>.doOnlyWhenAttached(): DoOnlyWhenAttachedEvent1<T1> {
-        return DoOnlyWhenAttachedEvent1(this.getFunction)
-    }
-
-    protected fun <T1, T2> EventBuilder<(T1, T2) -> Unit>.doOnlyWhenAttached(): DoOnlyWhenAttachedEvent2<T1, T2> {
-        return DoOnlyWhenAttachedEvent2(this.getFunction)
-    }
-
-    inner class DoOnlyWhenAttachedEvent1<T1>(
-        private val getFunction: (TView) -> ((T1) -> Unit)
-    ) : (T1) -> Unit {
-
-        override fun invoke(p1: T1) {
-            storesController.view?.let { viewState ->
-                val action = getFunction(viewState)
-                action(p1)
-            }
+    ): SummerStore.DelegateProvider<T> {
+        return store.store(
+            onSet = { value ->
+                val currentViewState = view
+                if (currentViewState != null && getMirrorProperty != null) {
+                    val property = getMirrorProperty(currentViewState)
+                    property.set(value)
+                }
+            },
+            initial = initial
+        ).also {
+            stores.add(store)
         }
     }
 
-    inner class DoOnlyWhenAttachedEvent2<T1, T2>(
-        private val getFunction: (TView) -> ((T1, T2) -> Unit)
-    ) : (T1, T2) -> Unit {
-
-        override fun invoke(p1: T1, p2: T2) {
-            storesController.view?.let { viewState ->
-                val action = getFunction(viewState)
-                action(p1, p2)
-            }
-        }
-    }
-
-    protected fun <T1> EventBuilder<(T1) -> Unit>.repeatOnlyOnce(): RepeatOnlyOnceEvent1<T1> {
-        return RepeatOnlyOnceEvent1(this.getFunction)
-    }
-
-    protected fun <T1, T2> EventBuilder<(T1, T2) -> Unit>.repeatOnlyOnce(): RepeatOnlyOnceEvent2<T1, T2> {
-        return RepeatOnlyOnceEvent2(this.getFunction)
-    }
-
-    inner class RepeatOnlyOnceEvent1<T1>(
-        private val getFunction: (TView) -> ((T1) -> Unit)
-    ) : (T1) -> Unit {
-
-        override fun invoke(p1: T1) {
-            storesController.view?.let { viewState ->
-                val action = getFunction(viewState)
-                action(p1)
-            }
-        }
-    }
-
-    inner class RepeatOnlyOnceEvent2<T1, T2>(
-        private val getFunction: (TView) -> ((T1, T2) -> Unit)
-    ) : (T1, T2) -> Unit {
-
-        override fun invoke(p1: T1, p2: T2) {
-            storesController.view?.let { viewState ->
-                val action = getFunction(viewState)
-                action(p1, p2)
-            }
-        }
-    }
-
-    protected fun <T1> EventBuilder<(T1) -> Unit>.repeatLast(): RepeatLastEvent1<T1> {
-        return RepeatLastEvent1(this.getFunction)
-    }
-
-    protected fun <T1, T2> EventBuilder<(T1, T2) -> Unit>.repeatLast(): RepeatLastEvent2<T1, T2> {
-        return RepeatLastEvent2(this.getFunction)
-    }
-
-    inner class RepeatLastEvent1<T1>(
-        private val getFunction: (TView) -> ((T1) -> Unit)
-    ) : (T1) -> Unit {
-
-        override fun invoke(p1: T1) {
-            storesController.view?.let { viewState ->
-                val action = getFunction(viewState)
-                action(p1)
-            }
-        }
-    }
-
-    inner class RepeatLastEvent2<T1, T2>(
-        private val getFunction: (TView) -> ((T1, T2) -> Unit)
-    ) : (T1, T2) -> Unit {
-
-        override fun invoke(p1: T1, p2: T2) {
-            storesController.view?.let { viewState ->
-                val action = getFunction(viewState)
-                action(p1, p2)
-            }
-        }
-    }
-
-    protected fun <T1> EventBuilder<(T1) -> Unit>.repeatAll(): RepeatAllEvent1<T1> {
-        return RepeatAllEvent1(this.getFunction)
-    }
-
-    protected fun <T1, T2> EventBuilder<(T1, T2) -> Unit>.repeatAll(): RepeatAllEvent2<T1, T2> {
-        return RepeatAllEvent2(this.getFunction)
-    }
-
-    inner class RepeatAllEvent1<T1>(
-        private val getFunction: (TView) -> ((T1) -> Unit)
-    ) : (T1) -> Unit {
-
-        override fun invoke(p1: T1) {
-            storesController.view?.let { viewState ->
-                val action = getFunction(viewState)
-                action(p1)
-            }
-        }
-    }
-
-    inner class RepeatAllEvent2<T1, T2>(
-        private val getFunction: (TView) -> ((T1, T2) -> Unit)
-    ) : (T1, T2) -> Unit {
-
-        override fun invoke(p1: T1, p2: T2) {
-            storesController.view?.let { viewState ->
-                val action = getFunction(viewState)
-                action(p1, p2)
-            }
-        }
-    }
+    private val stores = mutableSetOf<SummerStore>()
 
     override fun created() {
         super.receiverCreated()
@@ -330,3 +210,5 @@ interface UnsafePresenterLifecycleOwner {
      */
     fun exited()
 }
+
+typealias GetMirrorProperty<TView, T> = (TView) -> KMutableProperty0<T>
