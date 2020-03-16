@@ -7,7 +7,6 @@ import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import summer.SummerPresenter
-import summer.SummerPresenterWithRouter
 import java.util.Collections.emptyList
 
 abstract class SummerFragment<
@@ -114,29 +113,4 @@ abstract class SummerFragment<
     }
 
     companion object : DidSetMixin()
-}
-
-abstract class SummerFragmentWithRouter<
-        TViewState : Any,
-        TRouter : Any,
-        TPresenter : SummerPresenterWithRouter<TViewState, TRouter>>
-    : SummerFragment<
-        TViewState,
-        TPresenter> {
-
-    constructor() : super()
-
-    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
-
-    protected abstract val router: TRouter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter.routerCreated(router)
-    }
-
-    override fun onDestroy() {
-        presenter.routerDestroyed()
-        super.onDestroy()
-    }
 }

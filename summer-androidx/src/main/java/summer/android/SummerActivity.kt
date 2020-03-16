@@ -3,7 +3,6 @@ package summer.android
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import summer.SummerPresenter
-import summer.SummerPresenterWithRouter
 
 abstract class SummerActivity<
         TView,
@@ -54,23 +53,4 @@ abstract class SummerActivity<
     }
 
     companion object : DidSetMixin()
-}
-
-abstract class SummerActivityWithRouter<
-        TViewState,
-        TRouter,
-        TPresenter : SummerPresenterWithRouter<TViewState, TRouter>>
-    : SummerActivity<TViewState, TPresenter>() {
-
-    protected abstract val router: TRouter
-
-    override fun initPresenterView() {
-        super.initPresenterView()
-        presenter.routerCreated(router)
-    }
-
-    override fun onDestroy() {
-        presenter.routerDestroyed()
-        super.onDestroy()
-    }
 }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import summer.SummerPresenter
-import summer.SummerPresenterWithRouter
 
 abstract class SummerComponent<
         TView : Any,
@@ -59,25 +58,4 @@ abstract class SummerComponent<
     }
 
     companion object : DidSetMixin()
-}
-
-abstract class SummerComponentWithRouter<
-        TViewState : Any,
-        TRouter : Any,
-        TPresenter : SummerPresenterWithRouter<TViewState, TRouter>>
-    : SummerComponent<
-        TViewState,
-        TPresenter>() {
-
-    protected abstract val router: TRouter
-
-    override fun onCreate() {
-        super.onCreate()
-        presenter.routerCreated(router)
-    }
-
-    override fun onDestroy() {
-        presenter.viewDestroyed()
-        super.onDestroy()
-    }
 }
