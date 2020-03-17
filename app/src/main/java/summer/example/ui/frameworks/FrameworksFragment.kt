@@ -28,8 +28,6 @@ class FrameworksFragment :
 
     override val presenter by summerPresenter { FrameworksPresenter() }
 
-    override val screenToolbar get() = toolbar!!
-
     private lateinit var frameworksAdapter: FrameworksAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,5 +40,5 @@ class FrameworksFragment :
     override val argsSerializer = Args.serializer()
 
     @Serializable
-    class Args : ScreenArgs<FrameworksFragment>()
+    class Args : ScreenArgs<FrameworksFragment>(::FrameworksFragment)
 }

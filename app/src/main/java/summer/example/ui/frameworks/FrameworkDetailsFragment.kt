@@ -27,12 +27,10 @@ class FrameworkDetailsFragment :
         FrameworkDetailsPresenter(initialFramework = args.framework)
     }
 
-    override val screenToolbar get() = toolbar!!
-
     override val argsSerializer = Args.serializer()
 
     @Serializable
     class Args(
         val framework: Framework
-    ) : ScreenArgs<FrameworkDetailsFragment>()
+    ) : ScreenArgs<FrameworkDetailsFragment>(::FrameworkDetailsFragment)
 }

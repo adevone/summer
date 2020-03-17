@@ -26,10 +26,8 @@ class AboutFragment : ScreenFragment<AboutFragment.Args>(R.layout.about_fragment
         contentView.isVisible = !isLoading
     }
 
-    override val screenToolbar get() = toolbar!!
-
     override val argsSerializer = Args.serializer()
 
     @Serializable
-    class Args : ScreenArgs<AboutFragment>()
+    class Args : ScreenArgs<AboutFragment>(::AboutFragment)
 }

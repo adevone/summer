@@ -19,10 +19,8 @@ class BasketFragment : ScreenFragment<BasketFragment.Args>(R.layout.basket_fragm
         }
     }
 
-    override val screenToolbar get() = toolbar!!
-
     override val argsSerializer = Args.serializer()
 
     @Serializable
-    class Args : ScreenArgs<BasketFragment>()
+    class Args : ScreenArgs<BasketFragment>(::BasketFragment)
 }

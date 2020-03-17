@@ -91,7 +91,7 @@ class TabContainerFragment : ArgsFragment<TabContainerFragment.Args>(), AppKodei
     @Serializable
     class Args(
         val item: Tab
-    ) : ScreenArgs<TabContainerFragment>()
+    ) : ScreenArgs<TabContainerFragment>(::TabContainerFragment)
 
     companion object {
         private val tabContainerId = ViewCompat.generateViewId()
