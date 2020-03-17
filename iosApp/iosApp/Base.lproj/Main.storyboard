@@ -134,15 +134,22 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kma-iN-YcJ">
                                 <rect key="frame" x="16" y="95" width="343" height="552"/>
                             </imageView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="cIr-c1-Ylv">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="kma-iN-YcJ" firstAttribute="leading" secondItem="sEl-QS-Eqd" secondAttribute="leading" constant="16" id="6W7-fG-sKt"/>
                             <constraint firstItem="tKE-M8-c2R" firstAttribute="top" secondItem="sEl-QS-Eqd" secondAttribute="top" constant="20" id="6c7-4p-9zj"/>
+                            <constraint firstItem="cIr-c1-Ylv" firstAttribute="top" secondItem="sEl-QS-Eqd" secondAttribute="top" id="8x4-sM-Sxh"/>
+                            <constraint firstItem="cIr-c1-Ylv" firstAttribute="bottom" secondItem="sEl-QS-Eqd" secondAttribute="bottom" id="9f2-gT-ziV"/>
                             <constraint firstItem="5nL-oc-YQ5" firstAttribute="leading" secondItem="sEl-QS-Eqd" secondAttribute="leading" constant="16" id="Ac7-l9-b4Y"/>
                             <constraint firstItem="sEl-QS-Eqd" firstAttribute="trailing" secondItem="kma-iN-YcJ" secondAttribute="trailing" constant="16" id="MaT-Rh-g55"/>
                             <constraint firstItem="tKE-M8-c2R" firstAttribute="leading" secondItem="sEl-QS-Eqd" secondAttribute="leading" constant="16" id="PRw-z4-Mzb"/>
                             <constraint firstItem="sEl-QS-Eqd" firstAttribute="bottom" secondItem="kma-iN-YcJ" secondAttribute="bottom" constant="20" id="Rn0-xO-YrD"/>
+                            <constraint firstItem="cIr-c1-Ylv" firstAttribute="leading" secondItem="sEl-QS-Eqd" secondAttribute="leading" id="Ym7-QT-k63"/>
+                            <constraint firstItem="cIr-c1-Ylv" firstAttribute="trailing" secondItem="sEl-QS-Eqd" secondAttribute="trailing" id="aLr-pf-Jgt"/>
                             <constraint firstItem="sEl-QS-Eqd" firstAttribute="trailing" secondItem="5nL-oc-YQ5" secondAttribute="trailing" constant="16" id="f6e-cb-A1r"/>
                             <constraint firstItem="5nL-oc-YQ5" firstAttribute="top" secondItem="tKE-M8-c2R" secondAttribute="bottom" constant="8" id="hVx-72-9iz"/>
                             <constraint firstItem="kma-iN-YcJ" firstAttribute="top" secondItem="5nL-oc-YQ5" secondAttribute="bottom" constant="8" id="lQ6-dC-riU"/>
@@ -151,6 +158,7 @@
                         <viewLayoutGuide key="safeArea" id="sEl-QS-Eqd"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="cIr-c1-Ylv" id="Uru-Il-ctn"/>
                         <outlet property="authorNameLabel" destination="5nL-oc-YQ5" id="3Zp-6y-TFC"/>
                         <outlet property="imageView" destination="kma-iN-YcJ" id="4gC-yI-DV0"/>
                         <outlet property="titleLabel" destination="tKE-M8-c2R" id="MiJ-DD-khm"/>

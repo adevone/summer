@@ -28,7 +28,7 @@ interface SummerStore {
 }
 
 /**
- * Default store that can be passed to [SummerPresenter.stateIn] or [SummerPresenter.localStore]
+ * Default store that can be passed to [SummerPresenter.stateIn] or [SummerPresenter.defaultStore]
  * Stores values in memory and doesn't restores them after app relaunch
  */
 class InMemoryStore : SummerStore {

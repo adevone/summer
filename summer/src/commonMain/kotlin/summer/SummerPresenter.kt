@@ -4,33 +4,16 @@ import summer.events.DoExactlyOnceStrategy
 import summer.events.DoOnlyWhenAttachedStrategy
 import summer.events.EventFactory
 import summer.events.SummerEvent
-import summer.execution.SummerExecutor
 import summer.store.InMemoryStore
 import summer.store.SummerStore
-import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KMutableProperty0
 
 /**
- * Base presenter. Allows to restore view state and
- * execute summer sources ([summer.execution.source.SummerSource],
- * [summer.execution.reducer.SummerReducer] or [summer.execution.mix.MixSource])
- *
- * Should not be used as direct parent of feature presenters.
- * You should create your own base presenter in your project.
+ * Base presenter. Allows to restore view state (see [SummerViewProxyProvider])
+ * and execute events (see [SummerEvent])
  */
-abstract class SummerPresenter<TView>(
-    uiContext: CoroutineContext = defaultUiContext,
-    defaultWorkContext: CoroutineContext = defaultBackgroundContext,
-    loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
-    /**
-     * Store created specifically for this presenter. Must not be reused
-     */
-    private val localStore: SummerStore = InMemoryStore()
-) : SummerExecutor(
-    mainContext = uiContext,
-    defaultWorkContext = defaultWorkContext,
-    loggerFactory = loggerFactory
-), SummerViewProxyProvider<TView>, UnsafePresenterLifecycleOwner,
+abstract class SummerPresenter<TView> : SummerViewProxyProvider<TView>,
+    UnsafePresenterLifecycleOwner,
     EventFactory<TView>,
     DoOnlyWhenAttachedStrategy.Factory<TView>,
     DoExactlyOnceStrategy.Factory<TView> {
@@ -59,10 +42,15 @@ abstract class SummerPresenter<TView>(
         this.view = null
     }
 
+    /**
+     * Used for state storing by default. Can be overridden
+     */
+    open val defaultStore: SummerStore = InMemoryStore()
+
     private val stores = mutableSetOf<SummerStore>()
 
     /**
-     * Shorthand for [stateIn] with [localStore] of this presenter
+     * Shorthand for [stateIn] with [defaultStore] of this presenter
      */
     protected fun <T> state(
         getMirrorProperty: GetMirrorProperty<TView, T>? = null,
@@ -70,7 +58,7 @@ abstract class SummerPresenter<TView>(
     ) = stateIn(
         getMirrorProperty = getMirrorProperty,
         initial = initial,
-        store = localStore
+        store = defaultStore
     )
 
     /**
@@ -111,14 +99,6 @@ abstract class SummerPresenter<TView>(
         events.add(event)
     }
 
-    override fun created() {
-        super.receiverCreated()
-    }
-
-    override fun destroyed() {
-        super.receiverDestroyed()
-    }
-
     override fun entered() {
         onEnter()
     }
@@ -156,27 +136,10 @@ abstract class SummerPresenter<TView>(
      * It may happen when user pops view from stack or switches to another app
      */
     protected open fun onDisappear() {}
-
-    /**
-     * Convenient constructor if IoC container used
-     */
-    constructor(dependencies: Dependencies) : this(
-        uiContext = dependencies.uiContext,
-        defaultWorkContext = dependencies.workContext,
-        loggerFactory = dependencies.loggerFactory,
-        localStore = dependencies.localStore
-    )
-
-    class Dependencies(
-        val uiContext: CoroutineContext = defaultUiContext,
-        val workContext: CoroutineContext = defaultBackgroundContext,
-        val loggerFactory: SummerLogger.Factory = DefaultLoggerFactory,
-        val localStore: SummerStore = InMemoryStore()
-    )
 }
 
 /**
- * Non-generic protocol that can be used to call lifecycle events of [SummerPresenterWithRouter]
+ * Non-generic protocol that can be used to call lifecycle events of [SummerPresenter]
  * in languages without covariant types support (like Swift)
  */
 interface UnsafePresenterLifecycleOwner {
@@ -195,12 +158,12 @@ interface UnsafePresenterLifecycleOwner {
     /**
      * Must be called when presenter is destroyed. Must be called exactly once
      */
-    fun destroyed()
+    fun destroyed() {}
 
     /**
      * Must be called when presenter is created. Must be called exactly once
      */
-    fun created()
+    fun created() {}
 
     /**
      * Must be called when user sees view for the first time

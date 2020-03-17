@@ -33,10 +33,6 @@ class FrameworksController: BaseController, FrameworksView {
         frameworksTable.dataSource = self
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.tabBarController?.viewControllers?.remove(at: 0)
-    }
 }
 
 extension FrameworksController: UITableViewDelegate {
@@ -62,7 +58,6 @@ class FrameworkCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBAction func increaseTapped(_ sender: Any) {
-        presenter.onFrameworkClick(framework: item.framework)
         presenter.onIncreaseClick(framework: item.framework)
     }
     

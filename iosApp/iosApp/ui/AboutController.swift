@@ -15,11 +15,12 @@ class AboutController: BaseController, AboutView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorNameLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var about: About? = nil {
         didSet {
-            titleLabel.text = about?.frameworkName ?? "Загрузка..."
-            authorNameLabel.text = about?.author ?? "Загрузка..."
+            titleLabel.text = about?.frameworkName ?? ""
+            authorNameLabel.text = about?.author ?? ""
             if let logoUrl = about?.logoUrl {
                 AF.request(logoUrl).responseImage { [weak self] response in
                     if case .success(let image) = response.result {
@@ -32,7 +33,7 @@ class AboutController: BaseController, AboutView {
     
     var isLoading: Bool = false {
         didSet {
-            print(isLoading)
+            activityIndicator.isHidden = !isLoading
         }
     }
     

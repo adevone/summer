@@ -29,13 +29,12 @@ kotlin {
         commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutinesVersion")
             }
         }
         getByName("jvmMain") {
             dependencies {
                 implementation(kotlin("stdlib"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
             }
         }
         getByName("jvmTest") {
@@ -46,7 +45,7 @@ kotlin {
         }
         getByName("iosArm64Main") {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$coroutinesVersion")
+
             }
         }
 
