@@ -2,12 +2,10 @@ package summer.android
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import summer.SummerPresenter
-import java.util.Collections.emptyList
 
 abstract class SummerFragment : Fragment {
 
@@ -15,15 +13,10 @@ abstract class SummerFragment : Fragment {
 
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
-    protected open fun createComponents(): List<SummerComponent<*, *>> = emptyList()
-    private var lifecycleComponents: List<SummerComponent<*, *>> = emptyList()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val provider = requirePresenterProvider()
         provider.initPresenter()
-        lifecycleComponents = createComponents()
-        lifecycleComponents.forEach { it.onCreate() }
         provider.created()
     }
 
@@ -40,13 +33,6 @@ abstract class SummerFragment : Fragment {
         super.onStart()
         if (isViewCreating) {
             val provider = requirePresenterProvider()
-            lifecycleComponents.forEach { component ->
-                component.onViewCreated(
-                    parentView = view as? ViewGroup,
-                    context = context!!,
-                    isFirstViewCreation = isFirstViewCreation
-                )
-            }
             provider.viewCreated()
             if (isFirstViewCreation) {
                 provider.entered()
@@ -61,7 +47,6 @@ abstract class SummerFragment : Fragment {
         super.onDestroyView()
         val presenterProvider = requirePresenterProvider()
         presenterProvider.viewDestroyed()
-        lifecycleComponents.forEach { it.onDestroyView() }
     }
 
     @CallSuper
@@ -70,8 +55,6 @@ abstract class SummerFragment : Fragment {
         super.onDestroy()
         val presenterProvider = requirePresenterProvider()
         presenterProvider.destroyed()
-        lifecycleComponents.forEach { it.onDestroy() }
-        lifecycleComponents = emptyList()
     }
 
     @CallSuper
@@ -79,13 +62,11 @@ abstract class SummerFragment : Fragment {
         super.onResume()
         val presenterProvider = requirePresenterProvider()
         presenterProvider.appeared()
-        lifecycleComponents.forEach { it.onResume() }
     }
 
     @CallSuper
     override fun onPause() {
         super.onPause()
-        lifecycleComponents.forEach { it.onPause() }
         val presenterProvider = requirePresenterProvider()
         presenterProvider.disappeared()
     }
@@ -102,7 +83,6 @@ abstract class SummerFragment : Fragment {
         if (isRemoving || anyParentIsRemoving) {
             val presenterProvider = requirePresenterProvider()
             presenterProvider.exited()
-            lifecycleComponents.forEach { it.onExit() }
         }
     }
 
