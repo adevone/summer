@@ -5,13 +5,11 @@ package summer
  *
  * Example:
  *
- * class BasePresenter : SummerPresenter<...>()
- *
  * class CodeHolder : ResultHolder<Int>()
  *
  * class CallerPresenter(
  *     private val codeHolder: CodeHolder
- * ) : BasePresenter() {
+ * ) : SummerPresenter() {
  *
  *     override fun onAppear() {
  *         codeHolder.pop()?.let { code ->
@@ -32,7 +30,7 @@ package summer
  *
  * class ForResultPresenter(
  *     private val codeHolder: CodeHolder
- * ) : BasePresenter() {
+ * ) : SummerPresenter() {
  *
  *     override fun onEnter() {
  *         val code = 1
