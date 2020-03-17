@@ -16,7 +16,7 @@ class FrameworkDetailsFragment : ScreenFragment<
         FrameworkDetailsFragment.Args>(R.layout.framework_details_fragment) {
 
     override fun createPresenter() = FrameworkDetailsPresenter(
-        framework = args.framework
+        initialFramework = args.framework
     )
 
     override fun createViewState() = object : FrameworkDetailsView {

@@ -10,16 +10,7 @@ import shared
 import Alamofire
 import AlamofireImage
 
-extension AboutController: AboutViewMethods {
-    
-}
-
-extension AboutController: AboutRouter {
-    
-    
-}
-
-class AboutController: BaseController, AboutViewState {
+class AboutController: BaseController, AboutView {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorNameLabel: UILabel!
@@ -43,10 +34,6 @@ class AboutController: BaseController, AboutViewState {
         didSet {
             print(isLoading)
         }
-    }
-    
-    var doSomething: (String) -> Void = { smth in
-        
     }
     
     private var presenter: AboutPresenter! {

@@ -9,7 +9,7 @@ interface FrameworkDetailsView {
 }
 
 class FrameworkDetailsPresenter(
-    private val framework: Framework
+    private val initialFramework: Framework
 ) : ScreenPresenter<FrameworkDetailsView>() {
 
     override val viewProxy = object : FrameworkDetailsView {
@@ -19,11 +19,11 @@ class FrameworkDetailsPresenter(
 
     override fun onEnter() {
         super.onEnter()
-        viewProxy.framework = framework
+        viewProxy.framework = initialFramework
     }
 
     override fun onAppear() {
         super.onAppear()
-        viewProxy.notifyAboutName(framework.name)
+        viewProxy.notifyAboutName(initialFramework.name)
     }
 }

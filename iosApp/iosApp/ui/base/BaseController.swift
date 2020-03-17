@@ -10,9 +10,9 @@ import shared
 
 class BaseController: UIViewController {
     
-    private var lifecycleOwner: SummerUnsafePresenterLifecycleOwnerWithRouter!
+    private var lifecycleOwner: SummerUnsafePresenterLifecycleOwner!
     
-    func setPresenter(_ lifecycleOwner: SummerUnsafePresenterLifecycleOwnerWithRouter) {
+    func setPresenter(_ lifecycleOwner: SummerUnsafePresenterLifecycleOwner) {
         self.lifecycleOwner = lifecycleOwner
     }
     
@@ -23,8 +23,7 @@ class BaseController: UIViewController {
             fatalError("\(String(describing: self)) call setPresenter before super.viewDidLoad")
         }
         
-        lifecycleOwner.viewCreatedUnsafe(viewState: self, viewMethods: self)
-        lifecycleOwner.routerCreatedUnsafe(router: self)
+        lifecycleOwner.viewCreatedUnsafe(view: self)
         
         lifecycleOwner.created()
         lifecycleOwner.entered()
@@ -43,24 +42,22 @@ class BaseController: UIViewController {
     deinit {
         lifecycleOwner.exited()
         lifecycleOwner.viewDestroyed()
-        lifecycleOwner.routerDestroyed()
         lifecycleOwner.destroyed()
     }
 }
 
 class BaseTabBarController: UITabBarController {
 
-    private var lifecycleOwner: SummerUnsafePresenterLifecycleOwnerWithRouter!
+    private var lifecycleOwner: SummerUnsafePresenterLifecycleOwner!
     
-    func setPresenter(_ lifecycleOwner: SummerUnsafePresenterLifecycleOwnerWithRouter) {
+    func setPresenter(_ lifecycleOwner: SummerUnsafePresenterLifecycleOwner) {
         self.lifecycleOwner = lifecycleOwner
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        lifecycleOwner.viewCreatedUnsafe(viewState: self, viewMethods: self)
-        lifecycleOwner.routerCreatedUnsafe(router: self)
+        lifecycleOwner.viewCreatedUnsafe(view: self)
         
         lifecycleOwner.created()
         lifecycleOwner.entered()
@@ -79,7 +76,6 @@ class BaseTabBarController: UITabBarController {
     deinit {
         lifecycleOwner.exited()
         lifecycleOwner.viewDestroyed()
-        lifecycleOwner.routerDestroyed()
         lifecycleOwner.destroyed()
     }
 }

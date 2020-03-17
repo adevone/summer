@@ -8,15 +8,7 @@
 import UIKit
 import shared
 
-extension BasketController: BasketViewMethods {
-    
-}
-
-extension BasketController: BasketRouter {
-    
-}
-
-class BasketController: BaseController, BasketViewState {
+class BasketController: BaseController, BasketView {
     
     @IBOutlet weak var basketLabel: UILabel!
     

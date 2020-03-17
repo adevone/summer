@@ -8,19 +8,7 @@
 import UIKit
 import shared
 
-extension FrameworksController: FrameworksViewMethods {
-    
-}
-
-extension FrameworksController: FrameworksRouter {
-    
-    func toDetails(framework: Framework) {
-        
-    }
-    
-}
-
-class FrameworksController: BaseController, FrameworksViewState {
+class FrameworksController: BaseController, FrameworksView {
     
     @IBOutlet weak var frameworksTable: UITableView!
     
@@ -28,6 +16,10 @@ class FrameworksController: BaseController, FrameworksViewState {
         didSet {
             frameworksTable.reloadData()
         }
+    }
+    
+    var toDetails: (Framework) -> Void = { framework in
+        
     }
     
     private var presenter: FrameworksPresenter! {

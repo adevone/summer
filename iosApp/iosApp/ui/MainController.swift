@@ -8,15 +8,7 @@
 import UIKit
 import shared
 
-extension MainController: MainViewMethods {
-    
-}
-
-extension MainController: MainRouter {
-    
-}
-
-class MainController: BaseTabBarController, MainViewState {
+class MainController: BaseTabBarController, MainView {
     
     var selectedTab: Tab? = nil {
         didSet {
