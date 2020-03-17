@@ -4,52 +4,58 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import summer.SummerPresenter
 
-abstract class SummerActivity<
-        TView,
-        TPresenter : SummerPresenter<TView>> : AppCompatActivity() {
-
-    protected abstract val view: TView
-
-    protected abstract fun createPresenter(): TPresenter
-
-    protected lateinit var presenter: TPresenter
+abstract class SummerActivity : AppCompatActivity() {
 
     private var isCreating = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isCreating = true
-        presenter = createPresenter()
+        val presenterProvider = requirePresenterProvider()
+        presenterProvider.initPresenter()
         super.onCreate(savedInstanceState)
     }
 
     override fun onStart() {
         super.onStart()
         if (isCreating) {
-            presenter.created()
-            initPresenterView()
-            presenter.entered()
+            val presenterProvider = requirePresenterProvider()
+            presenterProvider.created()
+            presenterProvider.viewCreated()
+            presenterProvider.entered()
         }
         isCreating = false
     }
 
-    internal open fun initPresenterView() {
-        presenter.viewCreated(view)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        presenter.viewDestroyed()
-        presenter.destroyed()
+        val presenterProvider = requirePresenterProvider()
+        presenterProvider.viewDestroyed()
+        presenterProvider.destroyed()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.appeared()
+        val presenterProvider = requirePresenterProvider()
+        presenterProvider.appeared()
     }
 
     override fun onPause() {
         super.onPause()
-        presenter.disappeared()
+        val presenterProvider = requirePresenterProvider()
+        presenterProvider.disappeared()
+    }
+
+    private var presenterProvider: PresenterProvider<*, *>? = null
+    fun <TView, TPresenter : SummerPresenter<TView>> TView.summerPresenter(
+        createPresenter: () -> TPresenter
+    ): PresenterProvider<TView, TPresenter> {
+        val provider = PresenterProvider(createPresenter, view = this)
+        presenterProvider = provider
+        return provider
+    }
+
+    private fun requirePresenterProvider(): PresenterProvider<*, *> {
+        return presenterProvider ?: throw PresenterNotProvidedException()
     }
 
     companion object : DidSetMixin()

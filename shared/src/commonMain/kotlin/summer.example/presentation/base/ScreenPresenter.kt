@@ -8,7 +8,7 @@ import summer.SummerPresenter
 import summer.example.AppKodeinAware
 import kotlin.coroutines.CoroutineContext
 
-abstract class ScreenPresenter<TView : Any> : SummerPresenter<TView>(),
+abstract class xScreenPresenter<TView : Any> : SummerPresenter<TView>(),
     AppKodeinAware,
     CoroutineScope {
 

@@ -9,32 +9,22 @@ import androidx.fragment.app.Fragment
 import summer.SummerPresenter
 import java.util.Collections.emptyList
 
-abstract class SummerFragment<
-        TViewState : Any,
-        TPresenter : SummerPresenter<TViewState>> : Fragment {
+abstract class SummerFragment : Fragment {
 
     constructor() : super()
 
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
-
-    protected abstract fun createViewState(): TViewState
-
-    private var _presenter: TPresenter? = null
-    protected val presenter: TPresenter get() = _presenter!!
-
-    protected abstract fun createPresenter(): TPresenter
-
-    protected var viewState: TViewState? = null
 
     protected open fun createComponents(): List<SummerComponent<*, *>> = emptyList()
     private var lifecycleComponents: List<SummerComponent<*, *>> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _presenter = createPresenter()
+        val provider = requirePresenterProvider()
+        provider.initPresenter()
         lifecycleComponents = createComponents()
         lifecycleComponents.forEach { it.onCreate() }
-        _presenter!!.created()
+        provider.created()
     }
 
     private var isFirstViewCreation = true
@@ -49,7 +39,7 @@ abstract class SummerFragment<
     override fun onStart() {
         super.onStart()
         if (isViewCreating) {
-            viewState = createViewState()
+            val provider = requirePresenterProvider()
             lifecycleComponents.forEach { component ->
                 component.onViewCreated(
                     parentView = view as? ViewGroup,
@@ -57,9 +47,9 @@ abstract class SummerFragment<
                     isFirstViewCreation = isFirstViewCreation
                 )
             }
-            presenter.viewCreated(viewState!!)
+            provider.viewCreated()
             if (isFirstViewCreation) {
-                _presenter!!.entered()
+                provider.entered()
                 isFirstViewCreation = false
             }
         }
@@ -69,16 +59,17 @@ abstract class SummerFragment<
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
-        _presenter!!.viewDestroyed()
+        val presenterProvider = requirePresenterProvider()
+        presenterProvider.viewDestroyed()
         lifecycleComponents.forEach { it.onDestroyView() }
-        viewState = null
     }
 
     @CallSuper
     override fun onDestroy() {
         notifyPresenterIfRemoving()
         super.onDestroy()
-        presenter.destroyed()
+        val presenterProvider = requirePresenterProvider()
+        presenterProvider.destroyed()
         lifecycleComponents.forEach { it.onDestroy() }
         lifecycleComponents = emptyList()
     }
@@ -86,7 +77,8 @@ abstract class SummerFragment<
     @CallSuper
     override fun onResume() {
         super.onResume()
-        presenter.appeared()
+        val presenterProvider = requirePresenterProvider()
+        presenterProvider.appeared()
         lifecycleComponents.forEach { it.onResume() }
     }
 
@@ -94,7 +86,8 @@ abstract class SummerFragment<
     override fun onPause() {
         super.onPause()
         lifecycleComponents.forEach { it.onPause() }
-        presenter.disappeared()
+        val presenterProvider = requirePresenterProvider()
+        presenterProvider.disappeared()
     }
 
     private fun notifyPresenterIfRemoving() {
@@ -107,10 +100,32 @@ abstract class SummerFragment<
         }
 
         if (isRemoving || anyParentIsRemoving) {
-            presenter.exited()
+            val presenterProvider = requirePresenterProvider()
+            presenterProvider.exited()
             lifecycleComponents.forEach { it.onExit() }
         }
     }
 
+    private var presenterProvider: PresenterProvider<*, *>? = null
+    fun <TView, TPresenter : SummerPresenter<TView>> TView.summerPresenter(
+        createPresenter: () -> TPresenter
+    ): PresenterProvider<TView, TPresenter> {
+        val provider = PresenterProvider(createPresenter, view = this)
+        presenterProvider = provider
+        return provider
+    }
+
+    private fun requirePresenterProvider(): PresenterProvider<*, *> {
+        return presenterProvider ?: throw PresenterNotProvidedException()
+    }
+
     companion object : DidSetMixin()
 }
+
+class PresenterNotProvidedException : RuntimeException(
+    "presenter in not provided"
+)
+
+class PresenterNotInitializedYet() : RuntimeException(
+    "presenter not initialized yet"
+)

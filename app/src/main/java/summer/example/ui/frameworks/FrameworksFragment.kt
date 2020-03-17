@@ -14,23 +14,19 @@ import summer.example.ui.base.ScreenFragment
 import summer.example.ui.base.routing.ScreenArgs
 import summer.example.ui.base.routing.toScreen
 
-class FrameworksFragment : ScreenFragment<
-        FrameworksView,
-        FrameworksPresenter,
-        FrameworksFragment.Args>(R.layout.frameworks_fragment) {
+class FrameworksFragment :
+    ScreenFragment<FrameworksFragment.Args>(R.layout.frameworks_fragment),
+    FrameworksView {
 
-    override fun createPresenter() = FrameworksPresenter()
-
-    override fun createViewState() = object : FrameworksView {
-
-        override var items: List<Basket.Item> by didSet {
-            frameworksAdapter.submitList(items)
-        }
-
-        override val toDetails = { framework: Framework ->
-            ciceroneRouter.navigateTo(FrameworkDetailsFragment.Args(framework).toScreen())
-        }
+    override var items: List<Basket.Item> by didSet {
+        frameworksAdapter.submitList(items)
     }
+
+    override val toDetails = { framework: Framework ->
+        ciceroneRouter.navigateTo(FrameworkDetailsFragment.Args(framework).toScreen())
+    }
+
+    override val presenter by summerPresenter { FrameworksPresenter() }
 
     override val screenToolbar get() = toolbar!!
 

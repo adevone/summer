@@ -19,65 +19,59 @@ import summer.example.ui.base.routing.BackButtonListener
 import summer.example.ui.base.routing.TabContainerFragment
 import summer.example.ui.base.routing.toScreen
 
-class MainActivity : SummerActivity<MainView, MainPresenter>(),
-    AppKodeinAware {
+class MainActivity : SummerActivity(), MainView, AppKodeinAware {
 
-    override fun createPresenter() = MainPresenter()
-
-    override val view = object : MainView {
-
-        override var tabs: List<Tab> by didSet {
-            bottomNavigationView.menu.clear()
-            tabs.forEach { tab ->
-                bottomNavigationView.menu
-                    .add(
-                        Menu.NONE,
-                        tab.itemId,
-                        Menu.NONE,
-                        tab.title
-                    )
-                    .setIcon(tab.iconRes)
-                    .setOnMenuItemClickListener {
-                        presenter.onMenuItemClick(tab)
-                        false
-                    }
-            }
+    override var tabs: List<Tab> by didSet {
+        bottomNavigationView.menu.clear()
+        tabs.forEach { tab ->
+            bottomNavigationView.menu
+                .add(
+                    Menu.NONE,
+                    tab.itemId,
+                    Menu.NONE,
+                    tab.title
+                )
+                .setIcon(tab.iconRes)
+                .setOnMenuItemClickListener {
+                    presenter.onMenuItemClick(tab)
+                    false
+                }
         }
+    }
 
-        override var selectedTab: Tab? = null
-            set(selectedTab) {
-                val previousSelectedTab = field
-                field = selectedTab
-                if (selectedTab != null) {
-                    val currentFragment = supportFragmentManager.fragments.find { it.isVisible }
-                    val newFragment = supportFragmentManager.findFragmentByTag(selectedTab.name)
+    override var selectedTab: Tab? = null
+        set(selectedTab) {
+            val previousSelectedTab = field
+            field = selectedTab
+            if (selectedTab != null) {
+                val currentFragment = supportFragmentManager.fragments.find { it.isVisible }
+                val newFragment = supportFragmentManager.findFragmentByTag(selectedTab.name)
 
-                    if (currentFragment != null && newFragment != null && currentFragment === newFragment) return
+                if (currentFragment != null && newFragment != null && currentFragment === newFragment) return
 
-                    val transaction = supportFragmentManager.beginTransaction()
-                    if (newFragment == null) {
-                        transaction.add(
-                            R.id.contentContainer,
-                            TabContainerFragment.Args(selectedTab).toScreen().fragment,
-                            selectedTab.name
-                        )
-                    }
+                val transaction = supportFragmentManager.beginTransaction()
+                if (newFragment == null) {
+                    transaction.add(
+                        R.id.contentContainer,
+                        TabContainerFragment.Args(selectedTab).toScreen().fragment,
+                        selectedTab.name
+                    )
+                }
 
-                    if (currentFragment != null) {
-                        transaction.hide(currentFragment)
-                    }
+                if (currentFragment != null) {
+                    transaction.hide(currentFragment)
+                }
 
-                    if (newFragment != null) {
-                        transaction.show(newFragment)
-                    }
-                    transaction.commitNow()
+                if (newFragment != null) {
+                    transaction.show(newFragment)
+                }
+                transaction.commitNow()
 
-                    if (selectedTab != previousSelectedTab) {
-                        bottomNavigationView.selectedItemId = selectedTab.itemId
-                    }
+                if (selectedTab != previousSelectedTab) {
+                    bottomNavigationView.selectedItemId = selectedTab.itemId
                 }
             }
-    }
+        }
 
     private val Tab.itemId: Int @IdRes get() = when (this) {
         Tab.Frameworks -> R.id.frameworksItem
@@ -96,6 +90,8 @@ class MainActivity : SummerActivity<MainView, MainPresenter>(),
         Tab.About -> "О программе"
         Tab.Basket -> "Корзина"
     }
+
+    private val presenter by summerPresenter { MainPresenter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

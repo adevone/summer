@@ -10,25 +10,21 @@ import summer.example.presentation.FrameworkDetailsView
 import summer.example.ui.base.ScreenFragment
 import summer.example.ui.base.routing.ScreenArgs
 
-class FrameworkDetailsFragment : ScreenFragment<
-        FrameworkDetailsView,
-        FrameworkDetailsPresenter,
-        FrameworkDetailsFragment.Args>(R.layout.framework_details_fragment) {
+class FrameworkDetailsFragment :
+    ScreenFragment<FrameworkDetailsFragment.Args>(R.layout.framework_details_fragment),
+    FrameworkDetailsView {
 
-    override fun createPresenter() = FrameworkDetailsPresenter(
-        initialFramework = args.framework
-    )
+    override var framework: Framework? by didSet {
+        nameView.text = framework?.name ?: ""
+        versionView.text = framework?.version ?: ""
+    }
 
-    override fun createViewState() = object : FrameworkDetailsView {
+    override var notifyAboutName = { frameworkName: String ->
+        Toast.makeText(context, frameworkName, Toast.LENGTH_LONG).show()
+    }
 
-        override var framework: Framework? by didSet {
-            nameView.text = framework?.name ?: ""
-            versionView.text = framework?.version ?: ""
-        }
-
-        override var notifyAboutName = { frameworkName: String ->
-            Toast.makeText(context, frameworkName, Toast.LENGTH_LONG).show()
-        }
+    override val presenter by summerPresenter {
+        FrameworkDetailsPresenter(initialFramework = args.framework)
     }
 
     override val screenToolbar get() = toolbar!!

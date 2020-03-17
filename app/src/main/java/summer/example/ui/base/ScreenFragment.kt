@@ -15,17 +15,16 @@ import summer.example.ui.ArgsFragmentFeature
 import summer.example.ui.base.routing.BackButtonListener
 import summer.example.ui.base.routing.RouterProvider
 
-abstract class ScreenFragment<
-        TView : Any,
-        TPresenter : SummerPresenter<TView>,
-        TArgs>(@LayoutRes layoutRes: Int) :
-    SummerFragment<TView, TPresenter>(layoutRes),
+abstract class ScreenFragment<TArgs>(@LayoutRes layoutRes: Int) :
+    SummerFragment(layoutRes),
     BackButtonListener,
     AppKodeinAware,
     ArgsFragmentFeature<TArgs> {
 
     override var argsBackingField: TArgs? = null
     override val fragment: Fragment = this
+
+    abstract val presenter: SummerPresenter<*>
 
     protected lateinit var ciceroneRouter: Router
 
