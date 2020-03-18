@@ -18,8 +18,8 @@ class FrameworksController: BaseController, FrameworksView {
         }
     }
     
-    lazy var toDetails: (Framework) -> Void = { [weak self] framework in
-        self?.frameworksTable.reloadData()
+    lazy var toDetails: (Framework) -> Void = { framework in
+        self.frameworksTable.reloadData()
     }
     
     private var presenter: FrameworksPresenter! {
