@@ -1,32 +1,23 @@
 package summer.example.domain.basket
 
-import summer.example.domain.EventsEmitter
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.asFlow
 import summer.example.entity.Basket
 import summer.example.entity.Framework
 
-class BasketHolder : EventsEmitter<BasketHolder.Listener>() {
-
-    var basket = Basket(items = emptyList())
+class BasketController {
+    private val channel = ConflatedBroadcastChannel(value = Basket(items = emptyList()))
+    val flow = channel.asFlow()
 
     fun increase(framework: Framework) {
-        val increased = basket.withIncreased(framework)
-        basket = increased
-        listener?.onBasketUpdate(basket = increased)
+        val previous = channel.value
+        val increased = previous.withIncreased(framework)
+        channel.offer(increased)
     }
 
     fun decrease(framework: Framework) {
-        val decreased = basket.withDecreased(framework)
-        basket = decreased
-        listener?.onBasketUpdate(basket = decreased)
-    }
-
-    override fun subscribe(listener: Listener) {
-        super.subscribe(listener)
-        listener.onBasketUpdate(basket)
-    }
-
-    interface Listener {
-        fun onBasketUpdate(basket: Basket)
+        val previous = channel.value
+        val decreased = previous.withDecreased(framework)
+        channel.offer(decreased)
     }
 }
-

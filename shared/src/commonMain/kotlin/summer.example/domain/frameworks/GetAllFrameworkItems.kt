@@ -1,17 +1,19 @@
 package summer.example.domain.frameworks
 
-import summer.example.domain.basket.BasketHolder
+import kotlinx.coroutines.flow.first
+import summer.example.domain.basket.BasketController
 import summer.example.entity.Basket
 
 class GetAllFrameworkItems(
     private val getSpring: GetSpring,
     private val getSummer: GetSummer,
-    private val basketHolder: BasketHolder
+    private val basketHolder: BasketController
 ) {
-    operator fun invoke(springVersion: String): List<Basket.Item> {
+    suspend operator fun invoke(springVersion: String): List<Basket.Item> {
         val spring = getSpring(springVersion)
         val summer = getSummer()
         val frameworks = listOf(spring, summer)
-        return basketHolder.basket.allAsItems(frameworks)
+        val basket = basketHolder.flow.first()
+        return basket.allAsItems(frameworks)
     }
 }

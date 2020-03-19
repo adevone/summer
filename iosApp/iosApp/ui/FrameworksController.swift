@@ -29,13 +29,8 @@ class FrameworksController: BaseController, FrameworksView {
     override func viewDidLoad() {
         presenter = FrameworksPresenter()
         super.viewDidLoad()
-        frameworksTable.delegate = self
         frameworksTable.dataSource = self
     }
-    
-}
-
-extension FrameworksController: UITableViewDelegate {
     
 }
 

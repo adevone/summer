@@ -31,16 +31,6 @@ abstract class BaseFragment<TArgs>(@LayoutRes layoutRes: Int) :
         ciceroneRouter = (parentFragment as RouterProvider).ciceroneRouter
     }
 
-    override fun onResume() {
-        super.onResume()
-        presenter.onAppear()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        presenter.onDisappear()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroy()

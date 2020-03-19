@@ -21,7 +21,7 @@ android {
     }
 }
 
-xcode {
+xcodeSync {
     projectPath = "../iosApp/iosApp.xcodeproj"
     target = "iosApp"
 }

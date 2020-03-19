@@ -13,17 +13,12 @@ class FrameworkDetailsPresenter(
 ) : BasePresenter<FrameworkDetailsView>() {
 
     override val viewProxy = object : FrameworkDetailsView {
-        override var framework by state({ it::framework }, initial = null)
+        override var framework by state({ it::framework }, initial = initialFramework)
         override val notifyAboutName = event { it.notifyAboutName }.doOnlyWhenAttached()
     }
 
     override fun onEnter() {
         super.onEnter()
-        viewProxy.framework = initialFramework
-    }
-
-    override fun onAppear() {
-        super.onAppear()
         viewProxy.notifyAboutName(initialFramework.name)
     }
 }

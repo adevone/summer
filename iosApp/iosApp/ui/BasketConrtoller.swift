@@ -17,6 +17,7 @@ class BasketController: BaseController, BasketView {
             basketLabel.text = items
                 .map { item in "\(item.framework.name)=\(item.quantity)" }
                 .joined(separator: "\n")
+            basketLabel.numberOfLines = items.count
         }
     }
     

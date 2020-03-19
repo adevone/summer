@@ -10,6 +10,28 @@ import shared
 
 class BaseController: UIViewController {
     
+    private var controller: BasePresenterController!
+    
+    func setPresenter(_ controller: BasePresenterController) {
+        controller.setViewProviderUnsafe(viewProvider: { [weak self] in
+            return self
+        })
+        self.controller = controller
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if controller == nil {
+            fatalError("\(String(describing: self)) call setPresenter before super.viewDidLoad")
+        }
+        
+        controller.viewCreated()
+    }
+}
+
+class BaseTabBarController: UITabBarController {
+
     private var controller: SummerPresenterController!
     
     func setPresenter(_ controller: SummerPresenterController) {
@@ -27,55 +49,5 @@ class BaseController: UIViewController {
         }
         
         controller.viewCreated()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        controller.appeared()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        controller.disappeared()
-    }
-    
-    deinit {
-        controller.exited()
-        controller.viewDestroyed()
-        controller.destroyed()
-    }
-}
-
-class BaseTabBarController: UITabBarController {
-
-    private var lifecycleOwner: SummerUnsafePresenterLifecycleOwner!
-    
-    func setPresenter(_ lifecycleOwner: SummerUnsafePresenterLifecycleOwner) {
-        self.lifecycleOwner = lifecycleOwner
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        lifecycleOwner.viewCreatedUnsafe(view: self)
-        
-        lifecycleOwner.created()
-        lifecycleOwner.entered()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        lifecycleOwner.appeared()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        lifecycleOwner.disappeared()
-    }
-    
-    deinit {
-        lifecycleOwner.exited()
-        lifecycleOwner.viewDestroyed()
-        lifecycleOwner.destroyed()
     }
 }

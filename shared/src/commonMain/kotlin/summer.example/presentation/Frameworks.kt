@@ -1,7 +1,10 @@
 package summer.example.presentation
 
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.kodein.di.erased.instance
-import summer.example.domain.basket.BasketHolder
+import summer.example.domain.basket.BasketController
 import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.entity.Basket
 import summer.example.entity.Framework
@@ -12,9 +15,9 @@ interface FrameworksView {
     val toDetails: (framework: Framework) -> Unit
 }
 
-class FrameworksPresenter : BasePresenter<FrameworksView>(), BasketHolder.Listener {
+class FrameworksPresenter : BasePresenter<FrameworksView>() {
 
-    private val basketHolder: BasketHolder by instance()
+    private val basketController: BasketController by instance()
     private val getAllFrameworkItems: GetAllFrameworkItems by instance()
 
     override val viewProxy = object : FrameworksView {
@@ -22,15 +25,15 @@ class FrameworksPresenter : BasePresenter<FrameworksView>(), BasketHolder.Listen
         override val toDetails = event { it.toDetails }.doExactlyOnce()
     }
 
-    override fun onAppear() {
-        super.onAppear()
-        basketHolder.subscribe(this)
-        updateFrameworks()
+    init {
+        basketController.flow.onEach {
+            updateFrameworks()
+        }.launchIn(this)
     }
 
-    override fun onDisappear() {
-        super.onDisappear()
-        basketHolder.unsubscribe(this)
+    override fun onEnter() {
+        super.onEnter()
+        updateFrameworks()
     }
 
     fun onFrameworkClick(framework: Framework) {
@@ -38,19 +41,17 @@ class FrameworksPresenter : BasePresenter<FrameworksView>(), BasketHolder.Listen
     }
 
     fun onIncreaseClick(framework: Framework) {
-        basketHolder.increase(framework)
+        basketController.increase(framework)
     }
 
     fun onDecreaseClick(framework: Framework) {
-        basketHolder.decrease(framework)
-    }
-
-    override fun onBasketUpdate(basket: Basket) {
-        updateFrameworks()
+        basketController.decrease(framework)
     }
 
     private fun updateFrameworks() {
-        val frameworks = getAllFrameworkItems(springVersion = "5.0")
-        viewProxy.items = frameworks
+        launch {
+            val frameworks = getAllFrameworkItems(springVersion = "5.0")
+            viewProxy.items = frameworks
+        }
     }
 }
