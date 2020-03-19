@@ -64,7 +64,7 @@ class CalendarPresenter(
     // Proxy that allows to restore state and 
     // set properties even if view does not exist.
     // Summer plugin provides convenient intentions to write it easy
-    override val viewProxy = object : CalendarView.State {
+    override val viewProxy = object : CalendarView {
     
         // Initial values are automatically emitted to view when it is created.
         // No matter in which state view was. Presenter will change
@@ -147,7 +147,7 @@ class CalendarViewController: BaseController, CalendarView {
     }
     
     override func viewDidLoad() {
-        presenter = CalendarPresenter()
+        presenter = CalendarPresenter(...)
         super.viewDidLoad()
     }
     
