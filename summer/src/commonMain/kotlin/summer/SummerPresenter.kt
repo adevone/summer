@@ -39,6 +39,14 @@ abstract class SummerPresenter<TView> :
 
     override var viewProvider: ViewProvider<TView> = { null }
 
+    override fun setViewProviderUnsafe(viewProvider: ViewProvider<Any>) {
+        this.viewProvider = {
+            val view = viewProvider()
+            @Suppress("UNCHECKED_CAST")
+            view as TView?
+        }
+    }
+
     private var viewCreatedWasCalled = false
 
     /**
@@ -133,4 +141,5 @@ interface ViewProviderHolder<TView> {
  */
 interface PresenterController {
     fun viewCreated()
+    fun setViewProviderUnsafe(viewProvider: ViewProvider<Any>)
 }

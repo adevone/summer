@@ -10,39 +10,39 @@ import shared
 
 class BaseController: UIViewController {
     
-    private var lifecycleOwner: SummerUnsafePresenterLifecycleOwner!
+    private var controller: SummerPresenterController!
     
-    func setPresenter(_ lifecycleOwner: SummerUnsafePresenterLifecycleOwner) {
-        self.lifecycleOwner = lifecycleOwner
+    func setPresenter(_ controller: SummerPresenterController) {
+        controller.setViewProviderUnsafe(viewProvider: { [weak self] in
+            return self
+        })
+        self.controller = controller
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if lifecycleOwner == nil {
+        if controller == nil {
             fatalError("\(String(describing: self)) call setPresenter before super.viewDidLoad")
         }
         
-        lifecycleOwner.viewCreatedUnsafe(view: self)
-        
-        lifecycleOwner.created()
-        lifecycleOwner.entered()
+        controller.viewCreated()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        lifecycleOwner.appeared()
+        controller.appeared()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        lifecycleOwner.disappeared()
+        controller.disappeared()
     }
     
     deinit {
-        lifecycleOwner.exited()
-        lifecycleOwner.viewDestroyed()
-        lifecycleOwner.destroyed()
+        controller.exited()
+        controller.viewDestroyed()
+        controller.destroyed()
     }
 }
 
