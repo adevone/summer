@@ -5,14 +5,14 @@ import org.kodein.di.erased.instance
 import summer.example.domain.about.GetAbout
 import summer.example.entity.About
 import summer.example.presentation.base.LoadingView
-import summer.example.presentation.base.ScreenPresenter
+import summer.example.presentation.base.BasePresenter
 import summer.example.presentation.base.withLoading
 
 interface AboutView : LoadingView {
     var about: About?
 }
 
-class AboutPresenter : ScreenPresenter<AboutView>() {
+class AboutPresenter : BasePresenter<AboutView>() {
 
     private val getAbout: GetAbout by instance()
 
@@ -21,8 +21,8 @@ class AboutPresenter : ScreenPresenter<AboutView>() {
         override var isLoading by state({ it::isLoading }, initial = true)
     }
 
-    override fun onAppear() {
-        super.onAppear()
+    override fun onEnter() {
+        super.onEnter()
         launch {
             withLoading {
                 val about = getAbout()

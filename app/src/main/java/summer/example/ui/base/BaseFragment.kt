@@ -4,15 +4,14 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import ru.terrakok.cicerone.Router
-import summer.SummerPresenter
 import summer.android.SummerFragment
 import summer.example.AppKodeinAware
-import summer.example.presentation.base.ScreenPresenter
+import summer.example.presentation.base.BasePresenter
 import summer.example.ui.ArgsFragmentFeature
 import summer.example.ui.base.routing.BackButtonListener
 import summer.example.ui.base.routing.RouterProvider
 
-abstract class ScreenFragment<TArgs>(@LayoutRes layoutRes: Int) :
+abstract class BaseFragment<TArgs>(@LayoutRes layoutRes: Int) :
     SummerFragment(layoutRes),
     BackButtonListener,
     AppKodeinAware,
@@ -23,7 +22,7 @@ abstract class ScreenFragment<TArgs>(@LayoutRes layoutRes: Int) :
     @Suppress("LeakingThis")
     override val fragment: Fragment = this
 
-    abstract val presenter: SummerPresenter<*>
+    abstract val presenter: BasePresenter<*>
 
     protected lateinit var ciceroneRouter: Router
 
@@ -32,5 +31,20 @@ abstract class ScreenFragment<TArgs>(@LayoutRes layoutRes: Int) :
         ciceroneRouter = (parentFragment as RouterProvider).ciceroneRouter
     }
 
-    override fun onBackPressed() = (presenter as? ScreenPresenter<*>)?.onBackClick() == true
+    override fun onResume() {
+        super.onResume()
+        presenter.onAppear()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.onDisappear()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
+    }
+
+    override fun onBackPressed(): Boolean = presenter.onBackClick()
 }

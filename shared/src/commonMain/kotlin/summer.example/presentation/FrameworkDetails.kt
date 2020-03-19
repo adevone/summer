@@ -1,7 +1,7 @@
 package summer.example.presentation
 
 import summer.example.entity.Framework
-import summer.example.presentation.base.ScreenPresenter
+import summer.example.presentation.base.BasePresenter
 
 interface FrameworkDetailsView {
     var framework: Framework?
@@ -10,7 +10,7 @@ interface FrameworkDetailsView {
 
 class FrameworkDetailsPresenter(
     private val initialFramework: Framework
-) : ScreenPresenter<FrameworkDetailsView>() {
+) : BasePresenter<FrameworkDetailsView>() {
 
     override val viewProxy = object : FrameworkDetailsView {
         override var framework by state({ it::framework }, initial = null)

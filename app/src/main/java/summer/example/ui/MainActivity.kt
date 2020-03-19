@@ -9,17 +9,16 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.core.os.postDelayed
 import kotlinx.android.synthetic.main.activity_main.*
-import summer.android.SummerActivity
-import summer.example.AppKodeinAware
 import summer.example.R
 import summer.example.entity.Tab
 import summer.example.presentation.MainPresenter
 import summer.example.presentation.MainView
+import summer.example.ui.base.BaseActivity
 import summer.example.ui.base.routing.BackButtonListener
 import summer.example.ui.base.routing.TabContainerFragment
 import summer.example.ui.base.routing.toScreen
 
-class MainActivity : SummerActivity(), MainView, AppKodeinAware {
+class MainActivity : BaseActivity(), MainView {
 
     override var tabs: List<Tab> by didSet {
         bottomNavigationView.menu.clear()
@@ -91,7 +90,7 @@ class MainActivity : SummerActivity(), MainView, AppKodeinAware {
         Tab.Basket -> "Корзина"
     }
 
-    private val presenter by summerPresenter { MainPresenter() }
+    override val presenter by summerPresenter { MainPresenter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

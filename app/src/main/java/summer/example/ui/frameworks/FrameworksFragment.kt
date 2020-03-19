@@ -10,12 +10,12 @@ import summer.example.entity.Basket
 import summer.example.entity.Framework
 import summer.example.presentation.FrameworksPresenter
 import summer.example.presentation.FrameworksView
-import summer.example.ui.base.ScreenFragment
+import summer.example.ui.base.BaseFragment
 import summer.example.ui.base.routing.ScreenArgs
 import summer.example.ui.base.routing.toScreen
 
 class FrameworksFragment :
-    ScreenFragment<FrameworksFragment.Args>(R.layout.frameworks_fragment),
+    BaseFragment<FrameworksFragment.Args>(R.layout.frameworks_fragment),
     FrameworksView {
 
     override var items: List<Basket.Item> by didSet {

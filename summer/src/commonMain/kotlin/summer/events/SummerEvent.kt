@@ -4,8 +4,8 @@ sealed class SummerEvent<TView> {
 
     abstract val strategy: SummerEventStrategy<TView>
 
-    fun viewCreated(view: TView) {
-        strategy.viewCreated(view)
+    fun viewCreated() {
+        strategy.viewCreated()
     }
 
     class A0<TView>(

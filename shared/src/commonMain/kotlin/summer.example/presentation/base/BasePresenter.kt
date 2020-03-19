@@ -7,15 +7,17 @@ import summer.SummerPresenter
 import summer.example.AppKodeinAware
 import kotlin.coroutines.CoroutineContext
 
-abstract class ScreenPresenter<TView : Any> : SummerPresenter<TView>(),
+abstract class BasePresenter<TView : Any> : SummerPresenter<TView>(),
     AppKodeinAware,
     CoroutineScope {
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext = mainDispatcher + job
 
-    override fun destroyed() {
-        super.destroyed()
+    open fun onAppear() {}
+    open fun onDisappear() {}
+
+    fun onDestroy() {
         job.cancel()
     }
 

@@ -3,13 +3,13 @@ package summer.example.presentation
 import org.kodein.di.erased.instance
 import summer.example.domain.basket.BasketHolder
 import summer.example.entity.Basket
-import summer.example.presentation.base.ScreenPresenter
+import summer.example.presentation.base.BasePresenter
 
 interface BasketView {
     var items: List<Basket.Item>
 }
 
-class BasketPresenter : ScreenPresenter<BasketView>(), BasketHolder.Listener {
+class BasketPresenter : BasePresenter<BasketView>(), BasketHolder.Listener {
 
     private val basketHolder: BasketHolder by instance()
 

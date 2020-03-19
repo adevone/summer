@@ -8,10 +8,10 @@ import summer.example.R
 import summer.example.entity.About
 import summer.example.presentation.AboutPresenter
 import summer.example.presentation.AboutView
-import summer.example.ui.base.ScreenFragment
+import summer.example.ui.base.BaseFragment
 import summer.example.ui.base.routing.ScreenArgs
 
-class AboutFragment : ScreenFragment<AboutFragment.Args>(R.layout.about_fragment), AboutView {
+class AboutFragment : BaseFragment<AboutFragment.Args>(R.layout.about_fragment), AboutView {
 
     override val presenter by summerPresenter { AboutPresenter() }
 

@@ -13,7 +13,8 @@ import kotlin.reflect.KMutableProperty0
  * and executing of events (see [SummerEvent])
  */
 abstract class SummerPresenter<TView> :
-    UnsafePresenterController,
+    PresenterController,
+    ViewProviderHolder<TView>,
     EventFactory<TView>,
     DoOnlyWhenAttachedStrategy.Factory<TView>,
     DoExactlyOnceStrategy.Factory<TView> {
@@ -31,33 +32,28 @@ abstract class SummerPresenter<TView> :
      * }
      *
      * override val viewProxy = object : FeatureView {
-     *     override var prop by store({ ::prop }, initial = 0)
+     *     override var prop by state({ it::prop }, initial = 0)
      * }
      */
     abstract val viewProxy: TView
 
-    var viewProvider: ViewProvider<TView>? = null
+    override var viewProvider: ViewProvider<TView> = { null }
 
     private var viewCreatedWasCalled = false
 
     /**
      * Must be called when view is created. May be called multiple times
      */
-    fun viewCreated(view: TView) {
+    override fun viewCreated() {
         // restore call placed there because presenter methods may be called due view initialization.
         // restore must be called after initView
         stores.forEach { it.restore() }
-        events.forEach { it.viewCreated(view) }
+        events.forEach { it.viewCreated() }
 
         if (!viewCreatedWasCalled) {
             onEnter()
         }
         viewCreatedWasCalled = true
-    }
-
-    override fun viewCreatedUnsafe(view: Any) {
-        @Suppress("UNCHECKED_CAST")
-        viewCreated(view as TView)
     }
 
     /**
@@ -104,7 +100,7 @@ abstract class SummerPresenter<TView> :
     ): SummerStore.StateDelegate<T> {
         return store.createState(
             onSet = { value ->
-                val currentView = viewProvider?.getView()
+                val currentView = viewProvider.invoke()
                 if (currentView != null && getMirrorProperty != null) {
                     val property = getMirrorProperty(currentView)
                     property.set(value)
@@ -123,16 +119,18 @@ abstract class SummerPresenter<TView> :
     }
 }
 
-typealias GetMirrorProperty<TView, T> = (TView) -> KMutableProperty0<T>
+typealias ViewProvider<TView> = () -> TView?
+
+private typealias GetMirrorProperty<TView, T> = (TView) -> KMutableProperty0<T>
+
+interface ViewProviderHolder<TView> {
+    val viewProvider: ViewProvider<TView>
+}
 
 /**
  * Non-generic protocol that can be used to call lifecycle events of [SummerPresenter]
  * in languages without covariant types support (like Swift)
  */
-interface UnsafePresenterController {
-    /**
-     * Same as [SummerPresenter.viewCreated] but with unsafe typecast.
-     * Used when view can not pass typed [view]
-     */
-    fun viewCreatedUnsafe(view: Any)
+interface PresenterController {
+    fun viewCreated()
 }

@@ -12,12 +12,14 @@ class PresenterProvider<TView, TPresenter : SummerPresenter<TView>>(
     private var presenter: TPresenter? = null
 
     fun initPresenter() {
-        presenter = createPresenter()
+        val presenter = createPresenter()
+        presenter.viewProvider = { view }
+        this.presenter = presenter
     }
 
     fun viewCreated() {
         val presenter = requirePresenter()
-        presenter.viewCreated(view)
+        presenter.viewCreated()
     }
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): TPresenter {

@@ -1,14 +1,14 @@
 package summer.example.presentation
 
 import summer.example.entity.Tab
-import summer.example.presentation.base.ScreenPresenter
+import summer.example.presentation.base.BasePresenter
 
 interface MainView {
     var tabs: List<Tab>
     var selectedTab: Tab?
 }
 
-class MainPresenter : ScreenPresenter<MainView>() {
+class MainPresenter : BasePresenter<MainView>() {
 
     private val allTabs = Tab.values().toList()
 

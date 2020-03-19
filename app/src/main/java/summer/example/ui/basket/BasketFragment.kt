@@ -6,10 +6,10 @@ import summer.example.R
 import summer.example.entity.Basket
 import summer.example.presentation.BasketPresenter
 import summer.example.presentation.BasketView
-import summer.example.ui.base.ScreenFragment
+import summer.example.ui.base.BaseFragment
 import summer.example.ui.base.routing.ScreenArgs
 
-class BasketFragment : ScreenFragment<BasketFragment.Args>(R.layout.basket_fragment), BasketView {
+class BasketFragment : BaseFragment<BasketFragment.Args>(R.layout.basket_fragment), BasketView {
 
     override val presenter by summerPresenter { BasketPresenter() }
 

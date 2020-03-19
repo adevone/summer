@@ -3,7 +3,6 @@ import java.util.*
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("maven-publish")
-    id("kotlinx-atomicfu")
 }
 
 kotlin {

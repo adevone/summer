@@ -1,13 +1,15 @@
 package summer.events
 
+import summer.ViewProvider
+
 class RepeatAllStrategy<TView>(
-    private val getView: () -> TView?
+    private val viewProvider: ViewProvider<TView>
 ) : SummerEventStrategy<TView> {
 
     private val applications = mutableListOf<ApplyArgs<TView>>()
 
     override fun called(applyArgs: ApplyArgs<TView>) {
-        val view = getView()
+        val view = viewProvider()
         if (view != null) {
             val action = applyArgs(view)
             action()
@@ -15,10 +17,13 @@ class RepeatAllStrategy<TView>(
         applications.add(applyArgs)
     }
 
-    override fun viewCreated(view: TView) {
-        applications.forEach { applyArgs ->
-            val action = applyArgs(view)
-            action()
+    override fun viewCreated() {
+        val view = viewProvider()
+        if (view != null) {
+            applications.forEach { applyArgs ->
+                val action = applyArgs(view)
+                action()
+            }
         }
     }
 }
