@@ -8,10 +8,6 @@ sealed class SummerEvent<TView> {
         strategy.viewCreated(view)
     }
 
-    fun viewDestroyed() {
-        strategy.viewDestroyed()
-    }
-
     class A0<TView>(
         private val getAction: (TView) -> (() -> Unit),
         override val strategy: SummerEventStrategy<TView>

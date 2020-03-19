@@ -2,7 +2,7 @@ package summer.events
 
 interface EventFactory<TView> {
 
-    val view: TView?
+    fun getView(): TView?
 
     fun eventCreated(event: SummerEvent<TView>)
 

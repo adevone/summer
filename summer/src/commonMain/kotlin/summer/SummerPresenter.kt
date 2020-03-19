@@ -18,14 +18,12 @@ abstract class SummerPresenter<TView> : SummerViewProxyProvider<TView>,
     DoOnlyWhenAttachedStrategy.Factory<TView>,
     DoExactlyOnceStrategy.Factory<TView> {
 
-    override var view: TView? = null
+    var viewProvider: ViewProvider<TView>? = null
 
     /**
      * Must be called when view is created. May be called multiple times
      */
     fun viewCreated(view: TView) {
-        this.view = view
-
         // restore call placed there because presenter methods may be called due view initialization.
         // restore must be called after initView
         stores.forEach { it.restore() }
@@ -35,11 +33,6 @@ abstract class SummerPresenter<TView> : SummerViewProxyProvider<TView>,
     override fun viewCreatedUnsafe(view: Any) {
         @Suppress("UNCHECKED_CAST")
         viewCreated(view as TView)
-    }
-
-    override fun viewDestroyed() {
-        events.forEach { it.viewDestroyed() }
-        this.view = null
     }
 
     /**
@@ -81,9 +74,9 @@ abstract class SummerPresenter<TView> : SummerViewProxyProvider<TView>,
     ): SummerStore.StateDelegate<T> {
         return store.createState(
             onSet = { value ->
-                val currentViewState = view
-                if (currentViewState != null && getMirrorProperty != null) {
-                    val property = getMirrorProperty(currentViewState)
+                val currentView = viewProvider?.getView()
+                if (currentView != null && getMirrorProperty != null) {
+                    val property = getMirrorProperty(currentView)
                     property.set(value)
                 }
             },
