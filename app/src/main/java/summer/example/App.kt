@@ -3,6 +3,8 @@ package summer.example
 import androidx.multidex.MultiDexApplication
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import org.kodein.di.Kodein
@@ -14,6 +16,8 @@ import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import summer.example.ui.base.routing.LocalCiceroneHolder
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 class App : MultiDexApplication(), KodeinAware {
 
     override val kodein get() = di
