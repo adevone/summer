@@ -19,30 +19,9 @@ abstract class SummerActivity : AppCompatActivity() {
         super.onStart()
         if (isCreating) {
             val presenterProvider = requirePresenterProvider()
-            presenterProvider.created()
             presenterProvider.viewCreated()
-            presenterProvider.entered()
         }
         isCreating = false
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        val presenterProvider = requirePresenterProvider()
-        presenterProvider.viewDestroyed()
-        presenterProvider.destroyed()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val presenterProvider = requirePresenterProvider()
-        presenterProvider.appeared()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        val presenterProvider = requirePresenterProvider()
-        presenterProvider.disappeared()
     }
 
     private var presenterProvider: PresenterProvider<*, *>? = null

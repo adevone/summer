@@ -15,44 +15,9 @@ class PresenterProvider<TView, TPresenter : SummerPresenter<TView>>(
         presenter = createPresenter()
     }
 
-    fun created() {
-        val presenter = requirePresenter()
-        presenter.created()
-    }
-
-    fun destroyed() {
-        val presenter = requirePresenter()
-        presenter.destroyed()
-    }
-
     fun viewCreated() {
         val presenter = requirePresenter()
         presenter.viewCreated(view)
-    }
-
-    fun viewDestroyed() {
-        val presenter = requirePresenter()
-        presenter.viewDestroyed()
-    }
-
-    fun entered() {
-        val presenter = requirePresenter()
-        presenter.entered()
-    }
-
-    fun exited() {
-        val presenter = requirePresenter()
-        presenter.exited()
-    }
-
-    fun appeared() {
-        val presenter = requirePresenter()
-        presenter.appeared()
-    }
-
-    fun disappeared() {
-        val presenter = requirePresenter()
-        presenter.disappeared()
     }
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): TPresenter {

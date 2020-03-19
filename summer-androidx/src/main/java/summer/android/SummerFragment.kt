@@ -17,10 +17,8 @@ abstract class SummerFragment : Fragment {
         super.onCreate(savedInstanceState)
         val provider = requirePresenterProvider()
         provider.initPresenter()
-        provider.created()
     }
 
-    private var isFirstViewCreation = true
     private var isViewCreating = false
 
     @CallSuper
@@ -34,41 +32,18 @@ abstract class SummerFragment : Fragment {
         if (isViewCreating) {
             val provider = requirePresenterProvider()
             provider.viewCreated()
-            if (isFirstViewCreation) {
-                provider.entered()
-                isFirstViewCreation = false
-            }
         }
         isViewCreating = false
     }
 
     @CallSuper
-    override fun onDestroyView() {
-        super.onDestroyView()
-        val presenterProvider = requirePresenterProvider()
-        presenterProvider.viewDestroyed()
+    open fun onPop() {
     }
 
     @CallSuper
     override fun onDestroy() {
         notifyPresenterIfRemoving()
         super.onDestroy()
-        val presenterProvider = requirePresenterProvider()
-        presenterProvider.destroyed()
-    }
-
-    @CallSuper
-    override fun onResume() {
-        super.onResume()
-        val presenterProvider = requirePresenterProvider()
-        presenterProvider.appeared()
-    }
-
-    @CallSuper
-    override fun onPause() {
-        super.onPause()
-        val presenterProvider = requirePresenterProvider()
-        presenterProvider.disappeared()
     }
 
     private fun notifyPresenterIfRemoving() {
@@ -81,8 +56,7 @@ abstract class SummerFragment : Fragment {
         }
 
         if (isRemoving || anyParentIsRemoving) {
-            val presenterProvider = requirePresenterProvider()
-            presenterProvider.exited()
+            onPop()
         }
     }
 
