@@ -28,6 +28,10 @@ class BaseController: UIViewController {
         
         controller.viewCreated()
     }
+    
+    deinit {
+        controller.onDestroy()
+    }
 }
 
 class BaseTabBarController: UITabBarController {
