@@ -25,10 +25,10 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:0.11.3")
+    implementation("com.github.adevone.summer:summer:0.15.3")
     
     // android part containing SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:0.11.3")
+    implementation("com.github.adevone.summer:summer-androidx:0.15.3")
 }
 ```
 
@@ -99,26 +99,20 @@ class CalendarPresenter(
 
 Android, Kotlin:
 ```kotlin
-class CalendarFragment : SummerFragment<
-    CalendarView
-    CalendarPresenter
->(R.layout.calendar_fragment) {
+class CalendarFragment : SummerFragment(R.layout.calendar_fragment), CalendarView {
 
-    override fun createPresenter() = CalendarPresenter(...)
+    private val presenter = summerPresenter { CalendarPresenter(...) } 
 
-    override fun createViewState() = object : CalendarView {
+    override var isLoading: Boolean by didSet {
+        progressBar.isVisible = isLoading
+    }
     
-        override var isLoading: Boolean by didSet {
-            progressBar.isVisible = isLoading
-        }
-        
-        override var dayName: String by didSet {
-            dayNameView.text = dayName
-        }
-        
-        override val showError = {
-            snackbar("Error occurred")
-        }
+    override var dayName: String by didSet {
+        dayNameView.text = dayName
+    }
+    
+    override val showError = {
+        snackbar("Error occurred")
     }
 }
 ```
