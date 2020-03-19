@@ -16,7 +16,6 @@ interface FrameworksView {
 }
 
 class FrameworksPresenter : BasePresenter<FrameworksView>() {
-
     private val basketController: BasketController by instance()
     private val getAllFrameworkItems: GetAllFrameworkItems by instance()
 

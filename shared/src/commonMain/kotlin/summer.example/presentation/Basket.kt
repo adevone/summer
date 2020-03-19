@@ -12,7 +12,6 @@ interface BasketView {
 }
 
 class BasketPresenter : BasePresenter<BasketView>() {
-
     private val basketController: BasketController by instance()
 
     override val viewProxy = object : BasketView {

@@ -13,7 +13,6 @@ interface AboutView : LoadingView {
 }
 
 class AboutPresenter : BasePresenter<AboutView>() {
-
     private val getAbout: GetAbout by instance()
 
     override val viewProxy = object : AboutView {

@@ -11,7 +11,6 @@ interface MainView {
 class MainPresenter : BasePresenter<MainView>() {
 
     private val allTabs = Tab.values().toList()
-
     override val viewProxy = object : MainView {
         override var tabs by state({ it::tabs }, initial = allTabs)
         override var selectedTab by state({ it::selectedTab }, initial = allTabs.first())

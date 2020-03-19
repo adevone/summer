@@ -1,7 +1,5 @@
 package summer.example
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
@@ -15,8 +13,6 @@ import summer.example.domain.frameworks.GetSummer
 
 lateinit var di: Kodein
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 val sharedModule = Kodein.Module("shared") {
 
     // frameworks
