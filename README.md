@@ -6,7 +6,6 @@ AndroidX: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer
 # Intellij IDEA / Android Studio plugin
 [Plugin page](https://github.com/adevone/summer-plugin)
 
-
 # Summer
 
 Gradle dependencies:
@@ -25,10 +24,10 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:0.15.3")
+    implementation("com.github.adevone.summer:summer:0.16.0")
     
     // android part containing SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:0.15.3")
+    implementation("com.github.adevone.summer:summer-androidx:0.16.0")
 }
 ```
 
