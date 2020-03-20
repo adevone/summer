@@ -13,7 +13,7 @@ interface EventFactory<TView> {
 
     fun ActionProvider<TView, () -> Unit>.build(
         createStrategy: CreateStrategy<TView>
-    ): SummerEvent.A0<TView> = SummerEvent.A0(
+    ) = SummerEvent.A0(
         this.getAction,
         createStrategy(viewProvider)
     ).also { event ->
