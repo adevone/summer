@@ -1,14 +1,13 @@
 package summer.events
 
 import summer.ViewProvider
-import summer.ViewProviderHolder
 
 interface EventFactory<TView> {
 
     fun eventCreated(event: SummerEvent<TView>)
 
-    fun <TFunction> ViewProviderHolder<TView>.event(which: (TView) -> TFunction): ActionProvider<TView, TFunction> {
-        return ActionProvider(viewProvider = this.viewProvider, getAction = which)
+    fun <TFunction> ViewProvider<TView>.event(which: (TView) -> TFunction): ActionProvider<TView, TFunction> {
+        return ActionProvider(viewProvider = this, getAction = which)
     }
 
     fun ActionProvider<TView, () -> Unit>.build(

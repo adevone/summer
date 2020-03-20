@@ -18,10 +18,10 @@ import kotlin.reflect.KMutableProperty0
  */
 abstract class SummerPresenter<TView, TStateLower> :
     PresenterController,
-    ViewProviderHolder<TView>,
     EventFactory<TView>,
     DoOnlyWhenAttachedStrategy.Factory<TView>,
-    DoExactlyOnceStrategy.Factory<TView> {
+    DoExactlyOnceStrategy.Factory<TView>,
+    ViewProvider<TView> {
 
     /**
      * Create proxy for view state. Proxy must contain all properties defined in TViewState.
@@ -41,7 +41,8 @@ abstract class SummerPresenter<TView, TStateLower> :
      */
     abstract val viewProxy: TView
 
-    override var viewProvider: ViewProvider<TView> = { null }
+    var viewProvider: ViewProvider<TView> = { null }
+    override fun invoke(): TView? = viewProvider()
 
     override fun setViewProviderUnsafe(viewProvider: ViewProvider<Any>) {
         this.viewProvider = {
@@ -134,10 +135,6 @@ abstract class SummerPresenter<TView, TStateLower> :
 typealias ViewProvider<TView> = () -> TView?
 
 private typealias GetMirrorProperty<TView, T> = (TView) -> KMutableProperty0<T>
-
-interface ViewProviderHolder<TView> {
-    val viewProvider: ViewProvider<TView>
-}
 
 /**
  * Non-generic protocol that can be used to call lifecycle events of [SummerPresenter]
