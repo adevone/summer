@@ -4,7 +4,7 @@ import summer.SummerPresenter
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-class PresenterProvider<TView, TPresenter : SummerPresenter<TView>>(
+class PresenterProvider<TView, TPresenter : SummerPresenter<TView, *>>(
     private val createPresenter: () -> TPresenter,
     private val view: TView
 ) : ReadOnlyProperty<Any?, TPresenter> {

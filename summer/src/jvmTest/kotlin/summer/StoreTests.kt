@@ -10,7 +10,7 @@ class StoreTests {
     @Test
     fun put() {
 
-        val store: SummerStore = InMemoryStore()
+        val store: SummerStore<Any?> = InMemoryStore()
 
         val expectedValue = "test"
 
@@ -31,7 +31,7 @@ class StoreTests {
     @Test
     fun restore() {
 
-        val store: SummerStore = InMemoryStore()
+        val store: SummerStore<Any?> = InMemoryStore()
 
         val expectedValue = "test"
 
@@ -63,7 +63,7 @@ class StoreTests {
     @Test
     fun restoreInitial() {
 
-        val store: SummerStore = InMemoryStore()
+        val store: SummerStore<Any?> = InMemoryStore()
 
         val expectedValue = "test"
 

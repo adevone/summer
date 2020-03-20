@@ -7,12 +7,12 @@ import kotlin.reflect.KProperty
 /**
  * Store that can be used for view state restoring
  */
-interface SummerStore {
+interface SummerStore<in TLower> {
 
     /**
      * Provides delegate that will store passed values in this store
      */
-    fun <T> createState(onSet: (T) -> Unit, initial: T): StateDelegate<T>
+    fun <T : TLower> createState(onSet: (T) -> Unit, initial: T): StateDelegate<T>
 
     /**
      * Must call [createState].onSet for each property that was set
@@ -31,7 +31,7 @@ interface SummerStore {
  * Default store that can be passed to [SummerPresenter.stateIn] or [SummerPresenter.defaultStore]
  * Stores values in memory and doesn't restores them after app relaunch
  */
-class InMemoryStore : SummerStore {
+class InMemoryStore : SummerStore<Any?> {
 
     private val delegates = mutableListOf<Delegate<*>>()
     private var storedValuesByKey = mutableMapOf<String, Any?>()

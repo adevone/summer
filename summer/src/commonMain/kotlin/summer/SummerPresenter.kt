@@ -10,9 +10,13 @@ import kotlin.reflect.KMutableProperty0
 
 /**
  * Base presenter. Helps with view state restoring (see [SummerStore])
- * and executing of events (see [SummerEvent])
+ * and executing of events (see [SummerEvent]).
+ *
+ * [TView] is type of associated view.
+ * [TStateLower] is lower type of state properties. It useful to implement persistent [SummerStore]
+ *               that allows only persistable values.
  */
-abstract class SummerPresenter<TView> :
+abstract class SummerPresenter<TView, TStateLower> :
     PresenterController,
     ViewProviderHolder<TView>,
     EventFactory<TView>,
@@ -21,9 +25,9 @@ abstract class SummerPresenter<TView> :
 
     /**
      * Create proxy for view state. Proxy must contain all properties defined in TViewState.
-     * Properties of proxy must use delegates created by [SummerPresenter.stateIn] method
+     * Properties of proxy must use delegates created by [SummerPresenter.stateIn] method.
      *
-     * You can use summer plugin to make overriding of this method easier
+     * You can use summer plugin to make overriding of this method easier.
      *
      * Example:
      *
@@ -50,7 +54,7 @@ abstract class SummerPresenter<TView> :
     private var viewCreatedWasCalled = false
 
     /**
-     * Must be called when view is created. May be called multiple times
+     * Must be called when view is created. May be called multiple times.
      */
     override fun viewCreated() {
         // restore call placed there because presenter methods may be called due view initialization.
@@ -65,21 +69,21 @@ abstract class SummerPresenter<TView> :
     }
 
     /**
-     * Called when [viewCreated] was called first times
+     * Called when [viewCreated] was called first times.
      */
     open fun onEnter() {}
 
     /**
-     * Used for state storing by default. Can be overridden
+     * Used for state storing by default. Can be overridden.
      */
-    open val defaultStore: SummerStore = InMemoryStore()
+    open val defaultStore: SummerStore<TStateLower> = InMemoryStore()
 
-    private val stores = mutableSetOf<SummerStore>()
+    private val stores = mutableSetOf<SummerStore<TStateLower>>()
 
     /**
-     * Shorthand for [stateIn] with [defaultStore] of this presenter
+     * Shorthand for [stateIn] with [defaultStore] of this presenter.
      */
-    protected fun <T> state(
+    protected fun <T : TStateLower> state(
         getMirrorProperty: GetMirrorProperty<TView, T>? = null,
         initial: T
     ) = stateIn(
@@ -89,22 +93,22 @@ abstract class SummerPresenter<TView> :
     )
 
     /**
-     * Create delegate for property stored in any store
+     * Create delegate for property stored in any store.
      *
      * May be called in viewProxy or just
      * in presenter if some sort of persistent store is used.
      *
      * If view is not null value will be stored in store
-     * and mirrored in mirror property if view exists
+     * and mirrored in mirror property if view exists.
      *
-     * If view is null value will be stored only in store
+     * If view is null value will be stored only in store.
      *
      * @return state property delegate
      */
-    fun <T> stateIn(
+    fun <T : TStateLower> stateIn(
         getMirrorProperty: GetMirrorProperty<TView, T>? = null,
         initial: T,
-        store: SummerStore
+        store: SummerStore<TStateLower>
     ): SummerStore.StateDelegate<T> {
         return store.createState(
             onSet = { value ->
@@ -137,7 +141,7 @@ interface ViewProviderHolder<TView> {
 
 /**
  * Non-generic protocol that can be used to call lifecycle events of [SummerPresenter]
- * in languages without covariant types support (like Swift)
+ * in languages without covariant types support (like Swift).
  */
 interface PresenterController {
     fun viewCreated()

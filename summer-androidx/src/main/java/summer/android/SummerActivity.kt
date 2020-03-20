@@ -25,7 +25,7 @@ abstract class SummerActivity : AppCompatActivity() {
     }
 
     private var presenterProvider: PresenterProvider<*, *>? = null
-    fun <TView, TPresenter : SummerPresenter<TView>> TView.summerPresenter(
+    fun <TView, TPresenter : SummerPresenter<TView, *>> TView.summerPresenter(
         createPresenter: () -> TPresenter
     ): PresenterProvider<TView, TPresenter> {
         val provider = PresenterProvider(createPresenter, view = this)
