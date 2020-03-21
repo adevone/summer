@@ -3,13 +3,13 @@ package summer.events
 import summer.ViewProvider
 
 class RepeatLastStrategy<TView>(
-    private val viewProvider: ViewProvider<TView>
+    private val getView: () -> TView?
 ) : SummerEventStrategy<TView> {
 
     private var lastApplication: ApplyArgs<TView>? = null
 
     override fun called(applyArgs: ApplyArgs<TView>) {
-        val view = viewProvider()
+        val view = getView()
         if (view != null) {
             val action = applyArgs(view)
             action()
@@ -18,7 +18,7 @@ class RepeatLastStrategy<TView>(
     }
 
     override fun viewCreated() {
-        val view = viewProvider()
+        val view = getView()
         if (view != null) {
             lastApplication?.let { applyArgs ->
                 val action = applyArgs(view)

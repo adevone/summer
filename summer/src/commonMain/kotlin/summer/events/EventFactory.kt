@@ -14,7 +14,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A0(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -23,7 +23,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A1(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -32,7 +32,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A2(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -41,7 +41,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A3(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -50,7 +50,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A4(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -59,7 +59,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A5(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -68,7 +68,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A6(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -77,7 +77,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A7(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -86,7 +86,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A8(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -95,7 +95,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A9(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -104,7 +104,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A10(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -113,7 +113,7 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A11(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
@@ -122,13 +122,13 @@ interface EventFactory<TView> {
         createStrategy: CreateStrategy<TView>
     ) = SummerEvent.A12(
         this.getAction,
-        createStrategy(viewProvider)
+        createStrategy { viewProvider.getView() }
     ).also { event ->
         eventCreated(event)
     }
 }
 
-typealias CreateStrategy<TView> = ViewProvider<TView>.() -> SummerEventStrategy<TView>
+typealias CreateStrategy<TView> = (() -> TView?).() -> SummerEventStrategy<TView>
 
 class ActionProvider<TView, TFunction>(
     val viewProvider: ViewProvider<TView>,

@@ -41,12 +41,11 @@ abstract class SummerPresenter<TView, TStateLower> :
      */
     abstract val viewProxy: TView
 
-    var viewProvider: ViewProvider<TView> = { null }
-    override fun invoke(): TView? = viewProvider()
+    override var getView: () -> TView? = { null }
 
-    override fun setViewProviderUnsafe(viewProvider: ViewProvider<Any>) {
-        this.viewProvider = {
-            val view = viewProvider()
+    override fun setViewProviderUnsafe(unsafeGetView: () -> Any?) {
+        getView = {
+            val view = unsafeGetView()
             @Suppress("UNCHECKED_CAST")
             view as TView?
         }
@@ -113,7 +112,7 @@ abstract class SummerPresenter<TView, TStateLower> :
     ): SummerStore.StateDelegate<T> {
         return store.createState(
             onSet = { value ->
-                val currentView = viewProvider.invoke()
+                val currentView = getView()
                 if (currentView != null && getMirrorProperty != null) {
                     val property = getMirrorProperty(currentView)
                     property.set(value)
@@ -132,7 +131,9 @@ abstract class SummerPresenter<TView, TStateLower> :
     }
 }
 
-typealias ViewProvider<TView> = () -> TView?
+interface ViewProvider<TView> {
+    val getView: () -> TView?
+}
 
 private typealias GetMirrorProperty<TView, T> = (TView) -> KMutableProperty0<T>
 
@@ -142,5 +143,5 @@ private typealias GetMirrorProperty<TView, T> = (TView) -> KMutableProperty0<T>
  */
 interface PresenterController {
     fun viewCreated()
-    fun setViewProviderUnsafe(viewProvider: ViewProvider<Any>)
+    fun setViewProviderUnsafe(unsafeGetView: () -> Any?)
 }

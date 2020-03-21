@@ -3,13 +3,13 @@ package summer.events
 import summer.ViewProvider
 
 class DoExactlyOnceStrategy<TView>(
-    private val viewProvider: ViewProvider<TView>
+    private val getView: () -> TView?
 ) : SummerEventStrategy<TView> {
 
     private var notExecutedApplication: ApplyArgs<TView>? = null
 
     override fun called(applyArgs: ApplyArgs<TView>) {
-        val view = viewProvider()
+        val view = getView()
         if (view != null) {
             val action = applyArgs(view)
             action()
@@ -19,7 +19,7 @@ class DoExactlyOnceStrategy<TView>(
     }
 
     override fun viewCreated() {
-        val view = viewProvider()
+        val view = getView()
         if (view != null) {
             notExecutedApplication?.let { applyArgs ->
                 val action = applyArgs(view)

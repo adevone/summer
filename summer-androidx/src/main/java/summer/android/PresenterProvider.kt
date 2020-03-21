@@ -13,7 +13,7 @@ class PresenterProvider<TView, TPresenter : SummerPresenter<TView, *>>(
 
     fun initPresenter() {
         val presenter = createPresenter()
-        presenter.viewProvider = { view }
+        presenter.getView = { view }
         this.presenter = presenter
     }
 
