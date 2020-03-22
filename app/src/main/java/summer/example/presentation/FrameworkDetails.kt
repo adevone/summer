@@ -1,19 +1,20 @@
 package summer.example.presentation
 
 import summer.example.entity.Framework
-import summer.example.presentation.base.BasePresenter
+import summer.example.entity.FullFramework
+import summer.example.entity.toFull
 
 interface FrameworkDetailsView {
-    var framework: Framework?
+    var framework: FullFramework?
     val notifyAboutName: (frameworkName: String) -> Unit
 }
 
 class FrameworkDetailsPresenter(
     private val initialFramework: Framework
-) : BasePresenter<FrameworkDetailsView>() {
+) : BaseSaveStatePresenter<FrameworkDetailsView>() {
 
     override val viewProxy = object : FrameworkDetailsView {
-        override var framework by state({ it::framework }, initial = initialFramework)
+        override var framework by state({ it::framework }, initial = initialFramework.toFull())
         override val notifyAboutName = event { it.notifyAboutName }.doOnlyWhenAttached()
     }
 

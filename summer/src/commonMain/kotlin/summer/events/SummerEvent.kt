@@ -2,15 +2,9 @@ package summer.events
 
 sealed class SummerEvent<TView> {
 
-    abstract val strategy: SummerEventStrategy<TView>
-
-    fun viewCreated() {
-        strategy.viewCreated()
-    }
-
     class A0<TView>(
         private val getAction: (TView) -> (() -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : () -> Unit, SummerEvent<TView>() {
 
         override fun invoke() {
@@ -25,7 +19,7 @@ sealed class SummerEvent<TView> {
 
     class A1<TView, T1>(
         private val getAction: (TView) -> ((T1) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1) {
@@ -40,7 +34,7 @@ sealed class SummerEvent<TView> {
 
     class A2<TView, T1, T2>(
         private val getAction: (TView) -> ((T1, T2) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2) {
@@ -55,7 +49,7 @@ sealed class SummerEvent<TView> {
 
     class A3<TView, T1, T2, T3>(
         private val getAction: (TView) -> ((T1, T2, T3) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2, T3) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2, p3: T3) {
@@ -70,7 +64,7 @@ sealed class SummerEvent<TView> {
 
     class A4<TView, T1, T2, T3, T4>(
         private val getAction: (TView) -> ((T1, T2, T3, T4) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2, T3, T4) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4) {
@@ -85,7 +79,7 @@ sealed class SummerEvent<TView> {
 
     class A5<TView, T1, T2, T3, T4, T5>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2, T3, T4, T5) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5) {
@@ -100,7 +94,7 @@ sealed class SummerEvent<TView> {
 
     class A6<TView, T1, T2, T3, T4, T5, T6>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2, T3, T4, T5, T6) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6) {
@@ -115,7 +109,7 @@ sealed class SummerEvent<TView> {
 
     class A7<TView, T1, T2, T3, T4, T5, T6, T7>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2, T3, T4, T5, T6, T7) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7) {
@@ -130,7 +124,7 @@ sealed class SummerEvent<TView> {
 
     class A8<TView, T1, T2, T3, T4, T5, T6, T7, T8>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2, T3, T4, T5, T6, T7, T8) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8) {
@@ -145,7 +139,7 @@ sealed class SummerEvent<TView> {
 
     class A9<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9) {
@@ -160,7 +154,7 @@ sealed class SummerEvent<TView> {
 
     class A10<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, p10: T10) {
@@ -175,7 +169,7 @@ sealed class SummerEvent<TView> {
 
     class A11<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, p10: T10, p11: T11) {
@@ -190,7 +184,7 @@ sealed class SummerEvent<TView> {
 
     class A12<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> Unit),
-        override val strategy: SummerEventStrategy<TView>
+        private val strategy: SummerEventStrategy<TView>
     ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> Unit, SummerEvent<TView>() {
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, p10: T10, p11: T11, p12: T12) {

@@ -90,7 +90,7 @@ class MainActivity : BaseActivity(), MainView {
         Tab.Basket -> "Корзина"
     }
 
-    override val presenter by summerPresenter { MainPresenter() }
+    override val presenter by bindPresenter { MainPresenter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

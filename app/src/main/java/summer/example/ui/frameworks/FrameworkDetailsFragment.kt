@@ -5,16 +5,17 @@ import kotlinx.android.synthetic.main.framework_details_fragment.*
 import kotlinx.serialization.Serializable
 import summer.example.R
 import summer.example.entity.Framework
+import summer.example.entity.FullFramework
 import summer.example.presentation.FrameworkDetailsPresenter
 import summer.example.presentation.FrameworkDetailsView
-import summer.example.ui.base.BaseFragment
+import summer.example.ui.base.BaseSaveInstanceStateFragment
 import summer.example.ui.base.routing.ScreenArgs
 
 class FrameworkDetailsFragment :
-    BaseFragment<FrameworkDetailsFragment.Args>(R.layout.framework_details_fragment),
+    BaseSaveInstanceStateFragment<FrameworkDetailsFragment.Args>(R.layout.framework_details_fragment),
     FrameworkDetailsView {
 
-    override var framework: Framework? by didSet {
+    override var framework: FullFramework? by didSet {
         nameView.text = framework?.name ?: ""
         versionView.text = framework?.version ?: ""
     }
@@ -23,7 +24,7 @@ class FrameworkDetailsFragment :
         Toast.makeText(context, frameworkName, Toast.LENGTH_LONG).show()
     }
 
-    override val presenter by summerPresenter {
+    override val presenter by bindPresenter {
         FrameworkDetailsPresenter(initialFramework = args.framework)
     }
 

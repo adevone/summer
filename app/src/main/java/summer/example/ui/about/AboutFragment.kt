@@ -13,7 +13,7 @@ import summer.example.ui.base.routing.ScreenArgs
 
 class AboutFragment : BaseFragment<AboutFragment.Args>(R.layout.about_fragment), AboutView {
 
-    override val presenter by summerPresenter { AboutPresenter() }
+    override val presenter by bindPresenter { AboutPresenter() }
 
     override var about: About? by didSetNotNull { about ->
         frameworkNameView.text = about.frameworkName

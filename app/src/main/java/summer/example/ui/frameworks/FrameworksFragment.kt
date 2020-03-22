@@ -26,7 +26,7 @@ class FrameworksFragment :
         ciceroneRouter.navigateTo(FrameworkDetailsFragment.Args(framework).toScreen())
     }
 
-    override val presenter by summerPresenter { FrameworksPresenter() }
+    override val presenter by bindPresenter { FrameworksPresenter() }
 
     private lateinit var frameworksAdapter: FrameworksAdapter
 

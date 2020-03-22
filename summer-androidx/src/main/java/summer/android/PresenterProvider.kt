@@ -1,10 +1,10 @@
 package summer.android
 
-import summer.SummerPresenter
+import summer.BaseSummerPresenter
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-class PresenterProvider<TView, TPresenter : SummerPresenter<TView, *>>(
+open class PresenterProvider<TView, out TPresenter : BaseSummerPresenter<TView>>(
     private val createPresenter: () -> TPresenter,
     private val view: TView
 ) : ReadOnlyProperty<Any?, TPresenter> {
@@ -13,20 +13,26 @@ class PresenterProvider<TView, TPresenter : SummerPresenter<TView, *>>(
 
     fun initPresenter() {
         val presenter = createPresenter()
-        presenter.getView = { view }
         this.presenter = presenter
     }
 
     fun viewCreated() {
         val presenter = requirePresenter()
+        presenter.getView = { view }
         presenter.viewCreated()
+    }
+
+    fun viewDestroyed() {
+        presenter?.getView = { null }
     }
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): TPresenter {
         return requirePresenter()
     }
 
-    private fun requirePresenter(): TPresenter {
+    fun requirePresenter(): TPresenter {
         return presenter ?: throw PresenterNotInitializedYet()
     }
 }
+
+class PresenterNotInitializedYet : IllegalStateException("presenter not initialized yet")

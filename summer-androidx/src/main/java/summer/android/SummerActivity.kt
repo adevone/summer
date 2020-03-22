@@ -2,7 +2,7 @@ package summer.android
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import summer.SummerPresenter
+import summer.BaseSummerPresenter
 
 abstract class SummerActivity : AppCompatActivity() {
 
@@ -24,8 +24,13 @@ abstract class SummerActivity : AppCompatActivity() {
         isCreating = false
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenterProvider?.viewDestroyed()
+    }
+
     private var presenterProvider: PresenterProvider<*, *>? = null
-    fun <TView, TPresenter : SummerPresenter<TView, *>> TView.summerPresenter(
+    fun <TView, TPresenter : BaseSummerPresenter<TView>> TView.bindPresenter(
         createPresenter: () -> TPresenter
     ): PresenterProvider<TView, TPresenter> {
         val provider = PresenterProvider(createPresenter, view = this)
@@ -37,5 +42,5 @@ abstract class SummerActivity : AppCompatActivity() {
         return presenterProvider ?: throw PresenterNotProvidedException()
     }
 
-    companion object : DidSetMixin()
+    companion object : DidSetMixin
 }

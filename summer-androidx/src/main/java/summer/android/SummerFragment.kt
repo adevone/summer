@@ -5,9 +5,9 @@ import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import summer.SummerPresenter
+import summer.BaseSummerPresenter
 
-abstract class SummerFragment : Fragment {
+abstract class SummerFragment : PopListenerFragment {
 
     constructor() : super()
 
@@ -36,6 +36,33 @@ abstract class SummerFragment : Fragment {
         isViewCreating = false
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenterProvider?.viewDestroyed()
+    }
+
+    private var presenterProvider: PresenterProvider<*, *>? = null
+    fun <TView, TPresenter : BaseSummerPresenter<TView>> TView.bindPresenter(
+        createPresenter: () -> TPresenter
+    ): PresenterProvider<TView, TPresenter> {
+        val provider = PresenterProvider(createPresenter, view = this)
+        presenterProvider = provider
+        return provider
+    }
+
+    private fun requirePresenterProvider(): PresenterProvider<*, *> {
+        return presenterProvider ?: throw PresenterNotProvidedException()
+    }
+
+    companion object : DidSetMixin
+}
+
+abstract class PopListenerFragment : Fragment {
+
+    constructor() : super()
+
+    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
+
     @CallSuper
     open fun onPop() {
     }
@@ -59,27 +86,6 @@ abstract class SummerFragment : Fragment {
             onPop()
         }
     }
-
-    private var presenterProvider: PresenterProvider<*, *>? = null
-    fun <TView, TPresenter : SummerPresenter<TView, *>> TView.summerPresenter(
-        createPresenter: () -> TPresenter
-    ): PresenterProvider<TView, TPresenter> {
-        val provider = PresenterProvider(createPresenter, view = this)
-        presenterProvider = provider
-        return provider
-    }
-
-    private fun requirePresenterProvider(): PresenterProvider<*, *> {
-        return presenterProvider ?: throw PresenterNotProvidedException()
-    }
-
-    companion object : DidSetMixin()
 }
 
-class PresenterNotProvidedException : RuntimeException(
-    "presenter in not provided"
-)
-
-class PresenterNotInitializedYet() : RuntimeException(
-    "presenter not initialized yet"
-)
+class PresenterNotProvidedException : IllegalStateException("presenter in not provided")

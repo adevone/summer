@@ -19,7 +19,7 @@ class DidSetDelegate<T>(
     }
 }
 
-abstract class DidSetMixin {
+interface DidSetMixin {
 
     fun <T> didSet(onSet: (T) -> Unit) = DidSetDelegate(onSet)
 

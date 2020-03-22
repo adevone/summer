@@ -11,7 +11,7 @@ import summer.example.ui.base.routing.ScreenArgs
 
 class BasketFragment : BaseFragment<BasketFragment.Args>(R.layout.basket_fragment), BasketView {
 
-    override val presenter by summerPresenter { BasketPresenter() }
+    override val presenter by bindPresenter { BasketPresenter() }
 
     override var items: List<Basket.Item> by didSet {
         basketView.text = items.joinToString(separator = "\n") { item ->
