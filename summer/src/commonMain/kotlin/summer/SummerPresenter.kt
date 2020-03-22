@@ -56,7 +56,5 @@ abstract class SummerPresenter<TView> :
         stateDelegates.add(delegate)
     }
 
-    override fun getOwner(): InMemoryStoreProvider {
-        return this
-    }
+    override fun getOwner() = this
 }
