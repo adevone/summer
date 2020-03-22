@@ -93,7 +93,5 @@ abstract class SaveStateSummerPresenter<TView> : BaseSummerPresenter<TView>,
 
     override var bundle = Bundle()
 
-    override fun getOwner(): BundleProvider {
-        return this
-    }
+    override fun getOwner() = this
 }

@@ -18,7 +18,7 @@ interface StateFactory<TOwner, TView> : ViewProvider<TView> {
      *
      * @return state property delegate
      */
-    fun <T> TOwner.state(
+    fun <T> state(
         getMirrorProperty: GetMirrorProperty<TView, T>? = null,
         initial: T,
         strategy: SummerStateStrategy<TOwner, T>
