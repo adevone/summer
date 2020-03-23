@@ -56,7 +56,7 @@ kotlin {
     }
 }
 
-group = "com.github.adevone.summer"
+group = summerGroup
 version = summerVersion
 
 publishing {

@@ -13,7 +13,7 @@ android {
     compileSdkVersion(targetVersion)
 
     defaultConfig {
-        minSdkVersion(1)
+        minSdkVersion(21)
         targetSdkVersion(targetVersion)
         versionCode = 1
         versionName = "1.0"
@@ -21,7 +21,6 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
@@ -33,6 +32,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.1.0")
 
     implementation("com.github.adevone.summer:summer:$summerVersion")
+    implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
 //    implementation(project(":summer"))
 }
 
@@ -46,7 +46,7 @@ version = summerVersion
 
 publishing {
     publications {
-        create<MavenPublication>("summerAndroidX") {
+        create<MavenPublication>("summerAndroidXSaveState") {
             groupId = project.group.toString()
             artifactId = project.name
             version = summerVersion
@@ -70,5 +70,5 @@ bintray {
         setLicenses("MIT")
         vcsUrl = "https://github.com/adevone/summer"
     })
-    setPublications("summerAndroidX")
+    setPublications("summerAndroidXSaveState")
 }

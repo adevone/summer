@@ -13,11 +13,10 @@ android {
     compileSdkVersion(targetVersion)
 
     defaultConfig {
-        applicationId = "ru.napoleonit"
+        applicationId = "summer.example"
         minSdkVersion(minVersion)
         targetSdkVersion(targetVersion)
         multiDexEnabled = true
-        resConfigs("en", "ru")
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -85,8 +84,10 @@ dependencies {
 
     implementation("com.github.adevone.summer:summer:$summerVersion")
     implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
+    implementation("com.github.adevone.summer:summer-android-save-state:$summerVersion")
 //    implementation(project(":summer"))
 //    implementation(project(":summer-androidx"))
+//    implementation(project(":summer-android-save-state"))
 
     implementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")

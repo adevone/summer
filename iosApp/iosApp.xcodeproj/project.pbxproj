@@ -60,22 +60,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		03700B003A2CD948529DECC9 /* GetDebtUseCase.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = GetDebtUseCase.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/domain/debt/GetDebtUseCase.kt; sourceTree = "<group>"; };
 		16C6E4940B10E962F2583E4F /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
-		1D5B2CB2DEF25618FE19CFC5 /* DebtDao.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DebtDao.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/domain/debt/data/DebtDao.kt; sourceTree = "<group>"; };
-		1E421E743AAC920F0DE29231 /* Debt.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Debt.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/entity/Debt.kt; sourceTree = "<group>"; };
 		4751D061A67B3FF5F5EE4DF8 /* Pods-shared.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shared.release.xcconfig"; path = "Target Support Files/Pods-shared/Pods-shared.release.xcconfig"; sourceTree = "<group>"; };
 		488516847F15AC058B120CD2 /* Pods-iosApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.debug.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.debug.xcconfig"; sourceTree = "<group>"; };
-		52A25CFFABD6C5EEFFD6C903 /* PrefsDebtDao.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = PrefsDebtDao.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/data/PrefsDebtDao.kt; sourceTree = "<group>"; };
-		61D4A7E2A2AB37360EAB7583 /* IosDI.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = IosDI.kt; path = ../shared/src/iosMain/kotlin/ru/napoleonit/example/IosDI.kt; sourceTree = "<group>"; };
 		74FB4C44E11105910B6A6958 /* Pods-iosAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosAppTests.release.xcconfig"; path = "Target Support Files/Pods-iosAppTests/Pods-iosAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		7988D841E04C5C8AC0EE8905 /* Pods-shared.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shared.debug.xcconfig"; path = "Target Support Files/Pods-shared/Pods-shared.debug.xcconfig"; sourceTree = "<group>"; };
-		98AA15EC15DA8F3DE3C4CB76 /* Debt.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Debt.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/presentation/Debt.kt; sourceTree = "<group>"; };
 		B6B9AB65BD80DB3CD6EB1ADC /* Pods_shared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_shared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B95F4C6F3B7A157E401670CB /* ScreenPresenter.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ScreenPresenter.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/presentation/base/ScreenPresenter.kt; sourceTree = "<group>"; };
 		BE83D5967D62ABE5A511918A /* Pods_iosAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7FB792EC8D6C115D1A305C4 /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E1EE88167810204F17A61174 /* DI.kt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DI.kt; path = ../shared/src/commonMain/kotlin/ru/napoleonit/example/DI.kt; sourceTree = "<group>"; };
 		F861D7DD207FA40F0085E80D /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F861D7E0207FA40F0085E80D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F861D7E5207FA40F0085E80D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -127,125 +119,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		02DB7ADB480E995721C8502D /* entity */ = {
-			isa = PBXGroup;
-			children = (
-				1E421E743AAC920F0DE29231 /* Debt.kt */,
-			);
-			name = entity;
-			sourceTree = "<group>";
-		};
-		0D9CE60AFD9933B4BC9D8CCF /* iosMain */ = {
-			isa = PBXGroup;
-			children = (
-				C3C05BC976486F1B6E7A4B28 /* kotlin */,
-			);
-			name = iosMain;
-			sourceTree = "<group>";
-		};
-		11972F744DDAB193A03A4B63 /* example */ = {
-			isa = PBXGroup;
-			children = (
-				E1EE88167810204F17A61174 /* DI.kt */,
-				D910A5061541E291453614C0 /* data */,
-				67BB02A5FC1AD00AE5B9ADA8 /* domain */,
-				02DB7ADB480E995721C8502D /* entity */,
-				1995BD6DD761F02D49EB4F4C /* presentation */,
-			);
-			name = example;
-			sourceTree = "<group>";
-		};
-		14CF7307165D3801909039C6 /* ru */ = {
-			isa = PBXGroup;
-			children = (
-				D4E4D248FD3EC6F7B1FD2519 /* napoleonit */,
-			);
-			name = ru;
-			sourceTree = "<group>";
-		};
-		16CE9AE7511C6F3E26D0D6F8 /* base */ = {
-			isa = PBXGroup;
-			children = (
-				B95F4C6F3B7A157E401670CB /* ScreenPresenter.kt */,
-			);
-			name = base;
-			sourceTree = "<group>";
-		};
-		1995BD6DD761F02D49EB4F4C /* presentation */ = {
-			isa = PBXGroup;
-			children = (
-				98AA15EC15DA8F3DE3C4CB76 /* Debt.kt */,
-				16CE9AE7511C6F3E26D0D6F8 /* base */,
-			);
-			name = presentation;
-			sourceTree = "<group>";
-		};
-		1AD4B73340778B9C0597CC95 /* example */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = example;
-			sourceTree = "<group>";
-		};
-		1E9E627C36C901C711C70DF5 /* data */ = {
-			isa = PBXGroup;
-			children = (
-				1D5B2CB2DEF25618FE19CFC5 /* DebtDao.kt */,
-			);
-			name = data;
-			sourceTree = "<group>";
-		};
-		42C3E3F15469A4FB2D341940 /* main */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = main;
-			sourceTree = "<group>";
-		};
-		482FC29595E1BB7EAE56994F /* Kotlin */ = {
-			isa = PBXGroup;
-			children = (
-				5D05DAA9F3B26C5CEE49FB83 /* androidMain */,
-				4A0F07EECD054F60D23D38CA /* commonMain */,
-				0D9CE60AFD9933B4BC9D8CCF /* iosMain */,
-				D94AC1AE4D1A354376F560ED /* main */,
-			);
-			name = Kotlin;
-			sourceTree = "<group>";
-		};
-		4A0F07EECD054F60D23D38CA /* commonMain */ = {
-			isa = PBXGroup;
-			children = (
-				5E154A7E5BAA0842AAD5320D /* kotlin */,
-			);
-			name = commonMain;
-			sourceTree = "<group>";
-		};
-		5D05DAA9F3B26C5CEE49FB83 /* androidMain */ = {
-			isa = PBXGroup;
-			children = (
-				F39235AFBD7F937AD4F0BDC0 /* kotlin */,
-			);
-			name = androidMain;
-			sourceTree = "<group>";
-		};
-		5E154A7E5BAA0842AAD5320D /* kotlin */ = {
-			isa = PBXGroup;
-			children = (
-				BD8170CE3084FE632BDD7B3F /* ru */,
-			);
-			name = kotlin;
-			sourceTree = "<group>";
-		};
-		67BB02A5FC1AD00AE5B9ADA8 /* domain */ = {
-			isa = PBXGroup;
-			children = (
-				F1F618C7BB38DE6AD3D885DA /* debt */,
-				42C3E3F15469A4FB2D341940 /* main */,
-			);
-			name = domain;
-			sourceTree = "<group>";
-		};
 		740A931B3AA4BE02571CB8D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,22 +127,6 @@
 				B6B9AB65BD80DB3CD6EB1ADC /* Pods_shared.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		8029133A10D56041133C38D4 /* ru */ = {
-			isa = PBXGroup;
-			children = (
-				817DB811777FFD910DA68673 /* napoleonit */,
-			);
-			name = ru;
-			sourceTree = "<group>";
-		};
-		817DB811777FFD910DA68673 /* napoleonit */ = {
-			isa = PBXGroup;
-			children = (
-				1AD4B73340778B9C0597CC95 /* example */,
-			);
-			name = napoleonit;
 			sourceTree = "<group>";
 		};
 		BC4377E5039625062BCA13B6 /* Pods */ = {
@@ -285,70 +142,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		BD8170CE3084FE632BDD7B3F /* ru */ = {
-			isa = PBXGroup;
-			children = (
-				FCB187BEF7432D35E867FC3C /* napoleonit */,
-			);
-			name = ru;
-			sourceTree = "<group>";
-		};
-		C3C05BC976486F1B6E7A4B28 /* kotlin */ = {
-			isa = PBXGroup;
-			children = (
-				14CF7307165D3801909039C6 /* ru */,
-			);
-			name = kotlin;
-			sourceTree = "<group>";
-		};
-		C9671D4B73DB077FE21AAC37 /* example */ = {
-			isa = PBXGroup;
-			children = (
-				61D4A7E2A2AB37360EAB7583 /* IosDI.kt */,
-			);
-			name = example;
-			sourceTree = "<group>";
-		};
-		D4E4D248FD3EC6F7B1FD2519 /* napoleonit */ = {
-			isa = PBXGroup;
-			children = (
-				C9671D4B73DB077FE21AAC37 /* example */,
-			);
-			name = napoleonit;
-			sourceTree = "<group>";
-		};
-		D910A5061541E291453614C0 /* data */ = {
-			isa = PBXGroup;
-			children = (
-				52A25CFFABD6C5EEFFD6C903 /* PrefsDebtDao.kt */,
-			);
-			name = data;
-			sourceTree = "<group>";
-		};
-		D94AC1AE4D1A354376F560ED /* main */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = main;
-			sourceTree = "<group>";
-		};
-		F1F618C7BB38DE6AD3D885DA /* debt */ = {
-			isa = PBXGroup;
-			children = (
-				03700B003A2CD948529DECC9 /* GetDebtUseCase.kt */,
-				1E9E627C36C901C711C70DF5 /* data */,
-			);
-			name = debt;
-			sourceTree = "<group>";
-		};
-		F39235AFBD7F937AD4F0BDC0 /* kotlin */ = {
-			isa = PBXGroup;
-			children = (
-				8029133A10D56041133C38D4 /* ru */,
-			);
-			name = kotlin;
-			sourceTree = "<group>";
-		};
 		F861D7D4207FA40F0085E80D = {
 			isa = PBXGroup;
 			children = (
@@ -356,7 +149,6 @@
 				F861D7F4207FA4100085E80D /* iosAppTests */,
 				F861D7DE207FA40F0085E80D /* Products */,
 				740A931B3AA4BE02571CB8D7 /* Frameworks */,
-				482FC29595E1BB7EAE56994F /* Kotlin */,
 				BC4377E5039625062BCA13B6 /* Pods */,
 			);
 			sourceTree = "<group>";
@@ -415,14 +207,6 @@
 				FA69817E241D5B150027B8A8 /* UITableView+Extensions.swift */,
 			);
 			path = base;
-			sourceTree = "<group>";
-		};
-		FCB187BEF7432D35E867FC3C /* napoleonit */ = {
-			isa = PBXGroup;
-			children = (
-				11972F744DDAB193A03A4B63 /* example */,
-			);
-			name = napoleonit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -840,7 +624,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-v";
-				PRODUCT_BUNDLE_IDENTIFIER = org.jetbrains.iosApp;
+				PRODUCT_BUNDLE_IDENTIFIER = summer.example.iosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -862,7 +646,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "-v";
-				PRODUCT_BUNDLE_IDENTIFIER = org.jetbrains.iosApp;
+				PRODUCT_BUNDLE_IDENTIFIER = summer.example.iosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -934,7 +718,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ru.napoleonit.lib;
+				PRODUCT_BUNDLE_IDENTIFIER = summer.example.lib;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -966,7 +750,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ru.napoleonit.lib;
+				PRODUCT_BUNDLE_IDENTIFIER = summer.example.lib;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;

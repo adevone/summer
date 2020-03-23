@@ -1,4 +1,5 @@
 const val summerVersion = "1.0.0-beta1"
+const val summerGroup = "com.github.adevone.summer"
 
 // library dependencies
 const val kotlinVersion = "1.3.70"
