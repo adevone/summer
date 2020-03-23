@@ -2,6 +2,10 @@ package summer.events
 
 import summer.ViewProvider
 
+/**
+ * If view exists then action will be executed right now.
+ * If view does not exist then when view will be created.
+ */
 class DoExactlyOnceStrategy<TView> : SummerEventStrategy<TView, ViewProvider<TView>> {
 
     private var notExecutedApplication: ApplyArgs<TView>? = null
@@ -29,7 +33,7 @@ class DoExactlyOnceStrategy<TView> : SummerEventStrategy<TView, ViewProvider<TVi
 
     interface Factory<TView> : EventFactory<TView, ViewProvider<TView>> {
 
-        fun ActionHolder<Any?, () -> Unit>.doExactlyOnce() = build(
+        fun ActionHolder<TView, () -> Unit>.doExactlyOnce() = build(
             strategy = DoExactlyOnceStrategy()
         )
 

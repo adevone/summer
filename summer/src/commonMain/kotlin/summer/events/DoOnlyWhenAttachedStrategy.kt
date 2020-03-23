@@ -2,6 +2,9 @@ package summer.events
 
 import summer.ViewProvider
 
+/**
+ * Action will be executed only if view exists.
+ */
 class DoOnlyWhenAttachedStrategy<TView> : SummerEventStrategy<TView, ViewProvider<TView>> {
 
     override fun called(owner: ViewProvider<TView>, applyArgs: (TView) -> (() -> Unit)) {

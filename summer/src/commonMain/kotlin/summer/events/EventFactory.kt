@@ -2,6 +2,13 @@ package summer.events
 
 import summer.ViewProvider
 
+/**
+ * DSL to create [ActionHolder] and transform it
+ * to [SummerEvent] with user-defined [SummerEventStrategy].
+ *
+ * [TView] see [SummerEventStrategy]
+ * [TOwner] see [SummerEventStrategy]
+ */
 interface EventFactory<TView, TOwner : ViewProvider<TView>> {
 
     fun eventCreated(event: SummerEvent<TView, TOwner>)

@@ -2,6 +2,10 @@ package summer.events
 
 import summer.ViewProvider
 
+/**
+ * Proxy that calls action following defined [SummerEventStrategy].
+ * Can proxy actions with 0-12 arguments. Have child to each supported arity.
+ */
 sealed class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
 
     abstract val strategy: SummerEventStrategy<TView, TOwner>

@@ -2,6 +2,10 @@ package summer.events
 
 import summer.ViewProvider
 
+/**
+ * Proxies each call of [SummerEvent] to action if view exists and
+ * repeats each call of [SummerEvent] on each view creation.
+ */
 class RepeatAllStrategy<TView> : SummerEventStrategy<TView, ViewProvider<TView>> {
 
     private val applications = mutableListOf<ApplyArgs<TView>>()
