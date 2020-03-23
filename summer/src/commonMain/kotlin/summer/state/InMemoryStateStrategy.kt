@@ -3,6 +3,9 @@ package summer.state
 import summer.SummerPresenter
 import kotlin.reflect.KProperty
 
+/**
+ * Saves state only in memory.
+ */
 class InMemoryStateStrategy<T> : SummerStateStrategy<T, InMemoryStoreProvider> {
 
     override fun get(owner: InMemoryStoreProvider, prop: KProperty<*>): T {
@@ -22,19 +25,22 @@ class InMemoryStateStrategy<T> : SummerStateStrategy<T, InMemoryStoreProvider> {
         fun <T> state(
             getMirrorProperty: GetMirrorProperty<TView, T>? = null,
             initial: T
-        ): StateDelegate.Provider<T, InMemoryStoreProvider> {
+        ): SummerStateDelegate.Provider<T, InMemoryStoreProvider> {
             return state(getMirrorProperty, initial, InMemoryStateStrategy())
         }
     }
 }
 
+/**
+ * Owner of [InMemoryStateStrategy]
+ */
 interface InMemoryStoreProvider {
     val inMemoryStore: InMemoryStore
 }
 
 /**
- * Default store that can be passed to [SummerPresenter.state]
- * Stores values in memory and doesn't restores them after app relaunch
+ * Default store for [SummerPresenter].
+ * Saved values will be restored only when they saved in same instance.
  */
 class InMemoryStore {
     private var isInitByKey = mutableMapOf<String, Unit>()

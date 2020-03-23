@@ -2,9 +2,15 @@ package summer
 
 import summer.events.EventFactory
 import summer.events.SummerEvent
-import summer.state.StateDelegate
+import summer.state.SummerStateDelegate
 import summer.state.StateFactory
 
+/**
+ * Extent from this class if you want to implement
+ * custom [EventFactory] or [StateFactory]
+ *
+ * [TView] see [LifecycleSummerPresenter]
+ */
 abstract class RestoreSummerPresenter<TView, TStateOwner, TEventsOwner : ViewProvider<TView>> :
     LifecycleSummerPresenter<TView>,
     EventFactory<TView, TEventsOwner>,
@@ -36,8 +42,8 @@ abstract class RestoreSummerPresenter<TView, TStateOwner, TEventsOwner : ViewPro
         events.add(event)
     }
 
-    private val stateDelegates = mutableSetOf<StateDelegate<*, TStateOwner>>()
-    override fun stateDelegateCreated(delegate: StateDelegate<*, TStateOwner>) {
+    private val stateDelegates = mutableSetOf<SummerStateDelegate<*, TStateOwner>>()
+    override fun stateDelegateCreated(delegate: SummerStateDelegate<*, TStateOwner>) {
         stateDelegates.add(delegate)
     }
 }

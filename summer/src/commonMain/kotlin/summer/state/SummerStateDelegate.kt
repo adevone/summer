@@ -3,7 +3,7 @@ package summer.state
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class StateDelegate<T, TOwner>(
+class SummerStateDelegate<T, TOwner>(
     private val owner: TOwner,
     private val property: KProperty<*>,
     private val initial: T,
@@ -40,13 +40,13 @@ class StateDelegate<T, TOwner>(
         private val initial: T,
         private val strategy: SummerStateStrategy<T, TOwner>,
         private val setMirror: (T) -> Unit,
-        private val delegateCreated: (StateDelegate<T, TOwner>) -> Unit
+        private val delegateCreated: (SummerStateDelegate<T, TOwner>) -> Unit
     ) {
         operator fun provideDelegate(
             thisRef: Any?,
             prop: KProperty<*>
-        ): StateDelegate<T, TOwner> {
-            val delegate = StateDelegate(owner, prop, initial, strategy, setMirror)
+        ): SummerStateDelegate<T, TOwner> {
+            val delegate = SummerStateDelegate(owner, prop, initial, strategy, setMirror)
             delegateCreated(delegate)
             return delegate
         }

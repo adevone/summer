@@ -6,10 +6,10 @@ import summer.events.SummerEvent
 import summer.state.InMemoryStateStrategy
 import summer.state.InMemoryStore
 import summer.state.InMemoryStoreProvider
-import summer.state.StateDelegate
+import summer.state.SummerStateDelegate
 
 /**
- * Base presenter. Helps with view state restoring (see [StateDelegate])
+ * Base presenter. Helps with view state restoring (see [SummerStateDelegate])
  * and executing of events (see [SummerEvent]).
  */
 abstract class SummerPresenter<TView> :

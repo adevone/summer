@@ -1,11 +1,11 @@
 package summer
 
-import summer.events.EventFactory
-import summer.state.StateFactory
+import summer.events.SummerEvent
+import summer.state.SummerStateDelegate
 
 /**
- * Extent from this class if you want to implement
- * custom [EventFactory] or [StateFactory]
+ * Extent from this class if you want call [SummerEvent.viewCreated] or
+ * [SummerStateDelegate.restore] on custom place.
  *
  * [TView] is type of associated view.
  */
@@ -34,5 +34,8 @@ interface PresenterController {
      */
     fun viewCreated()
 
+    /**
+     * Provide untyped view provider. It will be force converted to typed [ViewProvider.getView].
+     */
     fun setViewProviderUnsafe(unsafeGetView: () -> Any?)
 }

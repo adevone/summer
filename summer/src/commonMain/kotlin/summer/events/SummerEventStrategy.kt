@@ -1,5 +1,6 @@
 package summer.events
 
+import summer.LifecycleSummerPresenter
 import summer.ViewProvider
 
 /**
@@ -13,7 +14,14 @@ import summer.ViewProvider
  *          and implement on your [LifecyclePresenter].
  */
 interface SummerEventStrategy<out TView, in TOwner : ViewProvider<TView>> {
+    /**
+     * [SummerEvent] was invoked
+     */
     fun called(owner: TOwner, applyArgs: ApplyArgs<TView>)
+
+    /**
+     * [LifecycleSummerPresenter.viewCreated] was called
+     */
     fun viewCreated(owner: TOwner) {}
 }
 
