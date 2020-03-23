@@ -25,12 +25,13 @@ interface StateFactory<TOwner, TView> : ViewProvider<TView> {
     ): StateDelegateProvider<T, TOwner> {
         return StateDelegateProvider(
             getOwner(),
-            mirrorOnSet(getMirrorProperty),
             initial,
-            strategy
-        ) { delegate ->
-            stateDelegateCreated(delegate)
-        }
+            strategy,
+            setMirror = setMirrorIfViewExists(getMirrorProperty),
+            delegateCreated = { delegate ->
+                stateDelegateCreated(delegate)
+            }
+        )
     }
 
     fun getOwner(): TOwner
@@ -38,7 +39,7 @@ interface StateFactory<TOwner, TView> : ViewProvider<TView> {
     fun stateDelegateCreated(delegate: StateDelegate<*, TOwner>)
 }
 
-fun <TView, T> ViewProvider<TView>.mirrorOnSet(
+fun <TView, T> ViewProvider<TView>.setMirrorIfViewExists(
     getMirrorProperty: GetMirrorProperty<TView, T>?
 ): (T) -> Unit = { value ->
     val currentView = getView()
