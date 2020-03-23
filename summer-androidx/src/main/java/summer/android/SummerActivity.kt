@@ -2,7 +2,7 @@ package summer.android
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import summer.BaseSummerPresenter
+import summer.LifecycleSummerPresenter
 
 abstract class SummerActivity : AppCompatActivity() {
 
@@ -30,7 +30,7 @@ abstract class SummerActivity : AppCompatActivity() {
     }
 
     private var presenterProvider: PresenterProvider<*, *>? = null
-    fun <TView, TPresenter : BaseSummerPresenter<TView>> TView.bindPresenter(
+    fun <TView, TPresenter : LifecycleSummerPresenter<TView>> TView.bindPresenter(
         createPresenter: () -> TPresenter
     ): PresenterProvider<TView, TPresenter> {
         val provider = PresenterProvider(createPresenter, view = this)

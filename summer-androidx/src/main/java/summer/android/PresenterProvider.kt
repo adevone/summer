@@ -1,10 +1,10 @@
 package summer.android
 
-import summer.BaseSummerPresenter
+import summer.LifecycleSummerPresenter
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-open class PresenterProvider<TView, out TPresenter : BaseSummerPresenter<TView>>(
+open class PresenterProvider<TView, out TPresenter : LifecycleSummerPresenter<TView>>(
     private val createPresenter: () -> TPresenter,
     private val view: TView
 ) : ReadOnlyProperty<Any?, TPresenter> {

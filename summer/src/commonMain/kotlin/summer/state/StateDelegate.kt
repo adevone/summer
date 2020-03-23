@@ -7,7 +7,7 @@ class StateDelegate<T, TOwner>(
     private val owner: TOwner,
     private val property: KProperty<*>,
     private val initial: T,
-    private val strategy: SummerStateStrategy<TOwner, T>,
+    private val strategy: SummerStateStrategy<T, TOwner>,
     private val setMirror: (T) -> Unit
 ) : ReadWriteProperty<Any?, T> {
 
@@ -34,21 +34,21 @@ class StateDelegate<T, TOwner>(
             setMirror(initial)
         }
     }
-}
 
-class StateDelegateProvider<T, TOwner>(
-    private val owner: TOwner,
-    private val initial: T,
-    private val strategy: SummerStateStrategy<TOwner, T>,
-    private val setMirror: (T) -> Unit,
-    private val delegateCreated: (StateDelegate<T, TOwner>) -> Unit
-) {
-    operator fun provideDelegate(
-        thisRef: Any?,
-        prop: KProperty<*>
-    ): StateDelegate<T, TOwner> {
-        val delegate = StateDelegate(owner, prop, initial, strategy, setMirror)
-        delegateCreated(delegate)
-        return delegate
+    class Provider<T, TOwner>(
+        private val owner: TOwner,
+        private val initial: T,
+        private val strategy: SummerStateStrategy<T, TOwner>,
+        private val setMirror: (T) -> Unit,
+        private val delegateCreated: (StateDelegate<T, TOwner>) -> Unit
+    ) {
+        operator fun provideDelegate(
+            thisRef: Any?,
+            prop: KProperty<*>
+        ): StateDelegate<T, TOwner> {
+            val delegate = StateDelegate(owner, prop, initial, strategy, setMirror)
+            delegateCreated(delegate)
+            return delegate
+        }
     }
 }

@@ -3,7 +3,7 @@ package summer.state
 import summer.ViewProvider
 import kotlin.reflect.KMutableProperty0
 
-interface StateFactory<TOwner, TView> : ViewProvider<TView> {
+interface StateFactory<TView, TOwner> : ViewProvider<TView> {
 
     /**
      * Create delegate for property stored in any store.
@@ -21,10 +21,10 @@ interface StateFactory<TOwner, TView> : ViewProvider<TView> {
     fun <T> state(
         getMirrorProperty: GetMirrorProperty<TView, T>? = null,
         initial: T,
-        strategy: SummerStateStrategy<TOwner, T>
-    ): StateDelegateProvider<T, TOwner> {
-        return StateDelegateProvider(
-            getOwner(),
+        strategy: SummerStateStrategy<T, TOwner>
+    ): StateDelegate.Provider<T, TOwner> {
+        return StateDelegate.Provider(
+            getStateOwner(),
             initial,
             strategy,
             setMirror = setMirrorIfViewExists(getMirrorProperty),
@@ -34,7 +34,7 @@ interface StateFactory<TOwner, TView> : ViewProvider<TView> {
         )
     }
 
-    fun getOwner(): TOwner
+    fun getStateOwner(): TOwner
 
     fun stateDelegateCreated(delegate: StateDelegate<*, TOwner>)
 }

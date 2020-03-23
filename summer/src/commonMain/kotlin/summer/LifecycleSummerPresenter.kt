@@ -9,7 +9,7 @@ import summer.state.StateFactory
  *
  * [TView] is type of associated view.
  */
-interface BaseSummerPresenter<TView> :
+interface LifecycleSummerPresenter<TView> :
     PresenterController,
     ViewProvider<TView>, ViewProxyProvider<TView> {
 

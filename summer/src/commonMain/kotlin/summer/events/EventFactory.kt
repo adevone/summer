@@ -9,7 +9,7 @@ interface EventFactory<TView, TOwner : ViewProvider<TView>> {
     fun eventStrategyCreated(strategy: SummerEventStrategy<TView>)
 
     fun <TFunction> event(which: (TView) -> TFunction): ActionProvider<TView, TOwner, TFunction> {
-        return ActionProvider(owner = getOwner(), getAction = which)
+        return ActionProvider(owner = getEventsOwner(), getAction = which)
     }
 
     fun ActionProvider<TView, TOwner, () -> Unit>.build(
@@ -127,7 +127,7 @@ interface EventFactory<TView, TOwner : ViewProvider<TView>> {
         }
     )
 
-    fun getOwner(): TOwner
+    fun getEventsOwner(): TOwner
 }
 
 typealias DefaultActionProvider<TView, TFunction> = ActionProvider<TView, ViewProvider<TView>, TFunction>

@@ -3,7 +3,7 @@ package summer.state
 import summer.SummerPresenter
 import kotlin.reflect.KProperty
 
-class InMemoryStateStrategy<T> : SummerStateStrategy<InMemoryStoreProvider, T> {
+class InMemoryStateStrategy<T> : SummerStateStrategy<T, InMemoryStoreProvider> {
 
     override fun get(owner: InMemoryStoreProvider, prop: KProperty<*>): T {
         return owner.inMemoryStore.get(prop.name)
@@ -17,12 +17,12 @@ class InMemoryStateStrategy<T> : SummerStateStrategy<InMemoryStoreProvider, T> {
         return owner.inMemoryStore.isInit(prop.name)
     }
 
-    interface Factory<TView> : StateFactory<InMemoryStoreProvider, TView> {
+    interface Factory<TView> : StateFactory<TView, InMemoryStoreProvider> {
 
         fun <T> state(
             getMirrorProperty: GetMirrorProperty<TView, T>? = null,
             initial: T
-        ): StateDelegateProvider<T, InMemoryStoreProvider> {
+        ): StateDelegate.Provider<T, InMemoryStoreProvider> {
             return state(getMirrorProperty, initial, InMemoryStateStrategy())
         }
     }

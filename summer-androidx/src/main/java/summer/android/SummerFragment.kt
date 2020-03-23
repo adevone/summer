@@ -5,7 +5,7 @@ import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import summer.BaseSummerPresenter
+import summer.LifecycleSummerPresenter
 
 abstract class SummerFragment : PopListenerFragment {
 
@@ -42,7 +42,7 @@ abstract class SummerFragment : PopListenerFragment {
     }
 
     private var presenterProvider: PresenterProvider<*, *>? = null
-    fun <TView, TPresenter : BaseSummerPresenter<TView>> TView.bindPresenter(
+    fun <TView, TPresenter : LifecycleSummerPresenter<TView>> TView.bindPresenter(
         createPresenter: () -> TPresenter
     ): PresenterProvider<TView, TPresenter> {
         val provider = PresenterProvider(createPresenter, view = this)
@@ -55,37 +55,6 @@ abstract class SummerFragment : PopListenerFragment {
     }
 
     companion object : DidSetMixin
-}
-
-abstract class PopListenerFragment : Fragment {
-
-    constructor() : super()
-
-    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
-
-    @CallSuper
-    open fun onPop() {
-    }
-
-    @CallSuper
-    override fun onDestroy() {
-        notifyPresenterIfRemoving()
-        super.onDestroy()
-    }
-
-    private fun notifyPresenterIfRemoving() {
-        var anyParentIsRemoving = false
-
-        var parent = parentFragment
-        while (!anyParentIsRemoving && parent != null) {
-            anyParentIsRemoving = parent.isRemoving
-            parent = parent.parentFragment
-        }
-
-        if (isRemoving || anyParentIsRemoving) {
-            onPop()
-        }
-    }
 }
 
 class PresenterNotProvidedException : IllegalStateException("presenter in not provided")
