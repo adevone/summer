@@ -13,7 +13,7 @@ class InMemoryStateStrategy<T> : SummerStateStrategy<T, InMemoryStoreProvider> {
         owner.inMemoryStore.set(prop.name, value)
     }
 
-    override fun isInit(owner: InMemoryStoreProvider, prop: KProperty<*>): Boolean {
+    override fun wasStored(owner: InMemoryStoreProvider, prop: KProperty<*>): Boolean {
         return owner.inMemoryStore.isInit(prop.name)
     }
 

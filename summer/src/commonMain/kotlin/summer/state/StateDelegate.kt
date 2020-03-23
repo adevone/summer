@@ -12,7 +12,7 @@ class StateDelegate<T, TOwner>(
 ) : ReadWriteProperty<Any?, T> {
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        val isInit = strategy.isInit(owner, property)
+        val isInit = strategy.wasStored(owner, property)
         return if (isInit) {
             strategy.get(owner, property)
         } else {
@@ -26,7 +26,7 @@ class StateDelegate<T, TOwner>(
     }
 
     fun restore() {
-        val isInit = strategy.isInit(owner, property)
+        val isInit = strategy.wasStored(owner, property)
         if (isInit) {
             val value = strategy.get(owner, property)
             setMirror(value)

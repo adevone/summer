@@ -14,11 +14,11 @@ abstract class BundleStateStrategy<T>(
         return owner.bundle.getValue(prop.name)
     }
 
-    override fun isInit(owner: BundleProvider, prop: KProperty<*>): Boolean {
-        return owner.bundle.containsKey(prop.name)
-    }
-
     override fun set(owner: BundleProvider, prop: KProperty<*>, value: T) {
         owner.bundle.setValue(prop.name, value)
+    }
+
+    override fun wasStored(owner: BundleProvider, prop: KProperty<*>): Boolean {
+        return owner.bundle.containsKey(prop.name)
     }
 }
