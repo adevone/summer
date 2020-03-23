@@ -1,8 +1,6 @@
 Common: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer/images/download.svg) ](https://bintray.com/summermpp/summer/summer/_latestVersion)
 AndroidX: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-androidx/images/download.svg) ](https://bintray.com/summermpp/summer/summer-androidx/_latestVersion)
 
-# Status: Under development. iOS part is subject of change 
-
 # Intellij IDEA / Android Studio plugin
 [Plugin page](https://github.com/adevone/summer-plugin)
 
@@ -24,15 +22,15 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:0.16.0")
+    implementation("com.github.adevone.summer:summer:1.0.0-beta1")
     
     // android part containing SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:0.16.0")
+    implementation("com.github.adevone.summer:summer-androidx:1.0.0-beta1")
 }
 ```
 
 Summer is Model-View-Presenter library with kotlin-multiplatform support. It can be used to share presenters between iOS and Android apps.  
-Summer does not use code generation and thus have not significant effort on compilation time.  
+Summer does not use code generation and thus have not significant effort on compilation time and odd build-time errors.  
 Project aims at standardization and nice IDE support
 
 Example of feature written using Summer:
@@ -55,7 +53,7 @@ interface CalendarView {
 }
 
 class CalendarPresenter(
-    getDay: GetDay
+    private val getDay: GetDay
 ) : SummerPresenter<CalendarView> {
     
     private val defaultDayName = "Monday"
@@ -155,5 +153,5 @@ class CalendarViewController: BaseController, CalendarView {
 
 ### Convenient custom scope
 ```
-((file[app]:src/main//*||file[app]:src/debug//*||file[app]:src/release//*)&&!*.iml||file[shared_commonMain]:*/||file[buildSrc]:*/||file[shared]:.gitignore||file[eshop]:build.gradle.kts||file[eshop_iosMain]:*/||file[app]:build.gradle.kts)&&!file[buildSrc]:buildSrc.iml||file:.gitignore||file:build.gradle.kts||file:gradle.properties||file:settings.gradle.kts||file:README.md||file[shared_iosMain]:*/||file[app]:src/test/java//*
+((file[app]:src/main//*||file[app]:src/debug//*||file[app]:src/release//*)&&!*.iml||file[shared_commonMain]:*/||file[buildSrc]:*/||file[shared]:.gitignore||file[eshop]:build.gradle.kts||file[app]:build.gradle.kts)&&!file[buildSrc]:buildSrc.iml||file:.gitignore||file:build.gradle.kts||file:gradle.properties||file:settings.gradle.kts||file:README.md||file[shared_iosMain]:*/||file[app]:src/test/java//*
 ```
