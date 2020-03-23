@@ -1,8 +1,10 @@
 package summer.events
 
-interface SummerEventStrategy<out TView> {
-    fun called(applyArgs: ApplyArgs<TView>)
-    fun viewCreated() {}
+import summer.ViewProvider
+
+interface SummerEventStrategy<out TView, in TOwner : ViewProvider<TView>> {
+    fun called(owner: TOwner, applyArgs: ApplyArgs<TView>)
+    fun viewCreated(owner: TOwner) {}
 }
 
 typealias ApplyArgs<TView> = (TView) -> (() -> Unit)

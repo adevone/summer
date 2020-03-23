@@ -1,5 +1,5 @@
 package summer
 
-interface ViewProvider<TView> {
+interface ViewProvider<out TView> {
     val getView: () -> TView?
 }

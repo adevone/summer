@@ -49,6 +49,10 @@ kotlin {
         }
 
         getByName("iosX64Main").dependsOn(getByName("iosArm64Main"))
+
+        all {
+            languageSettings.enableLanguageFeature("InlineClasses")
+        }
     }
 }
 

@@ -1,14 +1,24 @@
 package summer.events
 
-sealed class SummerEvent<TView> {
+import summer.ViewProvider
 
-    class A0<TView>(
+sealed class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
+
+    abstract val strategy: SummerEventStrategy<TView, TOwner>
+    abstract fun viewCreated()
+
+    class A0<out TView, in TOwner : ViewProvider<TView>>(
         private val getAction: (TView) -> (() -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : () -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : () -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke() {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action()
@@ -17,13 +27,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A1<TView, T1>(
+    class A1<out TView, in TOwner : ViewProvider<TView>, T1>(
         private val getAction: (TView) -> ((T1) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1)
@@ -32,13 +47,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A2<TView, T1, T2>(
+    class A2<out TView, in TOwner : ViewProvider<TView>, T1, T2>(
         private val getAction: (TView) -> ((T1, T2) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2)
@@ -47,13 +67,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A3<TView, T1, T2, T3>(
+    class A3<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3>(
         private val getAction: (TView) -> ((T1, T2, T3) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2, T3) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2, T3) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2, p3: T3) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2, p3)
@@ -62,13 +87,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A4<TView, T1, T2, T3, T4>(
+    class A4<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4>(
         private val getAction: (TView) -> ((T1, T2, T3, T4) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2, T3, T4) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2, T3, T4) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2, p3, p4)
@@ -77,13 +107,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A5<TView, T1, T2, T3, T4, T5>(
+    class A5<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2, T3, T4, T5) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2, T3, T4, T5) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2, p3, p4, p5)
@@ -92,13 +127,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A6<TView, T1, T2, T3, T4, T5, T6>(
+    class A6<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2, T3, T4, T5, T6) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2, T3, T4, T5, T6) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2, p3, p4, p5, p6)
@@ -107,13 +147,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A7<TView, T1, T2, T3, T4, T5, T6, T7>(
+    class A7<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2, T3, T4, T5, T6, T7) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2, T3, T4, T5, T6, T7) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2, p3, p4, p5, p6, p7)
@@ -122,13 +167,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A8<TView, T1, T2, T3, T4, T5, T6, T7, T8>(
+    class A8<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2, T3, T4, T5, T6, T7, T8) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2, T3, T4, T5, T6, T7, T8) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2, p3, p4, p5, p6, p7, p8)
@@ -137,13 +187,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A9<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9>(
+    class A9<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2, p3, p4, p5, p6, p7, p8, p9)
@@ -152,13 +207,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A10<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
+    class A10<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, p10: T10) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)
@@ -167,13 +227,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A11<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
+    class A11<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, p10: T10, p11: T11) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
@@ -182,13 +247,18 @@ sealed class SummerEvent<TView> {
         }
     }
 
-    class A12<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
+    class A12<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> Unit),
-        private val strategy: SummerEventStrategy<TView>
-    ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> Unit, SummerEvent<TView>() {
+        private val owner: TOwner,
+        override val strategy: SummerEventStrategy<TView, TOwner>
+    ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> Unit, SummerEvent<TView, TOwner>() {
 
+        override fun viewCreated() {
+            strategy.viewCreated(owner)
+        }
+        
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, p10: T10, p11: T11, p12: T12) {
-            strategy.called { view ->
+            strategy.called(owner) { view ->
                 {
                     val action = getAction(view)
                     action(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12)

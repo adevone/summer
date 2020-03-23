@@ -1,7 +1,7 @@
 package summer
 
 import summer.events.EventFactory
-import summer.events.SummerEventStrategy
+import summer.events.SummerEvent
 import summer.state.StateDelegate
 import summer.state.StateFactory
 
@@ -18,12 +18,12 @@ abstract class RestoreSummerPresenter<TView, TStateOwner, TEventsOwner : ViewPro
         // restore call placed there because presenter methods may be called due view initialization.
         // restore must be called after initView
         stateDelegates.forEach { it.restore() }
-        eventStrategies.forEach { it.viewCreated() }
+        events.forEach { it.viewCreated() }
 
         if (!viewCreatedWasCalled) {
             onEnter()
+            viewCreatedWasCalled = true
         }
-        viewCreatedWasCalled = true
     }
 
     /**
@@ -31,9 +31,9 @@ abstract class RestoreSummerPresenter<TView, TStateOwner, TEventsOwner : ViewPro
      */
     open fun onEnter() {}
 
-    private val eventStrategies = mutableListOf<SummerEventStrategy<TView>>()
-    override fun eventStrategyCreated(strategy: SummerEventStrategy<TView>) {
-        eventStrategies.add(strategy)
+    private val events = mutableListOf<SummerEvent<TView, TEventsOwner>>()
+    override fun eventCreated(event: SummerEvent<TView, TEventsOwner>) {
+        events.add(event)
     }
 
     private val stateDelegates = mutableSetOf<StateDelegate<*, TStateOwner>>()
