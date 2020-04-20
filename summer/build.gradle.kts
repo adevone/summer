@@ -59,20 +59,20 @@ kotlin {
 group = summerGroup
 version = summerVersion
 
-publishing {
+val propsFile = File(rootProject.rootDir, "bintray.properties")
+if (propsFile.exists()) {
+    publishing {
+        val bintrayProps = Properties().apply {
+            load(propsFile.inputStream())
+        }
+        repositories {
+            maven("https://api.bintray.com/maven/summermpp/summer/summer/;publish=0") {
+                name = "bintray"
 
-    val propsStream = File(rootProject.rootDir, "bintray.properties").inputStream()
-    val bintrayProps = Properties().apply {
-        load(propsStream)
-    }
-
-    repositories {
-        maven("https://api.bintray.com/maven/summermpp/summer/summer/;publish=0") {
-            name = "bintray"
-
-            credentials {
-                username = bintrayProps.getProperty("USERNAME")
-                password = bintrayProps.getProperty("API_KEY")
+                credentials {
+                    username = bintrayProps.getProperty("USERNAME")
+                    password = bintrayProps.getProperty("API_KEY")
+                }
             }
         }
     }

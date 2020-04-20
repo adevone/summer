@@ -56,19 +56,21 @@ publishing {
     }
 }
 
-bintray {
-    val propsStream = File(rootProject.rootDir, "bintray.properties").inputStream()
-    val bintrayProps = Properties().apply {
-        load(propsStream)
+val propsFile = File(rootProject.rootDir, "bintray.properties")
+if (propsFile.exists()) {
+    bintray {
+        val bintrayProps = Properties().apply {
+            load(propsFile.inputStream())
+        }
+        user = bintrayProps.getProperty("USERNAME")
+        key = bintrayProps.getProperty("API_KEY")
+        pkg(closureOf<BintrayExtension.PackageConfig> {
+            repo = "summer"
+            name = project.name
+            userOrg = "summermpp"
+            setLicenses("MIT")
+            vcsUrl = "https://github.com/adevone/summer"
+        })
+        setPublications("summerAndroidXSaveState")
     }
-    user = bintrayProps.getProperty("USERNAME")
-    key = bintrayProps.getProperty("API_KEY")
-    pkg(closureOf<BintrayExtension.PackageConfig> {
-        repo = "summer"
-        name = project.name
-        userOrg = "summermpp"
-        setLicenses("MIT")
-        vcsUrl = "https://github.com/adevone/summer"
-    })
-    setPublications("summerAndroidXSaveState")
 }
