@@ -54,4 +54,8 @@ class BaseTabBarController: UITabBarController {
         
         controller.viewCreated()
     }
+    
+    deinit {
+        controller.onDestroy()
+    }
 }
