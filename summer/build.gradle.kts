@@ -15,6 +15,14 @@ kotlin {
             compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
         }
     }
+    iosArm32 {
+        binaries {
+            framework()
+        }
+        compilations.forEach { compilation ->
+            compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
+        }
+    }
     iosX64 {
         binaries {
             framework()
@@ -49,6 +57,7 @@ kotlin {
         }
 
         getByName("iosX64Main").dependsOn(getByName("iosArm64Main"))
+        getByName("iosArm32Main").dependsOn(getByName("iosArm64Main"))
 
         all {
             languageSettings.enableLanguageFeature("InlineClasses")
