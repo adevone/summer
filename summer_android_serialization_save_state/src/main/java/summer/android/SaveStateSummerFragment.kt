@@ -1,6 +1,6 @@
 package summer.android
 
-import summer.strategy.SaveStateStoreProvider
+import summer.strategy.SerializationStateProvider
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
@@ -52,7 +52,7 @@ abstract class SaveStateSummerFragment : PopListenerFragment {
     fun <TView, TPresenter> TView.bindPresenter(
         createPresenter: () -> TPresenter
     ): SaveStatePresenterProvider<TView, TPresenter>
-        where TPresenter : LifecycleSummerPresenter<TView>, TPresenter : SaveStateStoreProvider {
+        where TPresenter : LifecycleSummerPresenter<TView>, TPresenter : SerializationStateProvider {
         val provider = SaveStatePresenterProvider(createPresenter, view = this)
         presenterProvider = provider
         return provider

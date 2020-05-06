@@ -7,39 +7,39 @@ import summer.state.SummerStateDelegate
 import summer.state.SummerStateStrategy
 import kotlin.reflect.KProperty
 
-class SaveStateStrategy<T>(
+class SerializationStrategy<T>(
     private val serializer: KSerializer<T>
-) : SummerStateStrategy<T, SaveStateStoreProvider> {
+) : SummerStateStrategy<T, SerializationStateProvider> {
 
-    override fun get(owner: SaveStateStoreProvider, prop: KProperty<*>): T {
-        return owner.saveStateStore.get(prop.name)
+    override fun get(owner: SerializationStateProvider, prop: KProperty<*>): T {
+        return owner.serializationStore.get(prop.name)
     }
 
-    override fun set(owner: SaveStateStoreProvider, prop: KProperty<*>, value: T) {
-        owner.saveStateStore.set(prop.name, value, serializer)
+    override fun set(owner: SerializationStateProvider, prop: KProperty<*>, value: T) {
+        owner.serializationStore.set(prop.name, value, serializer)
     }
 
-    override fun wasStored(owner: SaveStateStoreProvider, prop: KProperty<*>): Boolean {
-        return owner.saveStateStore.isInit(prop.name)
+    override fun wasStored(owner: SerializationStateProvider, prop: KProperty<*>): Boolean {
+        return owner.serializationStore.isInit(prop.name)
     }
 
-    interface Factory<TView> : StateFactory<TView, SaveStateStoreProvider> {
+    interface Factory<TView> : StateFactory<TView, SerializationStateProvider> {
 
         fun <T> state(
             getMirrorProperty: GetMirrorProperty<TView, T>? = null,
             initial: T,
             serializer: KSerializer<T>
-        ): SummerStateDelegate.Provider<T, SaveStateStoreProvider> {
-            return state(getMirrorProperty, initial, SaveStateStrategy(serializer))
+        ): SummerStateDelegate.Provider<T, SerializationStateProvider> {
+            return state(getMirrorProperty, initial, SerializationStrategy(serializer))
         }
     }
 }
 
-interface SaveStateStoreProvider {
-    var saveStateStore: SaveStateStore
+interface SerializationStateProvider {
+    var serializationStore: SerializationStore
 }
 
-class SaveStateStore {
+class SerializationStore {
     private var isInitByKey = mutableMapOf<String, Unit>()
     private val storedValuesWithSerializerByKey = mutableMapOf<String, ValueWithSerializer<Any?>>()
 
