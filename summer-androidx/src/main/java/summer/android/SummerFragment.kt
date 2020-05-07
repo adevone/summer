@@ -4,15 +4,27 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
 import summer.LifecycleSummerPresenter
 
-abstract class SummerFragment : PopListenerFragment {
+abstract class SummerFragment : BaseSummerFragment<PresenterProvider<*, *>>() {
+
+    fun <TView, TPresenter : LifecycleSummerPresenter<TView>> TView.bindPresenter(
+        createPresenter: () -> TPresenter
+    ): PresenterProvider<TView, TPresenter> {
+        val provider = PresenterProvider(createPresenter, view = this)
+        presenterProvider = provider
+        return provider
+    }
+}
+
+abstract class BaseSummerFragment<TPresenterProvider : PresenterProvider<*, *>> :
+    PopListenerFragment {
 
     constructor() : super()
 
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
+    @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val provider = requirePresenterProvider()
@@ -27,6 +39,7 @@ abstract class SummerFragment : PopListenerFragment {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    @CallSuper
     override fun onStart() {
         super.onStart()
         if (isViewCreating) {
@@ -36,25 +49,17 @@ abstract class SummerFragment : PopListenerFragment {
         isViewCreating = false
     }
 
+    @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
         presenterProvider?.viewDestroyed()
     }
 
-    private var presenterProvider: PresenterProvider<*, *>? = null
-    fun <TView, TPresenter : LifecycleSummerPresenter<TView>> TView.bindPresenter(
-        createPresenter: () -> TPresenter
-    ): PresenterProvider<TView, TPresenter> {
-        val provider = PresenterProvider(createPresenter, view = this)
-        presenterProvider = provider
-        return provider
-    }
+    protected var presenterProvider: TPresenterProvider? = null
 
-    private fun requirePresenterProvider(): PresenterProvider<*, *> {
+    protected fun requirePresenterProvider(): TPresenterProvider {
         return presenterProvider ?: throw PresenterNotProvidedException()
     }
 
     companion object : DidSetMixin
 }
-
-class PresenterNotProvidedException : IllegalStateException("presenter in not provided")
