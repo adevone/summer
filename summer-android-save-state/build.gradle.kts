@@ -33,7 +33,7 @@ dependencies {
 
     implementation("com.github.adevone.summer:summer:$summerVersion")
     implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
-//    implementation(project(":summer"))
+    implementation(project(":summer"))
 }
 
 val sourceJar by tasks.registering(Jar::class) {

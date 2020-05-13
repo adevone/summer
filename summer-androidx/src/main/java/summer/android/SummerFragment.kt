@@ -6,7 +6,11 @@ import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import summer.LifecycleSummerPresenter
 
-abstract class SummerFragment : BaseSummerFragment<PresenterProvider<*, *>>() {
+abstract class SummerFragment : BaseSummerFragment<PresenterProvider<*, *>> {
+
+    constructor() : super()
+
+    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
     fun <TView, TPresenter : LifecycleSummerPresenter<TView>> TView.bindPresenter(
         createPresenter: () -> TPresenter
