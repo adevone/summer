@@ -1,13 +1,27 @@
 package summer.android
 
 import android.os.Bundle
+import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import summer.LifecycleSummerPresenter
 
-abstract class SummerActivity : AppCompatActivity() {
+abstract class SummerActivity : BaseSummerActivity<PresenterProvider<*, *>>() {
+
+    fun <TView, TPresenter : LifecycleSummerPresenter<TView>> TView.bindPresenter(
+        createPresenter: () -> TPresenter
+    ): PresenterProvider<TView, TPresenter> {
+        val provider = PresenterProvider(createPresenter, view = this)
+        presenterProvider = provider
+        return provider
+    }
+}
+
+abstract class BaseSummerActivity<TPresenterProvider : PresenterProvider<*, *>> :
+    AppCompatActivity() {
 
     private var isCreating = false
 
+    @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         isCreating = true
         val presenterProvider = requirePresenterProvider()
@@ -15,6 +29,7 @@ abstract class SummerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
     }
 
+    @CallSuper
     override fun onStart() {
         super.onStart()
         if (isCreating) {
@@ -24,21 +39,15 @@ abstract class SummerActivity : AppCompatActivity() {
         isCreating = false
     }
 
+    @CallSuper
     override fun onDestroy() {
         super.onDestroy()
         presenterProvider?.viewDestroyed()
     }
 
-    private var presenterProvider: PresenterProvider<*, *>? = null
-    fun <TView, TPresenter : LifecycleSummerPresenter<TView>> TView.bindPresenter(
-        createPresenter: () -> TPresenter
-    ): PresenterProvider<TView, TPresenter> {
-        val provider = PresenterProvider(createPresenter, view = this)
-        presenterProvider = provider
-        return provider
-    }
+    protected var presenterProvider: TPresenterProvider? = null
 
-    private fun requirePresenterProvider(): PresenterProvider<*, *> {
+    protected fun requirePresenterProvider(): TPresenterProvider {
         return presenterProvider ?: throw PresenterNotProvidedException()
     }
 
