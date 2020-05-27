@@ -5,9 +5,10 @@ buildscript {
         google()
         jcenter()
         maven(url = "https://kotlin.bintray.com/kotlinx")
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-dev")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.6.1")
+        classpath("com.android.tools.build:gradle:3.6.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
         classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:$atomicfuVersion")
@@ -27,6 +28,7 @@ subprojects {
     repositories {
         google()
         jcenter()
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-dev")
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://kotlin.bintray.com/ktor")
