@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
-    id("co.touchlab.kotlinxcodesync")
     id("kotlinx-serialization")
 }
 
@@ -21,32 +20,22 @@ android {
     }
 }
 
-xcodeSync {
-    projectPath = "../iosApp/iosApp.xcodeproj"
-    target = "iosApp"
-}
-
 kotlin {
-    iosArm64 {
+    //select iOS target platform depending on the Xcode environment variables
+    val iOSTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
+        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
+            ::iosArm64
+        else
+            ::iosX64
+
+    iOSTarget("ios") {
         binaries {
             framework {
-                embedBitcode("disable")
+                baseName = "shared"
             }
         }
-        compilations.forEach { compilation ->
-            compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
-        }
     }
-    iosX64 {
-        binaries {
-            framework {
-                embedBitcode("disable")
-            }
-        }
-        compilations.forEach { compilation ->
-            compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
-        }
-    }
+
     android()
 
     sourceSets {
@@ -74,7 +63,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
             }
         }
-        getByName("iosArm64Main") {
+        getByName("iosMain") {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$coroutinesVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serializationVersion")
@@ -82,23 +71,34 @@ kotlin {
                 implementation("io.ktor:ktor-client-ios:$ktorVersion")
             }
         }
-        getByName("iosX64Main").dependsOn(getByName("iosArm64Main"))
     }
 }
 
-tasks.create("copyFramework") {
-    val buildType = project.findProperty("kotlin.build.type")?.toString() ?: "DEBUG"
-    val targetName = if (buildType == "DEBUG") "iosX64" else "iosArm64"
-    dependsOn("link${buildType.toLowerCase().capitalize()}Framework${targetName.capitalize()}")
+val packForXcode by tasks.creating(Sync::class) {
+    val targetDir = File(buildDir, "xcode-frameworks")
+
+    /// selecting the right configuration for the iOS
+    /// framework depending on the environment
+    /// variables set by Xcode build
+    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
+    val framework = kotlin.targets
+        .getByName<KotlinNativeTarget>("ios")
+        .binaries.getFramework(mode)
+    inputs.property("mode", mode)
+    dependsOn(framework.linkTask)
+
+    from({ framework.outputDirectory })
+    into(targetDir)
+
+    /// generate a helpful ./gradlew wrapper with embedded Java path
     doLast {
-        val target = kotlin.targets.getByName(targetName) as KotlinNativeTarget
-        val srcFile = target.binaries.getFramework(buildType).outputFile
-        val targetDir = project.property("configuration.build.dir")!!
-        copy {
-            from(srcFile.parent)
-            into(targetDir)
-            include("shared.framework/**")
-            include("shared.framework.dSYM")
-        }
+        val gradlew = File(targetDir, "gradlew")
+        gradlew.writeText("#!/bin/bash\n"
+                + "export 'JAVA_HOME=${System.getProperty("java.home")}'\n"
+                + "cd '${rootProject.rootDir}'\n"
+                + "./gradlew \$@\n")
+        gradlew.setExecutable(true)
     }
 }
+
+tasks.getByName("build").dependsOn(packForXcode)
