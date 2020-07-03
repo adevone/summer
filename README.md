@@ -47,7 +47,7 @@ class GetDay {
     
     operator fun invoke(number: Int): String = when (number) {
         1 -> "Monday"
-        2 -> "Thursday"
+        2 -> "Tuesday"
         else -> "Another day"
     }
 }
