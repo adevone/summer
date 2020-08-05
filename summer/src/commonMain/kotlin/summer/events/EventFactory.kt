@@ -150,6 +150,6 @@ interface EventFactory<TView, TOwner : ViewProvider<TView>> {
     fun getEventsOwner(): ViewProvider<TView>
 }
 
-inline class ActionHolder<in TView, out TFunction>(
+class ActionHolder<in TView, out TFunction>(
     val getAction: (TView) -> TFunction
 )
