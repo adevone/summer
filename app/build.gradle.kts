@@ -61,9 +61,9 @@ dependencies {
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
     }
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
-    implementation("org.kodein.di:kodein-di-erased-jvm:$kodeinVersion")
+    implementation("org.kodein.di:kodein-di-jvm:$kodeinVersion")
     implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
 
     implementation("com.google.android.material:material:1.1.0")

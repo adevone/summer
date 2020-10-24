@@ -11,24 +11,15 @@ kotlin {
         binaries {
             framework()
         }
-        compilations.forEach { compilation ->
-            compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
-        }
     }
     iosArm32 {
         binaries {
             framework()
         }
-        compilations.forEach { compilation ->
-            compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
-        }
     }
     iosX64 {
         binaries {
             framework()
-        }
-        compilations.forEach { compilation ->
-            compilation.kotlinOptions.freeCompilerArgs += "-Xobjc-generics"
         }
     }
 
