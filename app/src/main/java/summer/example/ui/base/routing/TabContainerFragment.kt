@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
 import kotlinx.serialization.Serializable
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 import summer.example.AppKodeinAware
 import summer.example.ui.about.AboutFragment
 import summer.example.ui.frameworks.FrameworksFragment

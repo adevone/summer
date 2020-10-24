@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 
 abstract class ArgsFragment<TArgs> :
     Fragment(),
@@ -25,13 +24,13 @@ interface ArgsFragmentFeature<TArgs> {
     var args: TArgs
         get() {
             if (argsBackingField == null) {
-                argsBackingField = json.parse(argsSerializer, fragment.arguments!!.getString(ARGUMENTS_KEY)!!)
+                argsBackingField = json.decodeFromString(argsSerializer, fragment.arguments!!.getString(ARGUMENTS_KEY)!!)
             }
             return argsBackingField!!
         }
         set(args) {
             fragment.arguments = Bundle().apply {
-                putString(ARGUMENTS_KEY, json.stringify(argsSerializer, args))
+                putString(ARGUMENTS_KEY, json.encodeToString(argsSerializer, args))
             }
             argsBackingField = args
         }
@@ -39,5 +38,5 @@ interface ArgsFragmentFeature<TArgs> {
     val json: Json get() = stableJson
 }
 
-private val stableJson = Json(JsonConfiguration.Stable)
+private val stableJson = Json {}
 private const val ARGUMENTS_KEY = "screen_arguments"

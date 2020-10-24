@@ -3,7 +3,7 @@ package summer.example.presentation
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 import summer.example.domain.basket.BasketController
 import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.entity.Basket

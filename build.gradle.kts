@@ -7,7 +7,7 @@ buildscript {
         maven(url = "https://kotlin.bintray.com/kotlinx")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.0.1")
+        classpath("com.android.tools.build:gradle:4.0.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
@@ -15,13 +15,6 @@ buildscript {
 }
 
 subprojects {
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "1.6"
-        }
-    }
-
     repositories {
         google()
         jcenter()

@@ -14,7 +14,7 @@ import platform.Foundation.NSUserDefaults
 fun bind(
     userDefaults: NSUserDefaults
 ) {
-    di = Kodein {
+    mainDI = Kodein {
         import(sharedModule)
 
         bind<Settings>() with singleton { AppleSettings(userDefaults) }

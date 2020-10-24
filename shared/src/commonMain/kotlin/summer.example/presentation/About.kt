@@ -1,7 +1,7 @@
 package summer.example.presentation
 
 import kotlinx.coroutines.launch
-import org.kodein.di.erased.instance
+import org.kodein.di.instance
 import summer.example.domain.about.GetAbout
 import summer.example.entity.About
 import summer.example.presentation.base.LoadingView

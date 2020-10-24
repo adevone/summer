@@ -63,7 +63,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
-    implementation("org.kodein.di:kodein-di-jvm:$kodeinVersion")
+    implementation("org.kodein.di:kodein-di:$kodeinVersion")
     implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
 
     implementation("com.google.android.material:material:1.2.1")
@@ -91,4 +91,10 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
