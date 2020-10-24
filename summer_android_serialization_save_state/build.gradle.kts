@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("kotlinx-serialization")
     id("maven")
     id("maven-publish")
     id("com.jfrog.bintray")
@@ -33,7 +34,10 @@ dependencies {
 
     implementation("com.github.adevone.summer:summer:$summerVersion")
     implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
-    implementation(project(":summer"))
+    implementation(project(":summer-serialization-strategy"))
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+    implementation("dev.ahmedmourad.bundlizer:bundlizer:0.1.0")
 }
 
 val sourceJar by tasks.registering(Jar::class) {
