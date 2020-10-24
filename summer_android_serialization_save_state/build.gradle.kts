@@ -36,7 +36,7 @@ dependencies {
     implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
     implementation(project(":summer-serialization-strategy"))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serializationVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
     implementation("dev.ahmedmourad.bundlizer:bundlizer:0.1.0")
 }
 
