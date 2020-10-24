@@ -1,6 +1,9 @@
+import java.util.*
+
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("kotlinx-serialization")
+    id("maven-publish")
 }
 
 kotlin {
@@ -38,9 +41,29 @@ kotlin {
             dependencies {
             }
         }
+        getByName("iosArm32Main").dependsOn(getByName("iosArm64Main"))
         getByName("iosX64Main").dependsOn(getByName("iosArm64Main"))
     }
 }
 
 group = summerGroup
 version = summerVersion
+
+val propsFile = File(rootProject.rootDir, "bintray.properties")
+if (propsFile.exists()) {
+    publishing {
+        val bintrayProps = Properties().apply {
+            load(propsFile.inputStream())
+        }
+        repositories {
+            maven("https://api.bintray.com/maven/summermpp/summer/summer/;publish=0") {
+                name = "bintray"
+
+                credentials {
+                    username = bintrayProps.getProperty("USERNAME")
+                    password = bintrayProps.getProperty("API_KEY")
+                }
+            }
+        }
+    }
+}
