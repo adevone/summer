@@ -21,11 +21,17 @@ allprojects {
 
 dependencies {
 
-    // library itself
-    implementation("com.github.adevone.summer:summer:1.0.0-beta1")
-    
-    // android part containing SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:1.0.0-beta1")
+    // library itself (with enableFeaturePreview("GRADLE_METADATA"))
+    implementation("com.github.adevone.summer:summer:1.0.0-beta4")
+
+    // library itself (without enableFeaturePreview("GRADLE_METADATA"), jvm version)
+    implementation("com.github.adevone.summer:summer-jvm:1.0.0-beta4")
+
+    // androidx support, contains SummerActivity and SummerFragment
+    implementation("com.github.adevone.summer:summer-androidx:1.0.0-beta4")
+
+    // android compat support, contains SummerActivity and SummerFragment
+    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta4")
 }
 ```
 
@@ -41,7 +47,7 @@ class GetDay {
     
     operator fun invoke(number: Int): String = when (number) {
         1 -> "Monday"
-        2 -> "Thursday"
+        2 -> "Tuesday"
         else -> "Another day"
     }
 }

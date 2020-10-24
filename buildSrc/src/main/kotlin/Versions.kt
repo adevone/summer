@@ -12,5 +12,5 @@ const val ktorVersion = "1.3.2"
 const val coroutinesVersion = "1.3.5"
 const val atomicfuVersion = "0.14.3"
 
-const val targetVersion = 29
+const val targetVersion = 28
 const val minVersion = 21
