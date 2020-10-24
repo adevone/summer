@@ -14,7 +14,7 @@ android {
     compileSdkVersion(targetVersion)
 
     defaultConfig {
-        minSdkVersion(21)
+        minSdkVersion(minVersion)
         targetSdkVersion(targetVersion)
         versionCode = 1
         versionName = "1.0"
@@ -30,7 +30,7 @@ android {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
-    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation("androidx.appcompat:appcompat:1.2.0")
 
     implementation("com.github.adevone.summer:summer:$summerVersion")
     implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
