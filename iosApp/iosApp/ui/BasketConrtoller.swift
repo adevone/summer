@@ -21,12 +21,12 @@ class BasketController: BaseController, BasketView {
         }
     }
     
-    private var presenter: BasketPresenter! {
-        didSet { setPresenter(presenter) }
+    private var viewModel: BasketViewModel! {
+        didSet { setViewModel(viewModel) }
     }
     
     override func viewDidLoad() {
-        presenter = BasketPresenter()
+        viewModel = BasketViewModel()
         super.viewDidLoad()
     }
     

@@ -1,22 +1,22 @@
 package summer.android
 
-import summer.strategy.SerializationStore
-import summer.strategy.SerializationStateProvider
 import android.os.Bundle
 import dev.ahmedmourad.bundlizer.Bundlizer
-import summer.LifecycleSummerPresenter
+import summer.LifecycleSummerViewModel
+import summer.strategy.SerializationStateProvider
+import summer.strategy.SerializationStore
 
-class SaveStatePresenterProvider<TView, TPresenter>(
-    createPresenter: () -> TPresenter,
+class SaveStateViewModelProvider<TView, TViewModel>(
+    createViewModel: () -> TViewModel,
     view: TView
-) : PresenterProvider<TView, TPresenter>(createPresenter, view)
-    where TPresenter : LifecycleSummerPresenter<TView>, TPresenter : SerializationStateProvider {
+) : SummerViewModelProvider<TView, TViewModel>(createViewModel, view)
+        where TViewModel : LifecycleSummerViewModel<TView>, TViewModel : SerializationStateProvider {
 
     fun onSaveInstanceState(outState: Bundle) {
-        val presenter = requirePresenter()
+        val viewModel = requireViewModel()
         outState.apply {
-            presenter.serializationStore.dump().forEach { (key, valueWithSerializer) ->
-                when(valueWithSerializer.value) {
+            viewModel.serializationStore.dump().forEach { (key, valueWithSerializer) ->
+                when (valueWithSerializer.value) {
                     // Scalars
                     is Boolean -> putBoolean(key, valueWithSerializer.value as Boolean)
                     is Byte -> putByte(key, valueWithSerializer.value as Byte)
@@ -45,11 +45,11 @@ class SaveStatePresenterProvider<TView, TPresenter>(
     }
 
     fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        val presenter = requirePresenter()
+        val viewModel = requireViewModel()
         if (savedInstanceState != null) {
-            presenter.serializationStore = SerializationStore().apply {
-                presenter.serializationStore.dump().forEach { (key, valueWithSerializer) ->
-                    when(val savedValue = savedInstanceState[key]) {
+            viewModel.serializationStore = SerializationStore().apply {
+                viewModel.serializationStore.dump().forEach { (key, valueWithSerializer) ->
+                    when (val savedValue = savedInstanceState[key]) {
                         // Scalars
                         is Boolean,
                         is Byte,
@@ -60,7 +60,7 @@ class SaveStatePresenterProvider<TView, TPresenter>(
                         is Long,
                         is Short,
 
-                        // Scalar arrays
+                            // Scalar arrays
                         is BooleanArray,
                         is ByteArray,
                         is CharArray,

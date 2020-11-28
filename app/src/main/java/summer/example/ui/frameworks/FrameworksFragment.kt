@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 import summer.example.R
 import summer.example.entity.Basket
 import summer.example.entity.Framework
-import summer.example.presentation.FrameworksPresenter
+import summer.example.presentation.FrameworksViewModel
 import summer.example.presentation.FrameworksView
 import summer.example.ui.base.BaseFragment
 import summer.example.ui.base.routing.ScreenArgs
@@ -18,6 +18,8 @@ class FrameworksFragment :
     BaseFragment<FrameworksFragment.Args>(R.layout.frameworks_fragment),
     FrameworksView {
 
+    override val viewModel by bindViewModel { FrameworksViewModel() }
+
     override var items: List<Basket.Item> by didSet {
         frameworksAdapter.submitList(items)
     }
@@ -26,13 +28,11 @@ class FrameworksFragment :
         ciceroneRouter.navigateTo(FrameworkDetailsFragment.Args(framework).toScreen())
     }
 
-    override val presenter by bindPresenter { FrameworksPresenter() }
-
     private lateinit var frameworksAdapter: FrameworksAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        frameworksAdapter = FrameworksAdapter(presenter)
+        frameworksAdapter = FrameworksAdapter(viewModel)
         frameworksView.adapter = frameworksAdapter
         (frameworksView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }

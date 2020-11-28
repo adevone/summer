@@ -9,12 +9,11 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.frameworks_item.*
 import summer.example.R
 import summer.example.entity.Basket
-import summer.example.entity.Framework
-import summer.example.presentation.FrameworksPresenter
+import summer.example.presentation.FrameworksViewModel
 import summer.example.ui.EqualsDiffCallback
 
 class FrameworksAdapter(
-    private val presenter: FrameworksPresenter
+    private val presenter: FrameworksViewModel
 ) : ListAdapter<Basket.Item, FrameworksAdapter.ViewHolder>(
     EqualsDiffCallback { a, b -> a.framework.name == b.framework.name }
 ) {

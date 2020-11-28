@@ -1,27 +1,27 @@
 package summer.android
 
 import android.os.Bundle
-import summer.LifecycleSummerPresenter
+import summer.LifecycleSummerViewModel
 import summer.strategy.SerializationStateProvider
 
-abstract class SaveStateSummerActivity : BaseSummerActivity<SaveStatePresenterProvider<*, *>>() {
+abstract class SaveStateSummerActivity : BaseSummerActivity<SaveStateViewModelProvider<*, *>>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requirePresenterProvider().onRestoreInstanceState(savedInstanceState)
+        requireViewModelProvider().onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        requirePresenterProvider().onSaveInstanceState(outState)
+        requireViewModelProvider().onSaveInstanceState(outState)
     }
 
-    fun <TView, TPresenter> TView.bindPresenter(
-        createPresenter: () -> TPresenter
-    ): SaveStatePresenterProvider<TView, TPresenter>
-        where TPresenter : LifecycleSummerPresenter<TView>, TPresenter : SerializationStateProvider {
-        val provider = SaveStatePresenterProvider(createPresenter, view = this)
-        presenterProvider = provider
+    fun <TView, TViewModel> TView.bindViewModel(
+        createViewModel: () -> TViewModel
+    ): SaveStateViewModelProvider<TView, TViewModel>
+        where TViewModel : LifecycleSummerViewModel<TView>, TViewModel : SerializationStateProvider {
+        val provider = SaveStateViewModelProvider(createViewModel, view = this)
+        viewModelProvider = provider
         return provider
     }
 

@@ -8,14 +8,14 @@ import summer.example.domain.basket.BasketController
 import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.entity.Basket
 import summer.example.entity.Framework
-import summer.example.presentation.base.BasePresenter
+import summer.example.presentation.base.BaseViewModel
 
 interface FrameworksView {
     var items: List<Basket.Item>
     val toDetails: (framework: Framework) -> Unit
 }
 
-class FrameworksPresenter : BasePresenter<FrameworksView>() {
+class FrameworksViewModel : BaseViewModel<FrameworksView>() {
     private val basketController: BasketController by instance()
     private val getAllFrameworkItems: GetAllFrameworkItems by instance()
 

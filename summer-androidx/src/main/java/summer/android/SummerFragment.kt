@@ -4,24 +4,24 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
-import summer.LifecycleSummerPresenter
+import summer.LifecycleSummerViewModel
 
-abstract class SummerFragment : BaseSummerFragment<PresenterProvider<*, *>> {
+abstract class SummerFragment : BaseSummerFragment<SummerViewModelProvider<*, *>> {
 
     constructor() : super()
 
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
-    fun <TView, TPresenter : LifecycleSummerPresenter<TView>> TView.bindPresenter(
-        createPresenter: () -> TPresenter
-    ): PresenterProvider<TView, TPresenter> {
-        val provider = PresenterProvider(createPresenter, view = this)
-        presenterProvider = provider
+    fun <TView, TViewModel : LifecycleSummerViewModel<TView>> TView.bindViewModel(
+        createViewModel: () -> TViewModel
+    ): SummerViewModelProvider<TView, TViewModel> {
+        val provider = SummerViewModelProvider(createViewModel, view = this)
+        viewModelProvider = provider
         return provider
     }
 }
 
-abstract class BaseSummerFragment<TPresenterProvider : PresenterProvider<*, *>> :
+abstract class BaseSummerFragment<TViewModelProvider : SummerViewModelProvider<*, *>> :
     PopListenerFragment {
 
     constructor() : super()
@@ -31,8 +31,8 @@ abstract class BaseSummerFragment<TPresenterProvider : PresenterProvider<*, *>> 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val provider = requirePresenterProvider()
-        provider.initPresenter()
+        val provider = requireViewModelProvider()
+        provider.initViewModel()
     }
 
     private var isViewCreating = false
@@ -47,7 +47,7 @@ abstract class BaseSummerFragment<TPresenterProvider : PresenterProvider<*, *>> 
     override fun onStart() {
         super.onStart()
         if (isViewCreating) {
-            val provider = requirePresenterProvider()
+            val provider = requireViewModelProvider()
             provider.viewCreated()
         }
         isViewCreating = false
@@ -56,13 +56,13 @@ abstract class BaseSummerFragment<TPresenterProvider : PresenterProvider<*, *>> 
     @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
-        presenterProvider?.viewDestroyed()
+        viewModelProvider?.viewDestroyed()
     }
 
-    protected var presenterProvider: TPresenterProvider? = null
+    protected var viewModelProvider: TViewModelProvider? = null
 
-    protected fun requirePresenterProvider(): TPresenterProvider {
-        return presenterProvider ?: throw PresenterNotProvidedException()
+    protected fun requireViewModelProvider(): TViewModelProvider {
+        return viewModelProvider ?: throw ViewModelNotProvidedException()
     }
 
     companion object : DidSetMixin

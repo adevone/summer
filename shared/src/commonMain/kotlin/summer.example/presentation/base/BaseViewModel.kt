@@ -3,12 +3,12 @@ package summer.example.presentation.base
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import summer.PresenterController
-import summer.SummerPresenter
+import summer.SummerViewModel
+import summer.ViewModelController
 import summer.example.AppKodeinAware
 import kotlin.coroutines.CoroutineContext
 
-abstract class BasePresenter<TView> : SummerPresenter<TView>(), BasePresenterController,
+abstract class BaseViewModel<TView> : SummerViewModel<TView>(), BasePresenterController,
     AppKodeinAware,
     CoroutineScope {
 
@@ -22,7 +22,7 @@ abstract class BasePresenter<TView> : SummerPresenter<TView>(), BasePresenterCon
     open fun onBackClick(): Boolean = false
 }
 
-interface BasePresenterController : PresenterController {
+interface BasePresenterController : ViewModelController {
     fun onDestroy() {}
 }
 

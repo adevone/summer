@@ -9,8 +9,8 @@ import summer.state.SummerStateDelegate
  *
  * [TView] is type of associated view.
  */
-interface LifecycleSummerPresenter<TView> :
-    PresenterController,
+interface LifecycleSummerViewModel<TView> :
+    ViewModelController,
     ViewProvider<TView>, ViewProxyProvider<TView> {
 
     override var getView: () -> TView?
@@ -25,10 +25,10 @@ interface LifecycleSummerPresenter<TView> :
 }
 
 /**
- * Non-generic protocol that can be used to call lifecycle events of [SummerPresenter]
+ * Non-generic protocol that can be used to call lifecycle events of [SummerViewModel]
  * in languages without covariant types support (like Swift).
  */
-interface PresenterController {
+interface ViewModelController {
     /**
      * Must be called when view is created. May be called multiple times.
      */

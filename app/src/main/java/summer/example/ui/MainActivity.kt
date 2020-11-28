@@ -11,14 +11,16 @@ import androidx.core.os.postDelayed
 import kotlinx.android.synthetic.main.activity_main.*
 import summer.example.R
 import summer.example.entity.Tab
-import summer.example.presentation.MainPresenter
 import summer.example.presentation.MainView
+import summer.example.presentation.MainViewModel
 import summer.example.ui.base.BaseActivity
 import summer.example.ui.base.routing.BackButtonListener
 import summer.example.ui.base.routing.TabContainerFragment
 import summer.example.ui.base.routing.toScreen
 
 class MainActivity : BaseActivity(), MainView {
+
+    override val viewModel by bindViewModel { MainViewModel() }
 
     override var tabs: List<Tab> by didSet {
         bottomNavigationView.menu.clear()
@@ -32,7 +34,7 @@ class MainActivity : BaseActivity(), MainView {
                 )
                 .setIcon(tab.iconRes)
                 .setOnMenuItemClickListener {
-                    presenter.onMenuItemClick(tab)
+                    viewModel.onMenuItemClick(tab)
                     false
                 }
         }
@@ -46,7 +48,12 @@ class MainActivity : BaseActivity(), MainView {
                 val currentFragment = supportFragmentManager.fragments.find { it.isVisible }
                 val newFragment = supportFragmentManager.findFragmentByTag(selectedTab.name)
 
-                if (currentFragment != null && newFragment != null && currentFragment === newFragment) return
+                if (currentFragment != null &&
+                    newFragment != null &&
+                    currentFragment === newFragment
+                ) {
+                    return
+                }
 
                 val transaction = supportFragmentManager.beginTransaction()
                 if (newFragment == null) {
@@ -72,25 +79,26 @@ class MainActivity : BaseActivity(), MainView {
             }
         }
 
-    private val Tab.itemId: Int @IdRes get() = when (this) {
-        Tab.Frameworks -> R.id.frameworksItem
-        Tab.About -> R.id.aboutItem
-        Tab.Basket -> R.id.basketItem
-    }
+    private val Tab.itemId: Int
+        @IdRes get() = when (this) {
+            Tab.Frameworks -> R.id.frameworksItem
+            Tab.About -> R.id.aboutItem
+            Tab.Basket -> R.id.basketItem
+        }
 
-    private val Tab.iconRes: Int @DrawableRes get() = when (this) {
-        Tab.Frameworks -> R.drawable.menu_frameworks
-        Tab.About -> R.drawable.menu_about
-        Tab.Basket -> R.drawable.menu_basket
-    }
+    private val Tab.iconRes: Int
+        @DrawableRes get() = when (this) {
+            Tab.Frameworks -> R.drawable.menu_frameworks
+            Tab.About -> R.drawable.menu_about
+            Tab.Basket -> R.drawable.menu_basket
+        }
 
-    private val Tab.title: String get() = when (this) {
-        Tab.Frameworks -> "Фреймворки"
-        Tab.About -> "О программе"
-        Tab.Basket -> "Корзина"
-    }
-
-    override val presenter by bindPresenter { MainPresenter() }
+    private val Tab.title: String
+        get() = when (this) {
+            Tab.Frameworks -> "Фреймворки"
+            Tab.About -> "О программе"
+            Tab.Basket -> "Корзина"
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,6 +1,6 @@
 package summer.events
 
-import summer.LifecycleSummerPresenter
+import summer.LifecycleSummerViewModel
 import summer.ViewProvider
 
 /**
@@ -11,7 +11,7 @@ import summer.ViewProvider
  *
  * [TOwner] is strategy dependencies container. If you want to pass some dependencies to
  *          strategy than define it on your custom interface, extend it from [ViewProvider]
- *          and implement on your [LifecyclePresenter].
+ *          and implement on your [LifecycleViewModel].
  */
 interface SummerEventStrategy<out TView, in TOwner : ViewProvider<TView>> {
     /**
@@ -20,7 +20,7 @@ interface SummerEventStrategy<out TView, in TOwner : ViewProvider<TView>> {
     fun called(owner: TOwner, applyArgs: ApplyArgs<TView>)
 
     /**
-     * [LifecycleSummerPresenter.viewCreated] was called
+     * [LifecycleSummerViewModel.viewCreated] was called
      */
     fun viewCreated(owner: TOwner) {}
 }

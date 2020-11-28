@@ -34,10 +34,10 @@ dependencies {
 
     implementation("com.github.adevone.summer:summer:$summerVersion")
     implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
-    implementation(project(":summer-serialization-strategy"))
+    implementation("com.github.adevone.summer:summer-serialization-strategy:$summerVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-    implementation("dev.ahmedmourad.bundlizer:bundlizer:0.1.0")
+    implementation("dev.ahmedmourad.bundlizer:bundlizer-core:0.3.0")
 }
 
 val sourceJar by tasks.registering(Jar::class) {

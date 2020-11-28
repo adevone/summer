@@ -14,11 +14,11 @@ abstract class PopListenerFragment : Fragment {
 
     @CallSuper
     override fun onDestroy() {
-        notifyPresenterIfRemoving()
+        notifyViewModelIfRemoving()
         super.onDestroy()
     }
 
-    private fun notifyPresenterIfRemoving() {
+    private fun notifyViewModelIfRemoving() {
         var anyParentIsRemoving = false
 
         var parent = parentFragment

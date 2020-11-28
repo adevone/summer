@@ -9,7 +9,7 @@ import kotlin.reflect.KProperty
  *
  * [TOwner] is strategy dependencies container. If you want to pass some dependencies to
  *          strategy than define it on your custom interface and implement it
- *          on your [LifecyclePresenter].
+ *          on your [LifecycleViewModel].
  *          Store should be provided through [TOwner].
  */
 interface SummerStateStrategy<T, TOwner> {

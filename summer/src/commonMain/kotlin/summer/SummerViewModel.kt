@@ -9,11 +9,11 @@ import summer.state.InMemoryStoreProvider
 import summer.state.SummerStateDelegate
 
 /**
- * Base presenter. Helps with view state restoring (see [SummerStateDelegate])
+ * Base viewModel. Helps with view state restoring (see [SummerStateDelegate])
  * and executing of events (see [SummerEvent]).
  */
-abstract class SummerPresenter<TView> :
-    RestoreSummerPresenter<TView, InMemoryStoreProvider, ViewProvider<TView>>(),
+abstract class SummerViewModel<TView> :
+    RestoreSummerViewModel<TView, InMemoryStoreProvider, ViewProvider<TView>>(),
     DoOnlyWhenAttachedStrategy.Factory<TView>,
     DoExactlyOnceStrategy.Factory<TView>,
     InMemoryStateStrategy.Factory<TView>,

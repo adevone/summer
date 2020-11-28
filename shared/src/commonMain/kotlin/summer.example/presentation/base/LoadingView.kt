@@ -4,7 +4,7 @@ interface LoadingView {
     var isLoading: Boolean
 }
 
-inline fun BasePresenter<out LoadingView>.withLoading(action: () -> Unit) {
+inline fun BaseViewModel<out LoadingView>.withLoading(action: () -> Unit) {
     viewProxy.isLoading = true
     try {
         action()

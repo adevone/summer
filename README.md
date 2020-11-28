@@ -22,20 +22,20 @@ allprojects {
 dependencies {
 
     // library itself (with enableFeaturePreview("GRADLE_METADATA"))
-    implementation("com.github.adevone.summer:summer:1.0.0-beta6")
+    implementation("com.github.adevone.summer:summer:1.0.0-beta6-mvvm-2")
 
     // library itself (without enableFeaturePreview("GRADLE_METADATA"), jvm version)
-    implementation("com.github.adevone.summer:summer-jvm:1.0.0-beta6")
+    implementation("com.github.adevone.summer:summer-jvm:1.0.0-beta6-mvvm-2")
 
     // androidx support, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:1.0.0-beta6")
+    implementation("com.github.adevone.summer:summer-androidx:1.0.0-beta6-mvvm-2")
 
     // android compat support, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6")
+    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6-mvvm-2")
 }
 ```
 
-Summer is Model-View-Presenter library with kotlin-multiplatform support. It can be used to share presenters between iOS and Android apps.  
+Summer is Model-View-ViewModel library with kotlin-multiplatform support. It can be used to share viewModels between iOS and Android apps.
 Summer does not use code generation and thus have not significant effort on compilation time and odd build-time errors.  
 Project aims at standardization and nice IDE support
 
@@ -58,9 +58,9 @@ interface CalendarView {
     val showError: () -> Unit
 }
 
-class CalendarPresenter(
+class CalendarViewModel(
     private val getDay: GetDay
-) : SummerPresenter<CalendarView> {
+) : SummerViewModel<CalendarView> {
     
     private val defaultDayName = "Monday"
     
@@ -70,13 +70,13 @@ class CalendarPresenter(
     override val viewProxy = object : CalendarView {
     
         // Initial values are automatically emitted to view when it is created.
-        // No matter in which state view was. Presenter will change
+        // No matter in which state view was. ViewModel will change
         // it to consistent state automatically
         override var isLoading by state({ it::isLoading }, initial = true)
         
         // You can get default values from prefs 
-        // or presenter constructor params.
-        // Any presenter properties can be used as initial values
+        // or viewModel constructor params.
+        // Any viewModel properties can be used as initial values
         // for state properties
         override var dayName by state({ it::dayName }, initial = defaultDayName)
         
@@ -104,7 +104,7 @@ Android, Kotlin:
 ```kotlin
 class CalendarFragment : SummerFragment(R.layout.calendar_fragment), CalendarView {
 
-    private val presenter = summerPresenter { CalendarPresenter(...) } 
+    private val viewModel = bindViewModel { CalendarViewModel(...) }
 
     override var isLoading: Boolean by didSet {
         progressBar.isVisible = isLoading
@@ -145,12 +145,12 @@ class CalendarViewController: BaseController, CalendarView {
         print("Error occurred!")
     }
     
-    private var presenter: CalendarPresenter! {
-        didSet { setPresenter(presenter) }
+    private var viewModel: CalendarViewModel! {
+        didSet { setViewModel(viewModel) }
     }
     
     override func viewDidLoad() {
-        presenter = CalendarPresenter(...)
+        viewModel = CalendarViewModel(...)
         super.viewDidLoad()
     }
     

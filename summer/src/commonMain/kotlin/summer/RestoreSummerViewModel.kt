@@ -9,10 +9,10 @@ import summer.state.StateFactory
  * Extent from this class if you want to implement
  * custom [EventFactory] or [StateFactory]
  *
- * [TView] see [LifecycleSummerPresenter]
+ * [TView] see [LifecycleSummerViewModel]
  */
-abstract class RestoreSummerPresenter<TView, TStateOwner, TEventsOwner : ViewProvider<TView>> :
-    LifecycleSummerPresenter<TView>,
+abstract class RestoreSummerViewModel<TView, TStateOwner, TEventsOwner : ViewProvider<TView>> :
+    LifecycleSummerViewModel<TView>,
     EventFactory<TView, TEventsOwner>,
     StateFactory<TView, TStateOwner> {
 
@@ -21,7 +21,7 @@ abstract class RestoreSummerPresenter<TView, TStateOwner, TEventsOwner : ViewPro
     private var viewCreatedWasCalled = false
 
     override fun viewCreated() {
-        // restore call placed there because presenter methods may be called due view initialization.
+        // restore call placed there because viewModel methods may be called due view initialization.
         // restore must be called after initView
         stateDelegates.forEach { it.restore() }
         events.forEach { it.viewCreated() }

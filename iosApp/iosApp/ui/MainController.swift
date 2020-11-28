@@ -55,12 +55,12 @@ class MainController: BaseTabBarController, MainView {
         }
     }
     
-    private var presenter: MainPresenter! {
-        didSet { setPresenter(presenter) }
+    private var viewModel: MainViewModel! {
+        didSet { setViewModel(viewModel) }
     }
     
     override func viewDidLoad() {
-        presenter = MainPresenter()
+        viewModel = MainViewModel()
         super.viewDidLoad()
     }
 }

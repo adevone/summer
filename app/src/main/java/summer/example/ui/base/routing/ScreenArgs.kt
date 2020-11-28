@@ -25,7 +25,12 @@ class Screen<TFragment, TArgs : ScreenArgs<TFragment>>(
 
 inline fun <
         reified TFragment,
-        TArgs : ScreenArgs<TFragment>> TArgs.toScreen(): Screen<TFragment, TArgs>
-        where TFragment : ArgsFragmentFeature<*>, TFragment : Fragment {
-    return Screen(args = this@toScreen, createFragment = this.createFragment)
+        TArgs : ScreenArgs<TFragment>
+        > TArgs.toScreen(): Screen<TFragment, TArgs>
+        where TFragment : ArgsFragmentFeature<*>,
+              TFragment : Fragment {
+    return Screen(
+        args = this@toScreen,
+        createFragment = this.createFragment
+    )
 }

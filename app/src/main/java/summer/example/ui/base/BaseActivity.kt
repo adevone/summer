@@ -2,14 +2,14 @@ package summer.example.ui.base
 
 import summer.android.SummerActivity
 import summer.example.AppKodeinAware
-import summer.example.presentation.base.BasePresenter
+import summer.example.presentation.base.BaseViewModel
 
 abstract class BaseActivity : SummerActivity(), AppKodeinAware {
 
-    abstract val presenter: BasePresenter<*>
+    abstract val viewModel: BaseViewModel<*>
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDestroy()
+        viewModel.onDestroy()
     }
 }

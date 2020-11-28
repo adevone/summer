@@ -10,9 +10,9 @@ import shared
 
 class BaseController: UIViewController {
     
-    private var controller: BasePresenterController!
+    private var controller: BaseViewModelController!
     
-    func setPresenter(_ controller: BasePresenterController) {
+    func setViewModel(_ controller: BaseViewModelController) {
         controller.setViewProviderUnsafe(unsafeGetView: { [weak self] in
             return self
         })
@@ -23,7 +23,7 @@ class BaseController: UIViewController {
         super.viewDidLoad()
         
         if controller == nil {
-            fatalError("\(String(describing: self)) call setPresenter before super.viewDidLoad")
+            fatalError("\(String(describing: self)) call setViewModel before super.viewDidLoad")
         }
         
         controller.viewCreated()
@@ -36,9 +36,9 @@ class BaseController: UIViewController {
 
 class BaseTabBarController: UITabBarController {
 
-    private var controller: SummerPresenterController!
+    private var controller: SummerViewModelController!
     
-    func setPresenter(_ controller: SummerPresenterController) {
+    func setViewModel(_ controller: SummerViewModelController) {
         controller.setViewProviderUnsafe(unsafeGetView: { [weak self] in
             return self
         })
@@ -49,7 +49,7 @@ class BaseTabBarController: UITabBarController {
         super.viewDidLoad()
         
         if controller == nil {
-            fatalError("\(String(describing: self)) call setPresenter before super.viewDidLoad")
+            fatalError("\(String(describing: self)) call setViewModel before super.viewDidLoad")
         }
         
         controller.viewCreated()

@@ -2,7 +2,7 @@ package summer.android.bundle
 
 import android.os.Bundle
 import android.os.Parcelable
-import summer.RestoreSummerPresenter
+import summer.RestoreSummerViewModel
 import summer.ViewProvider
 import summer.android.bundle.strategies.BinderBundleStateStrategy
 import summer.android.bundle.strategies.BooleanArrayBundleStateStrategy
@@ -41,8 +41,8 @@ import summer.events.DoExactlyOnceStrategy
 import summer.events.DoOnlyWhenAttachedStrategy
 import summer.state.GetMirrorProperty
 
-abstract class SaveStateSummerPresenter<TView> :
-    RestoreSummerPresenter<TView, BundleProvider, ViewProvider<TView>>(),
+abstract class SaveStateSummerViewModel<TView> :
+    RestoreSummerViewModel<TView, BundleProvider, ViewProvider<TView>>(),
     DoOnlyWhenAttachedStrategy.Factory<TView>, DoExactlyOnceStrategy.Factory<TView>,
     IntBundleStateStrategy.Factory<TView>, IntArrayBundleStateStrategy.Factory<TView>,
     BooleanBundleStateStrategy.Factory<TView>, BooleanArrayBundleStateStrategy.Factory<TView>,

@@ -1,6 +1,6 @@
 package summer.state
 
-import summer.SummerPresenter
+import summer.SummerViewModel
 import kotlin.reflect.KProperty
 
 /**
@@ -39,7 +39,7 @@ interface InMemoryStoreProvider {
 }
 
 /**
- * Default store for [SummerPresenter].
+ * Default store for [SummerViewModel].
  * Saved values will be restored only when they saved in same instance.
  */
 class InMemoryStore {

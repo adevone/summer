@@ -9,9 +9,9 @@ interface FrameworkDetailsView {
     val notifyAboutName: (frameworkName: String) -> Unit
 }
 
-class FrameworkDetailsPresenter(
+class FrameworkDetailsViewModel(
     private val initialFramework: Framework
-) : BaseSaveStatePresenter<FrameworkDetailsView>() {
+) : BaseSaveStateViewModel<FrameworkDetailsView>() {
 
     override val viewProxy = object : FrameworkDetailsView {
         override var framework by state({ it::framework }, initial = initialFramework.toFull())

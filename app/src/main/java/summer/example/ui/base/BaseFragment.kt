@@ -5,10 +5,9 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import ru.terrakok.cicerone.Router
 import summer.android.SummerFragment
-import summer.android.bundle.SaveStateSummerPresenter
 import summer.example.AppKodeinAware
-import summer.example.presentation.BaseSaveStatePresenter
-import summer.example.presentation.base.BasePresenter
+import summer.example.presentation.BaseSaveStateViewModel
+import summer.example.presentation.base.BaseViewModel
 import summer.example.ui.ArgsFragmentFeature
 import summer.example.ui.base.routing.BackButtonListener
 import summer.example.ui.base.routing.RouterProvider
@@ -24,7 +23,7 @@ abstract class BaseFragment<TArgs>(@LayoutRes layoutRes: Int) :
     @Suppress("LeakingThis")
     override val fragment: Fragment = this
 
-    abstract val presenter: BasePresenter<*>
+    abstract val viewModel: BaseViewModel<*>
 
     protected lateinit var ciceroneRouter: Router
 
@@ -35,10 +34,10 @@ abstract class BaseFragment<TArgs>(@LayoutRes layoutRes: Int) :
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDestroy()
+        viewModel.onDestroy()
     }
 
-    override fun onBackPressed(): Boolean = presenter.onBackClick()
+    override fun onBackPressed(): Boolean = viewModel.onBackClick()
 }
 
 abstract class BaseSaveInstanceStateFragment<TArgs>(@LayoutRes layoutRes: Int) :
@@ -52,7 +51,7 @@ abstract class BaseSaveInstanceStateFragment<TArgs>(@LayoutRes layoutRes: Int) :
     @Suppress("LeakingThis")
     override val fragment: Fragment = this
 
-    abstract val presenter: BaseSaveStatePresenter<*>
+    abstract val viewModel: BaseSaveStateViewModel<*>
 
     protected lateinit var ciceroneRouter: Router
 
@@ -63,8 +62,8 @@ abstract class BaseSaveInstanceStateFragment<TArgs>(@LayoutRes layoutRes: Int) :
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDestroy()
+        viewModel.onDestroy()
     }
 
-    override fun onBackPressed(): Boolean = presenter.onBackClick()
+    override fun onBackPressed(): Boolean = viewModel.onBackClick()
 }

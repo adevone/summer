@@ -37,12 +37,12 @@ class AboutController: BaseController, AboutView {
         }
     }
     
-    private var presenter: AboutPresenter! {
-        didSet { setPresenter(presenter) }
+    private var viewModel: AboutViewModel! {
+        didSet { setViewModel(viewModel) }
     }
     
     override func viewDidLoad() {
-        presenter = AboutPresenter()
+        viewModel = AboutViewModel()
         super.viewDidLoad()
     }
     

@@ -22,12 +22,12 @@ class FrameworksController: BaseController, FrameworksView {
         self.frameworksTable.reloadData()
     }
     
-    private var presenter: FrameworksPresenter! {
-        didSet { setPresenter(presenter) }
+    private var viewModel: FrameworksViewModel! {
+        didSet { setViewModel(viewModel) }
     }
     
     override func viewDidLoad() {
-        presenter = FrameworksPresenter()
+        viewModel = FrameworksViewModel()
         super.viewDidLoad()
         frameworksTable.dataSource = self
     }
@@ -43,7 +43,7 @@ extension FrameworksController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: FrameworkCell = tableView.cellFor(indexPath)
         let item = items[indexPath.row]
-        cell.setup(item, presenter)
+        cell.setup(item, viewModel)
         return cell
     }
 }
@@ -53,18 +53,18 @@ class FrameworkCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBAction func increaseTapped(_ sender: Any) {
-        presenter.onIncreaseClick(framework: item.framework)
+        viewModel.onIncreaseClick(framework: item.framework)
     }
     
     @IBAction func decreaseTapped(_ sender: Any) {
-        presenter.onDecreaseClick(framework: item.framework)
+        viewModel.onDecreaseClick(framework: item.framework)
     }
     
     private var item: Basket.Item!
-    private var presenter: FrameworksPresenter!
-    func setup(_ item: Basket.Item, _ presenter: FrameworksPresenter) {
+    private var viewModel: FrameworksViewModel!
+    func setup(_ item: Basket.Item, _ viewModel: FrameworksViewModel) {
         self.item = item
-        self.presenter = presenter
+        self.viewModel = viewModel
         titleLabel.text = "\(item.framework.name) (\(item.quantity))"
     }
 }

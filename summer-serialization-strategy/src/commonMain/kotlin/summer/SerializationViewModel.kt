@@ -6,8 +6,8 @@ import summer.strategy.SerializationStateProvider
 import summer.strategy.SerializationStore
 import summer.strategy.SerializationStrategy
 
-abstract class SerializationPresenter<TView> :
-    RestoreSummerPresenter<TView, SerializationStateProvider, ViewProvider<TView>>(),
+abstract class SerializationViewModel<TView> :
+    RestoreSummerViewModel<TView, SerializationStateProvider, ViewProvider<TView>>(),
     DoOnlyWhenAttachedStrategy.Factory<TView>,
     DoExactlyOnceStrategy.Factory<TView>,
     SerializationStrategy.Factory<TView>,

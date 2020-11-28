@@ -5,13 +5,13 @@ import kotlinx.coroutines.flow.onEach
 import org.kodein.di.instance
 import summer.example.domain.basket.BasketController
 import summer.example.entity.Basket
-import summer.example.presentation.base.BasePresenter
+import summer.example.presentation.base.BaseViewModel
 
 interface BasketView {
     var items: List<Basket.Item>
 }
 
-class BasketPresenter : BasePresenter<BasketView>() {
+class BasketViewModel : BaseViewModel<BasketView>() {
     private val basketController: BasketController by instance()
 
     override val viewProxy = object : BasketView {

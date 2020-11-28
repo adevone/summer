@@ -1,14 +1,14 @@
 package summer.example.presentation
 
 import summer.example.entity.Tab
-import summer.example.presentation.base.BasePresenter
+import summer.example.presentation.base.BaseViewModel
 
 interface MainView {
     var tabs: List<Tab>
     var selectedTab: Tab?
 }
 
-class MainPresenter : BasePresenter<MainView>() {
+class MainViewModel : BaseViewModel<MainView>() {
 
     private val allTabs = Tab.values().toList()
     override val viewProxy = object : MainView {

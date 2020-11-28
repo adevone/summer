@@ -15,8 +15,8 @@ interface StateFactory<TView, TOwner> : ViewProvider<TView> {
      * Creates provider of [SummerStateDelegate].
      *
      * May be called in viewProxy or just
-     * in presenter if some sort of persistent store is used
-     * and you want to store presenter state too.
+     * in viewModel if some sort of persistent store is used
+     * and you want to store viewModel state too.
      *
      * If view is not null than value will be saved in store
      * and mirrored in mirror property if view exists.
