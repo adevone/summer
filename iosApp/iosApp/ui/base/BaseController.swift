@@ -36,9 +36,9 @@ class BaseController: UIViewController {
 
 class BaseTabBarController: UITabBarController {
 
-    private var controller: SummerViewModelController!
+    private var controller: BaseViewModelController!
     
-    func setViewModel(_ controller: SummerViewModelController) {
+    func setViewModel(_ controller: BaseViewModelController) {
         controller.setViewProviderUnsafe(unsafeGetView: { [weak self] in
             return self
         })

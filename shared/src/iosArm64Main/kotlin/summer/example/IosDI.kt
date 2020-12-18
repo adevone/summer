@@ -2,23 +2,22 @@ package summer.example
 
 import com.russhwolf.settings.AppleSettings
 import com.russhwolf.settings.Settings
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.ios.Ios
+import io.ktor.client.*
+import io.ktor.client.engine.ios.*
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import org.kodein.di.Kodein
-import org.kodein.di.erased.bind
-import org.kodein.di.erased.singleton
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.singleton
 import platform.Foundation.NSUserDefaults
 
 fun bind(
     userDefaults: NSUserDefaults
 ) {
-    mainDI = Kodein {
+    mainDI = DI {
         import(sharedModule)
 
         bind<Settings>() with singleton { AppleSettings(userDefaults) }
         bind<HttpClient>() with singleton { HttpClient(Ios) }
-        bind<Json>() with singleton { Json(JsonConfiguration.Stable.copy(isLenient = true)) }
+        bind<Json>() with singleton { Json { isLenient = true } }
     }
 }

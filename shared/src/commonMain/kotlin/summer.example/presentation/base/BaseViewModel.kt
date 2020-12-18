@@ -8,7 +8,7 @@ import summer.ViewModelController
 import summer.example.AppKodeinAware
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseViewModel<TView> : SummerViewModel<TView>(), BasePresenterController,
+abstract class BaseViewModel<TView> : SummerViewModel<TView>(), BaseViewModelController,
     AppKodeinAware,
     CoroutineScope {
 
@@ -22,7 +22,7 @@ abstract class BaseViewModel<TView> : SummerViewModel<TView>(), BasePresenterCon
     open fun onBackClick(): Boolean = false
 }
 
-interface BasePresenterController : ViewModelController {
+interface BaseViewModelController : ViewModelController {
     fun onDestroy() {}
 }
 

@@ -169,7 +169,7 @@ open class ImageDownloader {
         #if os(macOS)
         return URLCache(memoryCapacity: memoryCapacity,
                         diskCapacity: diskCapacity,
-                        diskPath: cacheDirectory?.appendingPathComponent(imageDownloaderPath).absoluteString)
+                        diskPath: cacheDirectory?.appendingPathComponent(imageDownloaderPath).path)
         #else
         return URLCache(memoryCapacity: memoryCapacity,
                         diskCapacity: diskCapacity,
@@ -455,7 +455,7 @@ open class ImageDownloader {
                        progressQueue: DispatchQueue = DispatchQueue.main,
                        completion: CompletionHandler? = nil)
         -> [RequestReceipt] {
-        return urlRequests.compactMap {
+        urlRequests.compactMap {
             download($0, filter: filter, progress: progress, progressQueue: progressQueue, completion: completion)
         }
     }
@@ -561,7 +561,7 @@ open class ImageDownloader {
     }
 
     func isActiveRequestCountBelowMaximumLimit() -> Bool {
-        return activeRequestCount < maximumActiveDownloads
+        activeRequestCount < maximumActiveDownloads
     }
 
     static func urlIdentifier(for urlRequest: URLRequestConvertible) -> String {

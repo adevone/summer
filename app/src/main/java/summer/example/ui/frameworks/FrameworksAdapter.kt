@@ -13,7 +13,7 @@ import summer.example.presentation.FrameworksViewModel
 import summer.example.ui.EqualsDiffCallback
 
 class FrameworksAdapter(
-    private val presenter: FrameworksViewModel
+    private val viewModel: FrameworksViewModel
 ) : ListAdapter<Basket.Item, FrameworksAdapter.ViewHolder>(
     EqualsDiffCallback { a, b -> a.framework.name == b.framework.name }
 ) {
@@ -39,15 +39,15 @@ class FrameworksAdapter(
             versionView.text = item.framework.version
 
             decreaseButton.setOnClickListener {
-                presenter.onDecreaseClick(framework = item.framework)
+                viewModel.onDecreaseClick(framework = item.framework)
             }
             countView.text = item.quantity.toString()
             increaseButton.setOnClickListener {
-                presenter.onIncreaseClick(framework = item.framework)
+                viewModel.onIncreaseClick(framework = item.framework)
             }
 
             containerView.setOnClickListener {
-                presenter.onFrameworkClick(framework = item.framework)
+                viewModel.onFrameworkClick(framework = item.framework)
             }
         }
     }
