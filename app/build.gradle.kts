@@ -38,28 +38,17 @@ android {
             isTestCoverageEnabled = false
         }
     }
-
-    packagingOptions {
-        exclude("META-INF/proguard/androidx-annotations.pro")
-        exclude("META-INF/*.version")
-        exclude("META-INF/*.kotlin_module")
-        exclude("**.kotlin_builtins")
-        exclude("**.kotlin_metadata")
-    }
 }
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
-    implementation("io.ktor:ktor-client-core:$ktorVersion") {
-        exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
-    }
-    implementation("io.ktor:ktor-client-okhttp:$ktorVersion") {
-        exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
-    }
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 

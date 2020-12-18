@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
+    val kotlinVersion by extra("1.4.21")
     repositories {
         google()
         jcenter()
@@ -11,6 +12,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
+        classpath("com.archinamon:android-gradle-aspectj:4.2.1")
     }
 }
 

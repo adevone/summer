@@ -15,6 +15,13 @@
         android:id="@+id/frameworksView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <Button
+        android:id="@+id/crashButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crash" />
 
 </LinearLayout>

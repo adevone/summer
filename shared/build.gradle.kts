@@ -4,6 +4,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.multiplatform")
     id("kotlinx-serialization")
+    id("kotlin-kapt")
+    id("com.archinamon.aspectj")
 }
 
 android {
@@ -36,6 +38,7 @@ kotlin {
         }
     }
     android()
+    jvm()
 
     sourceSets {
         commonMain {
@@ -53,10 +56,35 @@ kotlin {
 //                implementation(project(":summer"))
             }
         }
+        commonTest {
+            dependencies {
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+            }
+        }
+        getByName("jvmMain") {
+            dependencies {
+                implementation(kotlin("stdlib"))
+                implementation(kotlin("reflect"))
+            }
+        }
+        getByName("jvmTest") {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(kotlin("test-junit"))
+            }
+        }
         getByName("androidMain") {
             dependencies {
                 implementation(kotlin("stdlib"))
+                implementation(kotlin("reflect"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+            }
+        }
+        getByName("androidTest") {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(kotlin("test-junit"))
             }
         }
         getByName("iosArm64Main") {

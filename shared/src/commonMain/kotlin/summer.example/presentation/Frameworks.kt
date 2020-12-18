@@ -3,7 +3,6 @@ package summer.example.presentation
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.kodein.di.instance
 import summer.example.domain.basket.BasketController
 import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.entity.Basket
@@ -15,9 +14,10 @@ interface FrameworksView {
     val toDetails: (framework: Framework) -> Unit
 }
 
-class FrameworksViewModel : BaseViewModel<FrameworksView>() {
-    private val basketController: BasketController by instance()
-    private val getAllFrameworkItems: GetAllFrameworkItems by instance()
+class FrameworksViewModel(
+    private val basketController: BasketController,
+    private val getAllFrameworkItems: GetAllFrameworkItems
+) : BaseViewModel<FrameworksView>() {
 
     override val viewProxy = object : FrameworksView {
         override var items by state({ it::items }, initial = emptyList())
@@ -52,5 +52,9 @@ class FrameworksViewModel : BaseViewModel<FrameworksView>() {
             val frameworks = getAllFrameworkItems(springVersion = "5.0")
             viewProxy.items = frameworks
         }
+    }
+
+    fun onCrashClick() {
+        throw IllegalStateException("app is crashed")
     }
 }
