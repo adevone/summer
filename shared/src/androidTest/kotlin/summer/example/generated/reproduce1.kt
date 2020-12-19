@@ -15,7 +15,7 @@ fun reproduce1(
     mainViewModel.getView = {
         createViewForMainViewModel()
     }
-
+    mainViewModel.viewCreated()
     mainViewModel.onMenuItemClick(
         tab = decode(""""Frameworks"""")
     )
@@ -23,7 +23,7 @@ fun reproduce1(
     frameworksViewModel.getView = {
         createViewForFrameworksViewModel()
     }
-
+    frameworksViewModel.viewCreated()
     frameworksViewModel.onIncreaseClick(
         framework = decode("""{"name":"Spring","version":"5.0"}""")
     )

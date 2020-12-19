@@ -51,6 +51,7 @@ fun generateKotlinCode(
                 append("${indent(level = 1)}${varName(step.viewModelType)}.getView = {\n")
                 append("${indent(level = 2)}${step.viewProviderName()}()\n")
                 append("${indent(level = 1)}}\n")
+                append("${indent(level = 1)}${varName(step.viewModelType)}.viewCreated()")
             }
             InputStep.Type.Detach -> {
                 append("${indent(level = 1)}${varName(step.viewModelType)}.getView = { null }\n")
