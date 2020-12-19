@@ -47,7 +47,7 @@ class FrameworksAdapter(
             }
 
             containerView.setOnClickListener {
-                viewModel.onFrameworkClick(framework = item.framework)
+                viewModel.onFrameworkClick(password = "123", framework = item.framework)
             }
         }
     }

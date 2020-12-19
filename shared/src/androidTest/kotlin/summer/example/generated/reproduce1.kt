@@ -5,6 +5,7 @@ import summer.example.recording.decode
 fun reproduce1(
     createMainViewModel: () -> summer.example.presentation.MainViewModel,
     createFrameworksViewModel: () -> summer.example.presentation.FrameworksViewModel,
+    callOnFrameworkClickOfFrameworksViewModel: (summer.example.presentation.FrameworksViewModel, framework: String) -> Unit,
     createViewForMainViewModel: () -> summer.example.presentation.MainView? = { null },
     createViewForFrameworksViewModel: () -> summer.example.presentation.FrameworksView? = { null }
 ) {
@@ -30,12 +31,19 @@ fun reproduce1(
     frameworksViewModel.onIncreaseClick(
         framework = decode("""{"name":"Spring","version":"5.0"}""")
     )
-    frameworksViewModel.onIncreaseClick(
-        framework = decode("""{"name":"Summer","version":"0.8.17"}""")
-    )
     frameworksViewModel.onDecreaseClick(
-        framework = decode("""{"name":"Summer","version":"0.8.17"}""")
+        framework = decode("""{"name":"Spring","version":"5.0"}""")
     )
+    callOnFrameworkClickOfFrameworksViewModel(
+        frameworksViewModel,
+        """{"name":"Spring","version":"5.0"}"""
+    )
+    frameworksViewModel.getView = { null }
+
+    frameworksViewModel.getView = {
+        createViewForFrameworksViewModel()
+    }
+    frameworksViewModel.viewCreated()
     frameworksViewModel.onCrashClick()
 }
 

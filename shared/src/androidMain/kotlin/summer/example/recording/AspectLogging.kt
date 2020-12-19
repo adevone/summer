@@ -8,7 +8,8 @@ import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
 import org.aspectj.lang.annotation.Pointcut
-import org.aspectj.lang.reflect.CodeSignature
+import org.aspectj.lang.reflect.MethodSignature
+import summer.example.presentation.base.Hide
 import kotlin.reflect.full.createType
 
 @Aspect
@@ -47,13 +48,21 @@ class AspectLogging {
     @Before("onEvent() && isViewModel() && !base()")
     fun onViewModelEvent(joinPoint: JoinPoint?) {
         if (joinPoint?.getThis() != null) {
-            val signature = joinPoint.signature as CodeSignature
+            val signature = joinPoint.signature as MethodSignature
+            val parameterTypes: Array<Class<*>> = signature.method.parameterTypes
+            val methodName: String = signature.method.name
+            val methodAnnotations: Array<Array<Annotation>> = joinPoint.target::class.java
+                .getMethod(methodName, *parameterTypes)
+                .parameterAnnotations
             val serializedArguments = joinPoint.args.mapIndexed { argIndex, arg ->
                 val argSerializer = serializer(arg::class.createType())
                 val argValue = encodeToJsonElement(argSerializer, arg)
+                val argAnnotations = methodAnnotations.getOrNull(argIndex) ?: emptyArray()
+                val isHidden = argAnnotations.any { it is Hide }
                 InputStep.Argument(
                     name = signature.parameterNames[argIndex],
-                    argValue
+                    value = argValue.takeIf { !isHidden },
+                    isHidden
                 )
             }
             steps.add(

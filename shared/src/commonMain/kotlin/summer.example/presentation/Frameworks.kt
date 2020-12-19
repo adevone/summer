@@ -8,6 +8,7 @@ import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.entity.Basket
 import summer.example.entity.Framework
 import summer.example.presentation.base.BaseViewModel
+import summer.example.presentation.base.Hide
 
 interface FrameworksView {
     var items: List<Basket.Item>
@@ -35,7 +36,7 @@ class FrameworksViewModel(
         updateFrameworks()
     }
 
-    fun onFrameworkClick(framework: Framework) {
+    fun onFrameworkClick(@Hide password: String, framework: Framework) {
         viewProxy.toDetails(framework)
     }
 

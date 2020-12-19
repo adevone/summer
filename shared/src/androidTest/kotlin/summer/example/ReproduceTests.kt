@@ -7,6 +7,7 @@ import summer.example.domain.frameworks.GetSummer
 import summer.example.generated.reproduce1
 import summer.example.presentation.FrameworksViewModel
 import summer.example.presentation.MainViewModel
+import summer.example.recording.decode
 import kotlin.test.Test
 
 class ReproduceTests {
@@ -23,6 +24,12 @@ class ReproduceTests {
                 FrameworksViewModel(
                     basketController = basketController,
                     getAllFrameworkItems = GetAllFrameworkItems(GetSpring(), GetSummer(), basketController)
+                )
+            },
+            callOnFrameworkClickOfFrameworksViewModel = { viewModel, framework ->
+                viewModel.onFrameworkClick(
+                    password = "123",
+                    framework = decode(framework)
                 )
             }
         )
