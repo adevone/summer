@@ -45,7 +45,7 @@ class AspectLogging {
     }
 
     @Before("onEvent() && isViewModel() && !base()")
-    fun onCreateAdvice(joinPoint: JoinPoint?) {
+    fun onViewModelEvent(joinPoint: JoinPoint?) {
         if (joinPoint?.getThis() != null) {
             val signature = joinPoint.signature as CodeSignature
             val serializedArguments = joinPoint.args.mapIndexed { argIndex, arg ->
