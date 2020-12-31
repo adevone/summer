@@ -2,6 +2,7 @@ package summer.example.presentation
 
 import summer.example.entity.Tab
 import summer.example.presentation.base.BaseViewModel
+import summer.example.recording.tracking
 
 interface MainView {
     var tabs: List<Tab>
@@ -16,7 +17,7 @@ class MainViewModel : BaseViewModel<MainView>() {
         override var selectedTab by state({ it::selectedTab }, initial = allTabs.first())
     }
 
-    fun onMenuItemClick(tab: Tab) {
+    val onMenuItemClick by tracking(fun(tab: Tab) {
         viewProxy.selectedTab = tab
-    }
+    })
 }

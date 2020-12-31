@@ -20,7 +20,6 @@ data class InputStep(
 
     @Serializable
     data class Argument(
-        val name: String,
         val value: JsonElement? = null,
         val isHidden: Boolean = false
     )
@@ -48,3 +47,4 @@ data class InputStep(
         }
     }
 }
+

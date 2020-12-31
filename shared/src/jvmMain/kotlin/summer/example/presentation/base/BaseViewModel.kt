@@ -1,10 +1,6 @@
 package summer.example.presentation.base
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlin.reflect.KClass
-
-actual val mainDispatcher: CoroutineDispatcher = Dispatchers.Default
 
 actual object ViewModelEventsListener {
     actual fun onCreate(clazz: KClass<*>) {}

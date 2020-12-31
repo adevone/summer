@@ -5,7 +5,6 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("kotlinx-serialization")
     id("kotlin-kapt")
-    id("com.archinamon.aspectj")
 }
 
 android {

@@ -87,7 +87,7 @@ fun generateKotlinCode(
                         append("(\n")
                         val formattedArguments = step.arguments.joinToString(separator = ",\n") { argument ->
                             val argJson = Json.encodeToString(argument.value)
-                            "${indent(level = 2)}${argument.name} = decode(\"\"\"${argJson}\"\"\")"
+                            "${indent(level = 2)}decode(\"\"\"${argJson}\"\"\")"
                         }
                         append(formattedArguments)
                         append("\n")
@@ -143,7 +143,7 @@ fun InputStep.callMaskedMethodName(): String {
 fun InputStep.callMaskedMethodType(): String {
     val formattedArguments = arguments.mapNotNull { argument ->
         if (!argument.isHidden) {
-            "${argument.name}: String"
+            "String"
         } else {
             null
         }

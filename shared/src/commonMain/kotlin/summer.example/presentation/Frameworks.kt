@@ -8,7 +8,8 @@ import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.entity.Basket
 import summer.example.entity.Framework
 import summer.example.presentation.base.BaseViewModel
-import summer.example.presentation.base.Hide
+import summer.example.presentation.base.Hidden
+import summer.example.recording.tracking
 
 interface FrameworksView {
     var items: List<Basket.Item>
@@ -36,17 +37,19 @@ class FrameworksViewModel(
         updateFrameworks()
     }
 
-    fun onFrameworkClick(@Hide password: String, framework: Framework) {
+    val onFrameworkClick by tracking(fun(password: Hidden<String>, framework: Framework) {
+        val hiddenPassword: String = password.value.toList().joinToString(separator = "") { "*" }
+        println(hiddenPassword)
         viewProxy.toDetails(framework)
-    }
+    })
 
-    fun onIncreaseClick(framework: Framework) {
+    val onIncreaseClick by tracking(fun(framework: Framework) {
         basketController.increase(framework)
-    }
+    })
 
-    fun onDecreaseClick(framework: Framework) {
+    val onDecreaseClick by tracking(fun(framework: Framework) {
         basketController.decrease(framework)
-    }
+    })
 
     private fun updateFrameworks() {
         launch {
@@ -55,7 +58,7 @@ class FrameworksViewModel(
         }
     }
 
-    fun onCrashClick() {
+    val onCrashClick by tracking(fun() {
         throw IllegalStateException("app is crashed")
-    }
+    })
 }

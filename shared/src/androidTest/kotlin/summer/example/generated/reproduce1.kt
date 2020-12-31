@@ -5,7 +5,7 @@ import summer.example.recording.decode
 fun reproduce1(
     createMainViewModel: () -> summer.example.presentation.MainViewModel,
     createFrameworksViewModel: () -> summer.example.presentation.FrameworksViewModel,
-    callOnFrameworkClickOfFrameworksViewModel: (summer.example.presentation.FrameworksViewModel, framework: String) -> Unit,
+    callOnFrameworkClickOfFrameworksViewModel: (summer.example.presentation.FrameworksViewModel, String) -> Unit,
     createViewForMainViewModel: () -> summer.example.presentation.MainView? = { null },
     createViewForFrameworksViewModel: () -> summer.example.presentation.FrameworksView? = { null }
 ) {
@@ -18,7 +18,7 @@ fun reproduce1(
     }
     mainViewModel.viewCreated()
     mainViewModel.onMenuItemClick(
-        tab = decode(""""Frameworks"""")
+        decode(""""Frameworks"""")
     )
     frameworksViewModel = createFrameworksViewModel()
     frameworksViewModel.getView = {
@@ -26,17 +26,23 @@ fun reproduce1(
     }
     frameworksViewModel.viewCreated()
     frameworksViewModel.onIncreaseClick(
-        framework = decode("""{"name":"Spring","version":"5.0"}""")
+        decode("""{"name":"Spring","version":"5.0"}""")
     )
     frameworksViewModel.onIncreaseClick(
-        framework = decode("""{"name":"Spring","version":"5.0"}""")
+        decode("""{"name":"Spring","version":"5.0"}""")
+    )
+    frameworksViewModel.onIncreaseClick(
+        decode("""{"name":"Summer","version":"0.8.17"}""")
     )
     frameworksViewModel.onDecreaseClick(
-        framework = decode("""{"name":"Spring","version":"5.0"}""")
+        decode("""{"name":"Summer","version":"0.8.17"}""")
+    )
+    frameworksViewModel.onDecreaseClick(
+        decode("""{"name":"Summer","version":"0.8.17"}""")
     )
     callOnFrameworkClickOfFrameworksViewModel(
         frameworksViewModel,
-        """{"name":"Spring","version":"5.0"}"""
+        """{"name":"Summer","version":"0.8.17"}"""
     )
     frameworksViewModel.getView = { null }
 

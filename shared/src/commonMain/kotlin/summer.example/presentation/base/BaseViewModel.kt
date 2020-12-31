@@ -6,6 +6,7 @@ import kotlinx.coroutines.SupervisorJob
 import summer.SummerViewModel
 import summer.ViewModelController
 import summer.example.AppKodeinAware
+import summer.example.recording.InputStep
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 
@@ -37,4 +38,4 @@ interface BaseViewModelController : ViewModelController {
     fun onDestroy() {}
 }
 
-expect val mainDispatcher: CoroutineDispatcher
+lateinit var mainDispatcher: CoroutineDispatcher

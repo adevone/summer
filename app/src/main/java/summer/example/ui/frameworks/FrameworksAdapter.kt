@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.frameworks_item.*
 import summer.example.R
 import summer.example.entity.Basket
 import summer.example.presentation.FrameworksViewModel
+import summer.example.presentation.base.Hidden
 import summer.example.ui.EqualsDiffCallback
 
 class FrameworksAdapter(
@@ -39,15 +40,15 @@ class FrameworksAdapter(
             versionView.text = item.framework.version
 
             decreaseButton.setOnClickListener {
-                viewModel.onDecreaseClick(framework = item.framework)
+                viewModel.onDecreaseClick(item.framework)
             }
             countView.text = item.quantity.toString()
             increaseButton.setOnClickListener {
-                viewModel.onIncreaseClick(framework = item.framework)
+                viewModel.onIncreaseClick(item.framework)
             }
 
             containerView.setOnClickListener {
-                viewModel.onFrameworkClick(password = "123", framework = item.framework)
+                viewModel.onFrameworkClick(Hidden("123"), item.framework)
             }
         }
     }

@@ -1,3 +1,5 @@
 package summer.example.presentation.base
 
-annotation class Hide
+data class Hidden<T>(
+    val value: T
+)

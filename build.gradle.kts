@@ -12,7 +12,6 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
-        classpath("com.archinamon:android-gradle-aspectj:4.2.1")
     }
 }
 
