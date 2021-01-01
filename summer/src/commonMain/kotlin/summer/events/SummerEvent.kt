@@ -351,8 +351,8 @@ abstract class SummerEvent<TView, in TOwner> {
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, p10: T10, p11: T11) {
             val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
-            strategy.called(executor, owner, getViewProvider)
             listener?.called(strategy, executor, owner)
+            strategy.called(executor, owner, getViewProvider)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
