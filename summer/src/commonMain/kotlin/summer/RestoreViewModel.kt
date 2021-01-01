@@ -11,11 +11,11 @@ import summer.state.SummerStateStrategy
  * Extent from this class if you want to implement
  * custom [EventFactory] or [StateFactory]
  *
- * @param [TView] see [LifecycleSummerViewModel]
+ * @param [TView] see [LifecycleViewModel]
  * @param [TStateOwner] see [SummerStateStrategy]
  * @param [TEventsOwner] see [SummerEventStrategy]
  */
-abstract class RestoreSummerViewModel<TView, TStateOwner, TEventsOwner : GetViewProvider<TView>> :
+abstract class RestoreViewModel<TView, TStateOwner, TEventsOwner : GetViewProvider<TView>> :
     EnterLifecycleSummerViewModelImpl<TView>(),
     EventFactory<TView, TEventsOwner>,
     StateFactory<TView, TStateOwner> {

@@ -3,17 +3,17 @@ package summer
 /**
  * Implemented in [EnterLifecycleSummerViewModelImpl].
  */
-interface EnterLifecycleSummerViewModel<TView> : LifecycleSummerViewModel<TView>, EnterListener
+interface EnterLifecycleViewModel<TView> : LifecycleViewModel<TView>, EnterListener
 
 interface EnterListener {
     /**
-     * Called when [LifecycleSummerViewModel.viewCreated] was called first times.
+     * Called when [LifecycleViewModel.viewCreated] was called first times.
      */
     fun onEnter() {}
 }
 
 /**
- * Implementation of [EnterLifecycleSummerViewModel].
+ * Implementation of [EnterLifecycleViewModel].
  * Can be used as a base class or an interface delegate.
  *
  * Example of a delegation:
@@ -21,7 +21,7 @@ interface EnterListener {
  *     <parent class that prohibits inheritance from EnterLifecycleSummerViewModelImpl>,
  *     EnterLifecycleSummerViewModel<TView> by EnterLifecycleSummerViewModelImpl()
  */
-open class EnterLifecycleSummerViewModelImpl<TView> : EnterLifecycleSummerViewModel<TView> {
+open class EnterLifecycleSummerViewModelImpl<TView> : EnterLifecycleViewModel<TView> {
     override var getView: () -> TView? = { null }
 
     private var viewCreatedWasCalled = false

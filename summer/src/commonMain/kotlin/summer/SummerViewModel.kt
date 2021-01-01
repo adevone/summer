@@ -13,7 +13,7 @@ import summer.state.SummerStateDelegate
  * and executing of events (see [SummerEvent]).
  */
 abstract class SummerViewModel<TView> :
-    RestoreSummerViewModel<TView, InMemoryStoreProvider, GetViewProvider<TView>>(),
+    RestoreViewModel<TView, InMemoryStoreProvider, GetViewProvider<TView>>(),
     ViewProxyProvider<TView>,
     DoOnlyWhenAttachedStrategy.Factory<TView>,
     DoExactlyOnceStrategy.Factory<TView>,

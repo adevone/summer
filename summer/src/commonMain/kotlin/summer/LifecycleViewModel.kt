@@ -9,7 +9,7 @@ import summer.state.SummerStateDelegate
  *
  * [TView] is type of associated view.
  */
-interface LifecycleSummerViewModel<TView> :
+interface LifecycleViewModel<TView> :
     ViewModelController,
     GetViewHolder<TView> {
 
