@@ -23,10 +23,10 @@ class InMemoryStateStrategy<T> : SummerStateStrategy<T, InMemoryStoreProvider> {
     interface Factory<TView> : StateFactory<TView, InMemoryStoreProvider> {
 
         fun <T> state(
-            getMirrorProperty: GetMirrorProperty<TView, T>? = null,
+            getViewProperty: GetViewProperty<T, TView>? = null,
             initial: T
-        ): SummerStateDelegate.Provider<T, InMemoryStoreProvider> {
-            return state(getMirrorProperty, initial, InMemoryStateStrategy())
+        ): SummerStateDelegate.Provider<T, TView, InMemoryStoreProvider> {
+            return state(getViewProperty, initial, InMemoryStateStrategy())
         }
     }
 }

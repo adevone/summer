@@ -1,15 +1,18 @@
 package summer.state
 
+import summer.GetViewProvider
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 
-class SummerStateDelegate<T, in TOwner>(
+class SummerStateDelegate<T, TView, TOwner>(
     private val owner: TOwner,
+    private val getViewProvider: GetViewProvider<TView>,
     private val property: KProperty<*>,
     private val initial: T,
     private val strategy: SummerStateStrategy<T, TOwner>,
-    private val setMirror: (T) -> Unit
+    private val getViewProperty: GetViewProperty<T, TView>?
 ) : ReadWriteProperty<Any?, T> {
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
@@ -23,34 +26,57 @@ class SummerStateDelegate<T, in TOwner>(
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
         strategy.set(owner, property, value)
-        setMirror(value)
+        setViewPropertyIfViewExists(value)
     }
 
     fun restore() {
         val isInit = strategy.wasStored(owner, property)
         if (isInit) {
             val value = strategy.get(owner, property)
-            setMirror(value)
+            setViewPropertyIfViewExists(value)
         } else {
-            setMirror(initial)
+            setViewPropertyIfViewExists(value = initial)
         }
     }
 
-    class Provider<T, in TOwner>(
+    private fun setViewPropertyIfViewExists(value: T) {
+        val view = getViewProvider.getView()
+        if (view != null) {
+            getViewProperty?.let { getViewProperty ->
+                val viewProperty = getViewProperty(view)
+                viewProperty.set(value)
+            }
+        }
+    }
+
+    class Provider<T, TView, TOwner>(
         private val owner: TOwner,
+        private val getViewProvider: GetViewProvider<TView>,
         private val initial: T,
         private val strategy: SummerStateStrategy<T, TOwner>,
-        private val setMirror: (T) -> Unit,
-        private val delegateCreated: (SummerStateDelegate<T, TOwner>) -> Unit
-    ) : PropertyDelegateProvider<Any?, SummerStateDelegate<T, TOwner>> {
+        private val getViewProperty: GetViewProperty<T, TView>?,
+        private val delegateCreated: (SummerStateDelegate<T, TView, TOwner>) -> Unit
+    ) : PropertyDelegateProvider<Any?, SummerStateDelegate<T, TView, TOwner>> {
 
         override fun provideDelegate(
             thisRef: Any?,
             property: KProperty<*>
-        ): SummerStateDelegate<T, TOwner> {
-            val delegate = SummerStateDelegate(owner, property, initial, strategy, setMirror)
+        ): SummerStateDelegate<T, TView, TOwner> {
+            val delegate = SummerStateDelegate(
+                owner,
+                getViewProvider,
+                property,
+                initial,
+                strategy,
+                getViewProperty
+            )
             delegateCreated(delegate)
             return delegate
         }
     }
 }
+
+/**
+ * Provider of view property to mirror store state
+ */
+typealias GetViewProperty<T, TView> = (TView) -> KMutableProperty0<T>

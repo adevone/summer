@@ -40,5 +40,5 @@ open class DefaultSummerViewModelImpl<TView> :
     override val inMemoryStore = InMemoryStore()
 
     override fun getEventsOwner(): GetViewProvider<TView> = this
-    override fun getStateOwner(): InMemoryStoreProvider = this
+    override fun stateOwner(): InMemoryStoreProvider = this
 }

@@ -1,7 +1,6 @@
 package summer.state
 
 import summer.GetViewProvider
-import kotlin.reflect.KMutableProperty0
 
 /**
  * DSL to create [SummerStateDelegate.Provider].
@@ -9,8 +8,7 @@ import kotlin.reflect.KMutableProperty0
  * [TView] see [SummerStateStrategy]
  * [TOwner] see [SummerStateStrategy]
  */
-interface StateFactory<TView, TOwner> : GetViewProvider<TView> {
-
+interface StateFactory<TView, TOwner> {
     /**
      * Creates provider of [SummerStateDelegate].
      *
@@ -24,41 +22,25 @@ interface StateFactory<TView, TOwner> : GetViewProvider<TView> {
      * If view is null than value will be only saved in store.
      */
     fun <T> state(
-        getMirrorProperty: GetMirrorProperty<TView, T>? = null,
+        getViewProperty: GetViewProperty<T, TView>? = null,
         initial: T,
         strategy: SummerStateStrategy<T, TOwner>
-    ): SummerStateDelegate.Provider<T, TOwner> {
+    ): SummerStateDelegate.Provider<T, TView, TOwner> {
         return SummerStateDelegate.Provider(
-            getStateOwner(),
+            stateOwner(),
+            getViewProvider(),
             initial,
             strategy,
-            setMirror = setMirrorIfViewExists(getMirrorProperty),
+            getViewProperty = getViewProperty,
             delegateCreated = { delegate ->
                 stateDelegateCreated(delegate)
             }
         )
     }
 
-    fun getStateOwner(): TOwner
+    fun stateOwner(): TOwner
 
-    fun stateDelegateCreated(delegate: SummerStateDelegate<*, *>)
+    fun stateDelegateCreated(delegate: SummerStateDelegate<*, *, *>)
+
+    fun getViewProvider(): GetViewProvider<TView>
 }
-
-/**
- * Mirror state changes to view only if it exists.
- */
-fun <TView, T> GetViewProvider<TView>.setMirrorIfViewExists(
-    getMirrorProperty: GetMirrorProperty<TView, T>?
-): (T) -> Unit = { value ->
-    val currentView = getView()
-    if (currentView != null && getMirrorProperty != null) {
-        val property = getMirrorProperty(currentView)
-        property.set(value)
-    }
-}
-
-/**
- * Provider of view property to mirror store state
- */
-typealias GetMirrorProperty<TView, T> = (TView) -> KMutableProperty0<T>
-
