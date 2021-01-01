@@ -1,6 +1,8 @@
 package summer.state
 
 import summer.GetViewProvider
+import summer.events.SummerEvent
+import summer.events.SummerEventStrategy
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
@@ -86,14 +88,24 @@ class SummerStateDelegate<T, TView, TOwner>(
  */
 typealias GetViewProperty<T, TView> = (TView) -> KMutableProperty0<T>
 
+/**
+ * Allows to listen events of [SummerStateDelegate].
+ *
+ * Could be used to implement a time traveling.
+ */
 interface StateListener<TView, TOwner> {
-
+    /**
+     * Always called before [setOnView] and after the value stored
+     */
     fun set(
         owner: TOwner,
         property: KProperty<*>,
         strategy: SummerStateStrategy<*, TOwner>,
     )
 
+    /**
+     * Always called after [set]
+     */
     fun setOnView(
         view: TView,
         owner: TOwner,
