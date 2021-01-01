@@ -21,6 +21,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A0<TView, in TOwner : GetViewProvider<TView>>(
         private val getAction: (TView) -> (() -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : () -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -29,18 +30,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke() {
-            val executor = EventExecutor(getAction)
+            val executor = EventExecutor()
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView>(
-            private val getAction: (TView) -> (() -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor() : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action()
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -48,6 +49,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A1<TView, in TOwner : GetViewProvider<TView>, T1>(
         private val getAction: (TView) -> ((T1) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -56,19 +58,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1) {
-            val executor = EventExecutor(p1, getAction)
+            val executor = EventExecutor(p1)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1>(
-            @JvmField val p1: T1,
-            private val getAction: (TView) -> ((T1) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -76,6 +77,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A2<TView, in TOwner : GetViewProvider<TView>, T1, T2>(
         private val getAction: (TView) -> ((T1, T2) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -84,19 +86,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2) {
-            val executor = EventExecutor(p1, p2, getAction)
+            val executor = EventExecutor(p1, p2)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2>(
-            @JvmField val p1: T1, @JvmField val p2: T2,
-            private val getAction: (TView) -> ((T1, T2) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -104,6 +105,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A3<TView, in TOwner : GetViewProvider<TView>, T1, T2, T3>(
         private val getAction: (TView) -> ((T1, T2, T3) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2, T3) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -112,19 +114,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2, p3: T3) {
-            val executor = EventExecutor(p1, p2, p3, getAction)
+            val executor = EventExecutor(p1, p2, p3)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2, T3>(
-            @JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3,
-            private val getAction: (TView) -> ((T1, T2, T3) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2, p3)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -132,6 +133,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A4<TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4>(
         private val getAction: (TView) -> ((T1, T2, T3, T4) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2, T3, T4) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -140,19 +142,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4) {
-            val executor = EventExecutor(p1, p2, p3, p4, getAction)
+            val executor = EventExecutor(p1, p2, p3, p4)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2, T3, T4>(
-            @JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4,
-            private val getAction: (TView) -> ((T1, T2, T3, T4) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2, p3, p4)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -160,6 +161,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A5<TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2, T3, T4, T5) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -168,19 +170,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5) {
-            val executor = EventExecutor(p1, p2, p3, p4, p5, getAction)
+            val executor = EventExecutor(p1, p2, p3, p4, p5)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2, T3, T4, T5>(
-            @JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5,
-            private val getAction: (TView) -> ((T1, T2, T3, T4, T5) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2, p3, p4, p5)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -188,6 +189,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A6<TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2, T3, T4, T5, T6) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -196,19 +198,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6) {
-            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, getAction)
+            val executor = EventExecutor(p1, p2, p3, p4, p5, p6)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2, T3, T4, T5, T6>(
-            @JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6,
-            private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2, p3, p4, p5, p6)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -216,6 +217,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A7<TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2, T3, T4, T5, T6, T7) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -224,19 +226,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7) {
-            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, getAction)
+            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2, T3, T4, T5, T6, T7>(
-            @JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7,
-            private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2, p3, p4, p5, p6, p7)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -244,6 +245,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A8<TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2, T3, T4, T5, T6, T7, T8) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -252,19 +254,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8) {
-            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8, getAction)
+            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2, T3, T4, T5, T6, T7, T8>(
-            @JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7, @JvmField val p8: T8,
-            private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7, @JvmField val p8: T8) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2, p3, p4, p5, p6, p7, p8)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -272,6 +273,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A9<TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -280,19 +282,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9) {
-            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8, p9, getAction)
+            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8, p9)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9>(
-            @JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7, @JvmField val p8: T8, @JvmField val p9: T9,
-            private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7, @JvmField val p8: T8, @JvmField val p9: T9) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2, p3, p4, p5, p6, p7, p8, p9)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -300,6 +301,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A10<TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -308,19 +310,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, p10: T10) {
-            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, getAction)
+            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
-            @JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7, @JvmField val p8: T8, @JvmField val p9: T9, @JvmField val p10: T10,
-            private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7, @JvmField val p8: T8, @JvmField val p9: T9, @JvmField val p10: T10) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -328,6 +329,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A11<TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -336,19 +338,18 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, p10: T10, p11: T11) {
-            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, getAction)
+            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
-            @JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7, @JvmField val p8: T8, @JvmField val p9: T9, @JvmField val p10: T10, @JvmField val p11: T11,
-            private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7, @JvmField val p8: T8, @JvmField val p9: T9, @JvmField val p10: T10, @JvmField val p11: T11) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
@@ -356,6 +357,7 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
     class A12<TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> Unit),
         private val owner: TOwner,
+        private val listener: EventListener<TView, TOwner>?,
         override val strategy: SummerEventStrategy<TView, TOwner>
     ) : (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> Unit, SummerEvent<TView, TOwner>() {
 
@@ -364,20 +366,40 @@ abstract class SummerEvent<TView, in TOwner : GetViewProvider<TView>> {
         }
 
         override fun invoke(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5, p6: T6, p7: T7, p8: T8, p9: T9, p10: T10, p11: T11, p12: T12) {
-            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, getAction)
+            val executor = EventExecutor(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12)
             strategy.called(owner, executor)
+            listener?.called(strategy, executor, owner)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
-        class EventExecutor<TView, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
-            @JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7, @JvmField val p8: T8, @JvmField val p9: T9, @JvmField val p10: T10, @JvmField val p11: T11, @JvmField val p12: T12,
-            private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> Unit)
-        ) : ViewEventExecutor<TView> {
+        inner class EventExecutor(@JvmField val p1: T1, @JvmField val p2: T2, @JvmField val p3: T3, @JvmField val p4: T4, @JvmField val p5: T5, @JvmField val p6: T6, @JvmField val p7: T7, @JvmField val p8: T8, @JvmField val p9: T9, @JvmField val p10: T10, @JvmField val p11: T11, @JvmField val p12: T12) : ViewEventExecutor<TView> {
 
             override fun execute(view: TView) {
                 val action = getAction(view)
                 action(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12)
+                listener?.executedOnView(view, strategy, viewEventExecutor = this, owner)
             }
         }
     }
+}
+
+/**
+ * Allows to listen events of [SummerEvent].
+ *
+ * Could be used to implement a time traveling.
+ */
+interface EventListener<TView, TOwner : GetViewProvider<TView>> {
+
+    fun called(
+        strategy: SummerEventStrategy<TView, TOwner>,
+        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>,
+        owner: TOwner
+    )
+
+    fun executedOnView(
+        view: TView,
+        strategy: SummerEventStrategy<TView, TOwner>,
+        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>,
+        owner: TOwner
+    )
 }
