@@ -22,16 +22,16 @@ allprojects {
 dependencies {
 
     // library itself (with enableFeaturePreview("GRADLE_METADATA"))
-    implementation("com.github.adevone.summer:summer:1.0.0-beta6-mvvm-2")
+    implementation("com.github.adevone.summer:summer:1.0.0-beta6-mvvm-4")
 
     // library itself (without enableFeaturePreview("GRADLE_METADATA"), jvm version)
-    implementation("com.github.adevone.summer:summer-jvm:1.0.0-beta6-mvvm-2")
+    implementation("com.github.adevone.summer:summer-jvm:1.0.0-beta6-mvvm-4")
 
     // androidx support, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:1.0.0-beta6-mvvm-2")
+    implementation("com.github.adevone.summer:summer-androidx:1.0.0-beta6-mvvm-4")
 
     // android compat support, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6-mvvm-2")
+    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6-mvvm-4")
 }
 ```
 
