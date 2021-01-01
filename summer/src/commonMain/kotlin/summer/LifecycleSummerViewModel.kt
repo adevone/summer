@@ -9,7 +9,9 @@ import summer.state.SummerStateDelegate
  *
  * [TView] is type of associated view.
  */
-interface LifecycleSummerViewModel<TView> : ViewModelController, GetViewHolder<TView> {
+interface LifecycleSummerViewModel<TView> :
+    ViewModelController,
+    GetViewHolder<TView> {
 
     override fun setViewProviderUnsafe(unsafeGetView: () -> Any?) {
         getView = {

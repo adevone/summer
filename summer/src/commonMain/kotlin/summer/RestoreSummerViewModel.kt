@@ -12,14 +12,10 @@ import summer.state.SummerStateDelegate
  * [TView] see [LifecycleSummerViewModel]
  */
 abstract class RestoreSummerViewModel<TView, TStateOwner, TEventsOwner : GetViewProvider<TView>> :
-    LifecycleSummerViewModel<TView>,
+    EnterLifecycleSummerViewModelImpl<TView>(),
     ViewProxyProvider<TView>,
     EventFactory<TView, TEventsOwner>,
     StateFactory<TView, TStateOwner> {
-
-    override var getView: () -> TView? = { null }
-
-    private var viewCreatedWasCalled = false
 
     override fun viewCreated() {
         // restore call placed there because viewModel methods may be called due view initialization.
@@ -27,16 +23,8 @@ abstract class RestoreSummerViewModel<TView, TStateOwner, TEventsOwner : GetView
         stateDelegates.forEach { it.restore() }
         events.forEach { it.viewCreated() }
 
-        if (!viewCreatedWasCalled) {
-            onEnter()
-            viewCreatedWasCalled = true
-        }
+        super.viewCreated()
     }
-
-    /**
-     * Called when [viewCreated] was called first times.
-     */
-    open fun onEnter() {}
 
     private val events = mutableListOf<SummerEvent<TView, TEventsOwner>>()
     override fun eventCreated(event: SummerEvent<TView, TEventsOwner>) {
