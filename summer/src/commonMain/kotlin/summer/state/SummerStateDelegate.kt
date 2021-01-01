@@ -1,5 +1,6 @@
 package summer.state
 
+import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -41,12 +42,13 @@ class SummerStateDelegate<T, TOwner>(
         private val strategy: SummerStateStrategy<T, TOwner>,
         private val setMirror: (T) -> Unit,
         private val delegateCreated: (SummerStateDelegate<T, TOwner>) -> Unit
-    ) {
-        operator fun provideDelegate(
+    ) : PropertyDelegateProvider<Any?, SummerStateDelegate<T, TOwner>> {
+
+        override fun provideDelegate(
             thisRef: Any?,
-            prop: KProperty<*>
+            property: KProperty<*>
         ): SummerStateDelegate<T, TOwner> {
-            val delegate = SummerStateDelegate(owner, prop, initial, strategy, setMirror)
+            val delegate = SummerStateDelegate(owner, property, initial, strategy, setMirror)
             delegateCreated(delegate)
             return delegate
         }
