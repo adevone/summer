@@ -402,13 +402,18 @@ abstract class SummerEvent<TView, in TOwner> {
  * Could be used to implement a time traveling.
  */
 interface EventListener<TView, TOwner> {
-
+    /**
+     * Always called before [executedOnView] but also before [SummerEventStrategy.called]
+     */
     fun called(
         strategy: SummerEventStrategy<TView, TOwner>,
         viewEventExecutor: SummerEvent.ViewEventExecutor<TView>,
         owner: TOwner
     )
 
+    /**
+     * Always called after [called]
+     */
     fun executedOnView(
         view: TView,
         strategy: SummerEventStrategy<TView, TOwner>,
