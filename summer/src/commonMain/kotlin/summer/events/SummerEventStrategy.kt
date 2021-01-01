@@ -1,7 +1,7 @@
 package summer.events
 
 import summer.GetViewProvider
-import summer.LifecycleViewModel
+import summer.ViewLifecycleListener
 
 /**
  * Rule that determine behaviour of [SummerEvent] when it invoked.
@@ -20,7 +20,7 @@ interface SummerEventStrategy<TView, in TOwner : GetViewProvider<TView>> {
     fun called(owner: TOwner, viewEventExecutor: SummerEvent.ViewEventExecutor<TView>)
 
     /**
-     * [LifecycleViewModel.viewCreated] was called
+     * [ViewLifecycleListener.viewCreated] was called
      */
     fun viewCreated(owner: TOwner) {}
 }
