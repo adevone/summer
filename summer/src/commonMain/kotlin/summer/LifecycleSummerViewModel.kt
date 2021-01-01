@@ -11,9 +11,7 @@ import summer.state.SummerStateDelegate
  */
 interface LifecycleSummerViewModel<TView> :
     ViewModelController,
-    ViewProvider<TView>, ViewProxyProvider<TView> {
-
-    override var getView: () -> TView?
+    GetViewHolder<TView>, ViewProxyProvider<TView> {
 
     override fun setViewProviderUnsafe(unsafeGetView: () -> Any?) {
         getView = {
@@ -22,6 +20,10 @@ interface LifecycleSummerViewModel<TView> :
             view as TView?
         }
     }
+}
+
+interface GetViewHolder<TView> : GetViewProvider<TView> {
+    override var getView: () -> TView?
 }
 
 /**
@@ -35,7 +37,7 @@ interface ViewModelController {
     fun viewCreated()
 
     /**
-     * Provide untyped view provider. It will be force converted to typed [ViewProvider.getView].
+     * Provide untyped view provider. It will be force converted to typed [GetViewProvider.getView].
      */
     fun setViewProviderUnsafe(unsafeGetView: () -> Any?)
 }

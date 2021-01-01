@@ -1,13 +1,13 @@
 package summer.events
 
-import summer.ViewProvider
+import summer.GetViewProvider
 
 /**
  * Action will be executed only if view exists.
  */
-class DoOnlyWhenAttachedStrategy<TView> : SummerEventStrategy<TView, ViewProvider<TView>> {
+class DoOnlyWhenAttachedStrategy<TView> : SummerEventStrategy<TView, GetViewProvider<TView>> {
 
-    override fun called(owner: ViewProvider<TView>, applyArgs: (TView) -> (() -> Unit)) {
+    override fun called(owner: GetViewProvider<TView>, applyArgs: (TView) -> (() -> Unit)) {
         val view = owner.getView()
         if (view != null) {
             val action = applyArgs(view)
@@ -15,7 +15,7 @@ class DoOnlyWhenAttachedStrategy<TView> : SummerEventStrategy<TView, ViewProvide
         }
     }
 
-    interface Factory<TView> : EventFactory<TView, ViewProvider<TView>> {
+    interface Factory<TView> : EventFactory<TView, GetViewProvider<TView>> {
 
         fun EventBuilder<TView, () -> Unit>.doOnlyWhenAttached() = build(
             strategy = DoOnlyWhenAttachedStrategy()

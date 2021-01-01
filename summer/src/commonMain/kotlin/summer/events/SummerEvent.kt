@@ -1,17 +1,17 @@
 package summer.events
 
-import summer.ViewProvider
+import summer.GetViewProvider
 
 /**
  * Proxy that calls action following defined [SummerEventStrategy].
  * Can proxy actions with 0-12 arguments. Have child to each supported arity.
  */
-abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
+abstract class SummerEvent<out TView, in TOwner : GetViewProvider<TView>> {
 
     abstract val strategy: SummerEventStrategy<TView, TOwner>
     abstract fun viewCreated()
 
-    class A0<out TView, in TOwner : ViewProvider<TView>>(
+    class A0<out TView, in TOwner : GetViewProvider<TView>>(
         private val getAction: (TView) -> (() -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -31,7 +31,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A1<out TView, in TOwner : ViewProvider<TView>, T1>(
+    class A1<out TView, in TOwner : GetViewProvider<TView>, T1>(
         private val getAction: (TView) -> ((T1) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -51,7 +51,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A2<out TView, in TOwner : ViewProvider<TView>, T1, T2>(
+    class A2<out TView, in TOwner : GetViewProvider<TView>, T1, T2>(
         private val getAction: (TView) -> ((T1, T2) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -71,7 +71,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A3<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3>(
+    class A3<out TView, in TOwner : GetViewProvider<TView>, T1, T2, T3>(
         private val getAction: (TView) -> ((T1, T2, T3) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -91,7 +91,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A4<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4>(
+    class A4<out TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4>(
         private val getAction: (TView) -> ((T1, T2, T3, T4) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -111,7 +111,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A5<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5>(
+    class A5<out TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -131,7 +131,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A6<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6>(
+    class A6<out TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -151,7 +151,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A7<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7>(
+    class A7<out TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -171,7 +171,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A8<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8>(
+    class A8<out TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -191,7 +191,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A9<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9>(
+    class A9<out TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -211,7 +211,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A10<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
+    class A10<out TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -231,7 +231,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A11<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
+    class A11<out TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>
@@ -251,7 +251,7 @@ abstract class SummerEvent<out TView, in TOwner : ViewProvider<TView>> {
         }
     }
 
-    class A12<out TView, in TOwner : ViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
+    class A12<out TView, in TOwner : GetViewProvider<TView>, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(
         private val getAction: (TView) -> ((T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> Unit),
         private val owner: TOwner,
         override val strategy: SummerEventStrategy<TView, TOwner>

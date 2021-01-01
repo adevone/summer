@@ -13,7 +13,7 @@ import summer.state.SummerStateDelegate
  * and executing of events (see [SummerEvent]).
  */
 abstract class SummerViewModel<TView> :
-    RestoreSummerViewModel<TView, InMemoryStoreProvider, ViewProvider<TView>>(),
+    RestoreSummerViewModel<TView, InMemoryStoreProvider, GetViewProvider<TView>>(),
     DoOnlyWhenAttachedStrategy.Factory<TView>,
     DoExactlyOnceStrategy.Factory<TView>,
     InMemoryStateStrategy.Factory<TView>,
@@ -24,6 +24,6 @@ abstract class SummerViewModel<TView> :
      */
     override val inMemoryStore = InMemoryStore()
 
-    override fun getEventsOwner(): ViewProvider<TView> = this
+    override fun getEventsOwner(): GetViewProvider<TView> = this
     override fun getStateOwner(): InMemoryStoreProvider = this
 }

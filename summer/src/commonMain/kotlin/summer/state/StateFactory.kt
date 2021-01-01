@@ -1,6 +1,6 @@
 package summer.state
 
-import summer.ViewProvider
+import summer.GetViewProvider
 import kotlin.reflect.KMutableProperty0
 
 /**
@@ -9,7 +9,7 @@ import kotlin.reflect.KMutableProperty0
  * [TView] see [SummerStateStrategy]
  * [TOwner] see [SummerStateStrategy]
  */
-interface StateFactory<TView, TOwner> : ViewProvider<TView> {
+interface StateFactory<TView, TOwner> : GetViewProvider<TView> {
 
     /**
      * Creates provider of [SummerStateDelegate].
@@ -47,7 +47,7 @@ interface StateFactory<TView, TOwner> : ViewProvider<TView> {
 /**
  * Mirror state changes to view only if it exists.
  */
-fun <TView, T> ViewProvider<TView>.setMirrorIfViewExists(
+fun <TView, T> GetViewProvider<TView>.setMirrorIfViewExists(
     getMirrorProperty: GetMirrorProperty<TView, T>?
 ): (T) -> Unit = { value ->
     val currentView = getView()

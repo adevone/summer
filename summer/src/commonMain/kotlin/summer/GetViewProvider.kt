@@ -6,6 +6,6 @@ import summer.events.SummerEvent
 /**
  * Provider of view to mirror [SummerStateDelegate] state changes and [SummerEvent] action calls to it.
  */
-interface ViewProvider<out TView> {
+interface GetViewProvider<out TView> {
     val getView: () -> TView?
 }

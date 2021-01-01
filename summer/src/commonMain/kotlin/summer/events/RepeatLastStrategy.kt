@@ -1,16 +1,16 @@
 package summer.events
 
-import summer.ViewProvider
+import summer.GetViewProvider
 
 /**
  * Proxies each call of [SummerEvent] to action if view exists and
  * repeats last call of [SummerEvent] on each view creation.
  */
-class RepeatLastStrategy<TView> : SummerEventStrategy<TView, ViewProvider<TView>> {
+class RepeatLastStrategy<TView> : SummerEventStrategy<TView, GetViewProvider<TView>> {
 
     private var lastApplication: ApplyArgs<TView>? = null
 
-    override fun called(owner: ViewProvider<TView>, applyArgs: ApplyArgs<TView>) {
+    override fun called(owner: GetViewProvider<TView>, applyArgs: ApplyArgs<TView>) {
         val view = owner.getView()
         if (view != null) {
             val action = applyArgs(view)
@@ -19,7 +19,7 @@ class RepeatLastStrategy<TView> : SummerEventStrategy<TView, ViewProvider<TView>
         lastApplication = applyArgs
     }
 
-    override fun viewCreated(owner: ViewProvider<TView>) {
+    override fun viewCreated(owner: GetViewProvider<TView>) {
         val view = owner.getView()
         if (view != null) {
             lastApplication?.let { applyArgs ->
