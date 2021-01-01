@@ -5,7 +5,7 @@ import android.os.Parcelable
 import android.util.SparseArray
 import summer.android.bundle.BundleProvider
 import summer.android.bundle.BundleStateDelegateProvider
-import summer.state.GetMirrorProperty
+import summer.state.GetViewProperty
 import summer.state.StateFactory
 
 @Suppress("UNCHECKED_CAST")
@@ -16,9 +16,9 @@ class ParcelableBundleStateStrategy<T : Parcelable?> : BundleStateStrategy<T>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun <T : Parcelable?> state(
-            getMirrorProperty: GetMirrorProperty<TView, T>? = null,
+            getMirrorProperty: GetViewProperty<T, TView>? = null,
             initial: T
-        ): BundleStateDelegateProvider<T> {
+        ): BundleStateDelegateProvider<T, TView> {
             return state(getMirrorProperty, initial, ParcelableBundleStateStrategy())
         }
     }
@@ -32,9 +32,9 @@ class ParcelableArrayBundleStateStrategy<T : Parcelable?> : BundleStateStrategy<
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun <T : Parcelable> state(
-            getMirrorProperty: GetMirrorProperty<TView, Array<T>?>? = null,
+            getMirrorProperty: GetViewProperty<Array<T>?, TView>? = null,
             initial: Array<T>?
-        ): BundleStateDelegateProvider<Array<T>?> {
+        ): BundleStateDelegateProvider<Array<T>?, TView> {
             return state(getMirrorProperty, initial, ParcelableArrayBundleStateStrategy<T>())
         }
     }
@@ -52,9 +52,9 @@ class ParcelableSparseArrayBundleStateStrategy<T : Parcelable> : BundleStateStra
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun <T : Parcelable> state(
-            getMirrorProperty: GetMirrorProperty<TView, SparseArray<T>?>? = null,
+            getMirrorProperty: GetViewProperty<SparseArray<T>?, TView>? = null,
             initial: SparseArray<T>?
-        ): BundleStateDelegateProvider<SparseArray<T>?> {
+        ): BundleStateDelegateProvider<SparseArray<T>?, TView> {
             return state(getMirrorProperty, initial, ParcelableSparseArrayBundleStateStrategy<T>())
         }
     }

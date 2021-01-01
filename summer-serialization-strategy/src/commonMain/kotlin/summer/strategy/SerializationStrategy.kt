@@ -1,7 +1,7 @@
 package summer.strategy
 
 import kotlinx.serialization.KSerializer
-import summer.state.GetMirrorProperty
+import summer.state.GetViewProperty
 import summer.state.StateFactory
 import summer.state.SummerStateDelegate
 import summer.state.SummerStateStrategy
@@ -26,11 +26,11 @@ class SerializationStrategy<T>(
     interface Factory<TView> : StateFactory<TView, SerializationStateProvider> {
 
         fun <T> state(
-            getMirrorProperty: GetMirrorProperty<TView, T>? = null,
+            getViewProperty: GetViewProperty<T, TView>? = null,
             initial: T,
             serializer: KSerializer<T>
-        ): SummerStateDelegate.Provider<T, SerializationStateProvider> {
-            return state(getMirrorProperty, initial, SerializationStrategy(serializer))
+        ): SummerStateDelegate.Provider<T, TView, SerializationStateProvider> {
+            return state(getViewProperty, initial, SerializationStrategy(serializer))
         }
     }
 }

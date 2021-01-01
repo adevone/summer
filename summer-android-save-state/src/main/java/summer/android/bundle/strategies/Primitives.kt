@@ -3,7 +3,7 @@ package summer.android.bundle.strategies
 import android.os.Bundle
 import summer.android.bundle.BundleProvider
 import summer.android.bundle.BundleStateDelegateProvider
-import summer.state.GetMirrorProperty
+import summer.state.GetViewProperty
 import summer.state.StateFactory
 
 object IntBundleStateStrategy : BundleStateStrategy<Int>(
@@ -13,9 +13,9 @@ object IntBundleStateStrategy : BundleStateStrategy<Int>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Int>? = null,
+            getMirrorProperty: GetViewProperty<Int, TView>? = null,
             initial: Int
-        ): BundleStateDelegateProvider<Int> {
+        ): BundleStateDelegateProvider<Int, TView> {
             return state(getMirrorProperty, initial, IntBundleStateStrategy)
         }
     }
@@ -28,9 +28,9 @@ object IntArrayBundleStateStrategy : BundleStateStrategy<IntArray?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, IntArray?>? = null,
+            getMirrorProperty: GetViewProperty<IntArray?, TView>? = null,
             initial: IntArray?
-        ): BundleStateDelegateProvider<IntArray?> {
+        ): BundleStateDelegateProvider<IntArray?, TView> {
             return state(getMirrorProperty, initial, IntArrayBundleStateStrategy)
         }
     }
@@ -48,9 +48,9 @@ object BooleanBundleStateStrategy : BundleStateStrategy<Boolean>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Boolean>? = null,
+            getMirrorProperty: GetViewProperty<Boolean, TView>? = null,
             initial: Boolean
-        ): BundleStateDelegateProvider<Boolean> {
+        ): BundleStateDelegateProvider<Boolean, TView> {
             return state(getMirrorProperty, initial, BooleanBundleStateStrategy)
         }
     }
@@ -63,9 +63,9 @@ object BooleanArrayBundleStateStrategy : BundleStateStrategy<BooleanArray?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, BooleanArray?>? = null,
+            getMirrorProperty: GetViewProperty<BooleanArray?, TView>? = null,
             initial: BooleanArray?
-        ): BundleStateDelegateProvider<BooleanArray?> {
+        ): BundleStateDelegateProvider<BooleanArray?, TView> {
             return state(getMirrorProperty, initial, BooleanArrayBundleStateStrategy)
         }
     }
@@ -78,9 +78,9 @@ object LongBundleStateStrategy : BundleStateStrategy<Long>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Long>? = null,
+            getMirrorProperty: GetViewProperty<Long, TView>? = null,
             initial: Long
-        ): BundleStateDelegateProvider<Long> {
+        ): BundleStateDelegateProvider<Long, TView> {
             return state(getMirrorProperty, initial, LongBundleStateStrategy)
         }
     }
@@ -93,9 +93,9 @@ object LongArrayBundleStateStrategy : BundleStateStrategy<LongArray?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, LongArray?>? = null,
+            getMirrorProperty: GetViewProperty<LongArray?, TView>? = null,
             initial: LongArray?
-        ): BundleStateDelegateProvider<LongArray?> {
+        ): BundleStateDelegateProvider<LongArray?, TView> {
             return state(getMirrorProperty, initial, LongArrayBundleStateStrategy)
         }
     }
@@ -108,9 +108,9 @@ object ShortBundleStateStrategy : BundleStateStrategy<Short>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Short>? = null,
+            getMirrorProperty: GetViewProperty<Short, TView>? = null,
             initial: Short
-        ): BundleStateDelegateProvider<Short> {
+        ): BundleStateDelegateProvider<Short, TView> {
             return state(getMirrorProperty, initial, ShortBundleStateStrategy)
         }
     }
@@ -123,9 +123,9 @@ object ShortArrayBundleStateStrategy : BundleStateStrategy<ShortArray?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, ShortArray?>? = null,
+            getMirrorProperty: GetViewProperty<ShortArray?, TView>? = null,
             initial: ShortArray?
-        ): BundleStateDelegateProvider<ShortArray?> {
+        ): BundleStateDelegateProvider<ShortArray?, TView> {
             return state(getMirrorProperty, initial, ShortArrayBundleStateStrategy)
         }
     }
@@ -138,9 +138,9 @@ object FloatBundleStateStrategy : BundleStateStrategy<Float>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Float>? = null,
+            getMirrorProperty: GetViewProperty<Float, TView>? = null,
             initial: Float
-        ): BundleStateDelegateProvider<Float> {
+        ): BundleStateDelegateProvider<Float, TView> {
             return state(getMirrorProperty, initial, FloatBundleStateStrategy)
         }
     }
@@ -153,9 +153,9 @@ object FloatArrayBundleStateStrategy : BundleStateStrategy<FloatArray?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, FloatArray?>? = null,
+            getMirrorProperty: GetViewProperty<FloatArray?, TView>? = null,
             initial: FloatArray?
-        ): BundleStateDelegateProvider<FloatArray?> {
+        ): BundleStateDelegateProvider<FloatArray?, TView> {
             return state(getMirrorProperty, initial, FloatArrayBundleStateStrategy)
         }
     }
@@ -168,9 +168,9 @@ object DoubleBundleStateStrategy : BundleStateStrategy<Double>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Double>? = null,
+            getMirrorProperty: GetViewProperty<Double, TView>? = null,
             initial: Double
-        ): BundleStateDelegateProvider<Double> {
+        ): BundleStateDelegateProvider<Double, TView> {
             return state(getMirrorProperty, initial, DoubleBundleStateStrategy)
         }
     }
@@ -183,9 +183,9 @@ object DoubleArrayBundleStateStrategy : BundleStateStrategy<DoubleArray?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, DoubleArray?>? = null,
+            getMirrorProperty: GetViewProperty<DoubleArray?, TView>? = null,
             initial: DoubleArray?
-        ): BundleStateDelegateProvider<DoubleArray?> {
+        ): BundleStateDelegateProvider<DoubleArray?, TView> {
             return state(getMirrorProperty, initial, DoubleArrayBundleStateStrategy)
         }
     }
@@ -198,9 +198,9 @@ object CharBundleStateStrategy : BundleStateStrategy<Char>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Char>? = null,
+            getMirrorProperty: GetViewProperty<Char, TView>? = null,
             initial: Char
-        ): BundleStateDelegateProvider<Char> {
+        ): BundleStateDelegateProvider<Char, TView> {
             return state(getMirrorProperty, initial, CharBundleStateStrategy)
         }
     }
@@ -213,9 +213,9 @@ object CharArrayBundleStateStrategy : BundleStateStrategy<CharArray?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, CharArray?>? = null,
+            getMirrorProperty: GetViewProperty<CharArray?, TView>? = null,
             initial: CharArray?
-        ): BundleStateDelegateProvider<CharArray?> {
+        ): BundleStateDelegateProvider<CharArray?, TView> {
             return state(getMirrorProperty, initial, CharArrayBundleStateStrategy)
         }
     }
@@ -228,9 +228,9 @@ object ByteBundleStateStrategy : BundleStateStrategy<Byte>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Byte>? = null,
+            getMirrorProperty: GetViewProperty<Byte, TView>? = null,
             initial: Byte
-        ): BundleStateDelegateProvider<Byte> {
+        ): BundleStateDelegateProvider<Byte, TView> {
             return state(getMirrorProperty, initial, ByteBundleStateStrategy)
         }
     }
@@ -243,9 +243,9 @@ object ByteArrayBundleStateStrategy : BundleStateStrategy<ByteArray?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, ByteArray?>? = null,
+            getMirrorProperty: GetViewProperty<ByteArray?, TView>? = null,
             initial: ByteArray?
-        ): BundleStateDelegateProvider<ByteArray?> {
+        ): BundleStateDelegateProvider<ByteArray?, TView> {
             return state(getMirrorProperty, initial, ByteArrayBundleStateStrategy)
         }
     }

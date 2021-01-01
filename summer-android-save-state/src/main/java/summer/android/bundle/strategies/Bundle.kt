@@ -3,7 +3,7 @@ package summer.android.bundle.strategies
 import android.os.Bundle
 import summer.android.bundle.BundleProvider
 import summer.android.bundle.BundleStateDelegateProvider
-import summer.state.GetMirrorProperty
+import summer.state.GetViewProperty
 import summer.state.StateFactory
 
 object BundleBundleStateStrategy : BundleStateStrategy<Bundle?>(
@@ -13,9 +13,9 @@ object BundleBundleStateStrategy : BundleStateStrategy<Bundle?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Bundle?>? = null,
+            getMirrorProperty: GetViewProperty<Bundle?, TView>? = null,
             initial: Bundle?
-        ): BundleStateDelegateProvider<Bundle?> {
+        ): BundleStateDelegateProvider<Bundle?, TView> {
             return state(getMirrorProperty, initial, BundleBundleStateStrategy)
         }
     }

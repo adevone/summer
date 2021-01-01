@@ -6,7 +6,7 @@ import android.util.Size
 import android.util.SizeF
 import summer.android.bundle.BundleProvider
 import summer.android.bundle.BundleStateDelegateProvider
-import summer.state.GetMirrorProperty
+import summer.state.GetViewProperty
 import summer.state.StateFactory
 import java.io.Serializable
 
@@ -17,9 +17,9 @@ object BinderBundleStateStrategy : BundleStateStrategy<IBinder?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, IBinder?>? = null,
+            getMirrorProperty: GetViewProperty<IBinder?, TView>? = null,
             initial: IBinder?
-        ): BundleStateDelegateProvider<IBinder?> {
+        ): BundleStateDelegateProvider<IBinder?, TView> {
             return state(getMirrorProperty, initial, BinderBundleStateStrategy)
         }
     }
@@ -33,9 +33,9 @@ class SerializableBundleStateStrategy<T : Serializable?> : BundleStateStrategy<T
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun <T : Serializable?> state(
-            getMirrorProperty: GetMirrorProperty<TView, T>? = null,
+            getMirrorProperty: GetViewProperty<T, TView>? = null,
             initial: T
-        ): BundleStateDelegateProvider<T> {
+        ): BundleStateDelegateProvider<T, TView> {
             return state(getMirrorProperty, initial, SerializableBundleStateStrategy<T>())
         }
     }
@@ -48,9 +48,9 @@ object SizeBundleStateStrategy : BundleStateStrategy<Size?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Size?>? = null,
+            getMirrorProperty: GetViewProperty<Size?, TView>? = null,
             initial: Size?
-        ): BundleStateDelegateProvider<Size?> {
+        ): BundleStateDelegateProvider<Size?, TView> {
             return state(getMirrorProperty, initial, SizeBundleStateStrategy)
         }
     }
@@ -63,9 +63,9 @@ object SizeFBundleStateStrategy : BundleStateStrategy<SizeF?>(
     interface Factory<TView> : StateFactory<TView, BundleProvider> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, SizeF?>? = null,
+            getMirrorProperty: GetViewProperty<SizeF?, TView>? = null,
             initial: SizeF?
-        ): BundleStateDelegateProvider<SizeF?> {
+        ): BundleStateDelegateProvider<SizeF?, TView> {
             return state(getMirrorProperty, initial, SizeFBundleStateStrategy)
         }
     }

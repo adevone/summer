@@ -7,4 +7,4 @@ interface BundleProvider {
     val bundle: Bundle
 }
 
-typealias BundleStateDelegateProvider<T> = SummerStateDelegate.Provider<T, BundleProvider>
+typealias BundleStateDelegateProvider<T, TView> = SummerStateDelegate.Provider<T, TView, BundleProvider>
