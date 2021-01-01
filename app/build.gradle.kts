@@ -38,14 +38,6 @@ android {
             isTestCoverageEnabled = false
         }
     }
-
-    packagingOptions {
-        exclude("META-INF/proguard/androidx-annotations.pro")
-        exclude("META-INF/*.version")
-        exclude("META-INF/*.kotlin_module")
-        exclude("**.kotlin_builtins")
-        exclude("**.kotlin_metadata")
-    }
 }
 
 dependencies {
@@ -54,12 +46,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
-    implementation("io.ktor:ktor-client-core:$ktorVersion") {
-        exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
-    }
-    implementation("io.ktor:ktor-client-okhttp:$ktorVersion") {
-        exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
-    }
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
@@ -69,7 +57,7 @@ dependencies {
     implementation("com.google.android.material:material:1.2.1")
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
 
     implementation("com.squareup.picasso:picasso:2.71828")
