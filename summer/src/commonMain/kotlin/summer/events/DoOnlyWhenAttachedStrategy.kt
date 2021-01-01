@@ -7,11 +7,13 @@ import summer.GetViewProvider
  */
 class DoOnlyWhenAttachedStrategy<TView> : SummerEventStrategy<TView, GetViewProvider<TView>> {
 
-    override fun called(owner: GetViewProvider<TView>, applyArgs: (TView) -> (() -> Unit)) {
+    override fun called(
+        owner: GetViewProvider<TView>,
+        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>
+    ) {
         val view = owner.getView()
         if (view != null) {
-            val action = applyArgs(view)
-            action()
+            viewEventExecutor.execute(view)
         }
     }
 

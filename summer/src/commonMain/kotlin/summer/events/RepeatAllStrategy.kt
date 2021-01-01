@@ -8,23 +8,24 @@ import summer.GetViewProvider
  */
 class RepeatAllStrategy<TView> : SummerEventStrategy<TView, GetViewProvider<TView>> {
 
-    private val applications = mutableListOf<ApplyArgs<TView>>()
+    private val executors = mutableListOf<SummerEvent.ViewEventExecutor<TView>>()
 
-    override fun called(owner: GetViewProvider<TView>, applyArgs: ApplyArgs<TView>) {
+    override fun called(
+        owner: GetViewProvider<TView>,
+        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>
+    ) {
         val view = owner.getView()
         if (view != null) {
-            val action = applyArgs(view)
-            action()
+            viewEventExecutor.execute(view)
         }
-        applications.add(applyArgs)
+        executors.add(viewEventExecutor)
     }
 
     override fun viewCreated(owner: GetViewProvider<TView>) {
         val view = owner.getView()
         if (view != null) {
-            applications.forEach { applyArgs ->
-                val action = applyArgs(view)
-                action()
+            executors.forEach { executor ->
+                executor.execute(view)
             }
         }
     }

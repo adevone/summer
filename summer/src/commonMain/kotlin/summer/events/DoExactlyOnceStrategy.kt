@@ -8,26 +8,27 @@ import summer.GetViewProvider
  */
 class DoExactlyOnceStrategy<TView> : SummerEventStrategy<TView, GetViewProvider<TView>> {
 
-    private var notExecutedApplications = mutableListOf<ApplyArgs<TView>>()
+    private var notExecuted = mutableListOf<SummerEvent.ViewEventExecutor<TView>>()
 
-    override fun called(owner: GetViewProvider<TView>, applyArgs: ApplyArgs<TView>) {
+    override fun called(
+        owner: GetViewProvider<TView>,
+        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>
+    ) {
         val view = owner.getView()
         if (view != null) {
-            val action = applyArgs(view)
-            action()
+            viewEventExecutor.execute(view)
         } else {
-            notExecutedApplications.add(applyArgs)
+            notExecuted.add(viewEventExecutor)
         }
     }
 
     override fun viewCreated(owner: GetViewProvider<TView>) {
         val view = owner.getView()
         if (view != null) {
-            notExecutedApplications.forEach { applyArgs ->
-                val action = applyArgs(view)
-                action()
+            notExecuted.forEach { executor ->
+                executor.execute(view)
             }
-            notExecutedApplications.clear()
+            notExecuted.clear()
         }
     }
 

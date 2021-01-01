@@ -1,9 +1,6 @@
 package summer
 
-import summer.events.DoExactlyOnceStrategy
-import summer.events.DoOnlyWhenAttachedStrategy
-import summer.events.EventFactory
-import summer.events.SummerEventStrategy
+import summer.events.*
 import summer.state.*
 
 /**

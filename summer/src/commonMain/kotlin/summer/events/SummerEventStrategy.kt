@@ -1,7 +1,7 @@
 package summer.events
 
-import summer.LifecycleViewModel
 import summer.GetViewProvider
+import summer.LifecycleViewModel
 
 /**
  * Rule that determine behaviour of [SummerEvent] when it invoked.
@@ -13,20 +13,14 @@ import summer.GetViewProvider
  *          strategy than define it on your custom interface, extend it from [ViewProvider]
  *          and implement on your [LifecycleViewModel].
  */
-interface SummerEventStrategy<out TView, in TOwner : GetViewProvider<TView>> {
+interface SummerEventStrategy<TView, in TOwner : GetViewProvider<TView>> {
     /**
      * [SummerEvent] was invoked
      */
-    fun called(owner: TOwner, applyArgs: ApplyArgs<TView>)
+    fun called(owner: TOwner, viewEventExecutor: SummerEvent.ViewEventExecutor<TView>)
 
     /**
      * [LifecycleViewModel.viewCreated] was called
      */
     fun viewCreated(owner: TOwner) {}
 }
-
-
-/**
- * Provider of view action with applied arguments.
- */
-typealias ApplyArgs<TView> = (TView) -> (() -> Unit)
