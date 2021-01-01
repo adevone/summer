@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import summer.GetViewProvider
 import summer.RestoreViewModel
+import summer.ViewProxyProvider
 import summer.android.bundle.strategies.*
 import summer.events.DoExactlyOnceStrategy
 import summer.events.DoOnlyWhenAttachedStrategy
@@ -11,6 +12,7 @@ import summer.state.GetViewProperty
 
 abstract class SaveStateSummerViewModel<TView> :
     RestoreViewModel<TView, BundleProvider, Any?>(),
+    ViewProxyProvider<TView>,
     DoOnlyWhenAttachedStrategy.Factory<TView>, DoExactlyOnceStrategy.Factory<TView>,
     IntBundleStateStrategy.Factory<TView>, IntArrayBundleStateStrategy.Factory<TView>,
     BooleanBundleStateStrategy.Factory<TView>, BooleanArrayBundleStateStrategy.Factory<TView>,
