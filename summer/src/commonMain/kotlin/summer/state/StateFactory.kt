@@ -27,11 +27,12 @@ interface StateFactory<TView, TOwner> : SummerFactory<TView> {
         strategy: SummerStateStrategy<T, TOwner>
     ): SummerStateDelegate.Provider<T, TView, TOwner> {
         return SummerStateDelegate.Provider(
-            stateOwner(),
-            getViewProvider(),
+            getViewProperty,
             initial,
+            getViewProvider(),
+            owner = stateOwner(),
+            listener = stateListener(),
             strategy,
-            getViewProperty = getViewProperty,
             delegateCreated = { delegate ->
                 stateDelegateCreated(delegate)
             }
@@ -41,4 +42,6 @@ interface StateFactory<TView, TOwner> : SummerFactory<TView> {
     fun stateOwner(): TOwner
 
     fun stateDelegateCreated(delegate: SummerStateDelegate<*, *, *>)
+
+    fun stateListener(): StateListener<TView, TOwner>? = null
 }
