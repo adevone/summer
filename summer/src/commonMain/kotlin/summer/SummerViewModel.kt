@@ -14,6 +14,7 @@ import summer.state.SummerStateDelegate
  */
 abstract class SummerViewModel<TView> :
     RestoreSummerViewModel<TView, InMemoryStoreProvider, GetViewProvider<TView>>(),
+    ViewProxyProvider<TView>,
     DoOnlyWhenAttachedStrategy.Factory<TView>,
     DoExactlyOnceStrategy.Factory<TView>,
     InMemoryStateStrategy.Factory<TView>,

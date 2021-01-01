@@ -13,7 +13,6 @@ import summer.state.SummerStateDelegate
  */
 abstract class RestoreSummerViewModel<TView, TStateOwner, TEventsOwner : GetViewProvider<TView>> :
     EnterLifecycleSummerViewModelImpl<TView>(),
-    ViewProxyProvider<TView>,
     EventFactory<TView, TEventsOwner>,
     StateFactory<TView, TStateOwner> {
 
