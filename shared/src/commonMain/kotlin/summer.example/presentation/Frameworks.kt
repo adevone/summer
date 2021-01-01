@@ -37,19 +37,19 @@ class FrameworksViewModel(
         updateFrameworks()
     }
 
-    val onFrameworkClick by tracking(fun(password: Hidden<String>, framework: Framework) {
+    val onFrameworkClick by tracking { password: Hidden<String>, framework: Framework ->
         val hiddenPassword: String = password.value.toList().joinToString(separator = "") { "*" }
         println(hiddenPassword)
         viewProxy.toDetails(framework)
-    })
+    }
 
-    val onIncreaseClick by tracking(fun(framework: Framework) {
+    val onIncreaseClick by tracking { framework: Framework ->
         basketController.increase(framework)
-    })
+    }
 
-    val onDecreaseClick by tracking(fun(framework: Framework) {
+    val onDecreaseClick by tracking { framework: Framework ->
         basketController.decrease(framework)
-    })
+    }
 
     private fun updateFrameworks() {
         launch {
@@ -58,7 +58,7 @@ class FrameworksViewModel(
         }
     }
 
-    val onCrashClick by tracking(fun() {
+    val onCrashClick by tracking {
         throw IllegalStateException("app is crashed")
-    })
+    }
 }

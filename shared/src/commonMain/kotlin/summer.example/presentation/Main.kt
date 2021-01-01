@@ -17,7 +17,7 @@ class MainViewModel : BaseViewModel<MainView>() {
         override var selectedTab by state({ it::selectedTab }, initial = allTabs.first())
     }
 
-    val onMenuItemClick by tracking(fun(tab: Tab) {
+    val onMenuItemClick by tracking { tab: Tab ->
         viewProxy.selectedTab = tab
-    })
+    }
 }
