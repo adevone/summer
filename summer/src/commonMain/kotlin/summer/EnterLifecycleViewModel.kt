@@ -2,6 +2,8 @@ package summer
 
 /**
  * Implemented in [EnterLifecycleSummerViewModelImpl].
+ *
+ * @param [TView] see [GetViewProvider]
  */
 interface EnterLifecycleViewModel<TView> : LifecycleViewModel<TView>, EnterListener
 

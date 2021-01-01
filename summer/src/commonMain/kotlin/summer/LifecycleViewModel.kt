@@ -7,7 +7,7 @@ import summer.state.SummerStateDelegate
  * Extent from this class if you want call [SummerEvent.viewCreated] or
  * [SummerStateDelegate.restore] on custom place.
  *
- * [TView] is type of associated view.
+ * @param [TView] see [GetViewProvider]
  */
 interface LifecycleViewModel<TView> :
     ViewModelController,

@@ -11,7 +11,7 @@ import summer.state.SummerStateStrategy
  * Extent from this class if you want to implement
  * custom [EventFactory] or [StateFactory]
  *
- * @param [TView] see [LifecycleViewModel]
+ * @param [TView] see [GetViewProvider]
  * @param [TStateOwner] see [SummerStateStrategy]
  * @param [TEventsOwner] see [SummerEventStrategy]
  */

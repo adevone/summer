@@ -32,7 +32,6 @@ interface DefaultSummerViewModel<TView> :
  * class MyViewModel<TView> :
  *     <parent class that prohibits inheritance from DefaultSummerViewModelImpl>,
  *     DefaultSummerViewModel<TView> by DefaultSummerViewModelImpl()
- * @param [TView] see [LifecycleViewModel]
  */
 open class DefaultSummerViewModelImpl<TView> :
     DefaultSummerViewModel<TView>,
