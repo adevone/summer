@@ -41,7 +41,7 @@ interface StateFactory<TView, TOwner> : GetViewProvider<TView> {
 
     fun getStateOwner(): TOwner
 
-    fun stateDelegateCreated(delegate: SummerStateDelegate<*, TOwner>)
+    fun stateDelegateCreated(delegate: SummerStateDelegate<*, *>)
 }
 
 /**

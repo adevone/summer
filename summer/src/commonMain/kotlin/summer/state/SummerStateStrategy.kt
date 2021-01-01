@@ -12,7 +12,7 @@ import kotlin.reflect.KProperty
  *          on your [LifecycleViewModel].
  *          Store should be provided through [TOwner].
  */
-interface SummerStateStrategy<T, TOwner> {
+interface SummerStateStrategy<T, in TOwner> {
     /**
      * Obtain value from store.
      * [prop] is property delegated by associated [SummerStateDelegate]

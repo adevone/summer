@@ -4,7 +4,7 @@ import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class SummerStateDelegate<T, TOwner>(
+class SummerStateDelegate<T, in TOwner>(
     private val owner: TOwner,
     private val property: KProperty<*>,
     private val initial: T,
@@ -36,7 +36,7 @@ class SummerStateDelegate<T, TOwner>(
         }
     }
 
-    class Provider<T, TOwner>(
+    class Provider<T, in TOwner>(
         private val owner: TOwner,
         private val initial: T,
         private val strategy: SummerStateStrategy<T, TOwner>,

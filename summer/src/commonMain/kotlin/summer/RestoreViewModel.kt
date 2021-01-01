@@ -29,13 +29,13 @@ abstract class RestoreViewModel<TView, TStateOwner, TEventsOwner : GetViewProvid
         super.viewCreated()
     }
 
-    private val events = mutableListOf<SummerEvent<TView, TEventsOwner>>()
-    override fun eventCreated(event: SummerEvent<TView, TEventsOwner>) {
+    private val events = mutableListOf<SummerEvent<*, *>>()
+    override fun eventCreated(event: SummerEvent<*, *>) {
         events.add(event)
     }
 
-    private val stateDelegates = mutableSetOf<SummerStateDelegate<*, TStateOwner>>()
-    override fun stateDelegateCreated(delegate: SummerStateDelegate<*, TStateOwner>) {
+    private val stateDelegates = mutableSetOf<SummerStateDelegate<*, *>>()
+    override fun stateDelegateCreated(delegate: SummerStateDelegate<*, *>) {
         stateDelegates.add(delegate)
     }
 }
