@@ -20,20 +20,21 @@ fun executorProperties(arity: Int): String {
 
 for (arity in 0..12) {
     println("""
-class A${arity}<TView, in TOwner : GetViewProvider<TView>${finishSignature(arity)}>(
+class A${arity}<TView, in TOwner${finishSignature(arity)}>(
     private val getAction: (TView) -> ((${lambdaParams(arity)}) -> Unit),
     private val owner: TOwner,
+    private val getViewProvider: GetViewProvider<TView>,
     private val listener: EventListener<TView, TOwner>?,
     override val strategy: SummerEventStrategy<TView, TOwner>
 ) : (${lambdaParams(arity)}) -> Unit, SummerEvent<TView, TOwner>() {
 
     override fun viewCreated() {
-        strategy.viewCreated(owner)
+        strategy.viewCreated(owner, getViewProvider)
     }
 
     override fun invoke(${namedParams(arity)}) {
         val executor = EventExecutor(${passParams(arity)})
-        strategy.called(owner, executor)
+        strategy.called(executor, owner, getViewProvider)
         listener?.called(strategy, executor, owner)
     }
 

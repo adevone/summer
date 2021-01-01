@@ -6,23 +6,27 @@ import summer.GetViewProvider
  * Proxies each call of [SummerEvent] to action if view exists and
  * repeats each call of [SummerEvent] on each view creation.
  */
-class RepeatAllStrategy<TView> : SummerEventStrategy<TView, GetViewProvider<TView>> {
+class RepeatAllStrategy<TView> : SummerEventStrategy<TView, Any?> {
 
     private val executors = mutableListOf<SummerEvent.ViewEventExecutor<TView>>()
 
     override fun called(
-        owner: GetViewProvider<TView>,
-        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>
+        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>,
+        owner: Any?,
+        getViewProvider: GetViewProvider<TView>
     ) {
-        val view = owner.getView()
+        val view = getViewProvider.getView()
         if (view != null) {
             viewEventExecutor.execute(view)
         }
         executors.add(viewEventExecutor)
     }
 
-    override fun viewCreated(owner: GetViewProvider<TView>) {
-        val view = owner.getView()
+    override fun viewCreated(
+        owner: Any?,
+        getViewProvider: GetViewProvider<TView>
+    ) {
+        val view = getViewProvider.getView()
         if (view != null) {
             executors.forEach { executor ->
                 executor.execute(view)

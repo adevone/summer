@@ -15,7 +15,7 @@ import summer.state.*
 interface DefaultSummerViewModel<TView> :
     EnterLifecycleViewModel<TView>,
     StateFactory<TView, InMemoryStoreProvider>,
-    EventFactory<TView, GetViewProvider<TView>>,
+    EventFactory<TView, Any?>,
     InMemoryStateStrategy.Factory<TView>,
     InMemoryStoreProvider,
     DoOnlyWhenAttachedStrategy.Factory<TView>,
@@ -32,13 +32,13 @@ interface DefaultSummerViewModel<TView> :
  */
 open class DefaultSummerViewModelImpl<TView> :
     DefaultSummerViewModel<TView>,
-    RestoreViewModel<TView, InMemoryStoreProvider, GetViewProvider<TView>>() {
+    RestoreViewModel<TView, InMemoryStoreProvider, Any?>() {
 
     /**
      * Used for state storing by default. Can be overridden.
      */
     override val inMemoryStore = InMemoryStore()
 
-    override fun getEventsOwner(): GetViewProvider<TView> = this
+    override fun eventsOwner(): Any? = this
     override fun stateOwner(): InMemoryStoreProvider = this
 }

@@ -6,15 +6,16 @@ import summer.GetViewProvider
  * If view exists then action will be executed right now.
  * If view does not exist then when view will be created.
  */
-class DoExactlyOnceStrategy<TView> : SummerEventStrategy<TView, GetViewProvider<TView>> {
+class DoExactlyOnceStrategy<TView> : SummerEventStrategy<TView, Any?> {
 
     private var notExecuted = mutableListOf<SummerEvent.ViewEventExecutor<TView>>()
 
     override fun called(
-        owner: GetViewProvider<TView>,
-        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>
+        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>,
+        owner: Any?,
+        getViewProvider: GetViewProvider<TView>
     ) {
-        val view = owner.getView()
+        val view = getViewProvider.getView()
         if (view != null) {
             viewEventExecutor.execute(view)
         } else {
@@ -22,8 +23,11 @@ class DoExactlyOnceStrategy<TView> : SummerEventStrategy<TView, GetViewProvider<
         }
     }
 
-    override fun viewCreated(owner: GetViewProvider<TView>) {
-        val view = owner.getView()
+    override fun viewCreated(
+        owner: Any?,
+        getViewProvider: GetViewProvider<TView>
+    ) {
+        val view = getViewProvider.getView()
         if (view != null) {
             notExecuted.forEach { executor ->
                 executor.execute(view)
@@ -32,7 +36,7 @@ class DoExactlyOnceStrategy<TView> : SummerEventStrategy<TView, GetViewProvider<
         }
     }
 
-    interface Factory<TView> : EventFactory<TView, GetViewProvider<TView>> {
+    interface Factory<TView> : EventFactory<TView, Any?> {
 
         fun EventBuilder<TView, () -> Unit>.doExactlyOnce() = build(
             strategy = DoExactlyOnceStrategy()

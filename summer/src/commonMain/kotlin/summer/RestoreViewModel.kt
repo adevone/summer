@@ -15,7 +15,7 @@ import summer.state.SummerStateStrategy
  * @param [TStateOwner] see [SummerStateStrategy]
  * @param [TEventsOwner] see [SummerEventStrategy]
  */
-abstract class RestoreViewModel<TView, TStateOwner, TEventsOwner : GetViewProvider<TView>> :
+abstract class RestoreViewModel<TView, TStateOwner, TEventsOwner> :
     EnterLifecycleSummerViewModelImpl<TView>(),
     EventFactory<TView, TEventsOwner>,
     StateFactory<TView, TStateOwner> {

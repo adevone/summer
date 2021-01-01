@@ -1,6 +1,6 @@
 package summer.state
 
-import summer.GetViewProvider
+import summer.SummerFactory
 
 /**
  * DSL to create [SummerStateDelegate.Provider].
@@ -8,7 +8,7 @@ import summer.GetViewProvider
  * [TView] see [SummerStateStrategy]
  * [TOwner] see [SummerStateStrategy]
  */
-interface StateFactory<TView, TOwner> {
+interface StateFactory<TView, TOwner> : SummerFactory<TView> {
     /**
      * Creates provider of [SummerStateDelegate].
      *
@@ -41,6 +41,4 @@ interface StateFactory<TView, TOwner> {
     fun stateOwner(): TOwner
 
     fun stateDelegateCreated(delegate: SummerStateDelegate<*, *, *>)
-
-    fun getViewProvider(): GetViewProvider<TView>
 }

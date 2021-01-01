@@ -13,14 +13,23 @@ import summer.ViewLifecycleListener
  *          strategy than define it on your custom interface, extend it from [ViewProvider]
  *          and implement on your [LifecycleViewModel].
  */
-interface SummerEventStrategy<TView, in TOwner : GetViewProvider<TView>> {
+interface SummerEventStrategy<TView, in TOwner> {
     /**
      * [SummerEvent] was invoked
      */
-    fun called(owner: TOwner, viewEventExecutor: SummerEvent.ViewEventExecutor<TView>)
+    fun called(
+        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>,
+        owner: TOwner,
+        getViewProvider: GetViewProvider<TView>
+    )
 
     /**
      * [ViewLifecycleListener.viewCreated] was called
      */
-    fun viewCreated(owner: TOwner) {}
+    fun viewCreated(
+        owner: TOwner,
+        getViewProvider: GetViewProvider<TView>
+    ) {
+        // do nothing by default
+    }
 }

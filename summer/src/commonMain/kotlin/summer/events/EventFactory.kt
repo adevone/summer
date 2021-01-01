@@ -1,6 +1,6 @@
 package summer.events
 
-import summer.GetViewProvider
+import summer.SummerFactory
 
 /**
  * DSL to create [EventBuilder] and transform it
@@ -9,7 +9,7 @@ import summer.GetViewProvider
  * [TView] see [SummerEventStrategy]
  * [TOwner] see [SummerEventStrategy]
  */
-interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
+interface EventFactory<TView, TOwner> : SummerFactory<TView> {
 
     fun eventCreated(event: SummerEvent<*, *>)
 
@@ -21,8 +21,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A0(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -32,8 +33,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A1(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -43,8 +45,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A2(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -54,8 +57,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A3(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -65,8 +69,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A4(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -76,8 +81,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A5(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -87,8 +93,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A6(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -98,8 +105,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A7(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -109,8 +117,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A8(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -120,8 +129,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A9(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -131,8 +141,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A10(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -142,8 +153,9 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A11(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
@@ -153,16 +165,17 @@ interface EventFactory<TView, TOwner : GetViewProvider<TView>> {
         strategy: SummerEventStrategy<TView, TOwner>
     ) = SummerEvent.A12(
         this.getAction,
-        getEventsOwner(),
-        getEventListener(),
+        eventsOwner(),
+        getViewProvider(),
+        eventListener(),
         strategy
     ).also { event ->
         eventCreated(event)
     }
 
-    fun getEventsOwner(): TOwner
+    fun eventsOwner(): TOwner
 
-    fun getEventListener(): EventListener<TView, TOwner>? = null
+    fun eventListener(): EventListener<TView, TOwner>? = null
 }
 
 class EventBuilder<in TView, out TFunction>(
