@@ -1,8 +1,6 @@
 package summer.state
 
 import summer.GetViewProvider
-import summer.events.SummerEvent
-import summer.events.SummerEventStrategy
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
@@ -29,7 +27,7 @@ class SummerStateDelegate<T, TView, TOwner>(
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
         strategy.set(owner, property, value)
-        listener?.set(owner, property, strategy)
+        listener?.set(value, property, owner, strategy)
         setViewPropertyIfViewExists(value)
     }
 
@@ -49,7 +47,7 @@ class SummerStateDelegate<T, TView, TOwner>(
             getViewProperty?.let { getViewProperty ->
                 val viewProperty = getViewProperty(view)
                 viewProperty.set(value)
-                listener?.setOnView(view, owner, property, strategy)
+                listener?.setOnView(value, property, view, owner, strategy)
             }
         }
     }
@@ -98,8 +96,9 @@ interface StateListener<TView, TOwner> {
      * Always called before [setOnView] and after the value stored
      */
     fun set(
-        owner: TOwner,
+        value: Any?,
         property: KProperty<*>,
+        owner: TOwner,
         strategy: SummerStateStrategy<*, TOwner>,
     )
 
@@ -107,9 +106,10 @@ interface StateListener<TView, TOwner> {
      * Always called after [set]
      */
     fun setOnView(
+        value: Any?,
+        property: KProperty<*>,
         view: TView,
         owner: TOwner,
-        property: KProperty<*>,
         strategy: SummerStateStrategy<*, TOwner>,
     )
 }
