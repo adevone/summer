@@ -2,11 +2,11 @@ package summer.android
 
 import android.os.Bundle
 import android.view.View
-import summer.LifecycleSummerViewModel
+import summer.LifecycleViewModel
 
 abstract class SummerFragment : BaseSummerFragment<SummerViewModelProvider<*, *>>() {
 
-    fun <TView, TViewModel : LifecycleSummerViewModel<TView>> TView.bindViewModel(
+    fun <TView, TViewModel : LifecycleViewModel<TView>> TView.bindViewModel(
         createViewModel: () -> TViewModel
     ): SummerViewModelProvider<TView, TViewModel> {
         val provider = SummerViewModelProvider(createViewModel, view = this)

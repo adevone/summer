@@ -3,11 +3,11 @@ package summer.android
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
-import summer.LifecycleSummerViewModel
+import summer.LifecycleViewModel
 
 abstract class SummerActivity : BaseSummerActivity<SummerViewModelProvider<*, *>>() {
 
-    fun <TView, TViewModel : LifecycleSummerViewModel<TView>> TView.bindViewModel(
+    fun <TView, TViewModel : LifecycleViewModel<TView>> TView.bindViewModel(
         createViewModel: () -> TViewModel
     ): SummerViewModelProvider<TView, TViewModel> {
         val provider = SummerViewModelProvider(createViewModel, view = this)

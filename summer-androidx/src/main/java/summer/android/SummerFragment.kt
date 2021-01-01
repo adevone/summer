@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
-import summer.LifecycleSummerViewModel
+import summer.LifecycleViewModel
 
 abstract class SummerFragment : BaseSummerFragment<SummerViewModelProvider<*, *>> {
 
@@ -12,7 +12,7 @@ abstract class SummerFragment : BaseSummerFragment<SummerViewModelProvider<*, *>
 
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
-    fun <TView, TViewModel : LifecycleSummerViewModel<TView>> TView.bindViewModel(
+    fun <TView, TViewModel : LifecycleViewModel<TView>> TView.bindViewModel(
         createViewModel: () -> TViewModel
     ): SummerViewModelProvider<TView, TViewModel> {
         val provider = SummerViewModelProvider(createViewModel, view = this)

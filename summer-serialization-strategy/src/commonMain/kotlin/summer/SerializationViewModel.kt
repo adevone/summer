@@ -7,7 +7,7 @@ import summer.strategy.SerializationStore
 import summer.strategy.SerializationStrategy
 
 abstract class SerializationViewModel<TView> :
-    RestoreSummerViewModel<TView, SerializationStateProvider, ViewProvider<TView>>(),
+    RestoreViewModel<TView, SerializationStateProvider, GetViewProvider<TView>>(),
     DoOnlyWhenAttachedStrategy.Factory<TView>,
     DoExactlyOnceStrategy.Factory<TView>,
     SerializationStrategy.Factory<TView>,
@@ -15,6 +15,6 @@ abstract class SerializationViewModel<TView> :
 
     override var serializationStore = SerializationStore()
 
-    override fun getEventsOwner(): ViewProvider<TView> = this
+    override fun getEventsOwner(): GetViewProvider<TView> = this
     override fun getStateOwner(): SerializationStateProvider = this
 }

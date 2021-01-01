@@ -56,7 +56,7 @@ if (propsFile.exists()) {
             load(propsFile.inputStream())
         }
         repositories {
-            maven("https://api.bintray.com/maven/summermpp/summer/summer/;publish=0") {
+            maven("https://api.bintray.com/maven/summermpp/summer/summer/;publish=0;override=1") {
                 name = "bintray"
 
                 credentials {
