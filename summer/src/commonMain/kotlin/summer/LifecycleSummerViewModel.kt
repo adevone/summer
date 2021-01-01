@@ -30,14 +30,16 @@ interface GetViewHolder<TView> : GetViewProvider<TView> {
  * Non-generic protocol that can be used to call lifecycle events of [SummerViewModel]
  * in languages without covariant types support (like Swift).
  */
-interface ViewModelController {
-    /**
-     * Must be called when view is created. May be called multiple times.
-     */
-    fun viewCreated()
-
+interface ViewModelController : ViewLifecycleListener {
     /**
      * Provide untyped view provider. It will be force converted to typed [GetViewProvider.getView].
      */
     fun setViewProviderUnsafe(unsafeGetView: () -> Any?)
+}
+
+interface ViewLifecycleListener {
+    /**
+     * Must be called when view is created. May be called multiple times.
+     */
+    fun viewCreated()
 }
