@@ -2,8 +2,8 @@ package summer
 
 import summer.events.EventFactory
 import summer.events.SummerEvent
-import summer.state.SummerStateDelegate
 import summer.state.StateFactory
+import summer.state.SummerStateDelegate
 
 /**
  * Extent from this class if you want to implement
@@ -13,6 +13,7 @@ import summer.state.StateFactory
  */
 abstract class RestoreSummerViewModel<TView, TStateOwner, TEventsOwner : GetViewProvider<TView>> :
     LifecycleSummerViewModel<TView>,
+    ViewProxyProvider<TView>,
     EventFactory<TView, TEventsOwner>,
     StateFactory<TView, TStateOwner> {
 
