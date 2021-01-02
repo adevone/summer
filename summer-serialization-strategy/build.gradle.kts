@@ -29,7 +29,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-                api("com.github.adevone.summer:summer:$summerVersion")
+                implementation("com.github.adevone.summer:summer:$summerVersion")
 //                implementation(project(":summer"))
             }
         }

@@ -33,6 +33,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
     api("androidx.appcompat:appcompat:$appCompatVersion")
 
+    api("com.github.adevone.summer:summer:$summerVersion")
     api("com.github.adevone.summer:summer-androidx:$summerVersion")
     api("com.github.adevone.summer:summer-serialization-strategy:$summerVersion")
 
