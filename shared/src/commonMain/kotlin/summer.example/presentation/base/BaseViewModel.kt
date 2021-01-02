@@ -7,13 +7,14 @@ import summer.SummerViewModel
 import summer.ViewModelController
 import summer.example.AppKodeinAware
 import kotlin.coroutines.CoroutineContext
+import kotlin.native.concurrent.ThreadLocal
 
 abstract class BaseViewModel<TView> : SummerViewModel<TView>(), BaseViewModelController,
-    AppKodeinAware,
-    CoroutineScope {
+    AppKodeinAware {
 
     private val job = SupervisorJob()
-    override val coroutineContext: CoroutineContext = mainDispatcher + job
+    private val coroutineContext: CoroutineContext = mainDispatcher + job
+    val viewModelScope = CoroutineScope(coroutineContext)
 
     override fun onDestroy() {
         job.cancel()

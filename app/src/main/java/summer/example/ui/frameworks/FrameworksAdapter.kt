@@ -39,15 +39,15 @@ class FrameworksAdapter(
             versionView.text = item.framework.version
 
             decreaseButton.setOnClickListener {
-                viewModel.onDecreaseClick(framework = item.framework)
+                viewModel.onDecreaseClick(item)
             }
             countView.text = item.quantity.toString()
             increaseButton.setOnClickListener {
-                viewModel.onIncreaseClick(framework = item.framework)
+                viewModel.onIncreaseClick(item)
             }
 
             containerView.setOnClickListener {
-                viewModel.onFrameworkClick(framework = item.framework)
+                viewModel.onItemClick(item)
             }
         }
     }

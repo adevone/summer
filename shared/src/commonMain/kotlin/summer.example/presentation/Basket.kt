@@ -21,6 +21,6 @@ class BasketViewModel : BaseViewModel<BasketView>() {
     init {
         basketController.flow.onEach { basket ->
             viewProxy.items = basket.items
-        }.launchIn(this)
+        }.launchIn(viewModelScope)
     }
 }

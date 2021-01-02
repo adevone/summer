@@ -4,8 +4,8 @@ import kotlinx.coroutines.launch
 import org.kodein.di.instance
 import summer.example.domain.about.GetAbout
 import summer.example.entity.About
-import summer.example.presentation.base.LoadingView
 import summer.example.presentation.base.BaseViewModel
+import summer.example.presentation.base.LoadingView
 import summer.example.presentation.base.withLoading
 
 interface AboutView : LoadingView {
@@ -22,7 +22,7 @@ class AboutViewModel : BaseViewModel<AboutView>() {
 
     override fun onEnter() {
         super.onEnter()
-        launch {
+        viewModelScope.launch {
             withLoading {
                 val about = getAbout()
                 viewProxy.about = about

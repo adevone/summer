@@ -53,11 +53,11 @@ class FrameworkCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBAction func increaseTapped(_ sender: Any) {
-        viewModel.onIncreaseClick(framework: item.framework)
+        viewModel.onIncreaseClick(item: item)
     }
     
     @IBAction func decreaseTapped(_ sender: Any) {
-        viewModel.onDecreaseClick(framework: item.framework)
+        viewModel.onDecreaseClick(item: item)
     }
     
     private var item: Basket.Item!
