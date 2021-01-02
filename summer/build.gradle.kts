@@ -1,7 +1,7 @@
 import java.util.*
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    kotlin("multiplatform")
     id("maven-publish")
 }
 
@@ -29,26 +29,27 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion")
             }
         }
-        getByName("jvmMain") {
+        val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib"))
-
             }
         }
-        getByName("jvmTest") {
+        val jvmTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
                 implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
             }
         }
-        getByName("iosArm64Main") {
+        val iosArm64Main by getting {
             dependencies {
-
             }
         }
-
-        getByName("iosX64Main").dependsOn(getByName("iosArm64Main"))
-        getByName("iosArm32Main").dependsOn(getByName("iosArm64Main"))
+        val iosX64Main by getting {
+            dependsOn(iosArm64Main)
+        }
+        val iosArm32Main by getting {
+            dependsOn(iosArm64Main)
+        }
     }
 }
 

@@ -1,9 +1,8 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
+    kotlin("multiplatform")
     id("kotlinx-serialization")
+    kotlin("native.cocoapods")
 }
 
 android {
@@ -20,22 +19,18 @@ android {
     }
 }
 
+project.version = summerVersion
+
 kotlin {
-    iosArm64 {
-        binaries {
-            framework {
-                embedBitcode("disable")
-            }
-        }
-    }
-    iosX64 {
-        binaries {
-            framework {
-                embedBitcode("disable")
-            }
-        }
-    }
     android()
+    iosArm64()
+    iosX64()
+
+    cocoapods {
+        summary = "Some description for a Kotlin/Native module"
+        homepage = "Link to a Kotlin/Native module homepage"
+        frameworkName = "shared"
+    }
 
     sourceSets {
         commonMain {
@@ -53,34 +48,19 @@ kotlin {
 //                implementation(project(":summer"))
             }
         }
-        getByName("androidMain") {
+        val androidMain by getting {
             dependencies {
                 implementation(kotlin("stdlib"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
             }
         }
-        getByName("iosArm64Main") {
+        val iosArm64Main by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktorVersion")
             }
         }
-        getByName("iosX64Main").dependsOn(getByName("iosArm64Main"))
-    }
-}
-
-tasks.create("copyFramework") {
-    val buildType = project.findProperty("kotlin.build.type")?.toString() ?: "DEBUG"
-    val targetName = if (buildType == "DEBUG") "iosX64" else "iosArm64"
-    dependsOn("link${buildType.toLowerCase().capitalize()}Framework${targetName.capitalize()}")
-    doLast {
-        val target = kotlin.targets.getByName(targetName) as KotlinNativeTarget
-        val srcFile = target.binaries.getFramework(buildType).outputFile
-        val targetDir = project.property("configuration.build.dir")!!
-        copy {
-            from(srcFile.parent)
-            into(targetDir)
-            include("shared.framework/**")
-            include("shared.framework.dSYM")
+        val iosX64Main by getting {
+            dependsOn(iosArm64Main)
         }
     }
 }
