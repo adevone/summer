@@ -5,6 +5,7 @@ import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import summer.LifecycleViewModel
+import summer.DidSetMixin
 
 abstract class SummerFragment : BaseSummerFragment<SummerViewModelProvider<*, *>> {
 

@@ -3,6 +3,7 @@ package summer.android
 import android.os.Bundle
 import android.view.View
 import summer.LifecycleViewModel
+import summer.DidSetMixin
 
 abstract class SummerFragment : BaseSummerFragment<SummerViewModelProvider<*, *>>() {
 

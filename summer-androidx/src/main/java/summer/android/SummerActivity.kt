@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import summer.LifecycleViewModel
+import summer.DidSetMixin
 
 abstract class SummerActivity : BaseSummerActivity<SummerViewModelProvider<*, *>>() {
 
