@@ -8,7 +8,7 @@
 import SwiftUI
 import shared
 
-class MainViewState: ObservableObject, MainView {
+class MainViewState: BaseState, MainView {
     @Published var selectedTab: Tab? = nil
     @Published var tabs = [Tab]()
 }
@@ -18,7 +18,7 @@ struct MainUI: View {
     @ObservedObject var state = MainViewState()
     var viewModel = MainViewModel()
     init() {
-        bind(viewModel, state)
+        state.bind(viewModel)
     }
 
     var body: some View {

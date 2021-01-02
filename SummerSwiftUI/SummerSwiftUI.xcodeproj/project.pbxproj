@@ -15,13 +15,13 @@
 		A867E98C25A002FF0052C399 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A867E98B25A002FF0052C399 /* Preview Assets.xcassets */; };
 		A867E99725A003000052C399 /* SummerSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E99625A003000052C399 /* SummerSwiftUITests.swift */; };
 		A867E9A225A003000052C399 /* SummerSwiftUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E9A125A003000052C399 /* SummerSwiftUIUITests.swift */; };
-		A867E9BA25A004A40052C399 /* Bind.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E9B925A004A40052C399 /* Bind.swift */; };
 		A867E9D325A015B40052C399 /* MainUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E9D225A015B40052C399 /* MainUI.swift */; };
 		A867E9DD25A0166C0052C399 /* frameworks_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A867E9DA25A0166B0052C399 /* frameworks_icon.png */; };
 		A867E9DE25A0166C0052C399 /* basket_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A867E9DB25A0166B0052C399 /* basket_icon.png */; };
 		A867E9DF25A0166C0052C399 /* about_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A867E9DC25A0166C0052C399 /* about_icon.png */; };
 		A867E9E725A01B590052C399 /* FrameworksUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E9E625A01B590052C399 /* FrameworksUI.swift */; };
 		A867E9F225A01FFF0052C399 /* BasketUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E9F125A01FFF0052C399 /* BasketUI.swift */; };
+		A867EA0C25A12ABC0052C399 /* BaseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867EA0B25A12ABC0052C399 /* BaseState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,13 +58,13 @@
 		A867E99D25A003000052C399 /* SummerSwiftUIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SummerSwiftUIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A867E9A125A003000052C399 /* SummerSwiftUIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummerSwiftUIUITests.swift; sourceTree = "<group>"; };
 		A867E9A325A003000052C399 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A867E9B925A004A40052C399 /* Bind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bind.swift; sourceTree = "<group>"; };
 		A867E9D225A015B40052C399 /* MainUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUI.swift; sourceTree = "<group>"; };
 		A867E9DA25A0166B0052C399 /* frameworks_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frameworks_icon.png; sourceTree = "<group>"; };
 		A867E9DB25A0166B0052C399 /* basket_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = basket_icon.png; sourceTree = "<group>"; };
 		A867E9DC25A0166C0052C399 /* about_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_icon.png; sourceTree = "<group>"; };
 		A867E9E625A01B590052C399 /* FrameworksUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworksUI.swift; sourceTree = "<group>"; };
 		A867E9F125A01FFF0052C399 /* BasketUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketUI.swift; sourceTree = "<group>"; };
+		A867EA0B25A12ABC0052C399 /* BaseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseState.swift; sourceTree = "<group>"; };
 		BBA7FCD505BF62F7E45B496D /* Pods-SummerSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SummerSwiftUITests.release.xcconfig"; path = "Target Support Files/Pods-SummerSwiftUITests/Pods-SummerSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
 		D1A7F2721CD51B7DA92E85A1 /* Pods-SummerSwiftUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SummerSwiftUI.debug.xcconfig"; path = "Target Support Files/Pods-SummerSwiftUI/Pods-SummerSwiftUI.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -186,7 +186,7 @@
 		A867E9B825A0048F0052C399 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				A867E9B925A004A40052C399 /* Bind.swift */,
+				A867EA0B25A12ABC0052C399 /* BaseState.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -390,12 +390,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A867E9BA25A004A40052C399 /* Bind.swift in Sources */,
 				A867E9D325A015B40052C399 /* MainUI.swift in Sources */,
 				A867E98725A002FD0052C399 /* AboutUI.swift in Sources */,
 				A867E98525A002FD0052C399 /* SummerSwiftUIApp.swift in Sources */,
 				A867E9E725A01B590052C399 /* FrameworksUI.swift in Sources */,
 				A867E9F225A01FFF0052C399 /* BasketUI.swift in Sources */,
+				A867EA0C25A12ABC0052C399 /* BaseState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

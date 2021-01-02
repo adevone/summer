@@ -9,7 +9,7 @@ import SwiftUI
 import URLImage
 import shared
 
-class AboutViewState: ObservableObject, AboutView {
+class AboutViewState: BaseState, AboutView {
     @Published var about: About? = nil
     @Published var isLoading: Bool = false
 }
@@ -19,7 +19,7 @@ struct AboutUI: View {
     @ObservedObject var state = AboutViewState()
     var viewModel = AboutViewModel()
     init() {
-        bind(viewModel, state)
+        state.bind(viewModel)
     }
 
     var body: some View {

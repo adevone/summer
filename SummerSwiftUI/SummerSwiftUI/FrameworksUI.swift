@@ -9,7 +9,7 @@ import SwiftUI
 import URLImage
 import shared
 
-class FrameworksViewState: ObservableObject, FrameworksView {
+class FrameworksViewState: BaseState, FrameworksView {
     @Published var items = [Basket.Item]()
     @Published var detailsFramework: Framework? = nil
     lazy var toDetails: (Framework) -> Void = { Framework in
@@ -22,7 +22,7 @@ struct FrameworksUI: View {
     @ObservedObject var state = FrameworksViewState()
     var viewModel = FrameworksViewModel()
     init() {
-        bind(viewModel, state)
+        state.bind(viewModel)
     }
 
     var body: some View {

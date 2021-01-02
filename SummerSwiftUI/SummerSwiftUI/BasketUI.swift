@@ -8,7 +8,7 @@
 import SwiftUI
 import shared
 
-class BasketViewState: ObservableObject, BasketView {
+class BasketViewState: BaseState, BasketView {
     @Published var items = [Basket.Item]()
 }
 
@@ -17,7 +17,7 @@ struct BasketUI: View {
     @ObservedObject var state = BasketViewState()
     var viewModel = BasketViewModel()
     init() {
-        bind(viewModel, state)
+        state.bind(viewModel)
     }
 
     var body: some View {
