@@ -3,22 +3,22 @@ package summer.example.ui.frameworks
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.SimpleItemAnimator
-import kotlinx.android.synthetic.main.frameworks_fragment.*
 import kotlinx.serialization.Serializable
-import summer.example.R
+import summer.example.databinding.FrameworksFragmentBinding
 import summer.example.entity.Basket
 import summer.example.entity.Framework
-import summer.example.presentation.FrameworksViewModel
 import summer.example.presentation.FrameworksView
+import summer.example.presentation.FrameworksViewModel
 import summer.example.ui.base.BaseFragment
 import summer.example.ui.base.routing.ScreenArgs
 import summer.example.ui.base.routing.toScreen
 
 class FrameworksFragment :
-    BaseFragment<FrameworksFragment.Args>(R.layout.frameworks_fragment),
+    BaseFragment<FrameworksFragment.Args>(),
     FrameworksView {
 
     override val viewModel by bindViewModel { FrameworksViewModel() }
+    private val binding by viewBinding { FrameworksFragmentBinding.inflate(it) }
 
     override var items: List<Basket.Item> by didSet {
         frameworksAdapter.submitList(items)
@@ -33,8 +33,8 @@ class FrameworksFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         frameworksAdapter = FrameworksAdapter(viewModel)
-        frameworksView.adapter = frameworksAdapter
-        (frameworksView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        binding.frameworksView.adapter = frameworksAdapter
+        (binding.frameworksView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
     override val argsSerializer = Args.serializer()

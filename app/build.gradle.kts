@@ -1,12 +1,8 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
+    id("kotlin-parcelize")
     id("kotlinx-serialization")
-}
-
-androidExtensions {
-    isExperimental = true
 }
 
 android {
@@ -37,6 +33,10 @@ android {
             isDebuggable = true
             isTestCoverageEnabled = false
         }
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 

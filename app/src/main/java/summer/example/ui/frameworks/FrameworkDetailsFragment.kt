@@ -1,27 +1,28 @@
 package summer.example.ui.frameworks
 
 import android.widget.Toast
-import kotlinx.android.synthetic.main.framework_details_fragment.*
 import kotlinx.serialization.Serializable
-import summer.example.R
+import summer.example.databinding.FrameworkDetailsFragmentBinding
 import summer.example.entity.Framework
 import summer.example.entity.FullFramework
-import summer.example.presentation.FrameworkDetailsViewModel
 import summer.example.presentation.FrameworkDetailsView
+import summer.example.presentation.FrameworkDetailsViewModel
 import summer.example.ui.base.BaseSaveInstanceStateFragment
 import summer.example.ui.base.routing.ScreenArgs
 
 class FrameworkDetailsFragment :
-    BaseSaveInstanceStateFragment<FrameworkDetailsFragment.Args>(R.layout.framework_details_fragment),
+    BaseSaveInstanceStateFragment<FrameworkDetailsFragment.Args>(),
     FrameworkDetailsView {
 
     override val viewModel by bindViewModel {
         FrameworkDetailsViewModel(initialFramework = args.framework)
     }
 
+    private val binding by viewBinding { FrameworkDetailsFragmentBinding.inflate(it) }
+
     override var framework: FullFramework? by didSet {
-        nameView.text = framework?.name ?: ""
-        versionView.text = framework?.version ?: ""
+        binding.nameView.text = framework?.name ?: ""
+        binding.versionView.text = framework?.version ?: ""
     }
 
     override var notifyAboutName = { frameworkName: String ->
