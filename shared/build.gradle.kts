@@ -45,6 +45,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
                 implementation("com.github.adevone.summer:summer:$summerVersion")
+                implementation("com.github.adevone.summer:summer-arch-lifecycle:$summerVersion")
 //                implementation(project(":summer"))
             }
         }
@@ -52,6 +53,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
             }
         }
         val iosArm64Main by getting {

@@ -1,9 +1,9 @@
 package summer.example.ui.frameworks
 
 import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.serialization.Serializable
+import summer.example.bindViewModel
 import summer.example.databinding.FrameworksFragmentBinding
 import summer.example.entity.Basket
 import summer.example.entity.Framework
@@ -17,8 +17,20 @@ class FrameworksFragment :
     BaseFragment<FrameworksFragment.Args>(),
     FrameworksView {
 
-    override val viewModel by bindViewModel { FrameworksViewModel() }
     private val binding by viewBinding { FrameworksFragmentBinding.inflate(it) }
+
+    private lateinit var viewModel: FrameworksViewModel
+
+    private lateinit var frameworksAdapter: FrameworksAdapter
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = bindViewModel(FrameworksViewModel::class, fragment = this) { this }
+
+        frameworksAdapter = FrameworksAdapter(viewModel)
+        binding.frameworksView.adapter = frameworksAdapter
+        (binding.frameworksView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+    }
 
     override var items: List<Basket.Item> by didSet {
         frameworksAdapter.submitList(items)
@@ -26,15 +38,6 @@ class FrameworksFragment :
 
     override val toDetails = { framework: Framework ->
         ciceroneRouter.navigateTo(FrameworkDetailsFragment.Args(framework).toScreen())
-    }
-
-    private lateinit var frameworksAdapter: FrameworksAdapter
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        frameworksAdapter = FrameworksAdapter(viewModel)
-        binding.frameworksView.adapter = frameworksAdapter
-        (binding.frameworksView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
     override val argsSerializer = Args.serializer()

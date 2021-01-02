@@ -1,6 +1,6 @@
 package summer.example
 
-import androidx.multidex.MultiDexApplication
+import android.app.Application
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import kotlinx.serialization.json.Json
@@ -13,7 +13,7 @@ import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import summer.example.ui.base.routing.LocalCiceroneHolder
 
-class App : MultiDexApplication(), DIAware {
+class App : Application(), DIAware {
 
     override val di get() = mainDI
 

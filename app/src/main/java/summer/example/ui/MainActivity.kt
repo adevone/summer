@@ -9,6 +9,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.core.os.postDelayed
 import summer.example.R
+import summer.example.bindViewModel
 import summer.example.databinding.ActivityMainBinding
 import summer.example.entity.Tab
 import summer.example.presentation.MainView
@@ -20,13 +21,13 @@ import summer.example.ui.base.routing.toScreen
 
 class MainActivity : BaseActivity(), MainView {
 
-    override val viewModel by bindViewModel { MainViewModel() }
-
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel = bindViewModel(MainViewModel::class, activity = this) { this }
     }
 
     override var tabs: List<Tab> by didSet {

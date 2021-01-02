@@ -27,11 +27,10 @@ class FrameworksViewModel : BaseViewModel<FrameworksView>() {
     init {
         basketController.flow.onEach {
             updateFrameworks()
-        }.launchIn(viewModelScope)
+        }.launchIn(scope)
     }
 
-    override fun onEnter() {
-        super.onEnter()
+    init {
         updateFrameworks()
     }
 
@@ -48,7 +47,7 @@ class FrameworksViewModel : BaseViewModel<FrameworksView>() {
     }
 
     private fun updateFrameworks() {
-        viewModelScope.launch {
+        scope.launch {
             val frameworks = getAllFrameworkItems(springVersion = "5.0")
             viewProxy.items = frameworks
         }

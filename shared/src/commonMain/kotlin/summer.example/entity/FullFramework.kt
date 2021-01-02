@@ -1,12 +1,11 @@
 package summer.example.entity
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class FullFramework(
     val name: String,
     val version: String
-) : Parcelable
+)
 
 fun Framework.toFull() = FullFramework(name, version)
