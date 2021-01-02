@@ -16,17 +16,18 @@ import summer.state.SummerStateStrategy
  * @param [TEventsOwner] see [SummerEventStrategy]
  */
 abstract class RestoreViewModel<TView, TStateOwner, TEventsOwner> :
-    EnterLifecycleSummerViewModelImpl<TView>(),
+    LifecycleViewModel<TView>,
     EventFactory<TView, TEventsOwner>,
     StateFactory<TView, TStateOwner> {
 
+    override var getView: () -> TView? = { null }
+
+    /**
+     * Do not override to listen lifecycle @see [ViewLifecycleListener.viewCreated]
+     */
     override fun viewCreated() {
         stateDelegates.forEach { it.restore() }
         events.forEach { it.viewCreated() }
-
-        // onEnter must be called after restoring of the state
-        // because the view must be fully initialized in onEnter
-        super.viewCreated()
     }
 
     private val events = mutableListOf<SummerEvent<*, *>>()

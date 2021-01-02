@@ -40,6 +40,15 @@ interface ViewModelController : ViewLifecycleListener {
 interface ViewLifecycleListener {
     /**
      * Must be called when view is created. May be called multiple times.
+     *
+     * Important:
+     * Do not override this method to listen view model lifecycle.
+     * It will disable delegate for example [RestoreViewModel] if it used as a type delegate.
+     * You can use it to implement your own base view model (for example with custom strategies).
      */
-    fun viewCreated()
+    fun viewCreated() {}
+}
+
+open class LifecycleViewModelImpl<TView> : LifecycleViewModel<TView> {
+    override var getView: () -> TView? = { null }
 }

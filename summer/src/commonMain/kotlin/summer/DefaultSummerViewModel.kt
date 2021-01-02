@@ -13,7 +13,7 @@ import summer.state.*
  * @param [TView] see [LifecycleViewModel]
  */
 interface DefaultSummerViewModel<TView> :
-    EnterLifecycleViewModel<TView>,
+    LifecycleViewModel<TView>,
     StateFactory<TView, InMemoryStoreProvider>,
     EventFactory<TView, Any?>,
     InMemoryStateStrategy.Factory<TView>,
