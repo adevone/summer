@@ -30,9 +30,10 @@ android {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
-    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
+    api("androidx.appcompat:appcompat:$appCompatVersion")
 
-    implementation("com.github.adevone.summer:summer:$summerVersion")
+    api("com.github.adevone.summer:summer:$summerVersion")
 //    implementation(project(":summer"))
 }
 

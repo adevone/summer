@@ -12,7 +12,6 @@ android {
         applicationId = "summer.example"
         minSdkVersion(minVersion)
         targetSdkVersion(targetVersion)
-        multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -55,27 +54,24 @@ dependencies {
     implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
 
     implementation("com.google.android.material:material:1.2.1")
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.appcompat:appcompat:$appCompatVersion")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
 
     implementation("com.squareup.picasso:picasso:2.71828")
 
-    implementation("ru.terrakok.cicerone:cicerone:5.1.0")
-
-    implementation("androidx.multidex:multidex:2.0.1")
+    implementation("ru.terrakok.cicerone:cicerone:5.1.1")
 
     implementation("androidx.core:core-ktx:1.3.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.fragment:fragment-ktx:1.2.5")
 
     implementation(project(":shared"))
 
     implementation("com.github.adevone.summer:summer:$summerVersion")
-    implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
-    implementation("com.github.adevone.summer:summer-android-save-state:$summerVersion")
+    implementation("com.github.adevone.summer:summer-arch-lifecycle:$summerVersion")
 //    implementation(project(":summer"))
-//    implementation(project(":summer-androidx"))
-//    implementation(project(":summer-android-save-state"))
+//    implementation(project(":summer-arch-lifecycle"))
 
     implementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")

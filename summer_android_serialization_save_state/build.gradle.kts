@@ -14,7 +14,7 @@ android {
     compileSdkVersion(targetVersion)
 
     defaultConfig {
-        minSdkVersion(minVersion)
+        minSdkVersion(1)
         targetSdkVersion(targetVersion)
         versionCode = 1
         versionName = "1.0"
@@ -30,11 +30,11 @@ android {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
-    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
+    api("androidx.appcompat:appcompat:$appCompatVersion")
 
-    implementation("com.github.adevone.summer:summer:$summerVersion")
-    implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
-    implementation("com.github.adevone.summer:summer-serialization-strategy:$summerVersion")
+    api("com.github.adevone.summer:summer-androidx:$summerVersion")
+    api("com.github.adevone.summer:summer-serialization-strategy:$summerVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
     implementation("dev.ahmedmourad.bundlizer:bundlizer-core:0.3.0")

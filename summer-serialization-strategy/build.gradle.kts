@@ -29,7 +29,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-                implementation("com.github.adevone.summer:summer:$summerVersion")
+                api("com.github.adevone.summer:summer:$summerVersion")
 //                implementation(project(":summer"))
             }
         }
@@ -56,12 +56,12 @@ if (propsFile.exists()) {
             load(propsFile.inputStream())
         }
         repositories {
-            maven("https://api.bintray.com/maven/summermpp/summer/summer/;publish=0;override=1") {
-                name = "bintray"
+            maven("https://api.bintray.com/maven/summermpp/summer/${project.name}/;publish=0;override=1") {
+                this.name = "bintray"
 
                 credentials {
-                    username = bintrayProps.getProperty("USERNAME")
-                    password = bintrayProps.getProperty("API_KEY")
+                    this.username = bintrayProps.getProperty("USERNAME")
+                    this.password = bintrayProps.getProperty("API_KEY")
                 }
             }
         }
