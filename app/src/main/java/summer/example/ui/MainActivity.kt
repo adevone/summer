@@ -9,7 +9,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.core.os.postDelayed
 import summer.example.R
-import summer.example.bindViewModel
 import summer.example.databinding.ActivityMainBinding
 import summer.example.entity.Tab
 import summer.example.presentation.MainInput

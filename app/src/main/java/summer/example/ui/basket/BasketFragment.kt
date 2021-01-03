@@ -2,7 +2,6 @@ package summer.example.ui.basket
 
 import android.os.Bundle
 import kotlinx.serialization.Serializable
-import summer.example.bindViewModel
 import summer.example.databinding.BasketFragmentBinding
 import summer.example.entity.Basket
 import summer.example.presentation.BasketView

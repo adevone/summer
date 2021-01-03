@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import com.squareup.picasso.Picasso
 import kotlinx.serialization.Serializable
-import summer.example.bindViewModel
 import summer.example.databinding.AboutFragmentBinding
 import summer.example.entity.About
 import summer.example.presentation.AboutView

@@ -1,6 +1,5 @@
 package summer.example.presentation.base
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
@@ -15,6 +14,7 @@ import summer.example.presentation.FrameworksInput
 import summer.example.presentation.MainInput
 import summer.example.recording.InputStep
 import summer.example.recording.steps
+import kotlin.reflect.KClass
 
 private val module = SerializersModule {
     contextual(About.serializer())
@@ -29,6 +29,10 @@ private val module = SerializersModule {
 }
 
 abstract class BaseViewModel<TView, TInput : Any> : CoroutinesViewModel<TView>() {
+
+    init {
+        ViewModelEventsListener.onCreate(this::class)
+    }
 
     fun pass(input: TInput) {
         addStep(input)
@@ -54,7 +58,10 @@ val Any?.exhaustive get() = Unit
 
 expect abstract class CoroutinesViewModel<TView>() :
     ArchViewModel<TView>,
-    AppKodeinAware {
+    AppKodeinAware
 
-    val scope: CoroutineScope
+expect object ViewModelEventsListener {
+    fun onCreate(clazz: KClass<*>)
+    fun onAttach(clazz: KClass<*>, viewClass: KClass<*>)
+    fun onDetach(clazz: KClass<*>)
 }
