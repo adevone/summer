@@ -13,14 +13,14 @@ import summer.ViewLifecycleListener
  *          strategy than define it on your custom interface, extend it from [ViewProvider]
  *          and implement on your [LifecycleViewModel].
  */
-interface EventProxyStrategy<TView, in TOwner> {
+interface EventProxyStrategy<TView, TOwner> {
     /**
      * [EventProxy] was invoked
      */
     fun proxyInvoked(
-        viewEventExecutor: EventProxy.ViewEventExecutor<TView>,
+        execution: ViewEventExecution<TView, TOwner>,
         owner: TOwner,
-        getViewProvider: GetViewProvider<TView>
+        getViewProvider: GetViewProvider<TView>,
     )
 
     /**
@@ -28,7 +28,7 @@ interface EventProxyStrategy<TView, in TOwner> {
      */
     fun viewCreated(
         owner: TOwner,
-        getViewProvider: GetViewProvider<TView>
+        getViewProvider: GetViewProvider<TView>,
     ) {
         // do nothing by default
     }

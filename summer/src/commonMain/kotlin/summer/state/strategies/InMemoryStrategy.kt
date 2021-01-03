@@ -1,6 +1,9 @@
-package summer.state
+package summer.state.strategies
 
-import summer.SummerViewModel
+import summer.state.GetViewProperty
+import summer.state.StateProxy
+import summer.state.StateProxyFactory
+import summer.state.StateProxyStrategy
 import kotlin.reflect.KProperty
 
 /**
@@ -24,39 +27,9 @@ class InMemoryStrategy<T> : StateProxyStrategy<T, InMemoryStoreProvider> {
 
         fun <T> state(
             getViewProperty: GetViewProperty<T, TView>? = null,
-            initial: T
+            initial: T,
         ): StateProxy.Provider<T, TView, InMemoryStoreProvider> {
             return state(getViewProperty, initial, InMemoryStrategy())
         }
-    }
-}
-
-/**
- * Owner of [InMemoryStrategy]
- */
-interface InMemoryStoreProvider {
-    val inMemoryStore: InMemoryStore
-}
-
-/**
- * Default store for [SummerViewModel].
- * Saved values will be restored only when they saved in same instance.
- */
-class InMemoryStore {
-    private var isInitByKey = mutableMapOf<String, Unit>()
-    private val storedValuesByKey = mutableMapOf<String, Any?>()
-
-    fun isInit(key: String): Boolean {
-        return key in isInitByKey
-    }
-
-    fun <T> get(key: String): T {
-        @Suppress("UNCHECKED_CAST")
-        return storedValuesByKey[key] as T
-    }
-
-    fun <T> set(key: String, value: T) {
-        storedValuesByKey[key] = value
-        isInitByKey[key] = Unit
     }
 }

@@ -1,9 +1,9 @@
 package summer
 
 import summer.events.EventProxy
-import summer.state.InMemoryStore
-import summer.state.InMemoryStoreProvider
 import summer.state.StateProxy
+import summer.state.strategies.InMemoryStore
+import summer.state.strategies.InMemoryStoreProvider
 
 expect abstract class ArchViewModel<TView> constructor() :
     DefaultSummerViewModel<TView>,

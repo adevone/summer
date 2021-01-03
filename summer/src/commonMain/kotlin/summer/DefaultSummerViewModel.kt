@@ -1,7 +1,12 @@
 package summer
 
 import summer.events.*
+import summer.events.strategies.DoExactlyOnceStrategy
+import summer.events.strategies.DoOnlyWhenAttachedStrategy
 import summer.state.*
+import summer.state.strategies.InMemoryStore
+import summer.state.strategies.InMemoryStoreProvider
+import summer.state.strategies.InMemoryStrategy
 
 /**
  * View model with support of default

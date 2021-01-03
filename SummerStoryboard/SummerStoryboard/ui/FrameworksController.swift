@@ -30,8 +30,17 @@ class FrameworksController: BaseController, FrameworksView {
         viewModel = FrameworksViewModel()
         super.viewDidLoad()
         frameworksTable.dataSource = self
+        frameworksTable.delegate = self
     }
     
+}
+
+extension FrameworksController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = items[indexPath.row]
+        viewModel.onItemClick(item: item)
+    }
 }
 
 extension FrameworksController: UITableViewDataSource {

@@ -1,7 +1,7 @@
 package summer
 
-import summer.events.DoExactlyOnceStrategy
-import summer.events.DoOnlyWhenAttachedStrategy
+import summer.events.strategies.DoExactlyOnceStrategy
+import summer.events.strategies.DoOnlyWhenAttachedStrategy
 import summer.strategy.SerializationStateProvider
 import summer.strategy.SerializationStore
 import summer.strategy.SerializationStrategy

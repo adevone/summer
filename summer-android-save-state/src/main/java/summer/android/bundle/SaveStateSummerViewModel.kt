@@ -6,8 +6,8 @@ import summer.GetViewProvider
 import summer.RestoreViewModel
 import summer.ViewProxyProvider
 import summer.android.bundle.strategies.*
-import summer.events.DoExactlyOnceStrategy
-import summer.events.DoOnlyWhenAttachedStrategy
+import summer.events.strategies.DoExactlyOnceStrategy
+import summer.events.strategies.DoOnlyWhenAttachedStrategy
 import summer.state.GetViewProperty
 
 abstract class SaveStateSummerViewModel<TView> :
