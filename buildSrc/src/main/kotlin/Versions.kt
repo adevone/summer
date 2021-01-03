@@ -9,6 +9,7 @@ const val serializationVersion = "1.0.1"
 const val targetVersion = 29
 
 // example dependencies
+const val exampleSummerVersion = summerVersion
 const val multiplatformSettingVersion = "0.7"
 const val kodeinVersion = "7.2.0"
 const val ktorVersion = "1.5.0"

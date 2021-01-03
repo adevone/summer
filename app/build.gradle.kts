@@ -9,7 +9,7 @@ android {
     compileSdkVersion(targetVersion)
 
     defaultConfig {
-        applicationId = "summer.example"
+        applicationId = "io.adev.summer.example"
         minSdkVersion(minVersion)
         targetSdkVersion(targetVersion)
         vectorDrawables.useSupportLibrary = true
@@ -68,8 +68,8 @@ dependencies {
 
     implementation(project(":shared"))
 
-    implementation("com.github.adevone.summer:summer:$summerVersion")
-    implementation("com.github.adevone.summer:summer-arch-lifecycle:$summerVersion")
+    implementation("com.github.adevone.summer:summer:$exampleSummerVersion")
+    implementation("com.github.adevone.summer:summer-arch-lifecycle:$exampleSummerVersion")
 //    implementation(project(":summer"))
 //    implementation(project(":summer-arch-lifecycle"))
 

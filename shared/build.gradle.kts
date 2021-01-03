@@ -44,8 +44,8 @@ kotlin {
 
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
-                implementation("com.github.adevone.summer:summer:$summerVersion")
-                implementation("com.github.adevone.summer:summer-arch-lifecycle:$summerVersion")
+                implementation("com.github.adevone.summer:summer:$exampleSummerVersion")
+                implementation("com.github.adevone.summer:summer-arch-lifecycle:$exampleSummerVersion")
 //                implementation(project(":summer"))
             }
         }
