@@ -8,7 +8,7 @@ import summer.ViewModelController
 import summer.example.AppKodeinAware
 import kotlin.coroutines.CoroutineContext
 
-actual abstract class BaseViewModel<TView> actual constructor() :
+actual abstract class CoroutinesViewModel<TView> actual constructor() :
     ArchViewModel<TView>(),
     AppKodeinAware,
     BaseViewModelController {

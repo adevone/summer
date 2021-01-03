@@ -1,8 +1,11 @@
 package summer.example.entity
 
+import kotlinx.serialization.Serializable
+
 data class Basket(
     val items: List<Item>
 ) {
+    @Serializable
     data class Item(
         val framework: Framework,
         val quantity: Int

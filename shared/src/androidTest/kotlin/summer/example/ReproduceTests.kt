@@ -5,6 +5,7 @@ import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.domain.frameworks.GetSpring
 import summer.example.domain.frameworks.GetSummer
 import summer.example.generated.reproduce1
+import summer.example.presentation.FrameworkDetailsViewModel
 import summer.example.presentation.FrameworksViewModel
 import summer.example.presentation.MainViewModel
 import summer.example.recording.decode
@@ -26,10 +27,13 @@ class ReproduceTests {
                     getAllFrameworkItems = GetAllFrameworkItems(GetSpring(), GetSummer(), basketController)
                 )
             },
-            callOnFrameworkClickOfFrameworksViewModel = { viewModel, framework ->
-                viewModel.onFrameworkClick(
+            createFrameworkDetailsViewModel = {
+                FrameworkDetailsViewModel()
+            },
+            callOnItemClickOfFrameworksViewModel = { viewModel, item ->
+                viewModel.onItemClick(
                     password = "123",
-                    framework = decode(framework)
+                    item = decode(item)
                 )
             }
         )

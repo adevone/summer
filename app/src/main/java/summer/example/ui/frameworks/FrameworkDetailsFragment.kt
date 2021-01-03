@@ -3,7 +3,6 @@ package summer.example.ui.frameworks
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.serialization.Serializable
-import summer.example.bindViewModel
 import summer.example.databinding.FrameworkDetailsFragmentBinding
 import summer.example.entity.Framework
 import summer.example.entity.FullFramework

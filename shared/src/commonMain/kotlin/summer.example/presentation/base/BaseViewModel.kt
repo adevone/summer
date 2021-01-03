@@ -1,12 +1,16 @@
 package summer.example.presentation.base
 
-import kotlinx.coroutines.CoroutineScope
-import summer.ArchViewModel
-import summer.example.AppKodeinAware
+import kotlin.reflect.KClass
 
-expect abstract class BaseViewModel<TView>() :
-    ArchViewModel<TView>,
-    AppKodeinAware {
+abstract class BaseViewModel<TView> : CoroutinesViewModel<TView>() {
 
-    val scope: CoroutineScope
+    init {
+        ViewModelEventsListener.onCreate(this::class)
+    }
+}
+
+expect object ViewModelEventsListener {
+    fun onCreate(clazz: KClass<*>)
+    fun onAttach(clazz: KClass<*>, viewClass: KClass<*>)
+    fun onDetach(clazz: KClass<*>)
 }

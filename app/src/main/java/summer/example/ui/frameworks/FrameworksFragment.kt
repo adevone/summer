@@ -3,7 +3,6 @@ package summer.example.ui.frameworks
 import android.os.Bundle
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.serialization.Serializable
-import summer.example.bindViewModel
 import summer.example.databinding.FrameworksFragmentBinding
 import summer.example.entity.Basket
 import summer.example.entity.Framework
@@ -30,6 +29,10 @@ class FrameworksFragment :
         frameworksAdapter = FrameworksAdapter(viewModel)
         binding.frameworksView.adapter = frameworksAdapter
         (binding.frameworksView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
+        binding.crashButton.setOnClickListener {
+            viewModel.onCrashClick()
+        }
     }
 
     override var items: List<Basket.Item> by didSet {
