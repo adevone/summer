@@ -3,15 +3,15 @@ package summer.events
 import summer.GetViewProvider
 
 /**
- * Proxies each call of [SummerEvent] to action if view exists and
- * repeats last call of [SummerEvent] on each view creation.
+ * Proxies each call of [EventProxy] to action if view exists and
+ * repeats last call of [EventProxy] on each view creation.
  */
-class RepeatLastStrategy<TView> : SummerEventStrategy<TView, Any?> {
+class RepeatLastStrategy<TView> : EventProxyStrategy<TView, Any?> {
 
-    private var lastExecuted: SummerEvent.ViewEventExecutor<TView>? = null
+    private var lastExecuted: EventProxy.ViewEventExecutor<TView>? = null
 
-    override fun called(
-        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>,
+    override fun proxyInvoked(
+        viewEventExecutor: EventProxy.ViewEventExecutor<TView>,
         owner: Any?,
         getViewProvider: GetViewProvider<TView>
     ) {

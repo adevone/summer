@@ -4,7 +4,7 @@ import summer.GetViewProvider
 import summer.ViewLifecycleListener
 
 /**
- * Rule that determine behaviour of [SummerEvent] when it invoked.
+ * Rule that determine behaviour of [EventProxy] when it invoked.
  *
  * [TView] is parent view. If you want some strategy
  *         to be executed only on specific view, you can define it.
@@ -13,12 +13,12 @@ import summer.ViewLifecycleListener
  *          strategy than define it on your custom interface, extend it from [ViewProvider]
  *          and implement on your [LifecycleViewModel].
  */
-interface SummerEventStrategy<TView, in TOwner> {
+interface EventProxyStrategy<TView, in TOwner> {
     /**
-     * [SummerEvent] was invoked
+     * [EventProxy] was invoked
      */
-    fun called(
-        viewEventExecutor: SummerEvent.ViewEventExecutor<TView>,
+    fun proxyInvoked(
+        viewEventExecutor: EventProxy.ViewEventExecutor<TView>,
         owner: TOwner,
         getViewProvider: GetViewProvider<TView>
     )

@@ -1,5 +1,5 @@
 package summer
 
-interface SummerFactory<TView> {
+interface ProxyFactory<TView> {
     fun getViewProvider(): GetViewProvider<TView>
 }

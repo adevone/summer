@@ -6,14 +6,14 @@ import android.util.SparseArray
 import summer.android.bundle.BundleProvider
 import summer.android.bundle.BundleStateDelegateProvider
 import summer.state.GetViewProperty
-import summer.state.StateFactory
+import summer.state.StateProxyFactory
 
 @Suppress("UNCHECKED_CAST")
 class ParcelableBundleStateStrategy<T : Parcelable?> : BundleStateStrategy<T>(
     getValue = { key -> getParcelable<T>(key) as T },
     setValue = Bundle::putParcelable
 ) {
-    interface Factory<TView> : StateFactory<TView, BundleProvider> {
+    interface Factory<TView> : StateProxyFactory<TView, BundleProvider> {
 
         fun <T : Parcelable?> state(
             getMirrorProperty: GetViewProperty<T, TView>? = null,
@@ -29,7 +29,7 @@ class ParcelableArrayBundleStateStrategy<T : Parcelable?> : BundleStateStrategy<
     getValue = { key -> getParcelableArray(key) as Array<T> },
     setValue = Bundle::putParcelableArray
 ) {
-    interface Factory<TView> : StateFactory<TView, BundleProvider> {
+    interface Factory<TView> : StateProxyFactory<TView, BundleProvider> {
 
         fun <T : Parcelable> state(
             getMirrorProperty: GetViewProperty<Array<T>?, TView>? = null,
@@ -49,7 +49,7 @@ class ParcelableSparseArrayBundleStateStrategy<T : Parcelable> : BundleStateStra
     getValue = { key -> getSparseParcelableArray<T>(key) as SparseArray<T> },
     setValue = Bundle::putSparseParcelableArray
 ) {
-    interface Factory<TView> : StateFactory<TView, BundleProvider> {
+    interface Factory<TView> : StateProxyFactory<TView, BundleProvider> {
 
         fun <T : Parcelable> state(
             getMirrorProperty: GetViewProperty<SparseArray<T>?, TView>? = null,

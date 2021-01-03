@@ -2,13 +2,13 @@ package summer.android.bundle.strategies
 
 import android.os.Bundle
 import summer.android.bundle.BundleProvider
-import summer.state.SummerStateStrategy
+import summer.state.StateProxyStrategy
 import kotlin.reflect.KProperty
 
 abstract class BundleStateStrategy<T>(
     private val getValue: Bundle.(String?) -> T,
-    private val setValue: Bundle.(String?, T) -> Unit
-) : SummerStateStrategy<T, BundleProvider> {
+    private val setValue: Bundle.(String?, T) -> Unit,
+) : StateProxyStrategy<T, BundleProvider> {
 
     override fun get(owner: BundleProvider, prop: KProperty<*>): T {
         return owner.bundle.getValue(prop.name)

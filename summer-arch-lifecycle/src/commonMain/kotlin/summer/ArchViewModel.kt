@@ -1,9 +1,9 @@
 package summer
 
-import summer.events.SummerEvent
+import summer.events.EventProxy
 import summer.state.InMemoryStore
 import summer.state.InMemoryStoreProvider
-import summer.state.SummerStateDelegate
+import summer.state.StateProxy
 
 expect abstract class ArchViewModel<TView> constructor() :
     DefaultSummerViewModel<TView>,
@@ -11,10 +11,10 @@ expect abstract class ArchViewModel<TView> constructor() :
 
     override var getView: () -> TView?
     override val inMemoryStore: InMemoryStore
-    override fun eventCreated(event: SummerEvent<*, *>)
-    override fun eventsOwner(): Any?
+    override fun eventProxyCreated(proxy: EventProxy<*, *>)
+    override fun eventProxyOwner(): Any?
+    override fun stateProxyCreated(proxy: StateProxy<*, *, *>)
+    override fun stateProxyOwner(): InMemoryStoreProvider
     override fun getViewProvider(): GetViewProvider<TView>
-    override fun stateDelegateCreated(delegate: SummerStateDelegate<*, *, *>)
-    override fun stateOwner(): InMemoryStoreProvider
     override fun viewCreated()
 }

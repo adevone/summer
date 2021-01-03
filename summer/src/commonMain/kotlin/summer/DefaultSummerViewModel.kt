@@ -5,8 +5,8 @@ import summer.state.*
 
 /**
  * View model with support of default
- * - [SummerEventStrategy]: [DoOnlyWhenAttachedStrategy], [DoExactlyOnceStrategy]
- * - [SummerStateStrategy]: [InMemoryStateStrategy]
+ * - [EventProxyStrategy]: [DoOnlyWhenAttachedStrategy], [DoExactlyOnceStrategy]
+ * - [StateProxyStrategy]: [InMemoryStrategy]
  *
  * Implemented in [DefaultSummerViewModelImpl]
  *
@@ -14,12 +14,12 @@ import summer.state.*
  */
 interface DefaultSummerViewModel<TView> :
     LifecycleViewModel<TView>,
-    StateFactory<TView, InMemoryStoreProvider>,
-    EventFactory<TView, Any?>,
-    InMemoryStateStrategy.Factory<TView>,
+    StateProxyFactory<TView, InMemoryStoreProvider>,
+    EventProxyFactory<TView, Any?>,
+    InMemoryStrategy.ProxyFactory<TView>,
     InMemoryStoreProvider,
-    DoOnlyWhenAttachedStrategy.Factory<TView>,
-    DoExactlyOnceStrategy.Factory<TView>
+    DoOnlyWhenAttachedStrategy.ProxyFactory<TView>,
+    DoExactlyOnceStrategy.ProxyFactory<TView>
 
 /**
  * Implementation of [DefaultSummerViewModel].
@@ -27,8 +27,8 @@ interface DefaultSummerViewModel<TView> :
  *
  * Example of a delegation:
  * class MyViewModel<TView> :
- *     <parent class that prohibits inheritance from DefaultSummerViewModelImpl>,
- *     DefaultSummerViewModel<TView> by DefaultSummerViewModelImpl()
+ *   <parent class that prohibits inheritance from [DefaultSummerViewModelImpl]>,
+ *   DefaultSummerViewModel<TView> by DefaultSummerViewModelImpl()
  */
 open class DefaultSummerViewModelImpl<TView> :
     DefaultSummerViewModel<TView>,
@@ -39,6 +39,6 @@ open class DefaultSummerViewModelImpl<TView> :
      */
     override val inMemoryStore = InMemoryStore()
 
-    override fun eventsOwner(): Any? = this
-    override fun stateOwner(): InMemoryStoreProvider = this
+    override fun eventProxyOwner(): Any? = this
+    override fun stateProxyOwner(): InMemoryStoreProvider = this
 }

@@ -1,11 +1,11 @@
 package summer
 
-import summer.events.SummerEvent
-import summer.state.SummerStateDelegate
+import summer.events.EventProxy
+import summer.state.StateProxy
 
 /**
- * Base viewModel. Helps with view state restoring (see [SummerStateDelegate])
- * and executing of events (see [SummerEvent]).
+ * Base viewModel. Helps with view state restoring (see [StateProxy])
+ * and executing of events (see [EventProxy]).
  *
  * @param [TView] see [GetViewProvider]
  */

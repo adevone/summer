@@ -6,7 +6,7 @@ import kotlin.reflect.KProperty
 /**
  * Saves state only in memory.
  */
-class InMemoryStateStrategy<T> : SummerStateStrategy<T, InMemoryStoreProvider> {
+class InMemoryStrategy<T> : StateProxyStrategy<T, InMemoryStoreProvider> {
 
     override fun get(owner: InMemoryStoreProvider, prop: KProperty<*>): T {
         return owner.inMemoryStore.get(prop.name)
@@ -20,19 +20,19 @@ class InMemoryStateStrategy<T> : SummerStateStrategy<T, InMemoryStoreProvider> {
         return owner.inMemoryStore.isInit(prop.name)
     }
 
-    interface Factory<TView> : StateFactory<TView, InMemoryStoreProvider> {
+    interface ProxyFactory<TView> : StateProxyFactory<TView, InMemoryStoreProvider> {
 
         fun <T> state(
             getViewProperty: GetViewProperty<T, TView>? = null,
             initial: T
-        ): SummerStateDelegate.Provider<T, TView, InMemoryStoreProvider> {
-            return state(getViewProperty, initial, InMemoryStateStrategy())
+        ): StateProxy.Provider<T, TView, InMemoryStoreProvider> {
+            return state(getViewProperty, initial, InMemoryStrategy())
         }
     }
 }
 
 /**
- * Owner of [InMemoryStateStrategy]
+ * Owner of [InMemoryStrategy]
  */
 interface InMemoryStoreProvider {
     val inMemoryStore: InMemoryStore

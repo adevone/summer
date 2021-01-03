@@ -1,24 +1,24 @@
 package summer
 
-import summer.events.EventFactory
-import summer.events.SummerEvent
-import summer.events.SummerEventStrategy
-import summer.state.StateFactory
-import summer.state.SummerStateDelegate
-import summer.state.SummerStateStrategy
+import summer.events.EventProxyFactory
+import summer.events.EventProxy
+import summer.events.EventProxyStrategy
+import summer.state.StateProxyFactory
+import summer.state.StateProxy
+import summer.state.StateProxyStrategy
 
 /**
  * Extent from this class if you want to implement
- * custom [EventFactory] or [StateFactory]
+ * custom [EventProxyFactory] or [StateProxyFactory]
  *
  * @param [TView] see [GetViewProvider]
- * @param [TStateOwner] see [SummerStateStrategy]
- * @param [TEventsOwner] see [SummerEventStrategy]
+ * @param [TStateOwner] see [StateProxyStrategy]
+ * @param [TEventsOwner] see [EventProxyStrategy]
  */
 abstract class RestoreViewModel<TView, TStateOwner, TEventsOwner> :
     LifecycleViewModel<TView>,
-    EventFactory<TView, TEventsOwner>,
-    StateFactory<TView, TStateOwner> {
+    EventProxyFactory<TView, TEventsOwner>,
+    StateProxyFactory<TView, TStateOwner> {
 
     override var getView: () -> TView? = { null }
 
@@ -26,18 +26,18 @@ abstract class RestoreViewModel<TView, TStateOwner, TEventsOwner> :
      * Do not override to listen lifecycle @see [ViewLifecycleListener.viewCreated]
      */
     override fun viewCreated() {
-        stateDelegates.forEach { it.restore() }
-        events.forEach { it.viewCreated() }
+        stateProxies.forEach { it.restore() }
+        eventProxies.forEach { it.viewCreated() }
     }
 
-    private val events = mutableListOf<SummerEvent<*, *>>()
-    override fun eventCreated(event: SummerEvent<*, *>) {
-        events.add(event)
+    private val eventProxies = mutableListOf<EventProxy<*, *>>()
+    override fun eventProxyCreated(proxy: EventProxy<*, *>) {
+        eventProxies.add(proxy)
     }
 
-    private val stateDelegates = mutableSetOf<SummerStateDelegate<*, *, *>>()
-    override fun stateDelegateCreated(delegate: SummerStateDelegate<*, *, *>) {
-        stateDelegates.add(delegate)
+    private val stateProxies = mutableSetOf<StateProxy<*, *, *>>()
+    override fun stateProxyCreated(proxy: StateProxy<*, *, *>) {
+        stateProxies.add(proxy)
     }
 
     override fun getViewProvider(): GetViewProvider<TView> = this

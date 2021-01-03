@@ -2,14 +2,14 @@ package summer.strategy
 
 import kotlinx.serialization.KSerializer
 import summer.state.GetViewProperty
-import summer.state.StateFactory
-import summer.state.SummerStateDelegate
-import summer.state.SummerStateStrategy
+import summer.state.StateProxy
+import summer.state.StateProxyFactory
+import summer.state.StateProxyStrategy
 import kotlin.reflect.KProperty
 
 class SerializationStrategy<T>(
-    private val serializer: KSerializer<T>
-) : SummerStateStrategy<T, SerializationStateProvider> {
+    private val serializer: KSerializer<T>,
+) : StateProxyStrategy<T, SerializationStateProvider> {
 
     override fun get(owner: SerializationStateProvider, prop: KProperty<*>): T {
         return owner.serializationStore.get(prop.name)
@@ -23,13 +23,13 @@ class SerializationStrategy<T>(
         return owner.serializationStore.isInit(prop.name)
     }
 
-    interface Factory<TView> : StateFactory<TView, SerializationStateProvider> {
+    interface Factory<TView> : StateProxyFactory<TView, SerializationStateProvider> {
 
         fun <T> state(
             getViewProperty: GetViewProperty<T, TView>? = null,
             initial: T,
-            serializer: KSerializer<T>
-        ): SummerStateDelegate.Provider<T, TView, SerializationStateProvider> {
+            serializer: KSerializer<T>,
+        ): StateProxy.Provider<T, TView, SerializationStateProvider> {
             return state(getViewProperty, initial, SerializationStrategy(serializer))
         }
     }
@@ -65,5 +65,5 @@ class SerializationStore {
 
 data class ValueWithSerializer<T>(
     val value: T,
-    val serializer: KSerializer<T>
+    val serializer: KSerializer<T>,
 )

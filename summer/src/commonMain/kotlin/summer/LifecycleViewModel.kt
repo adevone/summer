@@ -1,11 +1,11 @@
 package summer
 
-import summer.events.SummerEvent
-import summer.state.SummerStateDelegate
+import summer.events.EventProxy
+import summer.state.StateProxy
 
 /**
- * Extent from this class if you want call [SummerEvent.viewCreated] or
- * [SummerStateDelegate.restore] on custom place.
+ * Extent from this class if you want call [EventProxy.viewCreated] or
+ * [StateProxy.restore] on a custom place.
  *
  * @param [TView] see [GetViewProvider]
  */

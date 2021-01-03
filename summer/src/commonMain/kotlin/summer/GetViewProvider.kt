@@ -1,10 +1,10 @@
 package summer
 
-import summer.state.SummerStateDelegate
-import summer.events.SummerEvent
+import summer.state.StateProxy
+import summer.events.EventProxy
 
 /**
- * Provider of view to mirror [SummerStateDelegate] state changes and [SummerEvent] action calls to it.
+ * Provider of view to proxy [StateProxy] state changes and [EventProxy] invocations to it.
  */
 interface GetViewProvider<out TView> {
     val getView: () -> TView?

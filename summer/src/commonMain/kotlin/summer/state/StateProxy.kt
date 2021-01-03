@@ -6,14 +6,14 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 
-class SummerStateDelegate<T, TView, TOwner>(
+class StateProxy<T, TView, TOwner>(
     private val property: KProperty<*>,
     private val getViewProperty: GetViewProperty<T, TView>?,
     private val initial: T,
     private val getViewProvider: GetViewProvider<TView>,
     private val owner: TOwner,
-    private val listener: StateListener<TView, TOwner>?,
-    private val strategy: SummerStateStrategy<T, TOwner>
+    private val listener: StateProxyListener<TView, TOwner>?,
+    private val strategy: StateProxyStrategy<T, TOwner>,
 ) : ReadWriteProperty<Any?, T> {
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
@@ -27,7 +27,7 @@ class SummerStateDelegate<T, TView, TOwner>(
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
         strategy.set(owner, property, value)
-        listener?.set(value, property, owner, strategy)
+        listener?.proxySet(value, property, owner, strategy)
         setViewPropertyIfViewExists(value)
     }
 
@@ -47,7 +47,7 @@ class SummerStateDelegate<T, TView, TOwner>(
             getViewProperty?.let { getViewProperty ->
                 val viewProperty = getViewProperty(view)
                 viewProperty.set(value)
-                listener?.setOnView(value, property, view, owner, strategy)
+                listener?.viewPropertySet(value, property, view, owner, strategy)
             }
         }
     }
@@ -57,16 +57,16 @@ class SummerStateDelegate<T, TView, TOwner>(
         private val initial: T,
         private val getViewProvider: GetViewProvider<TView>,
         private val owner: TOwner,
-        private val listener: StateListener<TView, TOwner>?,
-        private val strategy: SummerStateStrategy<T, TOwner>,
-        private val delegateCreated: (SummerStateDelegate<T, TView, TOwner>) -> Unit
-    ) : PropertyDelegateProvider<Any?, SummerStateDelegate<T, TView, TOwner>> {
+        private val listener: StateProxyListener<TView, TOwner>?,
+        private val strategy: StateProxyStrategy<T, TOwner>,
+        private val proxyCreated: (StateProxy<T, TView, TOwner>) -> Unit,
+    ) : PropertyDelegateProvider<Any?, StateProxy<T, TView, TOwner>> {
 
         override fun provideDelegate(
             thisRef: Any?,
-            property: KProperty<*>
-        ): SummerStateDelegate<T, TView, TOwner> {
-            val delegate = SummerStateDelegate(
+            property: KProperty<*>,
+        ): StateProxy<T, TView, TOwner> {
+            val proxy = StateProxy(
                 property,
                 getViewProperty,
                 initial,
@@ -75,8 +75,8 @@ class SummerStateDelegate<T, TView, TOwner>(
                 listener,
                 strategy
             )
-            delegateCreated(delegate)
-            return delegate
+            proxyCreated(proxy)
+            return proxy
         }
     }
 }
@@ -85,31 +85,3 @@ class SummerStateDelegate<T, TView, TOwner>(
  * Provider of view property to mirror store state
  */
 typealias GetViewProperty<T, TView> = (TView) -> KMutableProperty0<T>
-
-/**
- * Allows to listen events of [SummerStateDelegate].
- *
- * Could be used to implement a time traveling.
- */
-interface StateListener<TView, TOwner> {
-    /**
-     * Always called before [setOnView] and after the value stored
-     */
-    fun set(
-        value: Any?,
-        property: KProperty<*>,
-        owner: TOwner,
-        strategy: SummerStateStrategy<*, TOwner>,
-    )
-
-    /**
-     * Always called after [set]
-     */
-    fun setOnView(
-        value: Any?,
-        property: KProperty<*>,
-        view: TView,
-        owner: TOwner,
-        strategy: SummerStateStrategy<*, TOwner>,
-    )
-}
