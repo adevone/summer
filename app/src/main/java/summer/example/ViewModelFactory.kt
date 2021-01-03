@@ -4,6 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import org.kodein.di.direct
+import org.kodein.di.instance
 import summer.example.presentation.*
 import summer.example.presentation.base.BaseViewModel
 import kotlin.reflect.KClass
@@ -45,7 +47,7 @@ private class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
                 FrameworkDetailsViewModel() as T
             }
             FrameworksViewModel::class.java -> {
-                FrameworksViewModel() as T
+                FrameworksViewModel(mainDI.direct.instance(), mainDI.direct.instance()) as T
             }
             MainViewModel::class.java -> {
                 MainViewModel() as T

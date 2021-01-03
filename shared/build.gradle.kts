@@ -25,7 +25,7 @@ project.version = summerVersion
 
 kotlin {
     android()
-    jvm()
+//    jvm()
     iosArm64()
     iosX64()
 
@@ -58,18 +58,18 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val jvmMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib"))
-                implementation(kotlin("reflect"))
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit"))
-            }
-        }
+//        val jvmMain by getting {
+//            dependencies {
+//                implementation(kotlin("stdlib"))
+//                implementation(kotlin("reflect"))
+//            }
+//        }
+//        val jvmTest by getting {
+//            dependencies {
+//                implementation(kotlin("test"))
+//                implementation(kotlin("test-junit"))
+//            }
+//        }
         val androidMain by getting {
             dependencies {
                 implementation(kotlin("stdlib"))

@@ -35,7 +35,7 @@ class FrameworksViewModel(
         updateFrameworks()
     }
 
-    fun onFrameworkClick(@Hide password: String, item: Basket.Item) {
+    fun onItemClick(@Hide password: String, item: Basket.Item) {
         viewProxy.toDetails(item.framework)
     }
 
