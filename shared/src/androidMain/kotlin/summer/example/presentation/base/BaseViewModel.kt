@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import summer.ArchViewModel
 import summer.example.AppKodeinAware
 
-actual abstract class BaseViewModel<TView> actual constructor() :
+actual abstract class CoroutinesViewModel<TView> actual constructor() :
     ArchViewModel<TView>(),
     AppKodeinAware {
 

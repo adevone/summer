@@ -13,7 +13,7 @@ interface AboutView : LoadingView {
     var about: About?
 }
 
-class AboutViewModel : BaseViewModel<AboutView>() {
+class AboutViewModel : BaseViewModel<AboutView, Unit>() {
     private val getAbout: GetAbout by instance()
 
     override val viewProxy: AboutView = object : AboutView,
@@ -28,5 +28,9 @@ class AboutViewModel : BaseViewModel<AboutView>() {
                 viewProxy.about = about
             }
         }
+    }
+
+    override fun handle(input: Unit) {
+        // do nothing
     }
 }

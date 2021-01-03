@@ -26,31 +26,12 @@ fun generateKotlinCode(
         "${step.viewModelProviderName()}: ${providerType(step.viewModelType)}"
     }
 
-    val hiddenArgSteps = steps
-        .groupBy { step ->
-            step.viewModelType
-        }
-        .flatMap { (_, viewModelSteps) ->
-            viewModelSteps
-                .groupBy { viewModelStep ->
-                    viewModelStep.methodName
-                }
-                .mapNotNull { (_, methodSteps) ->
-                    val methodStep = methodSteps.firstOrNull()
-                    if (methodStep?.hasHiddenArgs() == true) {
-                        "${methodStep.callMaskedMethodName()}: ${methodStep.callMaskedMethodType()}"
-                    } else {
-                        null
-                    }
-                }
-        }
-
     val viewSteps = steps.filter { it.viewType.isNotBlank() }.associateBy { it.viewType }.values
     val formattedViews = viewSteps.map { step ->
         "${step.viewProviderName()}: ${providerType(step.viewType + "?")} = { null }"
     }
 
-    val formattedArgs = (formattedModels + hiddenArgSteps + formattedViews)
+    val formattedArgs = (formattedModels + formattedViews)
         .joinToString(separator = ",\n") { arg ->
             "${indent(level = 1)}${arg}"
         }
@@ -79,40 +60,11 @@ fun generateKotlinCode(
                 append("${indent(level = 1)}${varName(step.viewModelType)}.getView = { null }\n")
             }
             InputStep.Type.Interact -> {
-                append(indent(level = 1))
                 val viewModelVarName = varName(step.viewModelType)
-                if (!step.hasHiddenArgs()) {
-                    append("${viewModelVarName}.${step.methodName}")
-                    if (step.arguments.isNotEmpty()) {
-                        append("(\n")
-                        val formattedArguments = step.arguments.joinToString(separator = ",\n") { argument ->
-                            val argJson = Json.encodeToString(argument.value)
-                            "${indent(level = 2)}decode(\"\"\"${argJson}\"\"\")"
-                        }
-                        append(formattedArguments)
-                        append("\n")
-                        append(indent(level = 1))
-                        append(")")
-                    } else {
-                        append("()")
-                    }
-                } else {
-                    val arguments = listOf(viewModelVarName) + step.arguments.mapNotNull { argument ->
-                        if (!argument.isHidden) {
-                            val argJson = Json.encodeToString(argument.value)
-                            "\"\"\"$argJson\"\"\""
-                        } else {
-                            null
-                        }
-                    }
-                    val formattedArguments = arguments.joinToString(separator = ",\n") { arg ->
-                        "${indent(level = 2)}$arg"
-                    }
-                    append("${step.callMaskedMethodName()}(\n")
-                    append("${formattedArguments}\n")
-                    append(indent(level = 1))
-                    append(")")
-                }
+                append(indent(level = 1), "${viewModelVarName}.pass(", "\n")
+                val inputJson = Json.encodeToString(step.inputValue)
+                append(indent(level = 2), "decode(\"\"\"${inputJson}\"\"\")", "\n")
+                append(indent(level = 1), ")", "\n")
             }
         }
     }
@@ -136,26 +88,6 @@ fun InputStep.viewProviderName(): String {
     return "createViewFor${simpleName(viewModelType)}"
 }
 
-fun InputStep.callMaskedMethodName(): String {
-    return "call${methodName.capitalize()}Of${simpleName(viewModelType)}"
-}
-
-fun InputStep.callMaskedMethodType(): String {
-    val formattedArguments = arguments.mapNotNull { argument ->
-        if (!argument.isHidden) {
-            "String"
-        } else {
-            null
-        }
-    }
-    val types = (listOf(viewModelType) + formattedArguments).joinToString()
-    return "($types) -> Unit"
-}
-
 fun providerType(type: String): String {
     return "() -> $type"
-}
-
-fun InputStep.hasHiddenArgs(): Boolean {
-    return this.arguments.any { it.isHidden }
 }

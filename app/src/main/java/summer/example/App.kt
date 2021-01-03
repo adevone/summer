@@ -1,10 +1,9 @@
 package summer.example
 
-import android.util.Log
 import android.app.Application
+import android.util.Log
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import org.kodein.di.DI
@@ -14,7 +13,6 @@ import org.kodein.di.singleton
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
-import summer.example.presentation.base.mainDispatcher
 import summer.example.recording.InputStep
 import summer.example.recording.steps
 import summer.example.ui.base.routing.LocalCiceroneHolder
@@ -44,8 +42,6 @@ class App : Application(), DIAware {
             Log.e("ERROR", json)
             exitProcess(1)
         }
-
-        mainDispatcher = Dispatchers.Main
 
         mainDI = DI {
             import(sharedModule)

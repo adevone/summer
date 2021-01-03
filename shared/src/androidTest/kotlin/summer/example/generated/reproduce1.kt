@@ -4,52 +4,34 @@ import summer.example.recording.decode
 
 fun reproduce1(
     createMainViewModel: () -> summer.example.presentation.MainViewModel,
-    createFrameworksViewModel: () -> summer.example.presentation.FrameworksViewModel,
-    callOnFrameworkClickOfFrameworksViewModel: (summer.example.presentation.FrameworksViewModel, String) -> Unit,
-    createViewForMainViewModel: () -> summer.example.presentation.MainView? = { null },
-    createViewForFrameworksViewModel: () -> summer.example.presentation.FrameworksView? = { null }
+    createFrameworksViewModel: () -> summer.example.presentation.FrameworksViewModel
 ) {
     lateinit var mainViewModel: summer.example.presentation.MainViewModel
     lateinit var frameworksViewModel: summer.example.presentation.FrameworksViewModel
 
-    mainViewModel = createMainViewModel()
-    mainViewModel.getView = {
-        createViewForMainViewModel()
-    }
-    mainViewModel.viewCreated()
-    mainViewModel.onMenuItemClick(
-        decode(""""Frameworks"""")
+    mainViewModel.pass(
+        decode("""{"tab":"Frameworks"}""")
     )
-    frameworksViewModel = createFrameworksViewModel()
-    frameworksViewModel.getView = {
-        createViewForFrameworksViewModel()
-    }
-    frameworksViewModel.viewCreated()
-    frameworksViewModel.onIncreaseClick(
-        decode("""{"name":"Spring","version":"5.0"}""")
-    )
-    frameworksViewModel.onIncreaseClick(
-        decode("""{"name":"Spring","version":"5.0"}""")
-    )
-    frameworksViewModel.onIncreaseClick(
-        decode("""{"name":"Summer","version":"0.8.17"}""")
-    )
-    frameworksViewModel.onDecreaseClick(
-        decode("""{"name":"Summer","version":"0.8.17"}""")
-    )
-    frameworksViewModel.onDecreaseClick(
-        decode("""{"name":"Summer","version":"0.8.17"}""")
-    )
-    callOnFrameworkClickOfFrameworksViewModel(
-        frameworksViewModel,
-        """{"name":"Summer","version":"0.8.17"}"""
-    )
-    frameworksViewModel.getView = { null }
 
-    frameworksViewModel.getView = {
-        createViewForFrameworksViewModel()
-    }
-    frameworksViewModel.viewCreated()
-    frameworksViewModel.onCrashClick()
+    frameworksViewModel.pass(
+        decode("""{"item":{"framework":{"name":"Spring","version":"5.0"},"quantity":0}}""")
+    )
+
+    frameworksViewModel.pass(
+        decode("""{"item":{"framework":{"name":"Spring","version":"5.0"},"quantity":1}}""")
+    )
+
+    frameworksViewModel.pass(
+        decode("""{"item":{"framework":{"name":"Summer","version":"0.8.17"},"quantity":0}}""")
+    )
+
+    frameworksViewModel.pass(
+        decode("""{"item":{"framework":{"name":"Summer","version":"0.8.17"},"quantity":1}}""")
+    )
+
+    frameworksViewModel.pass(
+        decode("""{}""")
+    )
+
 }
 

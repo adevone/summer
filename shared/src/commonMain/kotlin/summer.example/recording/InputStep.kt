@@ -2,14 +2,15 @@ package summer.example.recording
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
+import kotlin.reflect.KClass
 
 @Serializable
 data class InputStep(
     val type: Type,
     val viewModelType: String,
     val viewType: String = "",
-    val methodName: String = "",
-    val arguments: List<Argument> = emptyList()
+    val inputName: String = "",
+    val inputValue: JsonElement? = null,
 ) {
     enum class Type {
         Init,
@@ -17,12 +18,6 @@ data class InputStep(
         Detach,
         Interact
     }
-
-    @Serializable
-    data class Argument(
-        val value: JsonElement? = null,
-        val isHidden: Boolean = false
-    )
 
     companion object {
 
@@ -40,11 +35,10 @@ data class InputStep(
 
         fun interact(
             viewModelType: String,
-            methodName: String,
-            arguments: List<Argument>
+            inputName: String,
+            inputValue: JsonElement,
         ): InputStep {
-            return InputStep(type = Type.Interact, viewModelType, "", methodName, arguments)
+            return InputStep(type = Type.Interact, viewModelType, "", inputName, inputValue)
         }
     }
 }
-

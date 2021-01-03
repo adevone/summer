@@ -10,7 +10,7 @@ import summer.example.presentation.*
 import summer.example.presentation.base.BaseViewModel
 import kotlin.reflect.KClass
 
-fun <TView, TViewModel : BaseViewModel<TView>> bindViewModel(
+fun <TView, TViewModel : BaseViewModel<TView, *>> bindViewModel(
     viewModelClass: KClass<TViewModel>,
     fragment: Fragment,
     provideView: () -> TView
@@ -21,7 +21,7 @@ fun <TView, TViewModel : BaseViewModel<TView>> bindViewModel(
     return viewModel
 }
 
-fun <TView, TViewModel : BaseViewModel<TView>> bindViewModel(
+fun <TView, TViewModel : BaseViewModel<TView, *>> bindViewModel(
     viewModelClass: KClass<TViewModel>,
     activity: FragmentActivity,
     provideView: () -> TView

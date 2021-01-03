@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import summer.example.databinding.FrameworksItemBinding
 import summer.example.entity.Basket
+import summer.example.presentation.FrameworksInput
 import summer.example.presentation.FrameworksViewModel
+import summer.example.presentation.base.Hidden
 import summer.example.ui.EqualsDiffCallback
 
 class FrameworksAdapter(
-    private val viewModel: FrameworksViewModel
+    private val viewModel: FrameworksViewModel,
 ) : ListAdapter<Basket.Item, FrameworksAdapter.ViewHolder>(
     EqualsDiffCallback { a, b -> a.framework.name == b.framework.name }
 ) {
@@ -29,7 +31,7 @@ class FrameworksAdapter(
     }
 
     inner class ViewHolder(
-        private val binding: FrameworksItemBinding
+        private val binding: FrameworksItemBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Basket.Item) {
@@ -38,15 +40,15 @@ class FrameworksAdapter(
             binding.versionView.text = item.framework.version
 
             binding.decreaseButton.setOnClickListener {
-                viewModel.onDecreaseClick(item)
+                viewModel.pass(FrameworksInput.DecreaseClicked(item))
             }
             binding.countView.text = item.quantity.toString()
             binding.increaseButton.setOnClickListener {
-                viewModel.onIncreaseClick(item)
+                viewModel.pass(FrameworksInput.IncreaseClicked(item))
             }
 
             binding.root.setOnClickListener {
-                viewModel.onItemClick(password = "123", item)
+                viewModel.pass(FrameworksInput.ItemClicked(password = Hidden("123"), item))
             }
         }
     }

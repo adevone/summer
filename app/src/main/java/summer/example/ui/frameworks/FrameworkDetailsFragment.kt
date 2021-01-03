@@ -7,6 +7,7 @@ import summer.example.bindViewModel
 import summer.example.databinding.FrameworkDetailsFragmentBinding
 import summer.example.entity.Framework
 import summer.example.entity.FullFramework
+import summer.example.presentation.FrameworkDetailsInput
 import summer.example.presentation.FrameworkDetailsView
 import summer.example.presentation.FrameworkDetailsViewModel
 import summer.example.ui.base.BaseFragment
@@ -22,7 +23,7 @@ class FrameworkDetailsFragment :
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = bindViewModel(FrameworkDetailsViewModel::class, fragment = this) { this }
-        viewModel.init(initialFramework = args.framework)
+        viewModel.pass(FrameworkDetailsInput.Init(args.framework))
     }
 
     override var framework: FullFramework? by didSet {
@@ -38,6 +39,6 @@ class FrameworkDetailsFragment :
 
     @Serializable
     class Args(
-        val framework: Framework
+        val framework: Framework,
     ) : ScreenArgs<FrameworkDetailsFragment>(::FrameworkDetailsFragment)
 }

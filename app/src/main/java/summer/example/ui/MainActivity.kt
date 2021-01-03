@@ -12,6 +12,7 @@ import summer.example.R
 import summer.example.bindViewModel
 import summer.example.databinding.ActivityMainBinding
 import summer.example.entity.Tab
+import summer.example.presentation.MainInput
 import summer.example.presentation.MainView
 import summer.example.presentation.MainViewModel
 import summer.example.ui.base.BaseActivity
@@ -42,7 +43,7 @@ class MainActivity : BaseActivity(), MainView {
                 )
                 .setIcon(tab.iconRes)
                 .setOnMenuItemClickListener {
-                    viewModel.onMenuItemClick(tab)
+                    viewModel.pass(MainInput.MenuItemClicked(tab))
                     false
                 }
         }

@@ -3,22 +3,39 @@ package summer.example.presentation
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import summer.example.domain.basket.BasketController
 import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.entity.Basket
 import summer.example.entity.Framework
 import summer.example.presentation.base.BaseViewModel
-import summer.example.presentation.base.Hide
+import summer.example.presentation.base.Hidden
+import summer.example.presentation.base.exhaustive
 
 interface FrameworksView {
     var items: List<Basket.Item>
     val toDetails: (framework: Framework) -> Unit
 }
 
+sealed class FrameworksInput {
+
+    @Serializable
+    data class ItemClicked(val password: Hidden<String>, val item: Basket.Item) : FrameworksInput()
+
+    @Serializable
+    data class IncreaseClicked(val item: Basket.Item) : FrameworksInput()
+
+    @Serializable
+    data class DecreaseClicked(val item: Basket.Item) : FrameworksInput()
+
+    @Serializable
+    object CrashClicked : FrameworksInput()
+}
+
 class FrameworksViewModel(
     private val basketController: BasketController,
-    private val getAllFrameworkItems: GetAllFrameworkItems
-) : BaseViewModel<FrameworksView>() {
+    private val getAllFrameworkItems: GetAllFrameworkItems,
+) : BaseViewModel<FrameworksView, FrameworksInput>() {
 
     override val viewProxy = object : FrameworksView {
         override var items by state({ it::items }, initial = emptyList())
@@ -35,18 +52,6 @@ class FrameworksViewModel(
         updateFrameworks()
     }
 
-    fun onItemClick(@Hide password: String, item: Basket.Item) {
-        viewProxy.toDetails(item.framework)
-    }
-
-    fun onIncreaseClick(item: Basket.Item) {
-        basketController.increase(item.framework)
-    }
-
-    fun onDecreaseClick(item: Basket.Item) {
-        basketController.decrease(item.framework)
-    }
-
     private fun updateFrameworks() {
         scope.launch {
             val frameworks = getAllFrameworkItems(springVersion = "5.0")
@@ -54,7 +59,20 @@ class FrameworksViewModel(
         }
     }
 
-    fun onCrashClick() {
-        throw IllegalStateException("app is crashed")
+    override fun handle(input: FrameworksInput) {
+        when (input) {
+            is FrameworksInput.ItemClicked -> {
+                viewProxy.toDetails(input.item.framework)
+            }
+            is FrameworksInput.IncreaseClicked -> {
+                basketController.increase(input.item.framework)
+            }
+            is FrameworksInput.DecreaseClicked -> {
+                basketController.decrease(input.item.framework)
+            }
+            FrameworksInput.CrashClicked -> {
+                throw IllegalStateException("app is crashed")
+            }
+        }.exhaustive
     }
 }

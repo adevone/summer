@@ -11,7 +11,7 @@ interface BasketView {
     var items: List<Basket.Item>
 }
 
-class BasketViewModel : BaseViewModel<BasketView>() {
+class BasketViewModel : BaseViewModel<BasketView, Unit>() {
     private val basketController: BasketController by instance()
 
     override val viewProxy = object : BasketView {
@@ -22,5 +22,9 @@ class BasketViewModel : BaseViewModel<BasketView>() {
         basketController.flow.onEach { basket ->
             viewProxy.items = basket.items
         }.launchIn(scope)
+    }
+
+    override fun handle(input: Unit) {
+        // do nothing
     }
 }

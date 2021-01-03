@@ -7,6 +7,7 @@ import summer.example.bindViewModel
 import summer.example.databinding.FrameworksFragmentBinding
 import summer.example.entity.Basket
 import summer.example.entity.Framework
+import summer.example.presentation.FrameworksInput
 import summer.example.presentation.FrameworksView
 import summer.example.presentation.FrameworksViewModel
 import summer.example.ui.base.BaseFragment
@@ -30,6 +31,10 @@ class FrameworksFragment :
         frameworksAdapter = FrameworksAdapter(viewModel)
         binding.frameworksView.adapter = frameworksAdapter
         (binding.frameworksView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
+        binding.crashButton.setOnClickListener {
+            viewModel.pass(FrameworksInput.CrashClicked)
+        }
     }
 
     override var items: List<Basket.Item> by didSet {
