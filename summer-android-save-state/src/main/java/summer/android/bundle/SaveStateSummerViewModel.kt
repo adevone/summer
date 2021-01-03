@@ -11,7 +11,7 @@ import summer.events.strategies.DoOnlyWhenAttachedStrategy
 import summer.state.GetViewProperty
 
 abstract class SaveStateSummerViewModel<TView> :
-    RestoreViewModel<TView, BundleProvider, Any?>(),
+    RestoreViewModel<TView>(),
     ViewProxyProvider<TView>,
     DoOnlyWhenAttachedStrategy.ProxyFactory<TView>, DoExactlyOnceStrategy.ProxyFactory<TView>,
     IntBundleStateStrategy.Factory<TView>, IntArrayBundleStateStrategy.Factory<TView>,
@@ -37,36 +37,33 @@ abstract class SaveStateSummerViewModel<TView> :
     fun state(
         getMirrorProperty: GetViewProperty<ArrayList<String>?, TView>? = null,
         initial: ArrayList<String>?,
-    ): BundleStateDelegateProvider<ArrayList<String>?, TView> {
-        return state(getMirrorProperty, initial, StringArrayListBundleStateStrategy)
+    ): BundleStateProxyProvider<ArrayList<String>?, TView> {
+        return state(getMirrorProperty, initial, StringArrayListBundleStateStrategy())
     }
 
     @JvmName("intArrayListState")
     fun state(
         getMirrorProperty: GetViewProperty<ArrayList<Int>?, TView>? = null,
         initial: ArrayList<Int>?,
-    ): BundleStateDelegateProvider<ArrayList<Int>?, TView> {
-        return state(getMirrorProperty, initial, IntArrayListBundleStateStrategy)
+    ): BundleStateProxyProvider<ArrayList<Int>?, TView> {
+        return state(getMirrorProperty, initial, IntArrayListBundleStateStrategy())
     }
 
     @JvmName("charSequenceArrayListState")
     fun state(
         getMirrorProperty: GetViewProperty<ArrayList<CharSequence>?, TView>? = null,
         initial: ArrayList<CharSequence>?,
-    ): BundleStateDelegateProvider<ArrayList<CharSequence>?, TView> {
-        return state(getMirrorProperty, initial, CharSequenceArrayListBundleStateStrategy)
+    ): BundleStateProxyProvider<ArrayList<CharSequence>?, TView> {
+        return state(getMirrorProperty, initial, CharSequenceArrayListBundleStateStrategy())
     }
 
     @JvmName("parcelableArrayListState")
     fun <T : Parcelable> state(
         getMirrorProperty: GetViewProperty<ArrayList<T>?, TView>? = null,
         initial: ArrayList<T>?,
-    ): BundleStateDelegateProvider<ArrayList<T>?, TView> {
-        return state(getMirrorProperty, initial, ParcelableArrayListBundleStateStrategy<T>())
+    ): BundleStateProxyProvider<ArrayList<T>?, TView> {
+        return state(getMirrorProperty, initial, ParcelableArrayListBundleStateStrategy())
     }
 
     override var bundle = Bundle()
-
-    override fun eventProxyOwner(): GetViewProvider<TView> = this
-    override fun stateProxyOwner(): BundleProvider = this
 }
