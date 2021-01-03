@@ -62,14 +62,13 @@ abstract class BundleStateStrategy<T, TView>(
         fun <T> state(
             getMirrorProperty: GetViewProperty<T, TView>? = null,
             initial: T,
-            strategy: StateProxyStrategy<T, TView, BundleProvider>,
+            strategy: BundleStateStrategy<T, TView>,
         ): BundleStateProxyProvider<T, TView> {
             return state(
                 getMirrorProperty,
                 initial,
                 strategy,
-                owner = this,
-                listener = null
+                owner = this
             )
         }
     }

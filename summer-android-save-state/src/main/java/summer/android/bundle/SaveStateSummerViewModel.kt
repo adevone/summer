@@ -11,7 +11,7 @@ import summer.events.strategies.DoOnlyWhenAttachedStrategy
 import summer.state.GetViewProperty
 
 abstract class SaveStateSummerViewModel<TView> :
-    RestoreViewModel<TView, Any?>(),
+    RestoreViewModel<TView>(),
     ViewProxyProvider<TView>,
     DoOnlyWhenAttachedStrategy.ProxyFactory<TView>, DoExactlyOnceStrategy.ProxyFactory<TView>,
     IntBundleStateStrategy.Factory<TView>, IntArrayBundleStateStrategy.Factory<TView>,
@@ -66,6 +66,4 @@ abstract class SaveStateSummerViewModel<TView> :
     }
 
     override var bundle = Bundle()
-
-    override fun eventProxyOwner(): GetViewProvider<TView> = this
 }

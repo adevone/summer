@@ -6,13 +6,11 @@ import summer.strategy.SerializationStore
 import summer.strategy.SerializationStrategy
 
 abstract class SerializationViewModel<TView> :
-    RestoreViewModel<TView, Any?>(),
+    RestoreViewModel<TView>(),
     DoOnlyWhenAttachedStrategy.ProxyFactory<TView>,
     DoExactlyOnceStrategy.ProxyFactory<TView>,
     SerializationStrategy.Factory<TView>,
     SerializationStore.Holder {
 
     override var serializationStore = SerializationStore()
-
-    override fun eventProxyOwner(): GetViewProvider<TView> = this
 }

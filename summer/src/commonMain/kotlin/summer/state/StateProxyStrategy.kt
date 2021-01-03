@@ -1,6 +1,7 @@
 package summer.state
 
 import summer.GetViewProvider
+import summer.LifecycleViewModel
 import summer.ViewLifecycleListener
 
 /**
@@ -8,10 +9,11 @@ import summer.ViewLifecycleListener
  *
  * [T] type of stored value.
  *
- * [TOwner] is strategy dependencies container. If you want to pass some dependencies to
- *          strategy than define it on your custom interface and implement it
- *          on your [LifecycleViewModel].
- *          Store should be provided through [TOwner].
+ * [TOwner]
+ *   is a strategy dependencies container. If you want to pass some dependencies to
+ *   strategy than define it on your custom interface and implement it
+ *   on your [LifecycleViewModel].
+ *   Store should be provided through [TOwner].
  */
 interface StateProxyStrategy<T, TView, TOwner> {
     /**

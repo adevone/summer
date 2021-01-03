@@ -6,7 +6,6 @@ import summer.events.strategies.DoExactlyOnceStrategy
 import summer.events.strategies.DoOnlyWhenAttachedStrategy
 import summer.state.StateProxyFactory
 import summer.state.StateProxyStrategy
-import summer.state.strategies.InMemoryStore
 import summer.state.strategies.InMemoryStrategy
 
 /**
@@ -21,9 +20,8 @@ import summer.state.strategies.InMemoryStrategy
 interface DefaultSummerViewModel<TView> :
     LifecycleViewModel<TView>,
     StateProxyFactory<TView>,
-    EventProxyFactory<TView, Any?>,
+    EventProxyFactory<TView>,
     InMemoryStrategy.ProxyFactory<TView>,
-    InMemoryStore.Provider,
     DoOnlyWhenAttachedStrategy.ProxyFactory<TView>,
     DoExactlyOnceStrategy.ProxyFactory<TView>
 
@@ -38,12 +36,4 @@ interface DefaultSummerViewModel<TView> :
  */
 open class DefaultSummerViewModelImpl<TView> :
     DefaultSummerViewModel<TView>,
-    RestoreViewModel<TView, Any?>() {
-
-    /**
-     * Used for state storing by default. Can be overridden.
-     */
-    override val inMemoryStore = InMemoryStore()
-
-    override fun eventProxyOwner(): Any? = this
-}
+    RestoreViewModel<TView>()

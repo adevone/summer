@@ -63,7 +63,6 @@ class SerializationStrategy<T, TView>(
                 initial,
                 SerializationStrategy(serializer),
                 owner = serializationStore,
-                listener = null
             )
         }
     }

@@ -27,7 +27,7 @@ interface StateProxyFactory<TView> : ProxyFactory<TView> {
         initial: T,
         strategy: StateProxyStrategy<T, TView, TOwner>,
         owner: TOwner,
-        listener: StateProxyListener<TView, TOwner>?,
+        listener: StateProxyListener<TView, TOwner>? = null,
     ): StateProxy.Provider<T, TView, TOwner> {
         return StateProxy.Provider(
             getViewProperty,
@@ -39,6 +39,22 @@ interface StateProxyFactory<TView> : ProxyFactory<TView> {
             proxyCreated = { delegate ->
                 stateProxyCreated(delegate)
             }
+        )
+    }
+
+    /**
+     * Convenience shorthand to [state] for strategies with no owner
+     */
+    fun <T> state(
+        getViewProperty: GetViewProperty<T, TView>? = null,
+        initial: T,
+        strategy: StateProxyStrategy<T, TView, Nothing?>,
+    ): StateProxy.Provider<T, TView, Nothing?> {
+        return state(
+            getViewProperty,
+            initial,
+            strategy,
+            owner = null
         )
     }
 

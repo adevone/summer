@@ -2,7 +2,6 @@ package summer
 
 import summer.events.EventProxy
 import summer.events.EventProxyFactory
-import summer.events.EventProxyStrategy
 import summer.state.StateProxy
 import summer.state.StateProxyFactory
 
@@ -11,11 +10,10 @@ import summer.state.StateProxyFactory
  * custom [EventProxyFactory] or [StateProxyFactory]
  *
  * @param [TView] see [GetViewProvider]
- * @param [TEventsOwner] see [EventProxyStrategy]
  */
-abstract class RestoreViewModel<TView, TEventsOwner> :
+abstract class RestoreViewModel<TView> :
     LifecycleViewModel<TView>,
-    EventProxyFactory<TView, TEventsOwner>,
+    EventProxyFactory<TView>,
     StateProxyFactory<TView> {
 
     override var getView: () -> TView? = { null }

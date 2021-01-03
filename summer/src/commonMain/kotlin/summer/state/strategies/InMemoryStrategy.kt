@@ -4,18 +4,20 @@ import summer.GetViewProvider
 import summer.state.*
 
 /**
- * Saves state in [InMemoryStore].
+ * Saves state in the inner variable.
  */
-open class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, InMemoryStore> {
+class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, Nothing?> {
+    private var wasSet = false
+    private var currentValue: T? = null
 
     override fun getValue(
-        viewProperty: ViewProperty<T, TView, InMemoryStore>,
-        owner: InMemoryStore,
+        viewProperty: ViewProperty<T, TView, Nothing?>,
+        owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ): T {
-        val key = viewProperty.proxyProperty.name
-        return if (owner.isInit(key)) {
-            owner.get(key)
+        return if (wasSet) {
+            @Suppress("UNCHECKED_CAST")
+            currentValue as T
         } else {
             viewProperty.initial
         }
@@ -23,11 +25,12 @@ open class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, InMemorySto
 
     override fun setValue(
         value: T,
-        viewProperty: ViewProperty<T, TView, InMemoryStore>,
-        owner: InMemoryStore,
+        viewProperty: ViewProperty<T, TView, Nothing?>,
+        owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
-        owner.set(key = viewProperty.proxyProperty.name, value)
+        wasSet = true
+        currentValue = value
         val view = getViewProvider.getView()
         if (view != null) {
             viewProperty.setIfExists(value, view)
@@ -35,15 +38,15 @@ open class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, InMemorySto
     }
 
     override fun viewCreated(
-        viewProperty: ViewProperty<T, TView, InMemoryStore>,
-        owner: InMemoryStore,
+        viewProperty: ViewProperty<T, TView, Nothing?>,
+        owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
         val view = getViewProvider.getView()
         if (view != null) {
-            val key = viewProperty.proxyProperty.name
-            if (owner.isInit(key)) {
-                val value = owner.get<T>(key)
+            if (wasSet) {
+                @Suppress("UNCHECKED_CAST")
+                val value = currentValue as T
                 viewProperty.setIfExists(value, view)
             } else {
                 viewProperty.setIfExists(viewProperty.initial, view)
@@ -51,18 +54,16 @@ open class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, InMemorySto
         }
     }
 
-    interface ProxyFactory<TView> : StateProxyFactory<TView>, InMemoryStore.Provider {
+    interface ProxyFactory<TView> : StateProxyFactory<TView> {
 
         fun <T> state(
             getViewProperty: GetViewProperty<T, TView>? = null,
             initial: T,
-        ): StateProxy.Provider<T, TView, InMemoryStore> {
+        ): StateProxy.Provider<T, TView, Nothing?> {
             return state(
                 getViewProperty,
                 initial,
-                InMemoryStrategy(),
-                owner = inMemoryStore,
-                listener = null
+                InMemoryStrategy()
             )
         }
     }
