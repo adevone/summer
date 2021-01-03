@@ -10,13 +10,13 @@ import summer.events.ViewEventExecution
  * If view exists then action will be executed right now.
  * If view does not exist then when view will be created.
  */
-class DoExactlyOnceStrategy<TView> : EventProxyStrategy<TView, Any?> {
+class DoExactlyOnceStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
-    private var notExecuted = mutableListOf<ViewEventExecution<TView, Any?>>()
+    private var notExecuted = mutableListOf<ViewEventExecution<TView, Nothing?>>()
 
     override fun proxyInvoked(
-        execution: ViewEventExecution<TView, Any?>,
-        owner: Any?,
+        execution: ViewEventExecution<TView, Nothing?>,
+        owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
         val view = getViewProvider.getView()
@@ -28,7 +28,7 @@ class DoExactlyOnceStrategy<TView> : EventProxyStrategy<TView, Any?> {
     }
 
     override fun viewCreated(
-        owner: Any?,
+        owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
         val view = getViewProvider.getView()
@@ -40,7 +40,7 @@ class DoExactlyOnceStrategy<TView> : EventProxyStrategy<TView, Any?> {
         }
     }
 
-    interface ProxyFactory<TView> : EventProxyFactory<TView, Any?> {
+    interface ProxyFactory<TView> : EventProxyFactory<TView> {
 
         fun EventProxyBuilder<TView>.doExactlyOnce() = build(
             strategy = DoExactlyOnceStrategy()

@@ -9,11 +9,11 @@ import summer.events.ViewEventExecution
 /**
  * Action will be executed only if view exists.
  */
-class DoOnlyWhenAttachedStrategy<TView> : EventProxyStrategy<TView, Any?> {
+class DoOnlyWhenAttachedStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
     override fun proxyInvoked(
-        execution: ViewEventExecution<TView, Any?>,
-        owner: Any?,
+        execution: ViewEventExecution<TView, Nothing?>,
+        owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
         val view = getViewProvider.getView()
@@ -22,7 +22,7 @@ class DoOnlyWhenAttachedStrategy<TView> : EventProxyStrategy<TView, Any?> {
         }
     }
 
-    interface ProxyFactory<TView> : EventProxyFactory<TView, Any?> {
+    interface ProxyFactory<TView> : EventProxyFactory<TView> {
 
         fun EventProxyBuilder<TView>.doOnlyWhenAttached() = build(
             strategy = DoOnlyWhenAttachedStrategy()

@@ -7,9 +7,8 @@ import summer.ProxyFactory
  * to [EventProxy] with user-defined [EventProxyStrategy].
  *
  * [TView] see [EventProxyStrategy]
- * [TOwner] see [EventProxyStrategy]
  */
-interface EventProxyFactory<TView, TOwner> : ProxyFactory<TView> {
+interface EventProxyFactory<TView> : ProxyFactory<TView> {
 
     fun eventProxyCreated(proxy: EventProxy<*, *>)
 
@@ -17,21 +16,32 @@ interface EventProxyFactory<TView, TOwner> : ProxyFactory<TView> {
         return EventProxyBuilder(getViewEvent)
     }
 
+    /**
+     * Convenience factory to strategies without owner
+     */
     fun EventProxyBuilder<TView>.build(
+        strategy: EventProxyStrategy<TView, Nothing?>,
+    ) = build(
+        strategy = strategy,
+        owner = null
+    )
+
+    /**
+     * [TOwner] see [EventProxyStrategy]
+     */
+    fun <TOwner> EventProxyBuilder<TView>.build(
         strategy: EventProxyStrategy<TView, TOwner>,
+        owner: TOwner,
+        listener: EventProxyListener<TView, TOwner>? = null,
     ) = EventProxy(
         this.getViewEvent,
-        eventProxyOwner(),
+        owner,
         getViewProvider(),
-        eventListener(),
+        listener,
         strategy
     ).also { event ->
         eventProxyCreated(event)
     }
-
-    fun eventProxyOwner(): TOwner
-
-    fun eventListener(): EventProxyListener<TView, TOwner>? = null
 }
 
 class EventProxyBuilder<TView>(

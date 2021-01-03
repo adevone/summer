@@ -1,17 +1,20 @@
 package summer.events
 
 import summer.GetViewProvider
+import summer.LifecycleViewModel
 import summer.ViewLifecycleListener
 
 /**
  * Rule that determine behaviour of [EventProxy] when it invoked.
  *
- * [TView] is parent view. If you want some strategy
- *         to be executed only on specific view, you can define it.
+ * [TView]
+ *   is parent a view. If you want some strategy
+ *   to be executed only on the specific view, you can pass it to [TView].
  *
- * [TOwner] is strategy dependencies container. If you want to pass some dependencies to
- *          strategy than define it on your custom interface, extend it from [ViewProvider]
- *          and implement on your [LifecycleViewModel].
+ * [TOwner]
+ *   is strategy dependencies container. If you want to pass some dependencies to
+ *   strategy than define it on your custom interface, extend it from [GetViewProvider]
+ *   and implement on your [LifecycleViewModel].
  */
 interface EventProxyStrategy<TView, TOwner> {
     /**
