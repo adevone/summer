@@ -1,0 +1,743 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7F19FB7E084B073DB9BFA904 /* Pods_SummerStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A1E41946327843BAE30DAE3 /* Pods_SummerStoryboard.framework */; };
+		A825A83CA7B98A1F42E89538 /* Pods_SummerStoryboardTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8954DC4A0E7541BF5DACE /* Pods_SummerStoryboardTests.framework */; };
+		A867E913259FF3D80052C399 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E912259FF3D80052C399 /* AppDelegate.swift */; };
+		A867E915259FF3D80052C399 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E914259FF3D80052C399 /* SceneDelegate.swift */; };
+		A867E91A259FF3D80052C399 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A867E918259FF3D80052C399 /* Main.storyboard */; };
+		A867E91C259FF3DB0052C399 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A867E91B259FF3DB0052C399 /* Assets.xcassets */; };
+		A867E91F259FF3DB0052C399 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A867E91D259FF3DB0052C399 /* LaunchScreen.storyboard */; };
+		A867E92A259FF3DB0052C399 /* SummerStoryboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E929259FF3DB0052C399 /* SummerStoryboardTests.swift */; };
+		A867E935259FF3DB0052C399 /* SummerStoryboardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E934259FF3DB0052C399 /* SummerStoryboardUITests.swift */; };
+		A867E94E259FF6FE0052C399 /* frameworks_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A867E94B259FF6FE0052C399 /* frameworks_icon.png */; };
+		A867E94F259FF6FE0052C399 /* about_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A867E94C259FF6FE0052C399 /* about_icon.png */; };
+		A867E950259FF6FE0052C399 /* basket_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A867E94D259FF6FE0052C399 /* basket_icon.png */; };
+		A867E967259FF7740052C399 /* BasketConrtoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E960259FF7740052C399 /* BasketConrtoller.swift */; };
+		A867E968259FF7740052C399 /* AboutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E961259FF7740052C399 /* AboutController.swift */; };
+		A867E969259FF7740052C399 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E962259FF7740052C399 /* MainController.swift */; };
+		A867E96A259FF7740052C399 /* FrameworksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E963259FF7740052C399 /* FrameworksController.swift */; };
+		A867E96B259FF7740052C399 /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E965259FF7740052C399 /* BaseController.swift */; };
+		A867E96C259FF7740052C399 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A867E966259FF7740052C399 /* UITableView+Extensions.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A867E926259FF3DB0052C399 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A867E907259FF3D80052C399 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A867E90E259FF3D80052C399;
+			remoteInfo = SummerStoryboard;
+		};
+		A867E931259FF3DB0052C399 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A867E907259FF3D80052C399 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A867E90E259FF3D80052C399;
+			remoteInfo = SummerStoryboard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0C2E0D43029AAD7575BC7868 /* Pods-SummerStoryboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SummerStoryboard.debug.xcconfig"; path = "Target Support Files/Pods-SummerStoryboard/Pods-SummerStoryboard.debug.xcconfig"; sourceTree = "<group>"; };
+		3C91D285B0F3DA4609FF11A0 /* Pods-SummerStoryboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SummerStoryboard.release.xcconfig"; path = "Target Support Files/Pods-SummerStoryboard/Pods-SummerStoryboard.release.xcconfig"; sourceTree = "<group>"; };
+		6A1E41946327843BAE30DAE3 /* Pods_SummerStoryboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SummerStoryboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		94504D433196443492F85CEA /* Pods-SummerStoryboardTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SummerStoryboardTests.release.xcconfig"; path = "Target Support Files/Pods-SummerStoryboardTests/Pods-SummerStoryboardTests.release.xcconfig"; sourceTree = "<group>"; };
+		A808F3B7B0A2917C6DBE520A /* Pods-SummerStoryboardTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SummerStoryboardTests.debug.xcconfig"; path = "Target Support Files/Pods-SummerStoryboardTests/Pods-SummerStoryboardTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A867E90F259FF3D80052C399 /* SummerStoryboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SummerStoryboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A867E912259FF3D80052C399 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A867E914259FF3D80052C399 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		A867E919259FF3D80052C399 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A867E91B259FF3DB0052C399 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A867E91E259FF3DB0052C399 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A867E920259FF3DB0052C399 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A867E925259FF3DB0052C399 /* SummerStoryboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SummerStoryboardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A867E929259FF3DB0052C399 /* SummerStoryboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummerStoryboardTests.swift; sourceTree = "<group>"; };
+		A867E92B259FF3DB0052C399 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A867E930259FF3DB0052C399 /* SummerStoryboardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SummerStoryboardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A867E934259FF3DB0052C399 /* SummerStoryboardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummerStoryboardUITests.swift; sourceTree = "<group>"; };
+		A867E936259FF3DB0052C399 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A867E94B259FF6FE0052C399 /* frameworks_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frameworks_icon.png; sourceTree = "<group>"; };
+		A867E94C259FF6FE0052C399 /* about_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about_icon.png; sourceTree = "<group>"; };
+		A867E94D259FF6FE0052C399 /* basket_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = basket_icon.png; sourceTree = "<group>"; };
+		A867E960259FF7740052C399 /* BasketConrtoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasketConrtoller.swift; sourceTree = "<group>"; };
+		A867E961259FF7740052C399 /* AboutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutController.swift; sourceTree = "<group>"; };
+		A867E962259FF7740052C399 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
+		A867E963259FF7740052C399 /* FrameworksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameworksController.swift; sourceTree = "<group>"; };
+		A867E965259FF7740052C399 /* BaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseController.swift; sourceTree = "<group>"; };
+		A867E966259FF7740052C399 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
+		C3B8954DC4A0E7541BF5DACE /* Pods_SummerStoryboardTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SummerStoryboardTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A867E90C259FF3D80052C399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F19FB7E084B073DB9BFA904 /* Pods_SummerStoryboard.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A867E922259FF3DB0052C399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A825A83CA7B98A1F42E89538 /* Pods_SummerStoryboardTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A867E92D259FF3DB0052C399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6BAB82FA02EF4B5FF2EAF4EA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0C2E0D43029AAD7575BC7868 /* Pods-SummerStoryboard.debug.xcconfig */,
+				3C91D285B0F3DA4609FF11A0 /* Pods-SummerStoryboard.release.xcconfig */,
+				A808F3B7B0A2917C6DBE520A /* Pods-SummerStoryboardTests.debug.xcconfig */,
+				94504D433196443492F85CEA /* Pods-SummerStoryboardTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A867E906259FF3D80052C399 = {
+			isa = PBXGroup;
+			children = (
+				A867E911259FF3D80052C399 /* SummerStoryboard */,
+				A867E928259FF3DB0052C399 /* SummerStoryboardTests */,
+				A867E933259FF3DB0052C399 /* SummerStoryboardUITests */,
+				A867E910259FF3D80052C399 /* Products */,
+				6BAB82FA02EF4B5FF2EAF4EA /* Pods */,
+				D7C27F4E82E2E02DFE86D8BB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A867E910259FF3D80052C399 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A867E90F259FF3D80052C399 /* SummerStoryboard.app */,
+				A867E925259FF3DB0052C399 /* SummerStoryboardTests.xctest */,
+				A867E930259FF3DB0052C399 /* SummerStoryboardUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A867E911259FF3D80052C399 /* SummerStoryboard */ = {
+			isa = PBXGroup;
+			children = (
+				A867E95F259FF7740052C399 /* ui */,
+				A867E94C259FF6FE0052C399 /* about_icon.png */,
+				A867E94D259FF6FE0052C399 /* basket_icon.png */,
+				A867E94B259FF6FE0052C399 /* frameworks_icon.png */,
+				A867E912259FF3D80052C399 /* AppDelegate.swift */,
+				A867E914259FF3D80052C399 /* SceneDelegate.swift */,
+				A867E918259FF3D80052C399 /* Main.storyboard */,
+				A867E91B259FF3DB0052C399 /* Assets.xcassets */,
+				A867E91D259FF3DB0052C399 /* LaunchScreen.storyboard */,
+				A867E920259FF3DB0052C399 /* Info.plist */,
+			);
+			path = SummerStoryboard;
+			sourceTree = "<group>";
+		};
+		A867E928259FF3DB0052C399 /* SummerStoryboardTests */ = {
+			isa = PBXGroup;
+			children = (
+				A867E929259FF3DB0052C399 /* SummerStoryboardTests.swift */,
+				A867E92B259FF3DB0052C399 /* Info.plist */,
+			);
+			path = SummerStoryboardTests;
+			sourceTree = "<group>";
+		};
+		A867E933259FF3DB0052C399 /* SummerStoryboardUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A867E934259FF3DB0052C399 /* SummerStoryboardUITests.swift */,
+				A867E936259FF3DB0052C399 /* Info.plist */,
+			);
+			path = SummerStoryboardUITests;
+			sourceTree = "<group>";
+		};
+		A867E95F259FF7740052C399 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				A867E960259FF7740052C399 /* BasketConrtoller.swift */,
+				A867E961259FF7740052C399 /* AboutController.swift */,
+				A867E962259FF7740052C399 /* MainController.swift */,
+				A867E963259FF7740052C399 /* FrameworksController.swift */,
+				A867E964259FF7740052C399 /* base */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		A867E964259FF7740052C399 /* base */ = {
+			isa = PBXGroup;
+			children = (
+				A867E965259FF7740052C399 /* BaseController.swift */,
+				A867E966259FF7740052C399 /* UITableView+Extensions.swift */,
+			);
+			path = base;
+			sourceTree = "<group>";
+		};
+		D7C27F4E82E2E02DFE86D8BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6A1E41946327843BAE30DAE3 /* Pods_SummerStoryboard.framework */,
+				C3B8954DC4A0E7541BF5DACE /* Pods_SummerStoryboardTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A867E90E259FF3D80052C399 /* SummerStoryboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A867E939259FF3DB0052C399 /* Build configuration list for PBXNativeTarget "SummerStoryboard" */;
+			buildPhases = (
+				27F75A2FD7B7CFF3C19A4CC7 /* [CP] Check Pods Manifest.lock */,
+				A867E90B259FF3D80052C399 /* Sources */,
+				A867E90C259FF3D80052C399 /* Frameworks */,
+				A867E90D259FF3D80052C399 /* Resources */,
+				E9D8624738A32F0D68A392D6 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SummerStoryboard;
+			productName = SummerStoryboard;
+			productReference = A867E90F259FF3D80052C399 /* SummerStoryboard.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A867E924259FF3DB0052C399 /* SummerStoryboardTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A867E93C259FF3DB0052C399 /* Build configuration list for PBXNativeTarget "SummerStoryboardTests" */;
+			buildPhases = (
+				4AD473AC2BCF786D95B7546D /* [CP] Check Pods Manifest.lock */,
+				A867E921259FF3DB0052C399 /* Sources */,
+				A867E922259FF3DB0052C399 /* Frameworks */,
+				A867E923259FF3DB0052C399 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A867E927259FF3DB0052C399 /* PBXTargetDependency */,
+			);
+			name = SummerStoryboardTests;
+			productName = SummerStoryboardTests;
+			productReference = A867E925259FF3DB0052C399 /* SummerStoryboardTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A867E92F259FF3DB0052C399 /* SummerStoryboardUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A867E93F259FF3DB0052C399 /* Build configuration list for PBXNativeTarget "SummerStoryboardUITests" */;
+			buildPhases = (
+				A867E92C259FF3DB0052C399 /* Sources */,
+				A867E92D259FF3DB0052C399 /* Frameworks */,
+				A867E92E259FF3DB0052C399 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A867E932259FF3DB0052C399 /* PBXTargetDependency */,
+			);
+			name = SummerStoryboardUITests;
+			productName = SummerStoryboardUITests;
+			productReference = A867E930259FF3DB0052C399 /* SummerStoryboardUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A867E907259FF3D80052C399 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1230;
+				LastUpgradeCheck = 1230;
+				TargetAttributes = {
+					A867E90E259FF3D80052C399 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+					A867E924259FF3DB0052C399 = {
+						CreatedOnToolsVersion = 12.3;
+						TestTargetID = A867E90E259FF3D80052C399;
+					};
+					A867E92F259FF3DB0052C399 = {
+						CreatedOnToolsVersion = 12.3;
+						TestTargetID = A867E90E259FF3D80052C399;
+					};
+				};
+			};
+			buildConfigurationList = A867E90A259FF3D80052C399 /* Build configuration list for PBXProject "SummerStoryboard" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A867E906259FF3D80052C399;
+			productRefGroup = A867E910259FF3D80052C399 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A867E90E259FF3D80052C399 /* SummerStoryboard */,
+				A867E924259FF3DB0052C399 /* SummerStoryboardTests */,
+				A867E92F259FF3DB0052C399 /* SummerStoryboardUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A867E90D259FF3D80052C399 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A867E91F259FF3DB0052C399 /* LaunchScreen.storyboard in Resources */,
+				A867E91C259FF3DB0052C399 /* Assets.xcassets in Resources */,
+				A867E91A259FF3D80052C399 /* Main.storyboard in Resources */,
+				A867E94E259FF6FE0052C399 /* frameworks_icon.png in Resources */,
+				A867E950259FF6FE0052C399 /* basket_icon.png in Resources */,
+				A867E94F259FF6FE0052C399 /* about_icon.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A867E923259FF3DB0052C399 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A867E92E259FF3DB0052C399 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		27F75A2FD7B7CFF3C19A4CC7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SummerStoryboard-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4AD473AC2BCF786D95B7546D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SummerStoryboardTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E9D8624738A32F0D68A392D6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SummerStoryboard/Pods-SummerStoryboard-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SummerStoryboard/Pods-SummerStoryboard-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SummerStoryboard/Pods-SummerStoryboard-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A867E90B259FF3D80052C399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A867E96A259FF7740052C399 /* FrameworksController.swift in Sources */,
+				A867E913259FF3D80052C399 /* AppDelegate.swift in Sources */,
+				A867E96B259FF7740052C399 /* BaseController.swift in Sources */,
+				A867E96C259FF7740052C399 /* UITableView+Extensions.swift in Sources */,
+				A867E915259FF3D80052C399 /* SceneDelegate.swift in Sources */,
+				A867E967259FF7740052C399 /* BasketConrtoller.swift in Sources */,
+				A867E968259FF7740052C399 /* AboutController.swift in Sources */,
+				A867E969259FF7740052C399 /* MainController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A867E921259FF3DB0052C399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A867E92A259FF3DB0052C399 /* SummerStoryboardTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A867E92C259FF3DB0052C399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A867E935259FF3DB0052C399 /* SummerStoryboardUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A867E927259FF3DB0052C399 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A867E90E259FF3D80052C399 /* SummerStoryboard */;
+			targetProxy = A867E926259FF3DB0052C399 /* PBXContainerItemProxy */;
+		};
+		A867E932259FF3DB0052C399 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A867E90E259FF3D80052C399 /* SummerStoryboard */;
+			targetProxy = A867E931259FF3DB0052C399 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A867E918259FF3D80052C399 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A867E919259FF3D80052C399 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A867E91D259FF3DB0052C399 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A867E91E259FF3DB0052C399 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A867E937259FF3DB0052C399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A867E938259FF3DB0052C399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A867E93A259FF3DB0052C399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0C2E0D43029AAD7575BC7868 /* Pods-SummerStoryboard.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SummerStoryboard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.adev.SummerStoryboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A867E93B259FF3DB0052C399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C91D285B0F3DA4609FF11A0 /* Pods-SummerStoryboard.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SummerStoryboard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.adev.SummerStoryboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A867E93D259FF3DB0052C399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A808F3B7B0A2917C6DBE520A /* Pods-SummerStoryboardTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SummerStoryboardTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.adev.SummerStoryboardTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SummerStoryboard.app/SummerStoryboard";
+			};
+			name = Debug;
+		};
+		A867E93E259FF3DB0052C399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94504D433196443492F85CEA /* Pods-SummerStoryboardTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SummerStoryboardTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.adev.SummerStoryboardTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SummerStoryboard.app/SummerStoryboard";
+			};
+			name = Release;
+		};
+		A867E940259FF3DB0052C399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SummerStoryboardUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.adev.SummerStoryboardUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SummerStoryboard;
+			};
+			name = Debug;
+		};
+		A867E941259FF3DB0052C399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = SummerStoryboardUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.adev.SummerStoryboardUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SummerStoryboard;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A867E90A259FF3D80052C399 /* Build configuration list for PBXProject "SummerStoryboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A867E937259FF3DB0052C399 /* Debug */,
+				A867E938259FF3DB0052C399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A867E939259FF3DB0052C399 /* Build configuration list for PBXNativeTarget "SummerStoryboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A867E93A259FF3DB0052C399 /* Debug */,
+				A867E93B259FF3DB0052C399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A867E93C259FF3DB0052C399 /* Build configuration list for PBXNativeTarget "SummerStoryboardTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A867E93D259FF3DB0052C399 /* Debug */,
+				A867E93E259FF3DB0052C399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A867E93F259FF3DB0052C399 /* Build configuration list for PBXNativeTarget "SummerStoryboardUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A867E940259FF3DB0052C399 /* Debug */,
+				A867E941259FF3DB0052C399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A867E907259FF3D80052C399 /* Project object */;
+}

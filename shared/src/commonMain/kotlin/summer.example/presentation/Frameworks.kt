@@ -28,28 +28,27 @@ class FrameworksViewModel(
     init {
         basketController.flow.onEach {
             updateFrameworks()
-        }.launchIn(this)
+        }.launchIn(scope)
     }
 
-    override fun onEnter() {
-        super.onEnter()
+    init {
         updateFrameworks()
     }
 
-    fun onFrameworkClick(@Hide password: String, framework: Framework) {
-        viewProxy.toDetails(framework)
+    fun onFrameworkClick(@Hide password: String, item: Basket.Item) {
+        viewProxy.toDetails(item.framework)
     }
 
-    fun onIncreaseClick(framework: Framework) {
-        basketController.increase(framework)
+    fun onIncreaseClick(item: Basket.Item) {
+        basketController.increase(item.framework)
     }
 
-    fun onDecreaseClick(framework: Framework) {
-        basketController.decrease(framework)
+    fun onDecreaseClick(item: Basket.Item) {
+        basketController.decrease(item.framework)
     }
 
     private fun updateFrameworks() {
-        launch {
+        scope.launch {
             val frameworks = getAllFrameworkItems(springVersion = "5.0")
             viewProxy.items = frameworks
         }

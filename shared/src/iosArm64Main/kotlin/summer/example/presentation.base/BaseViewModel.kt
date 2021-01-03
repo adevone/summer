@@ -1,13 +1,27 @@
 package summer.example.presentation.base
 
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlin.reflect.KClass
+import kotlinx.coroutines.SupervisorJob
+import summer.ArchViewModel
+import summer.ViewModelController
+import summer.example.AppKodeinAware
+import kotlin.coroutines.CoroutineContext
 
-actual val mainDispatcher: CoroutineDispatcher = Dispatchers.Unconfined
+actual abstract class BaseViewModel<TView> actual constructor() :
+    ArchViewModel<TView>(),
+    AppKodeinAware,
+    BaseViewModelController {
 
-actual object ViewModelEventsListener {
-    actual fun onCreate(clazz: KClass<*>) {}
-    actual fun onAttach(clazz: KClass<*>, viewClass: KClass<*>) {}
-    actual fun onDetach(clazz: KClass<*>) {}
+    private val job = SupervisorJob()
+    private val coroutineContext: CoroutineContext = Dispatchers.Main + job
+    actual val scope = CoroutineScope(coroutineContext)
+
+    override fun onDestroy() {
+        job.cancel()
+    }
+}
+
+interface BaseViewModelController : ViewModelController {
+    fun onDestroy()
 }

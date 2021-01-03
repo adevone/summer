@@ -1,7 +1,7 @@
 package summer.android
 
 import android.os.Bundle
-import summer.LifecycleSummerViewModel
+import summer.LifecycleViewModel
 import summer.strategy.SerializationStateProvider
 
 abstract class SaveStateSummerActivity : BaseSummerActivity<SaveStateViewModelProvider<*, *>>() {
@@ -19,7 +19,7 @@ abstract class SaveStateSummerActivity : BaseSummerActivity<SaveStateViewModelPr
     fun <TView, TViewModel> TView.bindViewModel(
         createViewModel: () -> TViewModel
     ): SaveStateViewModelProvider<TView, TViewModel>
-        where TViewModel : LifecycleSummerViewModel<TView>, TViewModel : SerializationStateProvider {
+            where TViewModel : LifecycleViewModel<TView>, TViewModel : SerializationStateProvider {
         val provider = SaveStateViewModelProvider(createViewModel, view = this)
         viewModelProvider = provider
         return provider

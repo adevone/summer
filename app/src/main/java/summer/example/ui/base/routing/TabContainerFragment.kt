@@ -7,16 +7,16 @@ import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
 import kotlinx.serialization.Serializable
 import org.kodein.di.instance
-import summer.example.AppKodeinAware
-import summer.example.ui.about.AboutFragment
-import summer.example.ui.frameworks.FrameworksFragment
-import summer.example.ui.basket.BasketFragment
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
+import summer.example.AppKodeinAware
 import summer.example.entity.Tab
 import summer.example.ui.ArgsFragment
+import summer.example.ui.about.AboutFragment
+import summer.example.ui.basket.BasketFragment
+import summer.example.ui.frameworks.FrameworksFragment
 
 class TabContainerFragment : ArgsFragment<TabContainerFragment.Args>(), AppKodeinAware, RouterProvider, BackButtonListener {
 

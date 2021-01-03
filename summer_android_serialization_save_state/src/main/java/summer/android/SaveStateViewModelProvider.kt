@@ -2,7 +2,7 @@ package summer.android
 
 import android.os.Bundle
 import dev.ahmedmourad.bundlizer.Bundlizer
-import summer.LifecycleSummerViewModel
+import summer.LifecycleViewModel
 import summer.strategy.SerializationStateProvider
 import summer.strategy.SerializationStore
 
@@ -10,7 +10,7 @@ class SaveStateViewModelProvider<TView, TViewModel>(
     createViewModel: () -> TViewModel,
     view: TView
 ) : SummerViewModelProvider<TView, TViewModel>(createViewModel, view)
-        where TViewModel : LifecycleSummerViewModel<TView>, TViewModel : SerializationStateProvider {
+        where TViewModel : LifecycleViewModel<TView>, TViewModel : SerializationStateProvider {
 
     fun onSaveInstanceState(outState: Bundle) {
         val viewModel = requireViewModel()
