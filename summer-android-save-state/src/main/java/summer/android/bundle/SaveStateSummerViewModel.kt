@@ -2,48 +2,18 @@ package summer.android.bundle
 
 import android.os.Bundle
 import android.os.Parcelable
-import summer.RestoreSummerViewModel
-import summer.ViewProvider
-import summer.android.bundle.strategies.BinderBundleStateStrategy
-import summer.android.bundle.strategies.BooleanArrayBundleStateStrategy
-import summer.android.bundle.strategies.BooleanBundleStateStrategy
-import summer.android.bundle.strategies.BundleBundleStateStrategy
-import summer.android.bundle.strategies.ByteArrayBundleStateStrategy
-import summer.android.bundle.strategies.ByteBundleStateStrategy
-import summer.android.bundle.strategies.CharArrayBundleStateStrategy
-import summer.android.bundle.strategies.CharBundleStateStrategy
-import summer.android.bundle.strategies.CharSequenceArrayBundleStateStrategy
-import summer.android.bundle.strategies.CharSequenceArrayListBundleStateStrategy
-import summer.android.bundle.strategies.CharSequenceBundleStateStrategy
-import summer.android.bundle.strategies.DoubleArrayBundleStateStrategy
-import summer.android.bundle.strategies.DoubleBundleStateStrategy
-import summer.android.bundle.strategies.FloatArrayBundleStateStrategy
-import summer.android.bundle.strategies.FloatBundleStateStrategy
-import summer.android.bundle.strategies.IntArrayBundleStateStrategy
-import summer.android.bundle.strategies.IntArrayListBundleStateStrategy
-import summer.android.bundle.strategies.IntBundleStateStrategy
-import summer.android.bundle.strategies.LongArrayBundleStateStrategy
-import summer.android.bundle.strategies.LongBundleStateStrategy
-import summer.android.bundle.strategies.NullableStringBundleStateStrategy
-import summer.android.bundle.strategies.ParcelableArrayBundleStateStrategy
-import summer.android.bundle.strategies.ParcelableArrayListBundleStateStrategy
-import summer.android.bundle.strategies.ParcelableBundleStateStrategy
-import summer.android.bundle.strategies.ParcelableSparseArrayBundleStateStrategy
-import summer.android.bundle.strategies.SerializableBundleStateStrategy
-import summer.android.bundle.strategies.ShortArrayBundleStateStrategy
-import summer.android.bundle.strategies.ShortBundleStateStrategy
-import summer.android.bundle.strategies.SizeBundleStateStrategy
-import summer.android.bundle.strategies.SizeFBundleStateStrategy
-import summer.android.bundle.strategies.StringArrayBundleStateStrategy
-import summer.android.bundle.strategies.StringArrayListBundleStateStrategy
-import summer.android.bundle.strategies.StringBundleStateStrategy
-import summer.events.DoExactlyOnceStrategy
-import summer.events.DoOnlyWhenAttachedStrategy
-import summer.state.GetMirrorProperty
+import summer.GetViewProvider
+import summer.RestoreViewModel
+import summer.ViewProxyProvider
+import summer.android.bundle.strategies.*
+import summer.events.strategies.DoExactlyOnceStrategy
+import summer.events.strategies.DoOnlyWhenAttachedStrategy
+import summer.state.GetViewProperty
 
 abstract class SaveStateSummerViewModel<TView> :
-    RestoreSummerViewModel<TView, BundleProvider, ViewProvider<TView>>(),
-    DoOnlyWhenAttachedStrategy.Factory<TView>, DoExactlyOnceStrategy.Factory<TView>,
+    RestoreViewModel<TView, BundleProvider, Any?>(),
+    ViewProxyProvider<TView>,
+    DoOnlyWhenAttachedStrategy.ProxyFactory<TView>, DoExactlyOnceStrategy.ProxyFactory<TView>,
     IntBundleStateStrategy.Factory<TView>, IntArrayBundleStateStrategy.Factory<TView>,
     BooleanBundleStateStrategy.Factory<TView>, BooleanArrayBundleStateStrategy.Factory<TView>,
     LongBundleStateStrategy.Factory<TView>, LongArrayBundleStateStrategy.Factory<TView>,
@@ -65,38 +35,38 @@ abstract class SaveStateSummerViewModel<TView> :
 
     @JvmName("stringArrayListState")
     fun state(
-        getMirrorProperty: GetMirrorProperty<TView, ArrayList<String>?>? = null,
-        initial: ArrayList<String>?
-    ): BundleStateDelegateProvider<ArrayList<String>?> {
+        getMirrorProperty: GetViewProperty<ArrayList<String>?, TView>? = null,
+        initial: ArrayList<String>?,
+    ): BundleStateDelegateProvider<ArrayList<String>?, TView> {
         return state(getMirrorProperty, initial, StringArrayListBundleStateStrategy)
     }
 
     @JvmName("intArrayListState")
     fun state(
-        getMirrorProperty: GetMirrorProperty<TView, ArrayList<Int>?>? = null,
-        initial: ArrayList<Int>?
-    ): BundleStateDelegateProvider<ArrayList<Int>?> {
+        getMirrorProperty: GetViewProperty<ArrayList<Int>?, TView>? = null,
+        initial: ArrayList<Int>?,
+    ): BundleStateDelegateProvider<ArrayList<Int>?, TView> {
         return state(getMirrorProperty, initial, IntArrayListBundleStateStrategy)
     }
 
     @JvmName("charSequenceArrayListState")
     fun state(
-        getMirrorProperty: GetMirrorProperty<TView, ArrayList<CharSequence>?>? = null,
-        initial: ArrayList<CharSequence>?
-    ): BundleStateDelegateProvider<ArrayList<CharSequence>?> {
+        getMirrorProperty: GetViewProperty<ArrayList<CharSequence>?, TView>? = null,
+        initial: ArrayList<CharSequence>?,
+    ): BundleStateDelegateProvider<ArrayList<CharSequence>?, TView> {
         return state(getMirrorProperty, initial, CharSequenceArrayListBundleStateStrategy)
     }
 
     @JvmName("parcelableArrayListState")
     fun <T : Parcelable> state(
-        getMirrorProperty: GetMirrorProperty<TView, ArrayList<T>?>? = null,
-        initial: ArrayList<T>?
-    ): BundleStateDelegateProvider<ArrayList<T>?> {
+        getMirrorProperty: GetViewProperty<ArrayList<T>?, TView>? = null,
+        initial: ArrayList<T>?,
+    ): BundleStateDelegateProvider<ArrayList<T>?, TView> {
         return state(getMirrorProperty, initial, ParcelableArrayListBundleStateStrategy<T>())
     }
 
     override var bundle = Bundle()
 
-    override fun getEventsOwner(): ViewProvider<TView> = this
-    override fun getStateOwner(): BundleProvider = this
+    override fun eventProxyOwner(): GetViewProvider<TView> = this
+    override fun stateProxyOwner(): BundleProvider = this
 }

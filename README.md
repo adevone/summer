@@ -1,39 +1,7 @@
 Common: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer/images/download.svg) ](https://bintray.com/summermpp/summer/summer/_latestVersion)
-AndroidX: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-androidx/images/download.svg) ](https://bintray.com/summermpp/summer/summer-androidx/_latestVersion)
+Arch: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-arch-lifecycle/images/download.svg) ](https://bintray.com/summermpp/summer/summer-arch-lifecycle/_latestVersion)
 
-# Intellij IDEA / Android Studio plugin
-[Plugin page](https://github.com/adevone/summer-plugin)
-
-# Summer
-
-Gradle dependencies:
-```kotlin
-// in settings.gradle
-enableFeaturePreview("GRADLE_METADATA")
-
-// in root build.gradle
-allprojects {
-    repositories {
-        ...
-        maven { url = uri("https://dl.bintray.com/summermpp/summer") }
-    }
-}
-
-dependencies {
-
-    // library itself (with enableFeaturePreview("GRADLE_METADATA"))
-    implementation("com.github.adevone.summer:summer:1.0.0-beta6-mvvm-2")
-
-    // library itself (without enableFeaturePreview("GRADLE_METADATA"), jvm version)
-    implementation("com.github.adevone.summer:summer-jvm:1.0.0-beta6-mvvm-2")
-
-    // androidx support, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:1.0.0-beta6-mvvm-2")
-
-    // android compat support, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6-mvvm-2")
-}
-```
+# About Summer
 
 Summer is Model-View-ViewModel library with kotlin-multiplatform support. It can be used to share viewModels between iOS and Android apps.
 Summer does not use code generation and thus have not significant effort on compilation time and odd build-time errors.  
@@ -88,8 +56,7 @@ class CalendarViewModel(
         override val showError = event { it.showError }.doOnlyWhenAttached()
     }
     
-    // Called when user sees screen for the first time 
-    override fun onEnter() {
+    init {
         try {
             val day = getDay(number = 1)
             viewProxy.dayName = dayName
@@ -102,9 +69,14 @@ class CalendarViewModel(
 
 Android, Kotlin:
 ```kotlin
-class CalendarFragment : SummerFragment(R.layout.calendar_fragment), CalendarView {
+class CalendarFragment : Fragment(R.layout.calendar_fragment), CalendarView {
 
-    private val viewModel = bindViewModel { CalendarViewModel(...) }
+    private val viewModel by viewModels<CalendarViewModel>()
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.bindView { this }
+    }
 
     override var isLoading: Boolean by didSet {
         progressBar.isVisible = isLoading
@@ -120,11 +92,11 @@ class CalendarFragment : SummerFragment(R.layout.calendar_fragment), CalendarVie
 }
 ```
 
-[BaseController](https://gist.github.com/adevone/685ec7a397b22f47c2171e79ae5c0966) (Subject of change)
+[BaseViewController](https://gist.github.com/adevone/994d5cd5a5cb11f6789dbe3732bb6b25) (Subject of change)
 
 iOS, Swift:
 ```swift
-class CalendarViewController: BaseController, CalendarView {
+class CalendarViewController: BaseViewController, CalendarView {
 
     @IBOutlet weak var loadingSpinner: UIView!
     @IBOutlet weak var dayNameLabel: UILabel!
@@ -153,11 +125,31 @@ class CalendarViewController: BaseController, CalendarView {
         viewModel = CalendarViewModel(...)
         super.viewDidLoad()
     }
-    
 }
 ```
 
-### Convenient custom scope
-```
-((file[app]:src/main//*||file[app]:src/debug//*||file[app]:src/release//*)&&!*.iml||file[shared_commonMain]:*/||file[buildSrc]:*/||file[shared]:.gitignore||file[eshop]:build.gradle.kts||file[app]:build.gradle.kts)&&!file[buildSrc]:buildSrc.iml||file:.gitignore||file:build.gradle.kts||file:gradle.properties||file:settings.gradle.kts||file:README.md||file[shared_iosMain]:*/||file[app]:src/test/java//*
+# Intellij IDEA / Android Studio plugin
+[Plugin page](https://github.com/adevone/summer-plugin)
+
+# Gradle dependencies:
+```kotlin
+// in root build.gradle
+allprojects {
+    repositories {
+        ...
+        maven { url = uri("https://dl.bintray.com/summermpp/summer") }
+    }
+}
+
+dependencies {
+
+    // library itself
+    implementation("com.github.adevone.summer:summer:1.0.0-beta6-mvvm-20")
+
+    // androidx support, contains ArchViewModel that allows using of bindView function (see example)
+    implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta6-mvvm-20")
+
+    // android compat support, contains SummerActivity and SummerFragment
+    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6-mvvm-20")
+}
 ```

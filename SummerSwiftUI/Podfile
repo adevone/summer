@@ -1,0 +1,23 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+# Uncomment the next line to define a global platform for your project
+platform :ios, '13.0'
+
+target 'SummerSwiftUI' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for SummerSwiftUI
+  # pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git'
+  # pod 'AlamofireImage', :git => 'https://github.com/Alamofire/AlamofireImage.git'
+
+  pod 'URLImage', :git => 'https://github.com/dmytro-anokhin/url-image.git'
+
+  pod 'shared', path: '../shared'
+
+  target 'SummerSwiftUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

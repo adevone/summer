@@ -1,16 +1,12 @@
 package summer.example.ui.frameworks
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.frameworks_item.*
-import summer.example.R
+import summer.example.databinding.FrameworksItemBinding
 import summer.example.entity.Basket
 import summer.example.presentation.FrameworksViewModel
-import summer.example.presentation.base.Hidden
 import summer.example.ui.EqualsDiffCallback
 
 class FrameworksAdapter(
@@ -19,8 +15,8 @@ class FrameworksAdapter(
     EqualsDiffCallback { a, b -> a.framework.name == b.framework.name }
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.frameworks_item,
+        val view = FrameworksItemBinding.inflate(
+            LayoutInflater.from(parent.context),
             parent,
             false
         )
@@ -32,23 +28,25 @@ class FrameworksAdapter(
         holder.bind(framework)
     }
 
-    inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+    inner class ViewHolder(
+        private val binding: FrameworksItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Basket.Item) {
 
-            nameView.text = item.framework.name
-            versionView.text = item.framework.version
+            binding.nameView.text = item.framework.name
+            binding.versionView.text = item.framework.version
 
-            decreaseButton.setOnClickListener {
-                viewModel.onDecreaseClick(item.framework)
+            binding.decreaseButton.setOnClickListener {
+                viewModel.onDecreaseClick(item)
             }
-            countView.text = item.quantity.toString()
-            increaseButton.setOnClickListener {
-                viewModel.onIncreaseClick(item.framework)
+            binding.countView.text = item.quantity.toString()
+            binding.increaseButton.setOnClickListener {
+                viewModel.onIncreaseClick(item)
             }
 
-            containerView.setOnClickListener {
-                viewModel.onFrameworkClick(Hidden("123"), item.framework)
+            binding.root.setOnClickListener {
+                viewModel.onItemClick(password = "123", item)
             }
         }
     }

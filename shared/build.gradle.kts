@@ -1,9 +1,8 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
+    kotlin("multiplatform")
     id("kotlinx-serialization")
+    kotlin("native.cocoapods")
     id("kotlin-kapt")
 }
 
@@ -21,23 +20,19 @@ android {
     }
 }
 
+project.version = summerVersion
+
 kotlin {
-    iosArm64 {
-        binaries {
-            framework {
-                embedBitcode("disable")
-            }
-        }
-    }
-    iosX64 {
-        binaries {
-            framework {
-                embedBitcode("disable")
-            }
-        }
-    }
     android()
-    jvm()
+//    jvm()
+    iosArm64()
+    iosX64()
+
+    cocoapods {
+        summary = "Some description for a Kotlin/Native module"
+        homepage = "Link to a Kotlin/Native module homepage"
+        frameworkName = "shared"
+    }
 
     sourceSets {
         commonMain {
@@ -52,6 +47,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
                 implementation("com.github.adevone.summer:summer:$summerVersion")
+                implementation("com.github.adevone.summer:summer-arch-lifecycle:$summerVersion")
 //                implementation(project(":summer"))
             }
         }
@@ -61,53 +57,39 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        getByName("jvmMain") {
-            dependencies {
-                implementation(kotlin("stdlib"))
-                implementation(kotlin("reflect"))
-            }
-        }
-        getByName("jvmTest") {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-junit"))
-            }
-        }
-        getByName("androidMain") {
+//        val jvmMain by getting {
+//            dependencies {
+//                implementation(kotlin("stdlib"))
+//                implementation(kotlin("reflect"))
+//            }
+//        }
+//        val jvmTest by getting {
+//            dependencies {
+//                implementation(kotlin("test"))
+//                implementation(kotlin("test-junit"))
+//            }
+//        }
+        val androidMain by getting {
             dependencies {
                 implementation(kotlin("stdlib"))
                 implementation(kotlin("reflect"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
             }
         }
-        getByName("androidTest") {
+        val androidTest by getting {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
             }
         }
-        getByName("iosArm64Main") {
+        val iosArm64Main by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktorVersion")
             }
         }
-        getByName("iosX64Main").dependsOn(getByName("iosArm64Main"))
-    }
-}
-
-tasks.create("copyFramework") {
-    val buildType = project.findProperty("kotlin.build.type")?.toString() ?: "DEBUG"
-    val targetName = if (buildType == "DEBUG") "iosX64" else "iosArm64"
-    dependsOn("link${buildType.toLowerCase().capitalize()}Framework${targetName.capitalize()}")
-    doLast {
-        val target = kotlin.targets.getByName(targetName) as KotlinNativeTarget
-        val srcFile = target.binaries.getFramework(buildType).outputFile
-        val targetDir = project.property("configuration.build.dir")!!
-        copy {
-            from(srcFile.parent)
-            into(targetDir)
-            include("shared.framework/**")
-            include("shared.framework.dSYM")
+        val iosX64Main by getting {
+            dependsOn(iosArm64Main)
         }
     }
 }

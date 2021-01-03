@@ -14,6 +14,6 @@ inline fun BaseViewModel<out LoadingView>.withLoading(action: () -> Unit) {
 }
 
 fun <TView : LoadingView> BaseViewModel<TView>.loadingViewProxy() =
-        object : LoadingView {
-            override var isLoading by state({ it::isLoading }, initial = false)
-        }
+    object : LoadingView {
+        override var isLoading by state({ it::isLoading }, initial = false)
+    }

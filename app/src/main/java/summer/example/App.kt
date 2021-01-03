@@ -1,7 +1,7 @@
 package summer.example
 
 import android.util.Log
-import androidx.multidex.MultiDexApplication
+import android.app.Application
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +21,7 @@ import summer.example.ui.base.routing.LocalCiceroneHolder
 import java.io.File
 import kotlin.system.exitProcess
 
-class App : MultiDexApplication(), DIAware {
+class App : Application(), DIAware {
 
     override val di get() = mainDI
 

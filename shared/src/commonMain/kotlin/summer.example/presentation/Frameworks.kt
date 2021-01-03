@@ -8,8 +8,7 @@ import summer.example.domain.frameworks.GetAllFrameworkItems
 import summer.example.entity.Basket
 import summer.example.entity.Framework
 import summer.example.presentation.base.BaseViewModel
-import summer.example.presentation.base.Hidden
-import summer.example.recording.tracking
+import summer.example.presentation.base.Hide
 
 interface FrameworksView {
     var items: List<Basket.Item>
@@ -29,36 +28,33 @@ class FrameworksViewModel(
     init {
         basketController.flow.onEach {
             updateFrameworks()
-        }.launchIn(this)
+        }.launchIn(scope)
     }
 
-    override fun onEnter() {
-        super.onEnter()
+    init {
         updateFrameworks()
     }
 
-    val onFrameworkClick by tracking { password: Hidden<String>, framework: Framework ->
-        val hiddenPassword: String = password.value.toList().joinToString(separator = "") { "*" }
-        println(hiddenPassword)
-        viewProxy.toDetails(framework)
+    fun onItemClick(@Hide password: String, item: Basket.Item) {
+        viewProxy.toDetails(item.framework)
     }
 
-    val onIncreaseClick by tracking { framework: Framework ->
-        basketController.increase(framework)
+    fun onIncreaseClick(item: Basket.Item) {
+        basketController.increase(item.framework)
     }
 
-    val onDecreaseClick by tracking { framework: Framework ->
-        basketController.decrease(framework)
+    fun onDecreaseClick(item: Basket.Item) {
+        basketController.decrease(item.framework)
     }
 
     private fun updateFrameworks() {
-        launch {
+        scope.launch {
             val frameworks = getAllFrameworkItems(springVersion = "5.0")
             viewProxy.items = frameworks
         }
     }
 
-    val onCrashClick by tracking {
+    fun onCrashClick() {
         throw IllegalStateException("app is crashed")
     }
 }

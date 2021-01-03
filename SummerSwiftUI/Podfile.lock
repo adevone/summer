@@ -1,0 +1,44 @@
+PODS:
+  - shared (1.0.0-beta6-mvvm-5)
+  - URLImage (2.2.0):
+    - URLImage/Common (= 2.2.0)
+    - URLImage/DownloadManager (= 2.2.0)
+    - URLImage/FileIndex (= 2.2.0)
+    - URLImage/ImageDecoder (= 2.2.0)
+    - URLImage/Log (= 2.2.0)
+    - URLImage/PlainDatabase (= 2.2.0)
+    - URLImage/RemoteContentView (= 2.2.0)
+  - URLImage/Common (2.2.0)
+  - URLImage/DownloadManager (2.2.0):
+    - URLImage/Log
+  - URLImage/FileIndex (2.2.0):
+    - URLImage/Common
+    - URLImage/Log
+    - URLImage/PlainDatabase
+  - URLImage/ImageDecoder (2.2.0)
+  - URLImage/Log (2.2.0)
+  - URLImage/PlainDatabase (2.2.0)
+  - URLImage/RemoteContentView (2.2.0)
+
+DEPENDENCIES:
+  - shared (from `../shared`)
+  - URLImage (from `https://github.com/dmytro-anokhin/url-image.git`)
+
+EXTERNAL SOURCES:
+  shared:
+    :path: "../shared"
+  URLImage:
+    :git: https://github.com/dmytro-anokhin/url-image.git
+
+CHECKOUT OPTIONS:
+  URLImage:
+    :commit: 9dba3844e1b47de1d10cae94fbda6ca047562645
+    :git: https://github.com/dmytro-anokhin/url-image.git
+
+SPEC CHECKSUMS:
+  shared: 2469d24acbc4128672a6030c479caa1f332571be
+  URLImage: d58d7fa82e466c7576f2aea4f2113251a7a38ee9
+
+PODFILE CHECKSUM: a7ca06e2f2a1640e31bd098d97222e9ecaa1b0ba
+
+COCOAPODS: 1.9.2

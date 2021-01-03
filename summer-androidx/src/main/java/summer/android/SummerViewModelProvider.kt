@@ -1,10 +1,10 @@
 package summer.android
 
-import summer.LifecycleSummerViewModel
+import summer.LifecycleViewModel
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-open class SummerViewModelProvider<TView, out TViewModel : LifecycleSummerViewModel<TView>>(
+open class SummerViewModelProvider<TView, out TViewModel : LifecycleViewModel<TView>>(
     private val createViewModel: () -> TViewModel,
     private val view: TView
 ) : ReadOnlyProperty<Any?, TViewModel> {

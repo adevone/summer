@@ -1,20 +1,13 @@
 package summer.example.presentation.base
 
-import summer.example.recording.InputStep
-import summer.example.recording.steps
-import kotlin.reflect.KClass
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
+import summer.ArchViewModel
+import summer.example.AppKodeinAware
 
-actual object ViewModelEventsListener {
+actual abstract class BaseViewModel<TView> actual constructor() :
+    ArchViewModel<TView>(),
+    AppKodeinAware {
 
-    actual fun onCreate(clazz: KClass<*>) {
-        steps.add(InputStep.init(clazz.qualifiedName!!))
-    }
-
-    actual fun onAttach(clazz: KClass<*>, viewClass: KClass<*>) {
-        steps.add(InputStep.attach(clazz.qualifiedName!!, viewClass.qualifiedName!!))
-    }
-
-    actual fun onDetach(clazz: KClass<*>) {
-        steps.add(InputStep.detach(clazz.qualifiedName!!))
-    }
+    actual val scope: CoroutineScope = viewModelScope
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
-import summer.android.DidSetMixin
+import summer.DidSetMixin
 import summer.android.PopListenerFragment
 import summer.android.ViewModelNotProvidedException
 

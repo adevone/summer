@@ -4,3 +4,4 @@
 **.iml
 /local.properties
 /bintray.properties
+**.DS_Store

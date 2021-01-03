@@ -24,7 +24,8 @@ interface ArgsFragmentFeature<TArgs> {
     var args: TArgs
         get() {
             if (argsBackingField == null) {
-                argsBackingField = json.decodeFromString(argsSerializer, fragment.arguments!!.getString(ARGUMENTS_KEY)!!)
+                val arguments = fragment.requireArguments().getString(ARGUMENTS_KEY)!!
+                argsBackingField = json.decodeFromString(argsSerializer, arguments)
             }
             return argsBackingField!!
         }
