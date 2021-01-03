@@ -144,12 +144,12 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:1.0.0-beta6-mvvm-15")
+    implementation("com.github.adevone.summer:summer:1.0.0-beta6-mvvm-18")
 
     // androidx support, contains ArchViewModel that allows using of bindView function (see example)
-    implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta6-mvvm-15")
+    implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta6-mvvm-18")
 
     // android compat support, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6-mvvm-15")
+    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6-mvvm-18")
 }
 ```
