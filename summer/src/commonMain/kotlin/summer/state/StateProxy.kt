@@ -6,7 +6,7 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 
-class StateProxy<T, TView, TOwner>(
+class StateProxy<T, out TView, in TOwner>(
     proxyProperty: KProperty<*>,
     getViewProperty: GetViewProperty<T, TView>?,
     initial: T,
