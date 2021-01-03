@@ -9,13 +9,13 @@ import summer.events.ViewEventExecution
  * Proxies each call of [EventProxy] to action if view exists and
  * repeats each call of [EventProxy] on each view creation.
  */
-class RepeatAllStrategy<TView> : EventProxyStrategy<TView, Any?> {
+class RepeatAllStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
-    private val executions = mutableListOf<ViewEventExecution<TView, Any?>>()
+    private val executions = mutableListOf<ViewEventExecution<TView, Nothing?>>()
 
     override fun proxyInvoked(
-        execution: ViewEventExecution<TView, Any?>,
-        owner: Any?,
+        execution: ViewEventExecution<TView, Nothing?>,
+        owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
         val view = getViewProvider.getView()
@@ -26,7 +26,7 @@ class RepeatAllStrategy<TView> : EventProxyStrategy<TView, Any?> {
     }
 
     override fun viewCreated(
-        owner: Any?,
+        owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
         val view = getViewProvider.getView()

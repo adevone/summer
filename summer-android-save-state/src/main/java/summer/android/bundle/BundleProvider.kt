@@ -7,4 +7,4 @@ interface BundleProvider {
     val bundle: Bundle
 }
 
-typealias BundleStateDelegateProvider<T, TView> = StateProxy.Provider<T, TView, BundleProvider>
+typealias BundleStateProxyProvider<T, TView> = StateProxy.Provider<T, TView, BundleProvider>

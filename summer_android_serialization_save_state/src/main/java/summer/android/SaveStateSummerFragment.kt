@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import summer.LifecycleViewModel
-import summer.strategy.SerializationStateProvider
+import summer.strategy.SerializationStore
 
 abstract class SaveStateSummerFragment : BaseSummerFragment<SaveStateViewModelProvider<*, *>> {
 
@@ -24,10 +24,10 @@ abstract class SaveStateSummerFragment : BaseSummerFragment<SaveStateViewModelPr
     }
 
     fun <TView, TViewModel> TView.bindViewModel(
-        createViewModel: () -> TViewModel
+        createViewModel: () -> TViewModel,
     ): SaveStateViewModelProvider<TView, TViewModel>
             where TViewModel : LifecycleViewModel<TView>,
-                  TViewModel : SerializationStateProvider {
+                  TViewModel : SerializationStore.Holder {
         val provider = SaveStateViewModelProvider(createViewModel, view = this)
         viewModelProvider = provider
         return provider
