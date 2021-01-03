@@ -1,35 +1,69 @@
 package summer.state.strategies
 
-import summer.state.GetViewProperty
-import summer.state.StateProxy
-import summer.state.StateProxyFactory
-import summer.state.StateProxyStrategy
-import kotlin.reflect.KProperty
+import summer.GetViewProvider
+import summer.state.*
 
 /**
- * Saves state only in memory.
+ * Saves state in [InMemoryStore].
  */
-class InMemoryStrategy<T> : StateProxyStrategy<T, InMemoryStoreProvider> {
+open class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, InMemoryStore> {
 
-    override fun get(owner: InMemoryStoreProvider, prop: KProperty<*>): T {
-        return owner.inMemoryStore.get(prop.name)
+    override fun getValue(
+        viewProperty: ViewProperty<T, TView, InMemoryStore>,
+        owner: InMemoryStore,
+        getViewProvider: GetViewProvider<TView>,
+    ): T {
+        val key = viewProperty.proxyProperty.name
+        return if (owner.isInit(key)) {
+            owner.get(key)
+        } else {
+            viewProperty.initial
+        }
     }
 
-    override fun set(owner: InMemoryStoreProvider, prop: KProperty<*>, value: T) {
-        owner.inMemoryStore.set(prop.name, value)
+    override fun setValue(
+        value: T,
+        viewProperty: ViewProperty<T, TView, InMemoryStore>,
+        owner: InMemoryStore,
+        getViewProvider: GetViewProvider<TView>,
+    ) {
+        owner.set(key = viewProperty.proxyProperty.name, value)
+        val view = getViewProvider.getView()
+        if (view != null) {
+            viewProperty.setIfExists(value, view)
+        }
     }
 
-    override fun wasStored(owner: InMemoryStoreProvider, prop: KProperty<*>): Boolean {
-        return owner.inMemoryStore.isInit(prop.name)
+    override fun viewCreated(
+        viewProperty: ViewProperty<T, TView, InMemoryStore>,
+        owner: InMemoryStore,
+        getViewProvider: GetViewProvider<TView>,
+    ) {
+        val view = getViewProvider.getView()
+        if (view != null) {
+            val key = viewProperty.proxyProperty.name
+            if (owner.isInit(key)) {
+                val value = owner.get<T>(key)
+                viewProperty.setIfExists(value, view)
+            } else {
+                viewProperty.setIfExists(viewProperty.initial, view)
+            }
+        }
     }
 
-    interface ProxyFactory<TView> : StateProxyFactory<TView, InMemoryStoreProvider> {
+    interface ProxyFactory<TView> : StateProxyFactory<TView>, InMemoryStore.Provider {
 
         fun <T> state(
             getViewProperty: GetViewProperty<T, TView>? = null,
             initial: T,
-        ): StateProxy.Provider<T, TView, InMemoryStoreProvider> {
-            return state(getViewProperty, initial, InMemoryStrategy())
+        ): StateProxy.Provider<T, TView, InMemoryStore> {
+            return state(
+                getViewProperty,
+                initial,
+                InMemoryStrategy(),
+                owner = inMemoryStore,
+                listener = null
+            )
         }
     }
 }

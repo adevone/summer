@@ -6,9 +6,8 @@ import summer.ProxyFactory
  * DSL to create [StateProxy.Provider].
  *
  * [TView] see [StateProxyStrategy]
- * [TOwner] see [StateProxyStrategy]
  */
-interface StateProxyFactory<TView, TOwner> : ProxyFactory<TView> {
+interface StateProxyFactory<TView> : ProxyFactory<TView> {
     /**
      * Creates provider of [StateProxy].
      *
@@ -17,21 +16,25 @@ interface StateProxyFactory<TView, TOwner> : ProxyFactory<TView> {
      * and you want to store viewModel state too.
      *
      * If view is not null than value will be saved in store
-     * and mirrored in mirror property if view exists.
+     * and mirrored in view property if view exists.
      *
      * If view is null than value will be only saved in store.
+     *
+     * [TOwner] see [StateProxyStrategy]
      */
-    fun <T> state(
+    fun <T, TOwner> state(
         getViewProperty: GetViewProperty<T, TView>? = null,
         initial: T,
-        strategy: StateProxyStrategy<T, TOwner>
+        strategy: StateProxyStrategy<T, TView, TOwner>,
+        owner: TOwner,
+        listener: StateProxyListener<TView, TOwner>?,
     ): StateProxy.Provider<T, TView, TOwner> {
         return StateProxy.Provider(
             getViewProperty,
             initial,
             getViewProvider(),
-            owner = stateProxyOwner(),
-            listener = stateListener(),
+            owner,
+            listener,
             strategy,
             proxyCreated = { delegate ->
                 stateProxyCreated(delegate)
@@ -39,9 +42,5 @@ interface StateProxyFactory<TView, TOwner> : ProxyFactory<TView> {
         )
     }
 
-    fun stateProxyOwner(): TOwner
-
     fun stateProxyCreated(proxy: StateProxy<*, *, *>)
-
-    fun stateListener(): StateProxyListener<TView, TOwner>? = null
 }

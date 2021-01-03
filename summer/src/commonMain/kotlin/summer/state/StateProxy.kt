@@ -7,49 +7,35 @@ import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 
 class StateProxy<T, TView, TOwner>(
-    private val property: KProperty<*>,
-    private val getViewProperty: GetViewProperty<T, TView>?,
-    private val initial: T,
+    proxyProperty: KProperty<*>,
+    getViewProperty: GetViewProperty<T, TView>?,
+    initial: T,
     private val getViewProvider: GetViewProvider<TView>,
     private val owner: TOwner,
     private val listener: StateProxyListener<TView, TOwner>?,
-    private val strategy: StateProxyStrategy<T, TOwner>,
+    private val strategy: StateProxyStrategy<T, TView, TOwner>,
 ) : ReadWriteProperty<Any?, T> {
 
+    private val viewProperty = ViewProperty(
+        initial,
+        proxyProperty,
+        getViewProperty,
+        owner,
+        listener,
+        strategy
+    )
+
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        val isInit = strategy.wasStored(owner, property)
-        return if (isInit) {
-            strategy.get(owner, property)
-        } else {
-            initial
-        }
+        return strategy.getValue(viewProperty, owner, getViewProvider)
     }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        strategy.set(owner, property, value)
+        strategy.setValue(value, viewProperty, owner, getViewProvider)
         listener?.proxySet(value, property, owner, strategy)
-        setViewPropertyIfViewExists(value)
     }
 
-    fun restore() {
-        val isInit = strategy.wasStored(owner, property)
-        if (isInit) {
-            val value = strategy.get(owner, property)
-            setViewPropertyIfViewExists(value)
-        } else {
-            setViewPropertyIfViewExists(value = initial)
-        }
-    }
-
-    private fun setViewPropertyIfViewExists(value: T) {
-        val view = getViewProvider.getView()
-        if (view != null) {
-            getViewProperty?.let { getViewProperty ->
-                val viewProperty = getViewProperty(view)
-                viewProperty.set(value)
-                listener?.viewPropertySet(value, property, view, owner, strategy)
-            }
-        }
+    fun viewCreated() {
+        strategy.viewCreated(viewProperty, owner, getViewProvider)
     }
 
     class Provider<T, TView, TOwner>(
@@ -58,7 +44,7 @@ class StateProxy<T, TView, TOwner>(
         private val getViewProvider: GetViewProvider<TView>,
         private val owner: TOwner,
         private val listener: StateProxyListener<TView, TOwner>?,
-        private val strategy: StateProxyStrategy<T, TOwner>,
+        private val strategy: StateProxyStrategy<T, TView, TOwner>,
         private val proxyCreated: (StateProxy<T, TView, TOwner>) -> Unit,
     ) : PropertyDelegateProvider<Any?, StateProxy<T, TView, TOwner>> {
 

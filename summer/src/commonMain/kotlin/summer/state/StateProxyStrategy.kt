@@ -1,6 +1,7 @@
 package summer.state
 
-import kotlin.reflect.KProperty
+import summer.GetViewProvider
+import summer.ViewLifecycleListener
 
 /**
  * Determines how state will be stored.
@@ -12,21 +13,32 @@ import kotlin.reflect.KProperty
  *          on your [LifecycleViewModel].
  *          Store should be provided through [TOwner].
  */
-interface StateProxyStrategy<T, in TOwner> {
+interface StateProxyStrategy<T, TView, TOwner> {
     /**
-     * Obtain value from store.
-     * [prop] is property delegated by associated [StateProxy]
+     * Property delegated by [StateProxy] asked for a value
      */
-    fun get(owner: TOwner, prop: KProperty<*>): T
+    fun getValue(
+        viewProperty: ViewProperty<T, TView, TOwner>,
+        owner: TOwner,
+        getViewProvider: GetViewProvider<TView>,
+    ): T
 
     /**
-     * Save value in store.
-     * [prop] see [get]
+     * Property delegated by [StateProxy] was set
      */
-    fun set(owner: TOwner, prop: KProperty<*>, value: T)
+    fun setValue(
+        value: T,
+        viewProperty: ViewProperty<T, TView, TOwner>,
+        owner: TOwner,
+        getViewProvider: GetViewProvider<TView>,
+    )
 
     /**
-     * Is store have value to [prop] (see [get])
+     * [ViewLifecycleListener.viewCreated] was called
      */
-    fun wasStored(owner: TOwner, prop: KProperty<*>): Boolean
+    fun viewCreated(
+        viewProperty: ViewProperty<T, TView, TOwner>,
+        owner: TOwner,
+        getViewProvider: GetViewProvider<TView>,
+    )
 }

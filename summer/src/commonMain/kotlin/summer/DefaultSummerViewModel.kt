@@ -1,11 +1,12 @@
 package summer
 
-import summer.events.*
+import summer.events.EventProxyFactory
+import summer.events.EventProxyStrategy
 import summer.events.strategies.DoExactlyOnceStrategy
 import summer.events.strategies.DoOnlyWhenAttachedStrategy
-import summer.state.*
+import summer.state.StateProxyFactory
+import summer.state.StateProxyStrategy
 import summer.state.strategies.InMemoryStore
-import summer.state.strategies.InMemoryStoreProvider
 import summer.state.strategies.InMemoryStrategy
 
 /**
@@ -19,10 +20,10 @@ import summer.state.strategies.InMemoryStrategy
  */
 interface DefaultSummerViewModel<TView> :
     LifecycleViewModel<TView>,
-    StateProxyFactory<TView, InMemoryStoreProvider>,
+    StateProxyFactory<TView>,
     EventProxyFactory<TView, Any?>,
     InMemoryStrategy.ProxyFactory<TView>,
-    InMemoryStoreProvider,
+    InMemoryStore.Provider,
     DoOnlyWhenAttachedStrategy.ProxyFactory<TView>,
     DoExactlyOnceStrategy.ProxyFactory<TView>
 
@@ -37,7 +38,7 @@ interface DefaultSummerViewModel<TView> :
  */
 open class DefaultSummerViewModelImpl<TView> :
     DefaultSummerViewModel<TView>,
-    RestoreViewModel<TView, InMemoryStoreProvider, Any?>() {
+    RestoreViewModel<TView, Any?>() {
 
     /**
      * Used for state storing by default. Can be overridden.
@@ -45,5 +46,4 @@ open class DefaultSummerViewModelImpl<TView> :
     override val inMemoryStore = InMemoryStore()
 
     override fun eventProxyOwner(): Any? = this
-    override fun stateProxyOwner(): InMemoryStoreProvider = this
 }

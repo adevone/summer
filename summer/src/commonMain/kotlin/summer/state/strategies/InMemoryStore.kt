@@ -23,4 +23,8 @@ class InMemoryStore {
         storedValuesByKey[key] = value
         isInitByKey[key] = Unit
     }
+
+    interface Provider {
+        val inMemoryStore: InMemoryStore
+    }
 }
