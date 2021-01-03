@@ -1,4 +1,4 @@
-const val summerVersion = "1.0.0-beta6-mvvm-20"
+const val summerVersion = "1.0.0-beta6-mvvm-21"
 const val summerGroup = "com.github.adevone.summer"
 
 // library dependencies

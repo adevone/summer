@@ -42,7 +42,7 @@ class DoExactlyOnceStrategy<TView> : EventProxyStrategy<TView, Any?> {
 
     interface ProxyFactory<TView> : EventProxyFactory<TView, Any?> {
 
-        fun <TFunction : Function<Unit>> EventProxyBuilder<TView, TFunction>.doExactlyOnce() = build(
+        fun EventProxyBuilder<TView>.doExactlyOnce() = build(
             strategy = DoExactlyOnceStrategy()
         )
     }

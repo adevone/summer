@@ -3,7 +3,7 @@ package summer.events
 import summer.ProxyFactory
 
 /**
- * DSL to create [ViewEventExecutor] and transform it
+ * DSL to create [EventProxyBuilder] and transform it
  * to [EventProxy] with user-defined [EventProxyStrategy].
  *
  * [TView] see [EventProxyStrategy]
@@ -13,12 +13,11 @@ interface EventProxyFactory<TView, TOwner> : ProxyFactory<TView> {
 
     fun eventProxyCreated(proxy: EventProxy<*, *>)
 
-    fun <TFunction : Function<Unit>> event(getViewEvent: (TView) -> TFunction): EventProxyBuilder<TView, TFunction> {
+    fun event(getViewEvent: (TView) -> Function<Unit>): EventProxyBuilder<TView> {
         return EventProxyBuilder(getViewEvent)
     }
 
-    @Suppress("UNCHECKED_CAST")
-    fun <TFunction : Function<Unit>> EventProxyBuilder<TView, TFunction>.build(
+    fun EventProxyBuilder<TView>.build(
         strategy: EventProxyStrategy<TView, TOwner>,
     ) = EventProxy(
         this.getViewEvent,
@@ -28,13 +27,13 @@ interface EventProxyFactory<TView, TOwner> : ProxyFactory<TView> {
         strategy
     ).also { event ->
         eventProxyCreated(event)
-    } as TFunction
+    }
 
     fun eventProxyOwner(): TOwner
 
     fun eventListener(): EventProxyListener<TView, TOwner>? = null
 }
 
-class EventProxyBuilder<TView, TFunction : Function<Unit>>(
-    val getViewEvent: (TView) -> TFunction,
+class EventProxyBuilder<TView>(
+    val getViewEvent: (TView) -> Function<Unit>,
 )
