@@ -63,7 +63,7 @@ fun generateKotlinCode(
                 val viewModelVarName = varName(step.viewModelType)
                 append(indent(level = 1), "${viewModelVarName}.pass(", "\n")
                 val inputJson = Json.encodeToString(step.inputValue)
-                append(indent(level = 2), "decode(\"\"\"${inputJson}\"\"\")", "\n")
+                append(indent(level = 2), "decode<${step.inputType}>(\"\"\"${inputJson}\"\"\")", "\n")
                 append(indent(level = 1), ")", "\n")
             }
         }

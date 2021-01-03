@@ -1,5 +1,6 @@
 package summer.example.presentation.base
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
@@ -55,10 +56,6 @@ abstract class BaseViewModel<TView, TInput : Any> : CoroutinesViewModel<TView>()
 }
 
 val Any?.exhaustive get() = Unit
-
-expect abstract class CoroutinesViewModel<TView>() :
-    ArchViewModel<TView>,
-    AppKodeinAware
 
 expect object ViewModelEventsListener {
     fun onCreate(clazz: KClass<*>)

@@ -15,7 +15,7 @@ abstract class BaseActivity : AppCompatActivity(), AppKodeinAware {
 
     lateinit var viewClazz: KClass<*>
     lateinit var viewModelClazz: KClass<*>
-    inline fun <reified TView, reified TViewModel : BaseViewModel<TView>> bindViewModel(
+    inline fun <reified TView, reified TViewModel : BaseViewModel<TView, *>> bindViewModel(
         viewModelClass: KClass<TViewModel>,
         activity: FragmentActivity,
         noinline provideView: () -> TView,

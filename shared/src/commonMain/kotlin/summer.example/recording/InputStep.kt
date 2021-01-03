@@ -9,7 +9,7 @@ data class InputStep(
     val type: Type,
     val viewModelType: String,
     val viewType: String = "",
-    val inputName: String = "",
+    val inputType: String = "",
     val inputValue: JsonElement? = null,
 ) {
     enum class Type {

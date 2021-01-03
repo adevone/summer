@@ -64,7 +64,7 @@ abstract class BaseFragment<TArgs> :
 
     lateinit var viewClazz: KClass<*>
     lateinit var viewModelClazz: KClass<*>
-    inline fun <reified TView, reified TViewModel : BaseViewModel<TView>> bindViewModel(
+    inline fun <reified TView, reified TViewModel : BaseViewModel<TView, *>> bindViewModel(
         viewModelClass: KClass<TViewModel>,
         fragment: Fragment,
         noinline provideView: () -> TView
