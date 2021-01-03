@@ -2,7 +2,7 @@ PODS:
   - Alamofire (5.4.1)
   - AlamofireImage (4.1.0):
     - Alamofire (~> 5.1)
-  - shared (1.0.0-beta6-mvvm-4)
+  - shared (1.0.0-beta6-mvvm-26)
 
 DEPENDENCIES:
   - Alamofire (from `https://github.com/Alamofire/Alamofire.git`)
@@ -28,8 +28,8 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
-  shared: 64aa7c126d8674c7d676d88312d4029017c0679d
+  shared: 13ed6fb1e947321b1a37e314f54892cdea410ed7
 
-PODFILE CHECKSUM: fc54a2ce6e49a8e906a894dfdc16823030ec6599
+PODFILE CHECKSUM: 4385aacedc5905fddcbe0b649f9a5c2f38d3018e
 
 COCOAPODS: 1.9.2
