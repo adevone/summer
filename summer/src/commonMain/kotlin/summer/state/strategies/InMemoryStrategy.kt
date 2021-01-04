@@ -7,8 +7,12 @@ import summer.state.*
  * Saves state in the inner variable.
  */
 class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, Nothing?> {
-    private var wasSet = false
+
     private var currentValue: T? = null
+
+    // null in currentValue does not mean that [currentValue] was never set
+    // because [T] can be nullable. Need a separate variable to determine it.
+    private var wasSet = false
 
     override fun getValue(
         viewProperty: ViewProperty<T, TView, Nothing?>,

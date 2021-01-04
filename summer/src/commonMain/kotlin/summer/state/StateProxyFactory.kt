@@ -43,7 +43,7 @@ interface StateProxyFactory<TView> : ProxyFactory<TView> {
     }
 
     /**
-     * Convenience shorthand to [state] for strategies with no owner
+     * Convenient shorthand to [state] for strategies with no owner.
      */
     fun <T> state(
         getViewProperty: GetViewProperty<T, TView>? = null,

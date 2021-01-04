@@ -19,7 +19,7 @@ abstract class RestoreViewModel<TView> :
     override var getView: () -> TView? = { null }
 
     /**
-     * Do not override to listen lifecycle @see [ViewLifecycleListener.viewCreated]
+     * Do not override to listen lifecycle see [ViewLifecycleListener.viewCreated]
      */
     override fun viewCreated() {
         stateProxies.forEach { it.viewCreated() }

@@ -68,6 +68,6 @@ class StateProxy<T, out TView, in TOwner>(
 }
 
 /**
- * Provider of view property to mirror store state
+ * Call this on a real view to get and modify it property.
  */
 typealias GetViewProperty<T, TView> = (TView) -> KMutableProperty0<T>

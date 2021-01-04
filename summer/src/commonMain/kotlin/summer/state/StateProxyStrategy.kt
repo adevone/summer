@@ -5,7 +5,7 @@ import summer.LifecycleViewModel
 import summer.ViewLifecycleListener
 
 /**
- * Determines how state will be stored.
+ * Determines behaviour of [StateProxy].
  *
  * [T] type of stored value.
  *
