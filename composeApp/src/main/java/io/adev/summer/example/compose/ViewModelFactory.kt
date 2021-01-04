@@ -1,21 +1,15 @@
 package io.adev.summer.example.compose
 
-import androidx.fragment.app.FragmentActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.adev.summer.example.presentation.*
-import io.adev.summer.example.presentation.base.BaseViewModel
-import kotlin.reflect.KClass
 
-fun <TView, TViewModel : BaseViewModel<TView>> provideViewModel(
-    viewModelClass: KClass<TViewModel>,
-    activity: FragmentActivity
-): TViewModel {
-    val provider = ViewModelProvider(activity, ViewModelFactory())
-    return provider[viewModelClass.java]
-}
+@Composable
+inline fun <reified VM : ViewModel> getViewModel(): VM = viewModel(factory = ViewModelFactory())
 
-private class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

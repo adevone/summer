@@ -11,12 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.adev.summer.example.compose.bind
+import io.adev.summer.example.compose.getViewModel
+import io.adev.summer.example.entity.Framework
 import io.adev.summer.example.entity.FullFramework
 import io.adev.summer.example.presentation.FrameworkDetailsView
 import io.adev.summer.example.presentation.FrameworkDetailsViewModel
 
 @Composable
-fun FrameworkDetailsUI(viewModel: FrameworkDetailsViewModel) {
+fun FrameworkDetailsUI(initialFramework: Framework) {
+    val viewModel = getViewModel<FrameworkDetailsViewModel>()
+    viewModel.init(initialFramework)
     val view = viewModel.bind(object : FrameworkDetailsView {
         override var framework: FullFramework? by mutableStateOf(null)
         override val notifyAboutName: (String) -> Unit = { frameworkName ->

@@ -16,12 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.adev.summer.example.compose.GlideImage
 import io.adev.summer.example.compose.bind
+import io.adev.summer.example.compose.getViewModel
 import io.adev.summer.example.entity.About
 import io.adev.summer.example.presentation.AboutView
 import io.adev.summer.example.presentation.AboutViewModel
 
 @Composable
-fun AboutUI(viewModel: AboutViewModel) {
+fun AboutUI() {
+    val viewModel = getViewModel<AboutViewModel>()
     val view = viewModel.bind(object : AboutView {
         override var about: About? by mutableStateOf(null)
         override var isLoading: Boolean by mutableStateOf(false)

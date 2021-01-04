@@ -10,15 +10,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import io.adev.summer.example.compose.R
 import io.adev.summer.example.compose.bind
+import io.adev.summer.example.compose.getViewModel
 import io.adev.summer.example.entity.Tab
 import io.adev.summer.example.presentation.MainView
 import io.adev.summer.example.presentation.MainViewModel
 
 @Composable
-fun MainUI(
-    viewModel: MainViewModel,
-    TabUI: @Composable (Tab) -> Unit
-) {
+fun MainUI() {
+    val viewModel = getViewModel<MainViewModel>()
     val view = viewModel.bind(object : MainView {
         override var tabs: List<Tab> by mutableStateOf(emptyList())
         override var selectedTab: Tab? by mutableStateOf(null)
@@ -43,7 +42,17 @@ fun MainUI(
     }) {
         val selectedTab = view.selectedTab
         if (selectedTab != null) {
-            TabUI(selectedTab)
+            when (selectedTab) {
+                Tab.Frameworks -> {
+                    FrameworksUI()
+                }
+                Tab.About -> {
+                    AboutUI()
+                }
+                Tab.Basket -> {
+                    BasketUI()
+                }
+            }
         } else {
             CircularProgressIndicator()
         }

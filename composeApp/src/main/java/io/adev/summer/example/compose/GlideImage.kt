@@ -54,7 +54,7 @@ fun GlideImage(
                         transition: Transition<in Bitmap>?,
                     ) {
                         FrameManager.ensureStarted()
-                        image = resource.asImageAsset()
+                        image = resource.asImageBitmap()
                         onImageReady?.invoke()
                     }
                 }

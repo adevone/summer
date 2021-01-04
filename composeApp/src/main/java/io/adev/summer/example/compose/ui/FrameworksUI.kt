@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import io.adev.summer.example.compose.bind
+import io.adev.summer.example.compose.getViewModel
 import io.adev.summer.example.entity.Basket
 import io.adev.summer.example.entity.Framework
 import io.adev.summer.example.presentation.FrameworksView
@@ -32,10 +33,8 @@ private enum class Destination {
 }
 
 @Composable
-fun FrameworksUI(
-    viewModel: FrameworksViewModel,
-    DetailsUI: @Composable (Framework) -> Unit,
-) {
+fun FrameworksUI() {
+    val viewModel = getViewModel<FrameworksViewModel>()
     val navController = rememberNavController()
     val view = viewModel.bind(object : FrameworksView {
         override var items: List<Basket.Item> by mutableStateOf(emptyList())
@@ -93,7 +92,7 @@ fun FrameworksUI(
         ) { backStackEntry ->
             val frameworkString = backStackEntry.arguments?.getString("framework")!!
             val framework = Json.decodeFromString(Framework.serializer(), frameworkString)
-            DetailsUI(framework)
+            FrameworkDetailsUI(initialFramework = framework)
         }
     }
 }

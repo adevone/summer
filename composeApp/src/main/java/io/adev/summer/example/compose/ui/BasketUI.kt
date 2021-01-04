@@ -13,12 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.adev.summer.example.compose.bind
+import io.adev.summer.example.compose.getViewModel
 import io.adev.summer.example.entity.Basket
 import io.adev.summer.example.presentation.BasketView
 import io.adev.summer.example.presentation.BasketViewModel
 
 @Composable
-fun BasketUI(viewModel: BasketViewModel) {
+fun BasketUI() {
+    val viewModel = getViewModel<BasketViewModel>()
     val view = viewModel.bind(object : BasketView {
         override var items: List<Basket.Item> by mutableStateOf(emptyList())
     })
