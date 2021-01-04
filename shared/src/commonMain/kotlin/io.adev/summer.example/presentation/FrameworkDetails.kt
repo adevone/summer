@@ -19,11 +19,6 @@ class FrameworkDetailsViewModel : BaseViewModel<FrameworkDetailsView>() {
 
     fun init(initialFramework: Framework) {
         viewProxy.framework = initialFramework.toFull()
-    }
-
-    init {
-        viewProxy.framework?.let { framework ->
-            viewProxy.notifyAboutName(framework.name)
-        }
+        viewProxy.notifyAboutName(initialFramework.name)
     }
 }

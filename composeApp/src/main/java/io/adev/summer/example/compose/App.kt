@@ -30,9 +30,11 @@ class App : Application(), DIAware {
         }
 
         kodeinAware = this
+        instance = this
     }
 
     companion object {
+        lateinit var instance: App
         lateinit var kodeinAware: DIAware
     }
 }
