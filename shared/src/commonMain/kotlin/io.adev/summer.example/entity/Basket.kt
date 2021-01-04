@@ -9,14 +9,10 @@ data class Basket(
     )
 
     fun allAsItems(frameworks: List<Framework>): List<Item> {
-        val items = items.filter { it.framework in frameworks }.toMutableList()
-        val basketFrameworks = items.map { it.framework }
-        frameworks.forEach { framework ->
-            if (framework !in basketFrameworks) {
-                items.add(Item(framework, quantity = 0))
-            }
+        return frameworks.map { framework ->
+            val quantity = items.find { it.framework == framework }?.quantity ?: 0
+            Item(framework, quantity)
         }
-        return items
     }
 
     fun withIncreased(framework: Framework): Basket {
