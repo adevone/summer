@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,8 +30,9 @@ private enum class Destination {
     Details
 }
 
+@ExperimentalMaterialApi
 @Composable
-fun FrameworksUI() {
+fun FrameworksUI(scaffoldState: ScaffoldState) {
     val viewModel = getViewModel<FrameworksViewModel>()
     val navController = rememberNavController()
     val view = viewModel.bind(object : FrameworksView {
@@ -92,7 +91,7 @@ fun FrameworksUI() {
         ) { backStackEntry ->
             val frameworkString = backStackEntry.arguments?.getString("framework")!!
             val framework = Json.decodeFromString(Framework.serializer(), frameworkString)
-            FrameworkDetailsUI(initialFramework = framework)
+            FrameworkDetailsUI(initialFramework = framework, scaffoldState)
         }
     }
 }

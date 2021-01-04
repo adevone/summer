@@ -15,6 +15,7 @@ import io.adev.summer.example.entity.Tab
 import io.adev.summer.example.presentation.MainView
 import io.adev.summer.example.presentation.MainViewModel
 
+@ExperimentalMaterialApi
 @Composable
 fun MainUI() {
     val viewModel = getViewModel<MainViewModel>()
@@ -22,29 +23,33 @@ fun MainUI() {
         override var tabs: List<Tab> by mutableStateOf(emptyList())
         override var selectedTab: Tab? by mutableStateOf(null)
     })
-    Scaffold(bottomBar = {
-        BottomNavigation {
-            view.tabs.forEach { tab ->
-                BottomNavigationItem(
-                    icon = {
-                        TabImage(tab)
-                    },
-                    label = {
-                        TabLabel(tab)
-                    },
-                    selected = view.selectedTab == tab,
-                    onClick = {
-                        viewModel.onMenuItemClick(tab)
-                    }
-                )
+    val scaffoldState = rememberScaffoldState()
+    Scaffold(
+        scaffoldState = scaffoldState,
+        bottomBar = {
+            BottomNavigation {
+                view.tabs.forEach { tab ->
+                    BottomNavigationItem(
+                        icon = {
+                            TabImage(tab)
+                        },
+                        label = {
+                            TabLabel(tab)
+                        },
+                        selected = view.selectedTab == tab,
+                        onClick = {
+                            viewModel.onMenuItemClick(tab)
+                        }
+                    )
+                }
             }
         }
-    }) {
+    ) {
         val selectedTab = view.selectedTab
         if (selectedTab != null) {
             when (selectedTab) {
                 Tab.Frameworks -> {
-                    FrameworksUI()
+                    FrameworksUI(scaffoldState)
                 }
                 Tab.About -> {
                     AboutUI()
