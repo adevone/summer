@@ -13,10 +13,14 @@ android {
     compileSdkVersion(28)
 
     defaultConfig {
-        minSdkVersion(1)
+        minSdkVersion(14)
         targetSdkVersion(28)
         versionCode = 1
         versionName = "1.0"
+    }
+
+    lintOptions {
+        isAbortOnError = false
     }
 
     buildTypes {

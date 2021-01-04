@@ -1,4 +1,4 @@
-const val summerVersion = "1.0.0-beta6-mvvm-26"
+const val summerVersion = "1.0.0-beta6-mvvm-28"
 const val summerGroup = "com.github.adevone.summer"
 
 // library dependencies
@@ -6,7 +6,7 @@ const val kotlinVersion = "1.4.21"
 const val lifecycleVersion = "2.2.0"
 const val appCompatVersion = "1.2.0"
 const val serializationVersion = "1.0.1"
-const val targetVersion = 29
+const val targetVersion = 30
 
 // example dependencies
 const val exampleSummerVersion = summerVersion

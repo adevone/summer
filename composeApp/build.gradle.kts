@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "io.adev.summer.example.compose"
         minSdkVersion(minVersion)
-        targetSdkVersion(30)
+        targetSdkVersion(targetVersion)
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -76,9 +76,7 @@ dependencies {
     implementation("org.kodein.di:kodein-di:$kodeinVersion")
     implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
 
-    implementation("androidx.core:core-ktx:1.3.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
-    implementation("androidx.fragment:fragment-ktx:1.2.5")
 
     implementation(project(":shared"))
 
