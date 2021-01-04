@@ -14,7 +14,8 @@ android {
     compileSdkVersion(targetVersion)
 
     defaultConfig {
-        minSdkVersion(14)
+        // bundlizer requires minSdk >= 16
+        minSdkVersion(16)
         targetSdkVersion(targetVersion)
         versionCode = 1
         versionName = "1.0"
