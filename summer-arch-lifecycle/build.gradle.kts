@@ -24,6 +24,15 @@ android {
             isDebuggable = true
         }
     }
+
+    configurations {
+        create("androidTestApi")
+        create("androidTestDebugApi")
+        create("androidTestReleaseApi")
+        create("testApi")
+        create("testDebugApi")
+        create("testReleaseApi")
+    }
 }
 
 kotlin {
@@ -57,8 +66,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(kotlin("stdlib"))
-                implementation("android.arch.lifecycle:viewmodel:$lifecycleVersion")
-                implementation("android.arch.lifecycle:common:$lifecycleVersion")
+                implementation("androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion")
+                implementation("androidx.lifecycle:lifecycle-common:$lifecycleVersion")
             }
         }
         val androidTest by getting {

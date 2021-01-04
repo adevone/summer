@@ -103,9 +103,9 @@ class MainActivity : BaseActivity(), MainView {
 
     private val Tab.title: String
         get() = when (this) {
-            Tab.Frameworks -> "Фреймворки"
-            Tab.About -> "О программе"
-            Tab.Basket -> "Корзина"
+            Tab.Frameworks -> getString(R.string.menu_frameworks)
+            Tab.About -> getString(R.string.menu_about)
+            Tab.Basket -> getString(R.string.menu_basket)
         }
 
     private val dropIsBackClickedFirstTimesHandler = Handler(Looper.getMainLooper())

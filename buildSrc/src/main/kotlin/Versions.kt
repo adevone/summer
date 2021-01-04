@@ -15,3 +15,4 @@ const val kodeinVersion = "7.2.0"
 const val ktorVersion = "1.5.0"
 const val coroutinesVersion = "1.4.2-native-mt"
 const val minVersion = 21
+const val composeVersion = "1.0.0-alpha09"

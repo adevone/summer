@@ -1,4 +1,5 @@
 include(":app")
+include(":composeApp")
 include(":shared")
 include(":summer")
 include(":summer-androidx")
