@@ -9,7 +9,7 @@ import summer.events.EventPerformance
  * Performs event on each invoke of [EventProxy] if view exists and
  * repeats each performance on each view creation.
  */
-class RepeatAllStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
+class AllOnEachAttachStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
     private val performances = mutableListOf<EventPerformance<TView>>()
 
