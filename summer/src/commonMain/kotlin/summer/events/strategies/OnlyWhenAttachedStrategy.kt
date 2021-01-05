@@ -1,7 +1,7 @@
 package summer.events.strategies
 
 import summer.GetViewProvider
-import summer.events.EventProxyBuilder
+import summer.events.EventPerformer
 import summer.events.EventProxyFactory
 import summer.events.EventProxyStrategy
 import summer.events.ViewEventExecution
@@ -9,10 +9,10 @@ import summer.events.ViewEventExecution
 /**
  * Action will be executed only if view exists.
  */
-class DoOnlyWhenAttachedStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
+class OnlyWhenAttachedStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
     override fun proxyInvoked(
-        execution: ViewEventExecution<TView, Nothing?>,
+        execution: ViewEventExecution<TView>,
         owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
@@ -24,8 +24,8 @@ class DoOnlyWhenAttachedStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
     interface ProxyFactory<TView> : EventProxyFactory<TView> {
 
-        fun EventProxyBuilder<TView>.doOnlyWhenAttached() = build(
-            strategy = DoOnlyWhenAttachedStrategy()
+        fun <TEvent> EventPerformer<TView, TEvent>.onlyWhenAttached() = build(
+            strategy = OnlyWhenAttachedStrategy()
         )
     }
 }

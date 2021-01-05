@@ -1,5 +1,6 @@
 package summer
 
+import summer.events.EventPerformerFactory
 import summer.events.EventProxy
 import summer.state.StateProxy
 
@@ -12,4 +13,6 @@ expect abstract class ArchViewModel<TView> constructor() :
     override fun getViewProvider(): GetViewProvider<TView>
     override fun viewCreated()
     override var getView: () -> TView?
+
+    companion object : EventPerformerFactory
 }

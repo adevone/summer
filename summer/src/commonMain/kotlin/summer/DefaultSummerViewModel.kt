@@ -2,15 +2,15 @@ package summer
 
 import summer.events.EventProxyFactory
 import summer.events.EventProxyStrategy
-import summer.events.strategies.DoExactlyOnceStrategy
-import summer.events.strategies.DoOnlyWhenAttachedStrategy
+import summer.events.strategies.ExactlyOnceStrategy
+import summer.events.strategies.OnlyWhenAttachedStrategy
 import summer.state.StateProxyFactory
 import summer.state.StateProxyStrategy
 import summer.state.strategies.InMemoryStrategy
 
 /**
  * View model with support of default
- * - [EventProxyStrategy]: [DoOnlyWhenAttachedStrategy], [DoExactlyOnceStrategy]
+ * - [EventProxyStrategy]: [OnlyWhenAttachedStrategy], [ExactlyOnceStrategy]
  * - [StateProxyStrategy]: [InMemoryStrategy]
  *
  * Implemented in [DefaultSummerViewModelImpl]
@@ -22,8 +22,8 @@ interface DefaultSummerViewModel<TView> :
     StateProxyFactory<TView>,
     EventProxyFactory<TView>,
     InMemoryStrategy.ProxyFactory<TView>,
-    DoOnlyWhenAttachedStrategy.ProxyFactory<TView>,
-    DoExactlyOnceStrategy.ProxyFactory<TView>
+    OnlyWhenAttachedStrategy.ProxyFactory<TView>,
+    ExactlyOnceStrategy.ProxyFactory<TView>
 
 /**
  * Implementation of [DefaultSummerViewModel].

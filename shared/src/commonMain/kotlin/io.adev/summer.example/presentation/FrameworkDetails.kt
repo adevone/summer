@@ -14,7 +14,7 @@ class FrameworkDetailsViewModel : BaseViewModel<FrameworkDetailsView>() {
 
     override val viewProxy = object : FrameworkDetailsView {
         override var framework by state({ it::framework }, initial = null)
-        override val notifyAboutName = event { it.notifyAboutName }.doOnlyWhenAttached()
+        override val notifyAboutName = event { it.notifyAboutName }.perform.exactlyOnce()
     }
 
     fun init(initialFramework: Framework) {

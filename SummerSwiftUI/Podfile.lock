@@ -1,5 +1,5 @@
 PODS:
-  - shared (1.0.0-beta6-mvvm-26)
+  - shared (1.0.0-beta6-perform-7)
   - URLImage (2.2.0):
     - URLImage/Common (= 2.2.0)
     - URLImage/DownloadManager (= 2.2.0)
@@ -36,7 +36,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/dmytro-anokhin/url-image.git
 
 SPEC CHECKSUMS:
-  shared: 13ed6fb1e947321b1a37e314f54892cdea410ed7
+  shared: de88a951a2ff7df01c770ed997db0e51a467c888
   URLImage: d58d7fa82e466c7576f2aea4f2113251a7a38ee9
 
 PODFILE CHECKSUM: a7ca06e2f2a1640e31bd098d97222e9ecaa1b0ba

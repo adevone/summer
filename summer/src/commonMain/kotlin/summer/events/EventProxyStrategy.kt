@@ -21,7 +21,7 @@ interface EventProxyStrategy<TView, TOwner> {
      * [EventProxy] was invoked
      */
     fun proxyInvoked(
-        execution: ViewEventExecution<TView, TOwner>,
+        execution: ViewEventExecution<TView>,
         owner: TOwner,
         getViewProvider: GetViewProvider<TView>,
     )

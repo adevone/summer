@@ -1,5 +1,6 @@
 package summer
 
+import summer.events.EventPerformerFactory
 import summer.events.EventProxy
 import summer.events.EventProxyFactory
 import summer.state.StateProxy
@@ -37,4 +38,6 @@ abstract class RestoreViewModel<TView> :
     }
 
     override fun getViewProvider(): GetViewProvider<TView> = this
+
+    companion object : EventPerformerFactory()
 }

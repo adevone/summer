@@ -2,10 +2,10 @@ package summer.events
 
 import summer.ProxyFactory
 import summer.ViewProxyProvider
-import summer.events.strategies.DoExactlyOnceStrategy
+import summer.events.strategies.ExactlyOnceStrategy
 
 /**
- * DSL to create [EventProxyBuilder] and transform it
+ * DSL to create [GetViewEventHolder] and transform it
  * to [EventProxy] with user-defined [EventProxyStrategy].
  *
  * [TView] see [EventProxyStrategy]
@@ -14,8 +14,8 @@ interface EventProxyFactory<TView> : ProxyFactory<TView> {
     /**
      * First step of [EventProxy] creation see [ViewProxyProvider].
      */
-    fun event(getViewEvent: (TView) -> Function<Unit>): EventProxyBuilder<TView> {
-        return EventProxyBuilder(getViewEvent)
+    fun <TEvent> event(getViewEvent: (TView) -> TEvent): GetViewEventHolder<TView, TEvent> {
+        return GetViewEventHolder(getViewEvent)
     }
 
     /**
@@ -25,28 +25,32 @@ interface EventProxyFactory<TView> : ProxyFactory<TView> {
      * override val method = event { it.method }.build(DoExactlyOnceStrategy(), owner = null)
      *
      * Also can be used for custom [EventProxyFactory].
-     * See an example in [DoExactlyOnceStrategy.ProxyFactory]
+     * See an example in [ExactlyOnceStrategy.ProxyFactory]
      *
      * [TOwner] see [EventProxyStrategy]
      */
-    fun <TOwner> EventProxyBuilder<TView>.build(
+    fun <TOwner, TEvent> EventPerformer<TView, TEvent>.build(
         strategy: EventProxyStrategy<TView, TOwner>,
         owner: TOwner,
         listener: EventProxyListener<TView, TOwner>? = null,
-    ) = EventProxy(
-        this.getViewEvent,
-        owner,
-        getViewProvider(),
-        listener,
-        strategy
-    ).also { event ->
-        eventProxyCreated(event)
+    ): TEvent {
+        val proxy = EventProxy(
+            performViewEvent,
+            owner,
+            getViewProvider(),
+            listener,
+            strategy
+        ).also { event ->
+            eventProxyCreated(event)
+        }
+        return this.createInvokeProxyAdapter(proxy)
     }
+
 
     /**
      * Convenient [build] shorthand for [EventProxyStrategy] without owner.
      */
-    fun EventProxyBuilder<TView>.build(
+    fun <TEvent> EventPerformer<TView, TEvent>.build(
         strategy: EventProxyStrategy<TView, Nothing?>,
     ) = build(
         strategy = strategy,
@@ -56,10 +60,11 @@ interface EventProxyFactory<TView> : ProxyFactory<TView> {
     fun eventProxyCreated(proxy: EventProxy<*, *>)
 }
 
+
 /**
  * Write an extension on this class in your [EventProxyFactory]
  * to create a shorthand for your [EventProxyStrategy] creation.
  */
-class EventProxyBuilder<TView>(
-    val getViewEvent: (TView) -> Function<Unit>,
+class GetViewEventHolder<TView, TEvent>(
+    val getViewEvent: (TView) -> TEvent,
 )

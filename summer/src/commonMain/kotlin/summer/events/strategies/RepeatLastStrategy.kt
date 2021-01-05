@@ -11,10 +11,10 @@ import summer.events.ViewEventExecution
  */
 class RepeatLastStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
-    private var lastExecution: ViewEventExecution<TView, Nothing?>? = null
+    private var lastExecution: ViewEventExecution<TView>? = null
 
     override fun proxyInvoked(
-        execution: ViewEventExecution<TView, Nothing?>,
+        execution: ViewEventExecution<TView>,
         owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {

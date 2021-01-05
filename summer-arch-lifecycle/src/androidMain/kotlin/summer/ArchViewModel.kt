@@ -1,6 +1,7 @@
 package summer
 
 import androidx.lifecycle.ViewModel
+import summer.events.EventPerformerFactory
 
 actual abstract class ArchViewModel<TView> private constructor(
     impl: BindViewModelImpl<TView>
@@ -10,4 +11,6 @@ actual abstract class ArchViewModel<TView> private constructor(
     ViewProxyProvider<TView> {
 
     actual constructor() : this(BindViewModelImpl())
+
+    actual companion object : EventPerformerFactory()
 }

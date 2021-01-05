@@ -1,14 +1,14 @@
 package io.adev.summer.example.presentation
 
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import org.kodein.di.instance
 import io.adev.summer.example.domain.basket.BasketController
 import io.adev.summer.example.domain.frameworks.GetAllFrameworkItems
 import io.adev.summer.example.entity.Basket
 import io.adev.summer.example.entity.Framework
 import io.adev.summer.example.presentation.base.BaseViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import org.kodein.di.instance
 
 interface FrameworksView {
     var items: List<Basket.Item>
@@ -21,7 +21,7 @@ class FrameworksViewModel : BaseViewModel<FrameworksView>() {
 
     override val viewProxy = object : FrameworksView {
         override var items by state({ it::items }, initial = emptyList())
-        override val toDetails = event { it.toDetails }.doExactlyOnce()
+        override val toDetails = event { it.toDetails }.perform.exactlyOnce()
     }
 
     init {

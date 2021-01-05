@@ -11,10 +11,10 @@ import summer.events.ViewEventExecution
  */
 class RepeatAllStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
-    private val executions = mutableListOf<ViewEventExecution<TView, Nothing?>>()
+    private val executions = mutableListOf<ViewEventExecution<TView>>()
 
     override fun proxyInvoked(
-        execution: ViewEventExecution<TView, Nothing?>,
+        execution: ViewEventExecution<TView>,
         owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
