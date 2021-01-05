@@ -2,7 +2,7 @@ PODS:
   - Alamofire (5.4.1)
   - AlamofireImage (4.1.0):
     - Alamofire (~> 5.1)
-  - shared (1.0.0-beta6-perform-10)
+  - shared (1.0.0-beta6-perform-13)
 
 DEPENDENCIES:
   - Alamofire (from `https://github.com/Alamofire/Alamofire.git`)
@@ -28,7 +28,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
-  shared: 261e8aedf4871e70e6488d5a67d51dd2cb8a46a6
+  shared: c0e5781ad2697754fc246262278c98daa0ad1d13
 
 PODFILE CHECKSUM: 4385aacedc5905fddcbe0b649f9a5c2f38d3018e
 

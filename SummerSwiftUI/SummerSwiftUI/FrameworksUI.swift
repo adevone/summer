@@ -17,7 +17,7 @@ class FrameworksViewState: BaseState, FrameworksView {
 struct FrameworksUI: View {
 
     @ObservedObject var state = FrameworksViewState()
-    var viewModel = FrameworksViewModel()
+    var viewModel = ServiceLocator().frameworksViewModel()
     init() {
         state.bind(viewModel)
     }

@@ -57,6 +57,7 @@ kotlin {
         }
     }
 
+    @Suppress("UNUSED_VARIABLE")
     sourceSets {
         commonMain {
             dependencies {

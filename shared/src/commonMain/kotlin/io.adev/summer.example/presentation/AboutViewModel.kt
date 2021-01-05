@@ -1,7 +1,6 @@
 package io.adev.summer.example.presentation
 
 import kotlinx.coroutines.launch
-import org.kodein.di.instance
 import io.adev.summer.example.domain.about.GetAbout
 import io.adev.summer.example.entity.About
 import io.adev.summer.example.presentation.base.BaseViewModel
@@ -13,8 +12,9 @@ interface AboutView : LoadingView {
     var about: About?
 }
 
-class AboutViewModel : BaseViewModel<AboutView>() {
-    private val getAbout: GetAbout by instance()
+class AboutViewModel(
+    private val getAbout: GetAbout
+) : BaseViewModel<AboutView>() {
 
     override val viewProxy: AboutView = object : AboutView,
         LoadingView by loadingViewProxy() {

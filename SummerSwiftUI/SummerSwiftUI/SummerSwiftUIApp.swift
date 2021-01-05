@@ -11,7 +11,6 @@ import shared
 @main
 struct SummerSwiftUIApp: App {
     var body: some Scene {
-        IosDIKt.bind(userDefaults: UserDefaults.standard)
         return WindowGroup {
             MainUI()
         }

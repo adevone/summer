@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import io.adev.summer.example.AppKodeinAware
 import io.adev.summer.example.AppNavigator
 import io.adev.summer.example.presentation.base.NavigationView
 import io.adev.summer.example.ui.MainActivity
 import summer.DidSetMixin
 
-abstract class BaseFragment : Fragment(), NavigationView, AppKodeinAware {
+abstract class BaseFragment : Fragment(), NavigationView {
 
     private var viewBindingDelegate: ViewBindingDelegate<*>? = null
     fun <TBinding : ViewBinding> viewBinding(

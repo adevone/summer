@@ -1,13 +1,8 @@
-package io.adev.summer.example.compose
+package io.adev.summer.example
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.adev.summer.example.presentation.*
-
-@Composable
-inline fun <reified VM : ViewModel> getViewModel(): VM = viewModel(factory = ViewModelFactory())
 
 class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
@@ -15,19 +10,19 @@ class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when (modelClass) {
             AboutViewModel::class.java -> {
-                AboutViewModel() as T
+                ServiceLocator.aboutViewModel() as T
             }
             BasketViewModel::class.java -> {
-                BasketViewModel() as T
+                ServiceLocator.basketViewModel() as T
             }
             FrameworkDetailsViewModel::class.java -> {
-                FrameworkDetailsViewModel() as T
+                ServiceLocator.frameworkDetailsViewModel() as T
             }
             FrameworksViewModel::class.java -> {
-                FrameworksViewModel() as T
+                ServiceLocator.frameworksViewModel() as T
             }
             MainViewModel::class.java -> {
-                MainViewModel() as T
+                ServiceLocator.mainViewModel() as T
             }
             else -> throw IllegalArgumentException("modelClass can not be ${modelClass.name}")
         }

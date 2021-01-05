@@ -15,7 +15,7 @@ class BasketViewState: BaseState, BasketView {
 struct BasketUI: View {
 
     @ObservedObject var state = BasketViewState()
-    var viewModel = BasketViewModel()
+    var viewModel = ServiceLocator().basketViewModel()
     init() {
         state.bind(viewModel)
     }

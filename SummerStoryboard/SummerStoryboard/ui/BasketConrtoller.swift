@@ -26,7 +26,7 @@ class BasketController: BaseController, BasketView {
     }
     
     override func viewDidLoad() {
-        viewModel = BasketViewModel()
+        viewModel = ServiceLocator().basketViewModel()
         super.viewDidLoad()
     }
     

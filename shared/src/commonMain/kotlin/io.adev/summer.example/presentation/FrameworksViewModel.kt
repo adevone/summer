@@ -9,15 +9,15 @@ import io.adev.summer.example.presentation.base.navigationViewProxy
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.kodein.di.instance
 
 interface FrameworksView : NavigationView {
     var items: List<Basket.Item>
 }
 
-class FrameworksViewModel : BaseViewModel<FrameworksView>() {
-    private val basketController: BasketController by instance()
-    private val getAllFrameworkItems: GetAllFrameworkItems by instance()
+class FrameworksViewModel(
+    private val basketController: BasketController,
+    private val getAllFrameworkItems: GetAllFrameworkItems,
+) : BaseViewModel<FrameworksView>() {
 
     override val viewProxy: FrameworksView = object : FrameworksView,
         NavigationView by navigationViewProxy() {

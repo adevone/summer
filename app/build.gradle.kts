@@ -50,9 +50,6 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
-    implementation("org.kodein.di:kodein-di:$kodeinVersion")
-    implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
-
     implementation("com.google.android.material:material:1.2.1")
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")

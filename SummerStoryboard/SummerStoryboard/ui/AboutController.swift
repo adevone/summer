@@ -42,7 +42,7 @@ class AboutController: BaseController, AboutView {
     }
     
     override func viewDidLoad() {
-        viewModel = AboutViewModel()
+        viewModel = ServiceLocator().aboutViewModel()
         super.viewDidLoad()
     }
     

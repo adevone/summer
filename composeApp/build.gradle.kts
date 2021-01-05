@@ -73,9 +73,6 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
-    implementation("org.kodein.di:kodein-di:$kodeinVersion")
-    implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
-
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 
     implementation(project(":shared"))

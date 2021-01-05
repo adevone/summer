@@ -17,7 +17,7 @@ class AboutViewState: BaseState, AboutView {
 struct AboutUI: View {
 
     @ObservedObject var state = AboutViewState()
-    var viewModel = AboutViewModel()
+    var viewModel = ServiceLocator().aboutViewModel()
     init() {
         state.bind(viewModel)
     }

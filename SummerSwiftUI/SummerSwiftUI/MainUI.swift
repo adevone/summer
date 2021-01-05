@@ -16,7 +16,7 @@ class MainViewState: BaseState, MainView {
 struct MainUI: View {
 
     @ObservedObject var state = MainViewState()
-    var viewModel = MainViewModel()
+    var viewModel = ServiceLocator().mainViewModel()
     init() {
         state.bind(viewModel)
     }

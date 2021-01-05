@@ -23,7 +23,7 @@ class FrameworksController: BaseController, FrameworksView {
     }
     
     override func viewDidLoad() {
-        viewModel = FrameworksViewModel()
+        viewModel = ServiceLocator().frameworksViewModel()
         super.viewDidLoad()
         frameworksTable.dataSource = self
         frameworksTable.delegate = self

@@ -60,7 +60,7 @@ class MainController: BaseTabBarController, MainView {
     }
     
     override func viewDidLoad() {
-        viewModel = MainViewModel()
+        viewModel = ServiceLocator().mainViewModel()
         super.viewDidLoad()
     }
 }
