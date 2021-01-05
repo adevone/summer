@@ -16,7 +16,7 @@ interface EventProxyFactory<TView> : ProxyFactory<TView>, EventPerformerFactory 
      * Generic factory method to build [EventProxy] with any [EventProxyStrategy].
      *
      * Example of based on the example in [ViewProxyProvider] usage:
-     * override val method = event { it.method }.perform.build(DoExactlyOnceStrategy(), owner = null)
+     * override val method = event { it.method }.perform.build(ExactlyOnceStrategy(), owner = null)
      *
      * Also can be used for custom [EventProxyFactory].
      * See an example in [ExactlyOnceStrategy.ProxyFactory]
