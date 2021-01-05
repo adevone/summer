@@ -4,6 +4,7 @@ import android.os.Bundle
 import io.adev.summer.example.bindViewModel
 import io.adev.summer.example.databinding.BasketFragmentBinding
 import io.adev.summer.example.entity.Basket
+import io.adev.summer.example.entity.BasketItem
 import io.adev.summer.example.presentation.BasketView
 import io.adev.summer.example.presentation.BasketViewModel
 import io.adev.summer.example.ui.base.BaseFragment
@@ -17,7 +18,7 @@ class BasketFragment : BaseFragment(), BasketView {
         viewModel = bindViewModel(BasketViewModel::class, fragment = this) { this }
     }
 
-    override var items: List<Basket.Item> by didSet {
+    override var items: Array<BasketItem> by didSet {
         binding.basketView.text = items.joinToString(separator = "\n") { item ->
             "${item.framework.name}=${item.quantity}"
         }

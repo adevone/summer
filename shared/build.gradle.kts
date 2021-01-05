@@ -35,12 +35,21 @@ kotlin {
     js(IR) {
         // TODO does not work with current Kotlin 1.4.21 (will be fixed in 1.4.30)
         //      https://youtrack.jetbrains.com/issue/KT-41076#focus=Comments-27-4619722.0-0
-//        browser {
-//            webpackTask {
-//                output.libraryTarget = "commonjs2"
-//            }
-//        }
-//        binaries.library()
+        browser {
+            webpackTask {
+                output.libraryTarget = "umd2"
+            }
+            commonWebpackConfig {
+
+            }
+//            kotlinOptions.metaInfo = true
+//            kotlinOptions.sourceMap = true
+//            kotlinOptions.suppressWarnings = true
+//            kotlinOptions.verbose = true
+//            kotlinOptions.main = "call"
+//            kotlinOptions.moduleKind = "umd"
+        }
+        binaries.library()
     }
     iosArm64()
     iosX64()

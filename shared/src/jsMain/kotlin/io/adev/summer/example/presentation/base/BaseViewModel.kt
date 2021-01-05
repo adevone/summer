@@ -9,6 +9,7 @@ import kotlin.coroutines.CoroutineContext
 
 actual abstract class BaseViewModel<TView> actual constructor() :
     ArchViewModel<TView>(),
+    BaseInput<TView>,
     BaseViewModelController {
 
     private val job = SupervisorJob()

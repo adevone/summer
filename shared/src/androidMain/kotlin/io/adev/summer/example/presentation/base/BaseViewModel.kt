@@ -4,6 +4,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import summer.ArchViewModel
 
-actual abstract class BaseViewModel<TView> actual constructor() : ArchViewModel<TView>() {
+actual abstract class BaseViewModel<TView> actual constructor() :
+    ArchViewModel<TView>(),
+    BaseInput<TView> {
+
     actual val scope: CoroutineScope = viewModelScope
 }

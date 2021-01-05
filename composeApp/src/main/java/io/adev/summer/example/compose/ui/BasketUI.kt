@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import io.adev.summer.example.compose.bind
 import io.adev.summer.example.compose.getViewModel
 import io.adev.summer.example.entity.Basket
+import io.adev.summer.example.entity.BasketItem
 import io.adev.summer.example.presentation.BasketView
 import io.adev.summer.example.presentation.BasketViewModel
 
@@ -22,10 +23,10 @@ import io.adev.summer.example.presentation.BasketViewModel
 fun BasketUI() {
     val viewModel = getViewModel<BasketViewModel>()
     val view = viewModel.bind(object : BasketView {
-        override var items: List<Basket.Item> by mutableStateOf(emptyList())
+        override var items: Array<BasketItem> by mutableStateOf(emptyArray())
     })
     LazyColumn(content = {
-        items(view.items) { item ->
+        items(view.items.toList()) { item ->
             Row(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,

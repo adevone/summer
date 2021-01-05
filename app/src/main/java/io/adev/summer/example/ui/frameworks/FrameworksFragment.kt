@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import io.adev.summer.example.bindViewModel
 import io.adev.summer.example.databinding.FrameworksFragmentBinding
 import io.adev.summer.example.entity.Basket
+import io.adev.summer.example.entity.BasketItem
 import io.adev.summer.example.presentation.FrameworksView
 import io.adev.summer.example.presentation.FrameworksViewModel
 import io.adev.summer.example.ui.base.BaseFragment
@@ -26,8 +27,8 @@ class FrameworksFragment : BaseFragment(), FrameworksView {
         (binding.frameworksView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
-    override var items: List<Basket.Item> by didSet {
-        frameworksAdapter.submitList(items)
+    override var items: Array<BasketItem> by didSet {
+        frameworksAdapter.submitList(items.toList())
     }
 
     companion object {

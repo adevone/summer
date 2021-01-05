@@ -1,17 +1,20 @@
 package io.adev.summer.example.entity
 
-data class Basket(
-    val items: List<Item>
-) {
-    data class Item(
-        val framework: Framework,
-        val quantity: Int
-    )
+import kotlin.js.JsExport
 
-    fun allAsItems(frameworks: List<Framework>): List<Item> {
+@JsExport
+data class BasketItem(
+    val framework: Framework,
+    val quantity: Int
+)
+
+data class Basket(
+    val items: List<BasketItem>
+) {
+    fun allAsItems(frameworks: List<Framework>): List<BasketItem> {
         return frameworks.map { framework ->
             val quantity = items.find { it.framework == framework }?.quantity ?: 0
-            Item(framework, quantity)
+            BasketItem(framework, quantity)
         }
     }
 
@@ -28,7 +31,7 @@ data class Basket(
             )
         } else {
             Basket(
-                items = items + Item(framework, quantity = 1)
+                items = items + BasketItem(framework, quantity = 1)
             )
         }
     }

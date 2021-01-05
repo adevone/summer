@@ -9,7 +9,9 @@ import io.adev.summer.example.domain.frameworks.GetSummer
 import io.adev.summer.example.presentation.*
 import io.ktor.client.*
 import kotlinx.serialization.json.Json
+import kotlin.js.JsExport
 
+@JsExport
 object ServiceLocator {
 
     private val json = Json {
@@ -19,18 +21,18 @@ object ServiceLocator {
 
     private val basketController: BasketController = CoroutinesBasketController()
 
-    fun aboutViewModel() = AboutViewModel(GetAbout(PlatformServices.httpClient(), json))
+    fun aboutViewModel(): AboutInput = AboutViewModel(GetAbout(PlatformServices.httpClient(), json))
 
-    fun basketViewModel() = BasketViewModel(basketController)
+    fun basketViewModel(): BasketInput = BasketViewModel(basketController)
 
-    fun frameworkDetailsViewModel() = FrameworkDetailsViewModel()
+    fun frameworkDetailsViewModel(): FrameworkDetailsInput = FrameworkDetailsViewModel()
 
-    fun frameworksViewModel() = FrameworksViewModel(
+    fun frameworksViewModel(): FrameworksInput = FrameworksViewModel(
         basketController,
         GetAllFrameworkItems(GetSpring(), GetSummer(), basketController)
     )
 
-    fun mainViewModel() = MainViewModel()
+//    fun mainViewModel() = MainViewModel()
 }
 
 internal expect object PlatformServices {

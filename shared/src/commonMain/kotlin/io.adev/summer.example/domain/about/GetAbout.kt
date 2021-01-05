@@ -1,10 +1,10 @@
 package io.adev.summer.example.domain.about
 
+import io.adev.summer.example.entity.About
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.serialization.json.Json
-import io.adev.summer.example.entity.About
 
 class GetAbout(
     private val httpClient: HttpClient,

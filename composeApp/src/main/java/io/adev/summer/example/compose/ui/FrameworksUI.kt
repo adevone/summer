@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import io.adev.summer.example.compose.bind
 import io.adev.summer.example.compose.getViewModel
 import io.adev.summer.example.entity.Basket
+import io.adev.summer.example.entity.BasketItem
 import io.adev.summer.example.entity.Framework
 import io.adev.summer.example.presentation.FrameworksView
 import io.adev.summer.example.presentation.FrameworksViewModel
@@ -28,10 +29,10 @@ import kotlinx.serialization.json.Json
 fun FrameworksUI(navigationView: NavigationView) {
     val viewModel = getViewModel<FrameworksViewModel>()
     val view = viewModel.bind(object : FrameworksView, NavigationView by navigationView {
-        override var items: List<Basket.Item> by mutableStateOf(emptyList())
+        override var items: Array<BasketItem> by mutableStateOf(emptyArray())
     })
     LazyColumn(content = {
-        items(view.items) { item ->
+        items(view.items.toList()) { item ->
             Row(
                 modifier = Modifier
                     .clickable(

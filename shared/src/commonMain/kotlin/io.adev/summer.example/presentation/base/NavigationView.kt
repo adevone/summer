@@ -1,7 +1,9 @@
 package io.adev.summer.example.presentation.base
 
 import io.adev.summer.example.AppNavigator
+import kotlin.js.JsExport
 
+@JsExport
 interface NavigationView {
     val navigate: (navigation: (AppNavigator) -> Unit) -> Unit
 }

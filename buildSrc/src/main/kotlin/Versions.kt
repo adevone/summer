@@ -2,7 +2,7 @@ const val summerVersion = "1.0.0-beta6-perform-13"
 const val summerGroup = "com.github.adevone.summer"
 
 // library dependencies
-const val kotlinVersion = "1.4.21"
+const val kotlinVersion = "1.4.30-RC-170"
 const val lifecycleVersion = "2.2.0"
 const val appCompatVersion = "1.2.0"
 const val serializationVersion = "1.0.1"

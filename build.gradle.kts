@@ -3,6 +3,7 @@ buildscript {
         google()
         jcenter()
         maven(url = "https://kotlin.bintray.com/kotlinx")
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-dev")
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.0-alpha03")
@@ -18,6 +19,7 @@ subprojects {
         jcenter()
         maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://kotlin.bintray.com/ktor")
+        maven(url = "https://dl.bintray.com/kotlin/kotlin-dev")
         maven(url = "https://dl.bintray.com/summermpp/summer")
     }
 }

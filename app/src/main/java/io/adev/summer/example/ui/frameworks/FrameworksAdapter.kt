@@ -6,12 +6,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.adev.summer.example.databinding.FrameworksItemBinding
 import io.adev.summer.example.entity.Basket
+import io.adev.summer.example.entity.BasketItem
 import io.adev.summer.example.presentation.FrameworksViewModel
 import io.adev.summer.example.ui.EqualsDiffCallback
 
 class FrameworksAdapter(
     private val viewModel: FrameworksViewModel,
-) : ListAdapter<Basket.Item, FrameworksAdapter.ViewHolder>(
+) : ListAdapter<BasketItem, FrameworksAdapter.ViewHolder>(
     EqualsDiffCallback { a, b -> a.framework.name == b.framework.name }
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

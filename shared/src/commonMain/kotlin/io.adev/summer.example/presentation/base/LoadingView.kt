@@ -1,5 +1,8 @@
 package io.adev.summer.example.presentation.base
 
+import kotlin.js.JsExport
+
+@JsExport
 interface LoadingView {
     var isLoading: Boolean
 }
