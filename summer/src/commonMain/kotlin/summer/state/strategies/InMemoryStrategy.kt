@@ -2,6 +2,7 @@ package summer.state.strategies
 
 import summer.GetViewProvider
 import summer.state.*
+import kotlin.reflect.KProperty
 
 /**
  * Saves state in the inner variable.
@@ -15,7 +16,9 @@ class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, Nothing?> {
     private var wasSet = false
 
     override fun getValue(
-        viewProperty: ViewProperty<T, TView, Nothing?>,
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
         owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ): T {
@@ -23,13 +26,15 @@ class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, Nothing?> {
             @Suppress("UNCHECKED_CAST")
             currentValue as T
         } else {
-            viewProperty.initial
+            initial
         }
     }
 
     override fun setValue(
         value: T,
-        viewProperty: ViewProperty<T, TView, Nothing?>,
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
         owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
@@ -37,12 +42,14 @@ class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, Nothing?> {
         currentValue = value
         val view = getViewProvider.getView()
         if (view != null) {
-            viewProperty.setIfExists(value, view)
+            viewPropertySetter.setIfExists(value, view)
         }
     }
 
     override fun viewCreated(
-        viewProperty: ViewProperty<T, TView, Nothing?>,
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
         owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
@@ -51,9 +58,9 @@ class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, Nothing?> {
             if (wasSet) {
                 @Suppress("UNCHECKED_CAST")
                 val value = currentValue as T
-                viewProperty.setIfExists(value, view)
+                viewPropertySetter.setIfExists(value, view)
             } else {
-                viewProperty.setIfExists(viewProperty.initial, view)
+                viewPropertySetter.setIfExists(initial, view)
             }
         }
     }
@@ -67,7 +74,8 @@ class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, Nothing?> {
             return state(
                 getViewProperty,
                 initial,
-                InMemoryStrategy()
+                InMemoryStrategy(),
+                owner = null,
             )
         }
     }

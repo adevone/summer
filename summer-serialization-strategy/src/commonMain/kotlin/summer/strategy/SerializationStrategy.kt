@@ -3,50 +3,57 @@ package summer.strategy
 import kotlinx.serialization.KSerializer
 import summer.GetViewProvider
 import summer.state.*
+import kotlin.reflect.KProperty
 
 class SerializationStrategy<T, TView>(
     private val serializer: KSerializer<T>,
 ) : StateProxyStrategy<T, TView, SerializationStore> {
 
     override fun getValue(
-        viewProperty: ViewProperty<T, TView, SerializationStore>,
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
         owner: SerializationStore,
-        getViewProvider: GetViewProvider<TView>,
+        getViewProvider: GetViewProvider<TView>
     ): T {
-        val key = viewProperty.proxyProperty.name
+        val key = proxyProperty.name
         return if (owner.isInit(key)) {
             owner.get(key)
         } else {
-            viewProperty.initial
+            initial
         }
     }
 
     override fun setValue(
         value: T,
-        viewProperty: ViewProperty<T, TView, SerializationStore>,
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
         owner: SerializationStore,
-        getViewProvider: GetViewProvider<TView>,
+        getViewProvider: GetViewProvider<TView>
     ) {
-        owner.set(key = viewProperty.proxyProperty.name, value, serializer)
+        owner.set(key = proxyProperty.name, value, serializer)
         val view = getViewProvider.getView()
         if (view != null) {
-            viewProperty.setIfExists(value, view)
+            viewPropertySetter.setIfExists(value, view)
         }
     }
 
     override fun viewCreated(
-        viewProperty: ViewProperty<T, TView, SerializationStore>,
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
         owner: SerializationStore,
-        getViewProvider: GetViewProvider<TView>,
+        getViewProvider: GetViewProvider<TView>
     ) {
         val view = getViewProvider.getView()
         if (view != null) {
-            val key = viewProperty.proxyProperty.name
+            val key = proxyProperty.name
             if (owner.isInit(key)) {
                 val value = owner.get<T>(key)
-                viewProperty.setIfExists(value, view)
+                viewPropertySetter.setIfExists(value, view)
             } else {
-                viewProperty.setIfExists(viewProperty.initial, view)
+                viewPropertySetter.setIfExists(initial, view)
             }
         }
     }

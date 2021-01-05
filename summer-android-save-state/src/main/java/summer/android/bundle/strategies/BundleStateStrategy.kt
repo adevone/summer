@@ -7,7 +7,8 @@ import summer.android.bundle.BundleStateProxyProvider
 import summer.state.GetViewProperty
 import summer.state.StateProxyFactory
 import summer.state.StateProxyStrategy
-import summer.state.ViewProperty
+import summer.state.ViewPropertySetter
+import kotlin.reflect.KProperty
 
 abstract class BundleStateStrategy<T, TView>(
     private val getValue: Bundle.(String?) -> T,
@@ -15,44 +16,50 @@ abstract class BundleStateStrategy<T, TView>(
 ) : StateProxyStrategy<T, TView, BundleProvider> {
 
     override fun getValue(
-        viewProperty: ViewProperty<T, TView, BundleProvider>,
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
         owner: BundleProvider,
-        getViewProvider: GetViewProvider<TView>,
+        getViewProvider: GetViewProvider<TView>
     ): T {
-        val key = viewProperty.proxyProperty.name
+        val key = proxyProperty.name
         return if (owner.bundle.containsKey(key)) {
             owner.bundle.getValue(key)
         } else {
-            viewProperty.initial
+            initial
         }
     }
 
     override fun setValue(
         value: T,
-        viewProperty: ViewProperty<T, TView, BundleProvider>,
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
         owner: BundleProvider,
-        getViewProvider: GetViewProvider<TView>,
+        getViewProvider: GetViewProvider<TView>
     ) {
-        owner.bundle.setValue(viewProperty.proxyProperty.name, value)
+        owner.bundle.setValue(proxyProperty.name, value)
         val view = getViewProvider.getView()
         if (view != null) {
-            viewProperty.setIfExists(value, view)
+            viewPropertySetter.setIfExists(value, view)
         }
     }
 
     override fun viewCreated(
-        viewProperty: ViewProperty<T, TView, BundleProvider>,
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
         owner: BundleProvider,
-        getViewProvider: GetViewProvider<TView>,
+        getViewProvider: GetViewProvider<TView>
     ) {
         val view = getViewProvider.getView()
         if (view != null) {
-            val key = viewProperty.proxyProperty.name
+            val key = proxyProperty.name
             if (owner.bundle.containsKey(key)) {
                 val value = owner.bundle.getValue(key)
-                viewProperty.setIfExists(value, view)
+                viewPropertySetter.setIfExists(value, view)
             } else {
-                viewProperty.setIfExists(viewProperty.initial, view)
+                viewPropertySetter.setIfExists(initial, view)
             }
         }
     }

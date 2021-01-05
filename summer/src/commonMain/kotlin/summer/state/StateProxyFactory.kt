@@ -42,21 +42,5 @@ interface StateProxyFactory<TView> : ProxyFactory<TView> {
         )
     }
 
-    /**
-     * Convenient shorthand to [state] for strategies with no owner.
-     */
-    fun <T> state(
-        getViewProperty: GetViewProperty<T, TView>? = null,
-        initial: T,
-        strategy: StateProxyStrategy<T, TView, Nothing?>,
-    ): StateProxy.Provider<T, TView, Nothing?> {
-        return state(
-            getViewProperty,
-            initial,
-            strategy,
-            owner = null
-        )
-    }
-
     fun stateProxyCreated(proxy: StateProxy<*, *, *>)
 }

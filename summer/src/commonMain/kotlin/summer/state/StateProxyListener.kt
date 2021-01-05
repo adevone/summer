@@ -14,6 +14,7 @@ interface StateProxyListener<TView, TOwner> {
      */
     fun proxySet(
         value: Any?,
+        initial: Any?,
         property: KProperty<*>,
         owner: TOwner,
         strategy: StateProxyStrategy<*, TView, TOwner>,
@@ -24,6 +25,7 @@ interface StateProxyListener<TView, TOwner> {
      */
     fun viewPropertySet(
         value: Any?,
+        initial: Any?,
         property: KProperty<*>,
         viewProperty: KMutableProperty0<*>?,
         view: TView,
