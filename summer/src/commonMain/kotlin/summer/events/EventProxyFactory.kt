@@ -34,9 +34,8 @@ interface EventProxyFactory<TView> : ProxyFactory<TView>, EventPerformerFactory 
             getViewProvider(),
             listener,
             strategy
-        ).also { event ->
-            eventProxyCreated(event)
-        }
+        )
+        eventProxyCreated(proxy)
         return this.createInvokeProxyAdapter(proxy)
     }
 
