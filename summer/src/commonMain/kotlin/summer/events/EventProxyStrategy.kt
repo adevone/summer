@@ -9,7 +9,7 @@ import summer.ViewLifecycleListener
  *
  * [TView]
  *   is parent a view. If you want some strategy
- *   to be executed only on the specific view, you can pass it to [TView].
+ *   to be performed only on the specific view, you can pass it to [TView].
  *
  * [TOwner]
  *   is strategy dependencies container. If you want to pass some dependencies to
@@ -21,7 +21,7 @@ interface EventProxyStrategy<TView, TOwner> {
      * [EventProxy] was invoked
      */
     fun proxyInvoked(
-        execution: ViewEventExecution<TView>,
+        performance: EventPerformance<TView>,
         owner: TOwner,
         getViewProvider: GetViewProvider<TView>,
     )

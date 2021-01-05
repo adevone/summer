@@ -1,10 +1,12 @@
 package summer.events
 
 import summer.GetViewProvider
+import summer.ViewProxyProvider
 
 /**
- * Proxy that executes event following rules defined in the [EventProxyStrategy].
- * Can execute events with 0-12 arguments.
+ * Proxy that called on each event defined in [ViewProxyProvider] invocation.
+ * Initiates performing of event provided by following rules defined in [strategy].
+ * Arity of events is constrained by [EventPerformerFactory].
  */
 class EventProxy<out TView, in TOwner>(
     private val performViewEvent: (TView, params: Array<out Any?>) -> Unit,
@@ -14,15 +16,15 @@ class EventProxy<out TView, in TOwner>(
     private val strategy: EventProxyStrategy<TView, TOwner>,
 ) {
     fun invoke(vararg params: Any?) {
-        val execution = ViewEventExecution(
+        val performance = EventPerformance(
             performViewEvent,
             params,
             viewEventExecuted = { view, execution ->
                 listener?.viewEventExecuted(view, strategy, execution, owner)
             }
         )
-        strategy.proxyInvoked(execution, owner, getViewProvider)
-        listener?.proxyInvoked(strategy, execution, owner)
+        strategy.proxyInvoked(performance, owner, getViewProvider)
+        listener?.proxyInvoked(strategy, performance, owner)
     }
 
     fun viewCreated() {

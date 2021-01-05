@@ -3,26 +3,26 @@ package summer.events.strategies
 import summer.GetViewProvider
 import summer.events.EventProxy
 import summer.events.EventProxyStrategy
-import summer.events.ViewEventExecution
+import summer.events.EventPerformance
 
 /**
- * Proxies each call of [EventProxy] to action if view exists and
- * repeats last call of [EventProxy] on each view creation.
+ * Performs event on each invoke of [EventProxy] if view exists and
+ * repeats last performance on each view creation.
  */
 class RepeatLastStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
-    private var lastExecution: ViewEventExecution<TView>? = null
+    private var lastPerformance: EventPerformance<TView>? = null
 
     override fun proxyInvoked(
-        execution: ViewEventExecution<TView>,
+        performance: EventPerformance<TView>,
         owner: Nothing?,
         getViewProvider: GetViewProvider<TView>,
     ) {
         val view = getViewProvider.getView()
         if (view != null) {
-            execution.execute(view)
+            performance.performEvent(view)
         }
-        lastExecution = execution
+        lastPerformance = performance
     }
 
     override fun viewCreated(
@@ -31,7 +31,7 @@ class RepeatLastStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
     ) {
         val view = getViewProvider.getView()
         if (view != null) {
-            lastExecution?.execute(view)
+            lastPerformance?.performEvent(view)
         }
     }
 }

@@ -9,6 +9,9 @@ package summer.events
 
 import kotlin.jvm.JvmName
 
+/**
+ * Auto-generated code. See docs in [EventPerformer]
+ */
 @Suppress("UNCHECKED_CAST")
 abstract class EventPerformerFactory {
 ${

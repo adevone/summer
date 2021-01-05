@@ -23,7 +23,7 @@ interface ViewProxyProvider<TView> {
      *
      * override val viewProxy = object : FeatureView {
      *     override var prop by state({ it::prop }, initial = 0)
-     *     override val method = event { it.method }.doExactlyOnce()
+     *     override val method = event { it.method }.perform.exactlyOnce()
      * }
      */
     val viewProxy: TView

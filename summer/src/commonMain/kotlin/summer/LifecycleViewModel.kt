@@ -4,7 +4,7 @@ import summer.events.EventProxy
 import summer.state.StateProxy
 
 /**
- * Extent from this class if you want call [EventProxy.viewCreated] or
+ * Extent from this class if you want to call [EventProxy.viewCreated] or
  * [StateProxy.viewCreated] on a custom place.
  *
  * @param [TView] see [GetViewProvider]

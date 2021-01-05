@@ -12,17 +12,10 @@ import summer.events.strategies.ExactlyOnceStrategy
  */
 interface EventProxyFactory<TView> : ProxyFactory<TView> {
     /**
-     * First step of [EventProxy] creation see [ViewProxyProvider].
-     */
-    fun <TEvent> event(getViewEvent: (TView) -> TEvent): GetViewEventHolder<TView, TEvent> {
-        return GetViewEventHolder(getViewEvent)
-    }
-
-    /**
      * Generic factory method to build [EventProxy] with any [EventProxyStrategy].
      *
      * Example of based on the example in [ViewProxyProvider] usage:
-     * override val method = event { it.method }.build(DoExactlyOnceStrategy(), owner = null)
+     * override val method = event { it.method }.perform.build(DoExactlyOnceStrategy(), owner = null)
      *
      * Also can be used for custom [EventProxyFactory].
      * See an example in [ExactlyOnceStrategy.ProxyFactory]
@@ -46,7 +39,6 @@ interface EventProxyFactory<TView> : ProxyFactory<TView> {
         return this.createInvokeProxyAdapter(proxy)
     }
 
-
     /**
      * Convenient [build] shorthand for [EventProxyStrategy] without owner.
      */
@@ -57,13 +49,19 @@ interface EventProxyFactory<TView> : ProxyFactory<TView> {
         owner = null
     )
 
+    /**
+     * First step of [EventProxy] creation. See [ViewProxyProvider].
+     */
+    fun <TEvent> event(getViewEvent: (TView) -> TEvent): GetViewEventHolder<TView, TEvent> {
+        return GetViewEventHolder(getViewEvent)
+    }
+
     fun eventProxyCreated(proxy: EventProxy<*, *>)
 }
 
-
 /**
- * Write an extension on this class in your [EventProxyFactory]
- * to create a shorthand for your [EventProxyStrategy] creation.
+ * Generic event holder. [EventProxyFactory] adapts it
+ * to form convenient for [EventProxy] creation.
  */
 class GetViewEventHolder<TView, TEvent>(
     val getViewEvent: (TView) -> TEvent,

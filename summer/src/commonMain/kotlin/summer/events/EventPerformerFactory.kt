@@ -2,18 +2,21 @@ package summer.events
 
 import kotlin.jvm.JvmName
 
+/**
+ * Auto-generated code. See docs in [EventPerformer]
+ */
 @Suppress("UNCHECKED_CAST")
 abstract class EventPerformerFactory {
 
     val <TView> GetViewEventHolder<TView, () -> Unit>.perform
         @JvmName("perform0")
         get() = EventPerformer<TView, () -> Unit>(
-            performViewEvent = { view, ps ->
+            performViewEvent = { view, _ ->
                 val event = getViewEvent(view)
                 event()
             },
             createInvokeProxyAdapter = { proxy ->
-                {  ->
+                {
                     proxy.invoke()
                 }
             }
