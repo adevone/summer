@@ -3,75 +3,77 @@ Arch: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-arc
 
 # About Summer
 
-Summer is Model-View-ViewModel library with kotlin-multiplatform support. It can be used to share viewModels between iOS and Android apps.
+Summer is a presentation level library with kotlin-multiplatform support. It can be used to share viewModels between iOS, Android and Web apps.  
 Summer does not use code generation and thus have not significant effort on compilation time and odd build-time errors.  
-Project aims at standardization and nice IDE support
+Project aims to have out-of-box support of Android Framework, Jetpack Compose, UIKit, SwiftUI and React without any adapters and platform-specific limitations.  
 
 Example of feature written using Summer:
 
-Common, Kotlin:
+Common, Kotlin Multiplatform:
 ```kotlin
-class GetDay {
+class GetNews {
     
-    operator fun invoke(number: Int): String = when (number) {
-        1 -> "Monday"
-        2 -> "Tuesday"
-        else -> "Another day"
+    operator fun invoke(offset: Int): String = when (offset) {
+        0 -> "Today news"
+        1 -> "Yesterday news"
+        else -> throw NotAuthorizedException("Please login to read elder news")
     }
 }
 
-interface CalendarView {
+interface NewsView {
     var isLoading: Boolean
-    var dayName: String
-    val showError: () -> Unit
+    var news: String
+    val toAuth: () -> Unit
 }
 
-class CalendarViewModel(
-    private val getDay: GetDay
-) : SummerViewModel<CalendarView> {
+class NewsViewModel(
+    getNews: GetNews
+) : ArchViewModel<NewsView>() {
     
-    private val defaultDayName = "Monday"
+    private val defaultNews = "Loading news..."
     
-    // Proxy that allows to restore state and 
-    // set properties even if view does not exist.
-    // Summer plugin provides convenient intentions to write it easy
-    override val viewProxy = object : CalendarView {
+    // Proxy that allows to manipulate view state and events 
+    // even if view does not exist now.
+    // Summer IDE plugin provides convenient intentions to write it easy.
+    override val viewProxy = object : NewsView {
     
-        // Initial values are automatically emitted to view when it is created.
+        // Initial values are automatically emitted to view when it created.
         // No matter in which state view was. ViewModel will change
-        // it to consistent state automatically
+        // it to consistent state automatically.
         override var isLoading by state({ it::isLoading }, initial = true)
         
         // You can get default values from prefs 
         // or viewModel constructor params.
-        // Any viewModel properties can be used as initial values
-        // for state properties
-        override var dayName by state({ it::dayName }, initial = defaultDayName)
+        // Any viewModel properties available on init phase
+        // can be used as initial values for state properties
+        override var news by state({ it::news }, initial = defaultNews)
         
         // Events can be delivered to view using various strategies.
-        // 4 is present out-of-box. `doOnlyWhenAttached` means that
-        // action will be executed only if view attached now.
-        // If view is not attached than event wont repeated if
-        // this strategy used.
-        override val showError = event { it.showError }.doOnlyWhenAttached()
+        // 4 is present out-of-box. `doExactlyOnce` means that
+        // each invocation of event in viewProxy will lead
+        // exactly one performance of the event on view.
+        // It is useful for navigation. Also Summer allows to
+        // implement navigation logic in a separate entity 
+        // and not mix presentation and navigation logic. 
+        override val toAuth = event { it.toAuth }.perform.exactlyOnce()
     }
     
     init {
         try {
-            val day = getDay(number = 1)
-            viewProxy.dayName = dayName
-        } catch (e: Exception) {
-            viewProxy.showError()        
+            val news = getNews(offset = 1)
+            viewProxy.news = news
+        } catch (e: NotAuthorizedException) {
+            viewProxy.toAuth()        
         }
     }
 } 
 ```
 
-Android, Kotlin:
+Android Framework, Kotlin:
 ```kotlin
-class CalendarFragment : Fragment(R.layout.calendar_fragment), CalendarView {
+class NewsFragment : Fragment(R.layout.news_fragment), NewsView {
 
-    private val viewModel by viewModels<CalendarViewModel>()
+    private val viewModel by viewModels<NewsViewModel>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -82,24 +84,24 @@ class CalendarFragment : Fragment(R.layout.calendar_fragment), CalendarView {
         progressBar.isVisible = isLoading
     }
     
-    override var dayName: String by didSet {
-        dayNameView.text = dayName
+    override var news: String by didSet {
+        newsView.text = news
     }
     
-    override val showError = {
-        snackbar("Error occurred")
+    override val toAuth: () -> Unit = {
+        // navigate to auth
     }
 }
 ```
 
 [BaseViewController](https://gist.github.com/adevone/994d5cd5a5cb11f6789dbe3732bb6b25) (Subject of change)
 
-iOS, Swift:
+UIKit, Swift:
 ```swift
-class CalendarViewController: BaseViewController, CalendarView {
+class NewsViewController: BaseViewController, NewsView {
 
     @IBOutlet weak var loadingSpinner: UIView!
-    @IBOutlet weak var dayNameLabel: UILabel!
+    @IBOutlet weak var newsLabel: UILabel!
 
     var isLoading = false {
         didSet {
@@ -107,23 +109,73 @@ class CalendarViewController: BaseViewController, CalendarView {
         }
     }    
     
-    var dayName = "" {
+    var news = "" {
         didSet {
-            dayNameLabel.text = dayName
+            newsLabel.text = news
         }
     }
     
-    var showError: () -> Void = {
-        print("Error occurred!")
+    var toAuth: () -> Void = {
+        // navigate to auth
     }
     
-    private var viewModel: CalendarViewModel! {
+    private var viewModel: NewsViewModel! {
         didSet { setViewModel(viewModel) }
     }
     
     override func viewDidLoad() {
-        viewModel = CalendarViewModel(...)
+        viewModel = NewsViewModel(...)
         super.viewDidLoad()
+    }
+}
+```
+
+Jetpack Compose, Kotlin:
+```kotlin
+@Composable
+fun NewsUI() {
+    val viewModel = viewModel<NewsViewModel>()
+    val view = viewModel.bind(object : NewsView {
+        override var isLoading: Boolean by mutableStateOf(false)
+        override var news: String by mutableStateOf("")
+        override val toAuth: () -> Unit = {
+            // navigate to auth
+        }
+    })
+    if (!view.isLoading) {
+        Text(view.news)
+    } else {
+        CircularProgressIndicator()
+    }
+}
+```
+
+SwiftUI, Swift:
+```swift
+class NewsViewState: BaseState, NewsView {
+    @Published var isLoading: Bool = false
+    @Published var news: String = ""
+    lazy var toAuth: () -> Void = {
+        // navigate to auth
+    }
+}
+
+struct NewsUI: View {
+
+    @ObservedObject var state = NewsViewState()
+    var viewModel = NewsViewState()
+    init() {
+        state.bind(viewModel)
+    }
+
+    var body: some View {
+        VStack {
+            if !state.isLoading {
+                Text(state.news)
+            } else {
+                ProgressView()
+            }
+        }
     }
 }
 ```
@@ -146,10 +198,10 @@ dependencies {
     // library itself
     implementation("com.github.adevone.summer:summer:1.0.0-beta6-mvvm-20")
 
-    // androidx support, contains ArchViewModel that allows using of bindView function (see example)
+    // contains ArchViewModel that allows using of bindView function on Android (see example)
     implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta6-mvvm-20")
 
-    // android compat support, contains SummerActivity and SummerFragment
+    // based on old support lib of 28.0.0 version, contains SummerActivity and SummerFragment
     implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6-mvvm-20")
 }
 ```
