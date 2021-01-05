@@ -8,6 +8,7 @@ plugins {
 
 kotlin {
     jvm()
+    js(IR)
     iosArm64 {
         binaries {
             framework()

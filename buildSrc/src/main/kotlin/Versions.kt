@@ -1,4 +1,4 @@
-const val summerVersion = "1.0.0-beta6-perform-10"
+const val summerVersion = "1.0.0-beta6-perform-13"
 const val summerGroup = "com.github.adevone.summer"
 
 // library dependencies
@@ -10,8 +10,6 @@ const val targetVersion = 30
 
 // example dependencies
 const val exampleSummerVersion = summerVersion
-const val multiplatformSettingVersion = "0.7"
-const val kodeinVersion = "7.2.0"
 const val ktorVersion = "1.5.0"
 const val coroutinesVersion = "1.4.2-native-mt"
 const val minVersion = 21

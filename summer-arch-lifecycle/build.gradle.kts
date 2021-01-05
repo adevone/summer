@@ -40,6 +40,7 @@ kotlin {
         publishLibraryVariants("release", "debug")
         publishLibraryVariantsGroupedByFlavor = true
     }
+    js(IR)
     iosArm64 {
         binaries {
             framework()
@@ -76,8 +77,14 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
             }
         }
+        val jsMain by getting {
+            dependencies {
+
+            }
+        }
         val iosArm64Main by getting {
             dependencies {
+
             }
         }
         val iosX64Main by getting {

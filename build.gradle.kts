@@ -16,24 +16,8 @@ subprojects {
     repositories {
         google()
         jcenter()
-        maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         maven(url = "https://kotlin.bintray.com/kotlinx")
         maven(url = "https://kotlin.bintray.com/ktor")
-        maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
-        maven(url = "https://dl.bintray.com/russhwolf/multiplatform-settings")
         maven(url = "https://dl.bintray.com/summermpp/summer")
-        maven {
-            url = uri("https://jitpack.io")
-//            content {
-//                // Exclude Kodein artifacts
-//                excludeGroupByRegex("org\\.kodein.*")
-//            }
-        }
-
-//        maven(url = "https://dl.bintray.com/kodein-framework/Kodein-DI")
     }
-}
-
-tasks.create<Delete>("clean") {
-    delete = setOf(rootProject.buildDir)
 }
