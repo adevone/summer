@@ -5,17 +5,11 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import io.adev.summer.example.bindViewModel
 import io.adev.summer.example.databinding.FrameworksFragmentBinding
 import io.adev.summer.example.entity.Basket
-import io.adev.summer.example.entity.Framework
 import io.adev.summer.example.presentation.FrameworksView
 import io.adev.summer.example.presentation.FrameworksViewModel
 import io.adev.summer.example.ui.base.BaseFragment
-import io.adev.summer.example.ui.base.routing.ScreenArgs
-import io.adev.summer.example.ui.base.routing.toScreen
-import kotlinx.serialization.Serializable
 
-class FrameworksFragment :
-    BaseFragment<FrameworksFragment.Args>(),
-    FrameworksView {
+class FrameworksFragment : BaseFragment(), FrameworksView {
 
     private val binding by viewBinding { FrameworksFragmentBinding.inflate(it) }
 
@@ -36,12 +30,7 @@ class FrameworksFragment :
         frameworksAdapter.submitList(items)
     }
 
-    override val toDetails = { framework: Framework ->
-        ciceroneRouter.navigateTo(FrameworkDetailsFragment.Args(framework).toScreen())
+    companion object {
+        fun newInstance() = FrameworksFragment()
     }
-
-    override val argsSerializer = Args.serializer()
-
-    @Serializable
-    class Args : ScreenArgs<FrameworksFragment>(::FrameworksFragment)
 }

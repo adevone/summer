@@ -7,10 +7,8 @@ import io.adev.summer.example.entity.Basket
 import io.adev.summer.example.presentation.BasketView
 import io.adev.summer.example.presentation.BasketViewModel
 import io.adev.summer.example.ui.base.BaseFragment
-import io.adev.summer.example.ui.base.routing.ScreenArgs
-import kotlinx.serialization.Serializable
 
-class BasketFragment : BaseFragment<BasketFragment.Args>(), BasketView {
+class BasketFragment : BaseFragment(), BasketView {
     private val binding by viewBinding { BasketFragmentBinding.inflate(it) }
 
     private lateinit var viewModel: BasketViewModel
@@ -25,8 +23,7 @@ class BasketFragment : BaseFragment<BasketFragment.Args>(), BasketView {
         }
     }
 
-    override val argsSerializer = Args.serializer()
-
-    @Serializable
-    class Args : ScreenArgs<BasketFragment>(::BasketFragment)
+    companion object {
+        fun newInstance() = BasketFragment()
+    }
 }

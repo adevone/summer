@@ -9,10 +9,8 @@ import io.adev.summer.example.entity.About
 import io.adev.summer.example.presentation.AboutView
 import io.adev.summer.example.presentation.AboutViewModel
 import io.adev.summer.example.ui.base.BaseFragment
-import io.adev.summer.example.ui.base.routing.ScreenArgs
-import kotlinx.serialization.Serializable
 
-class AboutFragment : BaseFragment<AboutFragment.Args>(), AboutView {
+class AboutFragment : BaseFragment(), AboutView {
     private val binding by viewBinding { AboutFragmentBinding.inflate(it) }
 
     private lateinit var viewModel: AboutViewModel
@@ -32,8 +30,7 @@ class AboutFragment : BaseFragment<AboutFragment.Args>(), AboutView {
         binding.contentView.isVisible = !isLoading
     }
 
-    override val argsSerializer = Args.serializer()
-
-    @Serializable
-    class Args : ScreenArgs<AboutFragment>(::AboutFragment)
+    companion object {
+        fun newInstance() = AboutFragment()
+    }
 }

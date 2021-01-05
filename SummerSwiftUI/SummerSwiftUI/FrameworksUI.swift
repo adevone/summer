@@ -12,9 +12,6 @@ import shared
 class FrameworksViewState: BaseState, FrameworksView {
     @Published var items = [Basket.Item]()
     @Published var detailsFramework: Framework? = nil
-    lazy var toDetails: (Framework) -> Void = { Framework in
-        self.detailsFramework = nil
-    }
 }
 
 struct FrameworksUI: View {

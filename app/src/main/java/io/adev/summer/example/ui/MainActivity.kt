@@ -1,25 +1,21 @@
 package io.adev.summer.example.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.Menu
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
-import androidx.core.os.postDelayed
-import io.adev.summer.example.R
-import io.adev.summer.example.bindViewModel
+import androidx.fragment.app.FragmentManager
+import io.adev.summer.example.*
 import io.adev.summer.example.databinding.ActivityMainBinding
 import io.adev.summer.example.entity.Tab
 import io.adev.summer.example.presentation.MainView
 import io.adev.summer.example.presentation.MainViewModel
+import io.adev.summer.example.ui.about.AboutFragment
 import io.adev.summer.example.ui.base.BaseActivity
-import io.adev.summer.example.ui.base.routing.BackButtonListener
-import io.adev.summer.example.ui.base.routing.TabContainerFragment
-import io.adev.summer.example.ui.base.routing.toScreen
+import io.adev.summer.example.ui.basket.BasketFragment
+import io.adev.summer.example.ui.frameworks.FrameworksFragment
 
-class MainActivity : BaseActivity(), MainView {
+class MainActivity : BaseActivity(), MainView, NavigationHost {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
@@ -50,40 +46,19 @@ class MainActivity : BaseActivity(), MainView {
 
     override var selectedTab: Tab? = null
         set(selectedTab) {
-            val previousSelectedTab = field
+            val previousTab = field
             field = selectedTab
-            if (selectedTab != null) {
-                val currentFragment = supportFragmentManager.fragments.find { it.isVisible }
-                val newFragment = supportFragmentManager.findFragmentByTag(selectedTab.name)
-
-                if (currentFragment != null &&
-                    newFragment != null &&
-                    currentFragment === newFragment
-                ) {
-                    return
+            if (selectedTab != previousTab && selectedTab != null) {
+                val fragment = when (selectedTab) {
+                    Tab.Frameworks -> FrameworksFragment.newInstance()
+                    Tab.About -> AboutFragment.newInstance()
+                    Tab.Basket -> BasketFragment.newInstance()
                 }
-
-                val transaction = supportFragmentManager.beginTransaction()
-                if (newFragment == null) {
-                    transaction.add(
-                        R.id.contentContainer,
-                        TabContainerFragment.Args(selectedTab).toScreen().fragment,
-                        selectedTab.name
-                    )
-                }
-
-                if (currentFragment != null) {
-                    transaction.hide(currentFragment)
-                }
-
-                if (newFragment != null) {
-                    transaction.show(newFragment)
-                }
-                transaction.commitNow()
-
-                if (selectedTab != previousSelectedTab) {
-                    binding.bottomNavigationView.selectedItemId = selectedTab.itemId
-                }
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.contentContainer, fragment)
+                    .addToBackStack(selectedTab.name)
+                    .commit()
+                binding.bottomNavigationView.selectedItemId = selectedTab.itemId
             }
         }
 
@@ -108,22 +83,16 @@ class MainActivity : BaseActivity(), MainView {
             Tab.Basket -> getString(R.string.menu_basket)
         }
 
-    private val dropIsBackClickedFirstTimesHandler = Handler(Looper.getMainLooper())
-    private var isBackClickedFirstTimes = false
+    override val containerId: Int = R.id.contentContainer
+    override val fragmentManager: FragmentManager get() = supportFragmentManager
+
+    val navigator: AppNavigator = AppNavigatorImpl(host = this)
+
     override fun onBackPressed() {
-        val fragment = supportFragmentManager.fragments.find { it.isVisible }
-        if (fragment is BackButtonListener && fragment.onBackPressed()) {
-            return
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            supportFragmentManager.popBackStack()
         } else {
-            if (!isBackClickedFirstTimes) {
-                Toast.makeText(this, "Нажмите ещё раз чтобы выйти", Toast.LENGTH_LONG).show()
-                isBackClickedFirstTimes = true
-                dropIsBackClickedFirstTimesHandler.postDelayed(2000L) {
-                    isBackClickedFirstTimes = false
-                }
-            } else {
-                super.onBackPressed()
-            }
+            finish()
         }
     }
 }

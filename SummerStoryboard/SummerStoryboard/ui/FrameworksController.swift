@@ -18,10 +18,6 @@ class FrameworksController: BaseController, FrameworksView {
         }
     }
     
-    lazy var toDetails: (Framework) -> Void = { framework in
-        self.frameworksTable.reloadData()
-    }
-    
     private var viewModel: FrameworksViewModel! {
         didSet { setViewModel(viewModel) }
     }

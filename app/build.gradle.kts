@@ -60,8 +60,6 @@ dependencies {
 
     implementation("com.squareup.picasso:picasso:2.71828")
 
-    implementation("ru.terrakok.cicerone:cicerone:5.1.1")
-
     implementation("androidx.core:core-ktx:1.3.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.fragment:fragment-ktx:1.2.5")

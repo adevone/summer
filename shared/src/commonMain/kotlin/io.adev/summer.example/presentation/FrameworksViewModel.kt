@@ -3,25 +3,25 @@ package io.adev.summer.example.presentation
 import io.adev.summer.example.domain.basket.BasketController
 import io.adev.summer.example.domain.frameworks.GetAllFrameworkItems
 import io.adev.summer.example.entity.Basket
-import io.adev.summer.example.entity.Framework
 import io.adev.summer.example.presentation.base.BaseViewModel
+import io.adev.summer.example.presentation.base.NavigationView
+import io.adev.summer.example.presentation.base.navigationViewProxy
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.kodein.di.instance
 
-interface FrameworksView {
+interface FrameworksView : NavigationView {
     var items: List<Basket.Item>
-    val toDetails: (framework: Framework) -> Unit
 }
 
 class FrameworksViewModel : BaseViewModel<FrameworksView>() {
     private val basketController: BasketController by instance()
     private val getAllFrameworkItems: GetAllFrameworkItems by instance()
 
-    override val viewProxy = object : FrameworksView {
+    override val viewProxy: FrameworksView = object : FrameworksView,
+        NavigationView by navigationViewProxy() {
         override var items by state({ it::items }, initial = emptyList())
-        override val toDetails = event { it.toDetails }.perform.exactlyOnce()
     }
 
     init {
@@ -35,7 +35,7 @@ class FrameworksViewModel : BaseViewModel<FrameworksView>() {
     }
 
     fun onItemClick(item: Basket.Item) {
-        viewProxy.toDetails(item.framework)
+        viewProxy.navigate { it.toFrameworkDetails(item.framework) }
     }
 
     fun onIncreaseClick(item: Basket.Item) {

@@ -6,18 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import ru.terrakok.cicerone.Router
-import summer.DidSetMixin
 import io.adev.summer.example.AppKodeinAware
-import io.adev.summer.example.ui.ArgsFragmentFeature
-import io.adev.summer.example.ui.base.routing.BackButtonListener
-import io.adev.summer.example.ui.base.routing.RouterProvider
+import io.adev.summer.example.AppNavigator
+import io.adev.summer.example.presentation.base.NavigationView
+import io.adev.summer.example.ui.MainActivity
+import summer.DidSetMixin
 
-abstract class BaseFragment<TArgs> :
-    Fragment(),
-    BackButtonListener,
-    AppKodeinAware,
-    ArgsFragmentFeature<TArgs> {
+abstract class BaseFragment : Fragment(), NavigationView, AppKodeinAware {
 
     private var viewBindingDelegate: ViewBindingDelegate<*>? = null
     fun <TBinding : ViewBinding> viewBinding(
@@ -42,23 +37,14 @@ abstract class BaseFragment<TArgs> :
         viewBindingDelegate?.clearBinding()
     }
 
-    override var argsBackingField: TArgs? = null
-
-    @Suppress("LeakingThis")
-    override val fragment: Fragment = this
-
-    protected lateinit var ciceroneRouter: Router
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ciceroneRouter = (parentFragment as RouterProvider).ciceroneRouter
-    }
-
-    override fun onBackPressed(): Boolean = false
-
     companion object : DidSetMixin
+
+    override val navigate: (navigation: (AppNavigator) -> Unit) -> Unit = { navigate ->
+        val navigator = (requireActivity() as MainActivity).navigator
+        navigate(navigator)
+    }
 }
 
 class ViewBindingNotProvidedException : IllegalStateException(
-    "Please view binding: val binding by viewBinding { <BINDING>.inflate(it) }"
+    "Please provide view binding: val binding by viewBinding { <BINDING>.inflate(it) }"
 )

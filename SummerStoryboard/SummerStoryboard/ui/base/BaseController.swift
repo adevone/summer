@@ -8,7 +8,7 @@
 import UIKit
 import shared
 
-class BaseController: UIViewController {
+class BaseController: UIViewController, NavigationView {
     
     private var controller: BaseViewModelController!
     
@@ -31,6 +31,10 @@ class BaseController: UIViewController {
     
     deinit {
         controller.onDestroy()
+    }
+
+    lazy var navigate: (@escaping (AppNavigator) -> KotlinUnit) -> Void = { navigation in
+        // do navigation
     }
 }
 

@@ -9,7 +9,7 @@ import shared
 
 typealias BaseState = ObservableObject & SummerBinder
 
-class SummerBinder {
+class SummerBinder: NavigationView {
     var controller: BaseViewModelController? = nil
 
     func bind(_ controller: BaseViewModelController) {
@@ -22,5 +22,9 @@ class SummerBinder {
 
     deinit {
         controller?.onDestroy()
+    }
+
+    lazy var navigate: (@escaping (AppNavigator) -> KotlinUnit) -> Void = { navigate in
+        // do navigation
     }
 }
