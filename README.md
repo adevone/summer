@@ -188,7 +188,7 @@ struct NewsUI: View {
 // in root build.gradle
 allprojects {
     repositories {
-        ...
+        // ...
         maven { url = uri("https://dl.bintray.com/summermpp/summer") }
     }
 }
