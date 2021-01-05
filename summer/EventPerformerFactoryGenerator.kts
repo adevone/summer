@@ -12,8 +12,8 @@ import kotlin.jvm.JvmName
 /**
  * Auto-generated code. See docs in [EventPerformer]
  */
-@Suppress("UNCHECKED_CAST")
-abstract class EventPerformerFactory {
+@Suppress("UNCHECKED_CAST", "INAPPLICABLE_JVM_NAME")
+interface EventPerformerFactory {
 ${
     (0..maxArity).joinToString(separator = "") { arity ->
         """ 

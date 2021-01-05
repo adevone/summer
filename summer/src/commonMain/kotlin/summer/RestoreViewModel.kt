@@ -38,6 +38,4 @@ abstract class RestoreViewModel<TView> :
     }
 
     override fun getViewProvider(): GetViewProvider<TView> = this
-
-    companion object : EventPerformerFactory()
 }

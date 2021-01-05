@@ -1,6 +1,7 @@
 package summer.events
 
 import summer.ProxyFactory
+import summer.SummerViewModel
 import summer.ViewProxyProvider
 import summer.events.strategies.ExactlyOnceStrategy
 
@@ -10,7 +11,7 @@ import summer.events.strategies.ExactlyOnceStrategy
  *
  * [TView] see [EventProxyStrategy]
  */
-interface EventProxyFactory<TView> : ProxyFactory<TView> {
+interface EventProxyFactory<TView> : ProxyFactory<TView>, EventPerformerFactory {
     /**
      * Generic factory method to build [EventProxy] with any [EventProxyStrategy].
      *
