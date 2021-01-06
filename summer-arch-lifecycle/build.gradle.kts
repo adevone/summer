@@ -40,7 +40,9 @@ kotlin {
         publishLibraryVariants("release", "debug")
         publishLibraryVariantsGroupedByFlavor = true
     }
-    js(IR)
+    js(IR) {
+        browser()
+    }
     iosArm64 {
         binaries {
             framework()
