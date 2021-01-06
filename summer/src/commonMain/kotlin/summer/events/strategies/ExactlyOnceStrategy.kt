@@ -42,7 +42,7 @@ class ExactlyOnceStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
     interface ProxyFactory<TView> : EventProxyFactory<TView> {
 
-        fun <TEvent> EventPerformer<TView, TEvent>.exactlyOnce() = build(
+        fun <TEvent> EventPerformer<TView, TEvent>.exactlyOnce() = using(
             strategy = ExactlyOnceStrategy()
         )
     }

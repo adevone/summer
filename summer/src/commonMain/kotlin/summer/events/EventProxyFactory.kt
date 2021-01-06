@@ -13,17 +13,17 @@ import summer.events.strategies.ExactlyOnceStrategy
  */
 interface EventProxyFactory<TView> : ProxyFactory<TView>, EventPerformerFactory {
     /**
-     * Generic factory method to build [EventProxy] with any [EventProxyStrategy].
+     * Generic factory method to create [EventProxy] with any [EventProxyStrategy].
      *
      * Example of based on the example in [ViewProxyProvider] usage:
-     * override val method = event { it.method }.perform.build(ExactlyOnceStrategy(), owner = null)
+     * override val method = event { it.method }.perform.using(ExactlyOnceStrategy(), owner = null)
      *
      * Also can be used for custom [EventProxyFactory].
      * See an example in [ExactlyOnceStrategy.ProxyFactory]
      *
      * [TOwner] see [EventProxyStrategy]
      */
-    fun <TOwner, TEvent> EventPerformer<TView, TEvent>.build(
+    fun <TOwner, TEvent> EventPerformer<TView, TEvent>.using(
         strategy: EventProxyStrategy<TView, TOwner>,
         owner: TOwner,
         listener: EventProxyListener<TView, TOwner>? = null,
@@ -40,11 +40,11 @@ interface EventProxyFactory<TView> : ProxyFactory<TView>, EventPerformerFactory 
     }
 
     /**
-     * Convenient [build] shorthand for [EventProxyStrategy] without owner.
+     * Convenient [using] shorthand for [EventProxyStrategy] without owner.
      */
-    fun <TEvent> EventPerformer<TView, TEvent>.build(
+    fun <TEvent> EventPerformer<TView, TEvent>.using(
         strategy: EventProxyStrategy<TView, Nothing?>,
-    ) = build(
+    ) = using(
         strategy = strategy,
         owner = null
     )

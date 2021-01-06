@@ -24,7 +24,7 @@ class OnlyWhenAttachedStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
     interface ProxyFactory<TView> : EventProxyFactory<TView> {
 
-        fun <TEvent> EventPerformer<TView, TEvent>.onlyWhenAttached() = build(
+        fun <TEvent> EventPerformer<TView, TEvent>.onlyWhenAttached() = using(
             strategy = OnlyWhenAttachedStrategy()
         )
     }
