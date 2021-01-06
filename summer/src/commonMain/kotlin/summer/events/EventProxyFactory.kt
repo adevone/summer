@@ -29,7 +29,7 @@ interface EventProxyFactory<TView> : ProxyFactory<TView>, EventPerformerFactory 
         listener: EventProxyListener<TView, TOwner>? = null,
     ): TEvent {
         val proxy = EventProxy(
-            performViewEvent,
+            this.performViewEvent,
             owner,
             getViewProvider(),
             listener,
