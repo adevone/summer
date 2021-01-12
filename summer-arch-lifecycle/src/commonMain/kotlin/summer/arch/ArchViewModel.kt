@@ -1,5 +1,8 @@
-package summer
+package summer.arch
 
+import summer.DefaultSummerViewModel
+import summer.GetViewProvider
+import summer.ViewProxyProvider
 import summer.events.EventProxy
 import summer.state.StateProxy
 

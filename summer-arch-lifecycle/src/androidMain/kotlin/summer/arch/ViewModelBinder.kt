@@ -1,9 +1,12 @@
-package summer
+package summer.arch
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
+import summer.DefaultSummerViewModel
+import summer.DefaultSummerViewModelImpl
+import summer.LifecycleViewModel
 
 interface ViewModelBinder<TView> {
     fun bindView(owner: LifecycleOwner, provideView: () -> TView?)

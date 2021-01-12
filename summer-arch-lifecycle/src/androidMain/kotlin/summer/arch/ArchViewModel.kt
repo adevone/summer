@@ -1,6 +1,8 @@
-package summer
+package summer.arch
 
 import androidx.lifecycle.ViewModel
+import summer.DefaultSummerViewModel
+import summer.ViewProxyProvider
 
 actual abstract class ArchViewModel<TView> private constructor(
     impl: BindViewModelImpl<TView>
