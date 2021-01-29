@@ -49,6 +49,24 @@ interface EventProxyFactory<TView> : ProxyFactory<TView>, EventPerformerFactory 
         owner = null
     )
 
+    @Deprecated(
+        replaceWith = ReplaceWith("this.perform.exactlyOnce()"),
+        message = "use .perform.exactlyOnce()",
+        level = DeprecationLevel.ERROR
+    )
+    fun GetViewEventHolder<*, *>.doExactlyOnce(): Nothing {
+        throw AssertionError("deprecated")
+    }
+
+    @Deprecated(
+        replaceWith = ReplaceWith("this.perform.onlyWhenAttached()"),
+        message = "use .perform.onlyWhenAttached()",
+        level = DeprecationLevel.ERROR
+    )
+    fun GetViewEventHolder<*, *>.doOnlyWhenAttached(): Nothing {
+        throw AssertionError("deprecated")
+    }
+
     /**
      * First step of [EventProxy] creation. See [ViewProxyProvider].
      */

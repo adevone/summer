@@ -12,3 +12,10 @@ import summer.state.StateProxy
 abstract class SummerViewModel<TView> :
     DefaultSummerViewModelImpl<TView>(),
     ViewProxyProvider<TView>
+
+@Deprecated(
+    message = "use SummerViewModel instead",
+    replaceWith = ReplaceWith("SummerViewModel<TView>"),
+    level = DeprecationLevel.ERROR
+)
+typealias SummerPresenter<TView> = SummerViewModel<TView>

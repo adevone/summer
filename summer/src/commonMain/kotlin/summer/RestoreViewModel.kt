@@ -38,3 +38,10 @@ abstract class RestoreViewModel<TView> :
 
     override fun getViewProvider(): GetViewProvider<TView> = this
 }
+
+@Deprecated(
+    message = "use RestoreViewModel instead",
+    replaceWith = ReplaceWith("RestoreViewModel<TView>"),
+    level = DeprecationLevel.ERROR
+)
+typealias RestoreSummerPresenter<TView> = RestoreViewModel<TView>
