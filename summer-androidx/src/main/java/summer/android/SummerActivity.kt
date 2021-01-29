@@ -3,20 +3,21 @@ package summer.android
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
-import summer.LifecycleSummerPresenter
+import summer.LifecycleViewModel
+import summer.DidSetMixin
 
-abstract class SummerActivity : BaseSummerActivity<PresenterProvider<*, *>>() {
+abstract class SummerActivity : BaseSummerActivity<SummerViewModelProvider<*, *>>() {
 
-    fun <TView, TPresenter : LifecycleSummerPresenter<TView>> TView.bindPresenter(
-        createPresenter: () -> TPresenter
-    ): PresenterProvider<TView, TPresenter> {
-        val provider = PresenterProvider(createPresenter, view = this)
-        presenterProvider = provider
+    fun <TView, TViewModel : LifecycleViewModel<TView>> TView.bindViewModel(
+        createViewModel: () -> TViewModel
+    ): SummerViewModelProvider<TView, TViewModel> {
+        val provider = SummerViewModelProvider(createViewModel, view = this)
+        viewModelProvider = provider
         return provider
     }
 }
 
-abstract class BaseSummerActivity<TPresenterProvider : PresenterProvider<*, *>> :
+abstract class BaseSummerActivity<TViewModelProvider : SummerViewModelProvider<*, *>> :
     AppCompatActivity() {
 
     private var isCreating = false
@@ -24,8 +25,8 @@ abstract class BaseSummerActivity<TPresenterProvider : PresenterProvider<*, *>> 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         isCreating = true
-        val presenterProvider = requirePresenterProvider()
-        presenterProvider.initPresenter()
+        val viewModelProvider = requireViewModelProvider()
+        viewModelProvider.initViewModel()
         super.onCreate(savedInstanceState)
     }
 
@@ -33,8 +34,8 @@ abstract class BaseSummerActivity<TPresenterProvider : PresenterProvider<*, *>> 
     override fun onStart() {
         super.onStart()
         if (isCreating) {
-            val presenterProvider = requirePresenterProvider()
-            presenterProvider.viewCreated()
+            val viewModelProvider = requireViewModelProvider()
+            viewModelProvider.viewCreated()
         }
         isCreating = false
     }
@@ -42,13 +43,13 @@ abstract class BaseSummerActivity<TPresenterProvider : PresenterProvider<*, *>> 
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
-        presenterProvider?.viewDestroyed()
+        viewModelProvider?.viewDestroyed()
     }
 
-    protected var presenterProvider: TPresenterProvider? = null
+    protected var viewModelProvider: TViewModelProvider? = null
 
-    protected fun requirePresenterProvider(): TPresenterProvider {
-        return presenterProvider ?: throw PresenterNotProvidedException()
+    protected fun requireViewModelProvider(): TViewModelProvider {
+        return viewModelProvider ?: throw ViewModelNotProvidedException()
     }
 
     companion object : DidSetMixin

@@ -1,133 +1,107 @@
 Common: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer/images/download.svg) ](https://bintray.com/summermpp/summer/summer/_latestVersion)
-AndroidX: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-androidx/images/download.svg) ](https://bintray.com/summermpp/summer/summer-androidx/_latestVersion)
+Arch: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-arch-lifecycle/images/download.svg) ](https://bintray.com/summermpp/summer/summer-arch-lifecycle/_latestVersion)
 
-# Intellij IDEA / Android Studio plugin
-[Plugin page](https://github.com/adevone/summer-plugin)
+# About Summer
 
-# Summer
-
-Gradle dependencies:
-```kotlin
-// in settings.gradle
-enableFeaturePreview("GRADLE_METADATA")
-
-// in root build.gradle
-allprojects {
-    repositories {
-        ...
-        maven { url = uri("https://dl.bintray.com/summermpp/summer") }
-    }
-}
-
-dependencies {
-
-    // library itself (with enableFeaturePreview("GRADLE_METADATA"))
-    implementation("com.github.adevone.summer:summer:1.0.0-beta6")
-
-    // library itself (without enableFeaturePreview("GRADLE_METADATA"), jvm version)
-    implementation("com.github.adevone.summer:summer-jvm:1.0.0-beta6")
-
-    // androidx support, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-androidx:1.0.0-beta6")
-
-    // android compat support, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6")
-}
-```
-
-Summer is Model-View-Presenter library with kotlin-multiplatform support. It can be used to share presenters between iOS and Android apps.  
+Summer is a presentation level library with kotlin-multiplatform support. It can be used to share viewModels between iOS, Android and Web apps.  
 Summer does not use code generation and thus have not significant effort on compilation time and odd build-time errors.  
-Project aims at standardization and nice IDE support
+Project aims to have out-of-box support of Android Framework, Jetpack Compose, UIKit and SwiftUI without any adapters and platform-specific limitations.  
 
 Example of feature written using Summer:
 
-Common, Kotlin:
+Common, Kotlin Multiplatform:
 ```kotlin
-class GetDay {
+class GetNews {
     
-    operator fun invoke(number: Int): String = when (number) {
-        1 -> "Monday"
-        2 -> "Tuesday"
-        else -> "Another day"
+    operator fun invoke(offset: Int): String = when (offset) {
+        0 -> "Today news"
+        1 -> "Yesterday news"
+        else -> throw NotAuthorizedException("Please login to read elder news")
     }
 }
 
-interface CalendarView {
+interface NewsView {
     var isLoading: Boolean
-    var dayName: String
-    val showError: () -> Unit
+    var news: String
+    val toAuth: () -> Unit
 }
 
-class CalendarPresenter(
-    private val getDay: GetDay
-) : SummerPresenter<CalendarView> {
+class NewsViewModel(
+    getNews: GetNews
+) : ArchViewModel<NewsView>() {
     
-    private val defaultDayName = "Monday"
+    private val defaultNews = "Loading news..."
     
-    // Proxy that allows to restore state and 
-    // set properties even if view does not exist.
-    // Summer plugin provides convenient intentions to write it easy
-    override val viewProxy = object : CalendarView {
+    // Proxy that allows to manipulate view state and events 
+    // even if view does not exist now.
+    // Summer IDE plugin provides convenient intentions to write it easy.
+    override val viewProxy = object : NewsView {
     
-        // Initial values are automatically emitted to view when it is created.
-        // No matter in which state view was. Presenter will change
-        // it to consistent state automatically
+        // Initial values are automatically emitted to view when it created.
+        // No matter in which state view was. ViewModel will change
+        // it to consistent state automatically.
         override var isLoading by state({ it::isLoading }, initial = true)
         
         // You can get default values from prefs 
-        // or presenter constructor params.
-        // Any presenter properties can be used as initial values
-        // for state properties
-        override var dayName by state({ it::dayName }, initial = defaultDayName)
+        // or viewModel constructor params.
+        // Any viewModel properties available on init phase
+        // can be used as initial values for state properties
+        override var news by state({ it::news }, initial = defaultNews)
         
         // Events can be delivered to view using various strategies.
-        // 4 is present out-of-box. `doOnlyWhenAttached` means that
-        // action will be executed only if view attached now.
-        // If view is not attached than event wont repeated if
-        // this strategy used.
-        override val showError = event { it.showError }.doOnlyWhenAttached()
+        // 4 is present out-of-box. `doExactlyOnce` means that
+        // each invocation of event in viewProxy will lead
+        // exactly one performance of the event on view.
+        // It is useful for navigation. Also Summer allows to
+        // implement navigation logic in a separate entity 
+        // and not mix presentation and navigation logic. 
+        override val toAuth = event { it.toAuth }.perform.exactlyOnce()
     }
     
-    // Called when user sees screen for the first time 
-    override fun onEnter() {
+    init {
         try {
-            val day = getDay(number = 1)
-            viewProxy.dayName = dayName
-        } catch (e: Exception) {
-            viewProxy.showError()        
+            val news = getNews(offset = 1)
+            viewProxy.news = news
+        } catch (e: NotAuthorizedException) {
+            viewProxy.toAuth()        
         }
     }
 } 
 ```
 
-Android, Kotlin:
+Android Framework, Kotlin:
 ```kotlin
-class CalendarFragment : SummerFragment(R.layout.calendar_fragment), CalendarView {
+class NewsFragment : Fragment(R.layout.news_fragment), NewsView {
 
-    private val presenter = summerPresenter { CalendarPresenter(...) } 
+    private val viewModel by viewModels<NewsViewModel>()
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.bindView { this }
+    }
 
     override var isLoading: Boolean by didSet {
         progressBar.isVisible = isLoading
     }
     
-    override var dayName: String by didSet {
-        dayNameView.text = dayName
+    override var news: String by didSet {
+        newsView.text = news
     }
     
-    override val showError = {
-        snackbar("Error occurred")
+    override val toAuth: () -> Unit = {
+        // navigate to auth
     }
 }
 ```
 
-[BaseController](https://gist.github.com/adevone/685ec7a397b22f47c2171e79ae5c0966) (Subject of change)
+[BaseViewController](https://gist.github.com/adevone/994d5cd5a5cb11f6789dbe3732bb6b25) (Subject of change)
 
-iOS, Swift:
+UIKit, Swift:
 ```swift
-class CalendarViewController: BaseController, CalendarView {
+class NewsViewController: BaseViewController, NewsView {
 
     @IBOutlet weak var loadingSpinner: UIView!
-    @IBOutlet weak var dayNameLabel: UILabel!
+    @IBOutlet weak var newsLabel: UILabel!
 
     var isLoading = false {
         didSet {
@@ -135,29 +109,99 @@ class CalendarViewController: BaseController, CalendarView {
         }
     }    
     
-    var dayName = "" {
+    var news = "" {
         didSet {
-            dayNameLabel.text = dayName
+            newsLabel.text = news
         }
     }
     
-    var showError: () -> Void = {
-        print("Error occurred!")
+    var toAuth: () -> Void = {
+        // navigate to auth
     }
     
-    private var presenter: CalendarPresenter! {
-        didSet { setPresenter(presenter) }
+    private var viewModel: NewsViewModel! {
+        didSet { setViewModel(viewModel) }
     }
     
     override func viewDidLoad() {
-        presenter = CalendarPresenter(...)
+        viewModel = NewsViewModel(...)
         super.viewDidLoad()
     }
-    
 }
 ```
 
-### Convenient custom scope
+Jetpack Compose, Kotlin:
+```kotlin
+@Composable
+fun NewsUI() {
+    val viewModel = viewModel<NewsViewModel>()
+    val view = viewModel.bind(object : NewsView {
+        override var isLoading: Boolean by mutableStateOf(false)
+        override var news: String by mutableStateOf("")
+        override val toAuth: () -> Unit = {
+            // navigate to auth
+        }
+    })
+    if (!view.isLoading) {
+        Text(view.news)
+    } else {
+        CircularProgressIndicator()
+    }
+}
 ```
-((file[app]:src/main//*||file[app]:src/debug//*||file[app]:src/release//*)&&!*.iml||file[shared_commonMain]:*/||file[buildSrc]:*/||file[shared]:.gitignore||file[eshop]:build.gradle.kts||file[app]:build.gradle.kts)&&!file[buildSrc]:buildSrc.iml||file:.gitignore||file:build.gradle.kts||file:gradle.properties||file:settings.gradle.kts||file:README.md||file[shared_iosMain]:*/||file[app]:src/test/java//*
+
+SwiftUI, Swift:
+```swift
+class NewsViewState: BaseState, NewsView {
+    @Published var isLoading: Bool = false
+    @Published var news: String = ""
+    lazy var toAuth: () -> Void = {
+        // navigate to auth
+    }
+}
+
+struct NewsUI: View {
+
+    @ObservedObject var state = NewsViewState()
+    var viewModel = NewsViewState()
+    init() {
+        state.bind(viewModel)
+    }
+
+    var body: some View {
+        VStack {
+            if !state.isLoading {
+                Text(state.news)
+            } else {
+                ProgressView()
+            }
+        }
+    }
+}
+```
+
+# Intellij IDEA / Android Studio plugin
+[Plugin page](https://github.com/adevone/summer-plugin)
+
+# Gradle dependencies:
+```kotlin
+// in root build.gradle
+allprojects {
+    repositories {
+        // ...
+        maven { url = uri("https://dl.bintray.com/summermpp/summer") }
+    }
+}
+
+dependencies {
+
+    // library itself
+    implementation("com.github.adevone.summer:summer:1.0.0-beta8")
+
+    // contains ArchViewModel that allows using of bindView function on Android (see example)
+    implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta8")
+
+    // based on old support lib of 28.0.0 version, contains SummerActivity and SummerFragment
+    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta8")
+}
 ```

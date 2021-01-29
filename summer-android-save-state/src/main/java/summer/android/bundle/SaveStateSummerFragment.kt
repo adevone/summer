@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
-import summer.android.DidSetMixin
+import summer.DidSetMixin
 import summer.android.PopListenerFragment
-import summer.android.PresenterNotProvidedException
+import summer.android.ViewModelNotProvidedException
 
 abstract class SaveStateSummerFragment : PopListenerFragment {
 
@@ -16,14 +16,14 @@ abstract class SaveStateSummerFragment : PopListenerFragment {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val provider = requirePresenterProvider()
+        val provider = requireViewModelProvider()
         provider.onSaveInstanceState(outState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val provider = requirePresenterProvider()
-        provider.initPresenter()
+        val provider = requireViewModelProvider()
+        provider.initViewModel()
         provider.onRestoreInstanceState(savedInstanceState)
     }
 
@@ -38,7 +38,7 @@ abstract class SaveStateSummerFragment : PopListenerFragment {
     override fun onStart() {
         super.onStart()
         if (isViewCreating) {
-            val provider = requirePresenterProvider()
+            val provider = requireViewModelProvider()
             provider.viewCreated()
         }
         isViewCreating = false
@@ -46,20 +46,20 @@ abstract class SaveStateSummerFragment : PopListenerFragment {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        presenterProvider?.viewDestroyed()
+        viewModelProvider?.viewDestroyed()
     }
 
-    private var presenterProvider: SaveStatePresenterProvider<*, *>? = null
-    fun <TView, TPresenter : SaveStateSummerPresenter<TView>> TView.bindPresenter(
-        createPresenter: () -> TPresenter
-    ): SaveStatePresenterProvider<TView, TPresenter> {
-        val provider = SaveStatePresenterProvider(createPresenter, view = this)
-        presenterProvider = provider
+    private var viewModelProvider: SaveStateViewModelProvider<*, *>? = null
+    fun <TView, TViewModel : SaveStateSummerViewModel<TView>> TView.bindViewModel(
+        createViewModel: () -> TViewModel
+    ): SaveStateViewModelProvider<TView, TViewModel> {
+        val provider = SaveStateViewModelProvider(createViewModel, view = this)
+        viewModelProvider = provider
         return provider
     }
 
-    private fun requirePresenterProvider(): SaveStatePresenterProvider<*, *> {
-        return presenterProvider ?: throw PresenterNotProvidedException()
+    private fun requireViewModelProvider(): SaveStateViewModelProvider<*, *> {
+        return viewModelProvider ?: throw ViewModelNotProvidedException()
     }
 
     companion object : DidSetMixin

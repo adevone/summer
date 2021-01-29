@@ -1,42 +1,78 @@
 package summer.strategy
 
 import kotlinx.serialization.KSerializer
-import summer.state.GetMirrorProperty
-import summer.state.StateFactory
-import summer.state.SummerStateDelegate
-import summer.state.SummerStateStrategy
+import summer.GetViewProvider
+import summer.state.*
 import kotlin.reflect.KProperty
 
-class SerializationStrategy<T>(
-    private val serializer: KSerializer<T>
-) : SummerStateStrategy<T, SerializationStateProvider> {
+class SerializationStrategy<T, TView>(
+    private val serializer: KSerializer<T>,
+) : StateProxyStrategy<T, TView, SerializationStore> {
 
-    override fun get(owner: SerializationStateProvider, prop: KProperty<*>): T {
-        return owner.serializationStore.get(prop.name)
-    }
-
-    override fun set(owner: SerializationStateProvider, prop: KProperty<*>, value: T) {
-        owner.serializationStore.set(prop.name, value, serializer)
-    }
-
-    override fun wasStored(owner: SerializationStateProvider, prop: KProperty<*>): Boolean {
-        return owner.serializationStore.isInit(prop.name)
-    }
-
-    interface Factory<TView> : StateFactory<TView, SerializationStateProvider> {
-
-        fun <T> state(
-            getMirrorProperty: GetMirrorProperty<TView, T>? = null,
-            initial: T,
-            serializer: KSerializer<T>
-        ): SummerStateDelegate.Provider<T, SerializationStateProvider> {
-            return state(getMirrorProperty, initial, SerializationStrategy(serializer))
+    override fun getValue(
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
+        owner: SerializationStore,
+        getViewProvider: GetViewProvider<TView>
+    ): T {
+        val key = proxyProperty.name
+        return if (owner.isInit(key)) {
+            owner.get(key)
+        } else {
+            initial
         }
     }
-}
 
-interface SerializationStateProvider {
-    var serializationStore: SerializationStore
+    override fun setValue(
+        value: T,
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
+        owner: SerializationStore,
+        getViewProvider: GetViewProvider<TView>
+    ) {
+        owner.set(key = proxyProperty.name, value, serializer)
+        val view = getViewProvider.getView()
+        if (view != null) {
+            viewPropertySetter.setIfExists(value, view)
+        }
+    }
+
+    override fun viewCreated(
+        initial: T,
+        viewPropertySetter: ViewPropertySetter<T, TView>,
+        proxyProperty: KProperty<*>,
+        owner: SerializationStore,
+        getViewProvider: GetViewProvider<TView>
+    ) {
+        val view = getViewProvider.getView()
+        if (view != null) {
+            val key = proxyProperty.name
+            if (owner.isInit(key)) {
+                val value = owner.get<T>(key)
+                viewPropertySetter.setIfExists(value, view)
+            } else {
+                viewPropertySetter.setIfExists(initial, view)
+            }
+        }
+    }
+
+    interface Factory<TView> : StateProxyFactory<TView>, SerializationStore.Holder {
+
+        fun <T> state(
+            getViewProperty: GetViewProperty<T, TView>? = null,
+            initial: T,
+            serializer: KSerializer<T>,
+        ): StateProxy.Provider<T, TView, SerializationStore> {
+            return state(
+                getViewProperty,
+                initial,
+                SerializationStrategy(serializer),
+                owner = serializationStore,
+            )
+        }
+    }
 }
 
 class SerializationStore {
@@ -61,9 +97,13 @@ class SerializationStore {
     fun dump(): Map<String, ValueWithSerializer<Any?>> {
         return storedValuesWithSerializerByKey
     }
+
+    interface Holder {
+        var serializationStore: SerializationStore
+    }
 }
 
 data class ValueWithSerializer<T>(
     val value: T,
-    val serializer: KSerializer<T>
+    val serializer: KSerializer<T>,
 )

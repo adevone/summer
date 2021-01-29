@@ -1,9 +1,8 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.multiplatform")
+    kotlin("multiplatform")
     id("kotlinx-serialization")
+    kotlin("native.cocoapods")
 }
 
 android {
@@ -18,69 +17,76 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
         sourceCompatibility = JavaVersion.VERSION_1_8
     }
+
+    configurations {
+        create("androidTestApi")
+        create("androidTestDebugApi")
+        create("androidTestReleaseApi")
+        create("testApi")
+        create("testDebugApi")
+        create("testReleaseApi")
+    }
 }
 
-kotlin {
-    iosArm64 {
-        binaries {
-            framework {
-                embedBitcode("disable")
-            }
-        }
-    }
-    iosX64 {
-        binaries {
-            framework {
-                embedBitcode("disable")
-            }
-        }
-    }
-    android()
+project.version = summerVersion
 
+kotlin {
+    android()
+    js(IR) {
+        // TODO does not work with current Kotlin 1.4.21 (will be fixed in 1.4.30)
+        //      https://youtrack.jetbrains.com/issue/KT-41076#focus=Comments-27-4619722.0-0
+//        browser {
+//            webpackTask {
+//                output.libraryTarget = "commonjs2"
+//            }
+//        }
+//        binaries.library()
+    }
+    iosArm64()
+    iosX64()
+
+    cocoapods {
+        summary = "Some description for a Kotlin/Native module"
+        homepage = "Link to a Kotlin/Native module homepage"
+        frameworkName = "shared"
+    }
+
+    @Suppress("UNUSED_VARIABLE")
     sourceSets {
         commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
-                implementation("org.kodein.di:kodein-di:$kodeinVersion")
-                implementation("com.russhwolf:multiplatform-settings:$multiplatformSettingVersion")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
-                implementation("com.github.adevone.summer:summer:$summerVersion")
+                implementation("com.github.adevone.summer:summer:$exampleSummerVersion")
+                implementation("com.github.adevone.summer:summer-arch-lifecycle:$exampleSummerVersion")
 //                implementation(project(":summer"))
             }
         }
-        getByName("androidMain") {
+        val androidMain by getting {
             dependencies {
                 implementation(kotlin("stdlib"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
             }
         }
-        getByName("iosArm64Main") {
+        val jsMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
+            }
+        }
+        val iosArm64Main by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktorVersion")
             }
         }
-        getByName("iosX64Main").dependsOn(getByName("iosArm64Main"))
-    }
-}
-
-tasks.create("copyFramework") {
-    val buildType = project.findProperty("kotlin.build.type")?.toString() ?: "DEBUG"
-    val targetName = if (buildType == "DEBUG") "iosX64" else "iosArm64"
-    dependsOn("link${buildType.toLowerCase().capitalize()}Framework${targetName.capitalize()}")
-    doLast {
-        val target = kotlin.targets.getByName(targetName) as KotlinNativeTarget
-        val srcFile = target.binaries.getFramework(buildType).outputFile
-        val targetDir = project.property("configuration.build.dir")!!
-        copy {
-            from(srcFile.parent)
-            into(targetDir)
-            include("shared.framework/**")
-            include("shared.framework.dSYM")
+        val iosX64Main by getting {
+            dependsOn(iosArm64Main)
         }
     }
 }

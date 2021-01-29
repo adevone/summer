@@ -1,10 +1,10 @@
-enableFeaturePreview("GRADLE_METADATA")
-
 include(":app")
+include(":composeApp")
 include(":shared")
 include(":summer")
 include(":summer-androidx")
+include(":summer-arch-lifecycle")
 include(":summer-android-save-state")
 include(":summer-serialization-strategy")
 include(":summer_android_serialization_save_state")
-//include(":summer-android-support")
+include(":summer-android-support")

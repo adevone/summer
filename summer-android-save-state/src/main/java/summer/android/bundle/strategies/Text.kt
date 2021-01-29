@@ -1,92 +1,90 @@
 package summer.android.bundle.strategies
 
 import android.os.Bundle
-import summer.android.bundle.BundleProvider
-import summer.android.bundle.BundleStateDelegateProvider
-import summer.state.GetMirrorProperty
-import summer.state.StateFactory
+import summer.android.bundle.BundleStateProxyProvider
+import summer.state.GetViewProperty
 
-object CharSequenceBundleStateStrategy : BundleStateStrategy<CharSequence?>(
+class CharSequenceBundleStateStrategy<TView> : BundleStateStrategy<CharSequence?, TView>(
     getValue = Bundle::getCharSequence,
     setValue = Bundle::putCharSequence
 ) {
-    interface Factory<TView> : StateFactory<TView, BundleProvider> {
+    interface Factory<TView> : BaseProxyFactory<TView> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, CharSequence?>? = null,
-            initial: CharSequence?
-        ): BundleStateDelegateProvider<CharSequence?> {
-            return state(getMirrorProperty, initial, CharSequenceBundleStateStrategy)
+            getMirrorProperty: GetViewProperty<CharSequence?, TView>? = null,
+            initial: CharSequence?,
+        ): BundleStateProxyProvider<CharSequence?, TView> {
+            return state(getMirrorProperty, initial, CharSequenceBundleStateStrategy())
         }
     }
 }
 
-object CharSequenceArrayBundleStateStrategy : BundleStateStrategy<Array<CharSequence>?>(
+class CharSequenceArrayBundleStateStrategy<TView> : BundleStateStrategy<Array<CharSequence>?, TView>(
     getValue = Bundle::getCharSequenceArray,
     setValue = Bundle::putCharSequenceArray
 ) {
-    interface Factory<TView> : StateFactory<TView, BundleProvider> {
+    interface Factory<TView> : BaseProxyFactory<TView> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Array<CharSequence>?>? = null,
-            initial: Array<CharSequence>?
-        ): BundleStateDelegateProvider<Array<CharSequence>?> {
-            return state(getMirrorProperty, initial, CharSequenceArrayBundleStateStrategy)
+            getMirrorProperty: GetViewProperty<Array<CharSequence>?, TView>? = null,
+            initial: Array<CharSequence>?,
+        ): BundleStateProxyProvider<Array<CharSequence>?, TView> {
+            return state(getMirrorProperty, initial, CharSequenceArrayBundleStateStrategy())
         }
     }
 }
 
-object CharSequenceArrayListBundleStateStrategy : BundleStateStrategy<ArrayList<CharSequence>?>(
+class CharSequenceArrayListBundleStateStrategy<TView> : BundleStateStrategy<ArrayList<CharSequence>?, TView>(
     getValue = Bundle::getCharSequenceArrayList,
     setValue = Bundle::putCharSequenceArrayList
 )
 
-object StringBundleStateStrategy : BundleStateStrategy<String>(
+class StringBundleStateStrategy<TView> : BundleStateStrategy<String, TView>(
     getValue = { key -> getString(key, "") },
     setValue = Bundle::putString
 ) {
-    interface Factory<TView> : StateFactory<TView, BundleProvider> {
+    interface Factory<TView> : BaseProxyFactory<TView> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, String>? = null,
-            initial: String
-        ): BundleStateDelegateProvider<String> {
-            return state(getMirrorProperty, initial, StringBundleStateStrategy)
+            getMirrorProperty: GetViewProperty<String, TView>? = null,
+            initial: String,
+        ): BundleStateProxyProvider<String, TView> {
+            return state(getMirrorProperty, initial, StringBundleStateStrategy())
         }
     }
 }
 
-object StringArrayBundleStateStrategy : BundleStateStrategy<Array<String>?>(
+class StringArrayBundleStateStrategy<TView> : BundleStateStrategy<Array<String>?, TView>(
     getValue = Bundle::getStringArray,
     setValue = Bundle::putStringArray
 ) {
-    interface Factory<TView> : StateFactory<TView, BundleProvider> {
+    interface Factory<TView> : BaseProxyFactory<TView> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Array<String>?>? = null,
-            initial: Array<String>?
-        ): BundleStateDelegateProvider<Array<String>?> {
-            return state(getMirrorProperty, initial, StringArrayBundleStateStrategy)
+            getMirrorProperty: GetViewProperty<Array<String>?, TView>? = null,
+            initial: Array<String>?,
+        ): BundleStateProxyProvider<Array<String>?, TView> {
+            return state(getMirrorProperty, initial, StringArrayBundleStateStrategy())
         }
     }
 }
 
-object StringArrayListBundleStateStrategy : BundleStateStrategy<ArrayList<String>?>(
+class StringArrayListBundleStateStrategy<TView> : BundleStateStrategy<ArrayList<String>?, TView>(
     getValue = Bundle::getStringArrayList,
     setValue = Bundle::putStringArrayList
 )
 
-object NullableStringBundleStateStrategy : BundleStateStrategy<String?>(
+class NullableStringBundleStateStrategy<TView> : BundleStateStrategy<String?, TView>(
     getValue = Bundle::getString,
     setValue = Bundle::putString
 ) {
-    interface Factory<TView> : StateFactory<TView, BundleProvider> {
+    interface Factory<TView> : BaseProxyFactory<TView> {
 
         fun nullableState(
-            getMirrorProperty: GetMirrorProperty<TView, String?>? = null,
-            initial: String?
-        ): BundleStateDelegateProvider<String?> {
-            return state(getMirrorProperty, initial, NullableStringBundleStateStrategy)
+            getMirrorProperty: GetViewProperty<String?, TView>? = null,
+            initial: String?,
+        ): BundleStateProxyProvider<String?, TView> {
+            return state(getMirrorProperty, initial, NullableStringBundleStateStrategy())
         }
     }
 }

@@ -1,22 +1,20 @@
 package summer.android.bundle.strategies
 
 import android.os.Bundle
-import summer.android.bundle.BundleProvider
-import summer.android.bundle.BundleStateDelegateProvider
-import summer.state.GetMirrorProperty
-import summer.state.StateFactory
+import summer.android.bundle.BundleStateProxyProvider
+import summer.state.GetViewProperty
 
-object BundleBundleStateStrategy : BundleStateStrategy<Bundle?>(
+class BundleBundleStateStrategy<TView> : BundleStateStrategy<Bundle?, TView>(
     getValue = Bundle::getBundle,
     setValue = Bundle::putBundle
 ) {
-    interface Factory<TView> : StateFactory<TView, BundleProvider> {
+    interface Factory<TView> : BaseProxyFactory<TView> {
 
         fun state(
-            getMirrorProperty: GetMirrorProperty<TView, Bundle?>? = null,
-            initial: Bundle?
-        ): BundleStateDelegateProvider<Bundle?> {
-            return state(getMirrorProperty, initial, BundleBundleStateStrategy)
+            getMirrorProperty: GetViewProperty<Bundle?, TView>? = null,
+            initial: Bundle?,
+        ): BundleStateProxyProvider<Bundle?, TView> {
+            return state(getMirrorProperty, initial, BundleBundleStateStrategy())
         }
     }
 }

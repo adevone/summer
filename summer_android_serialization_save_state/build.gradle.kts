@@ -14,7 +14,8 @@ android {
     compileSdkVersion(targetVersion)
 
     defaultConfig {
-        minSdkVersion(minVersion)
+        // bundlizer requires minSdk >= 16
+        minSdkVersion(16)
         targetSdkVersion(targetVersion)
         versionCode = 1
         versionName = "1.0"
@@ -30,14 +31,15 @@ android {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
-    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
+    api("androidx.appcompat:appcompat:$appCompatVersion")
 
-    implementation("com.github.adevone.summer:summer:$summerVersion")
-    implementation("com.github.adevone.summer:summer-androidx:$summerVersion")
-    implementation(project(":summer-serialization-strategy"))
+    api("com.github.adevone.summer:summer:$summerVersion")
+    api("com.github.adevone.summer:summer-androidx:$summerVersion")
+    api("com.github.adevone.summer:summer-serialization-strategy:$summerVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-    implementation("dev.ahmedmourad.bundlizer:bundlizer:0.1.0")
+    implementation("dev.ahmedmourad.bundlizer:bundlizer-core:0.3.0")
 }
 
 val sourceJar by tasks.registering(Jar::class) {

@@ -1,0 +1,35 @@
+PODS:
+  - Alamofire (5.4.1)
+  - AlamofireImage (4.1.0):
+    - Alamofire (~> 5.1)
+  - shared (1.0.0-beta6-perform-16)
+
+DEPENDENCIES:
+  - Alamofire (from `https://github.com/Alamofire/Alamofire.git`)
+  - AlamofireImage (from `https://github.com/Alamofire/AlamofireImage.git`)
+  - shared (from `../shared`)
+
+EXTERNAL SOURCES:
+  Alamofire:
+    :git: https://github.com/Alamofire/Alamofire.git
+  AlamofireImage:
+    :git: https://github.com/Alamofire/AlamofireImage.git
+  shared:
+    :path: "../shared"
+
+CHECKOUT OPTIONS:
+  Alamofire:
+    :commit: eaf6e622dd41b07b251d8f01752eab31bc811493
+    :git: https://github.com/Alamofire/Alamofire.git
+  AlamofireImage:
+    :commit: e6818dbf6638d81db304b79dda8648d76a799b01
+    :git: https://github.com/Alamofire/AlamofireImage.git
+
+SPEC CHECKSUMS:
+  Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
+  AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
+  shared: 2f5f764a5b83d46f49849beec29ea8a62e57c814
+
+PODFILE CHECKSUM: 4385aacedc5905fddcbe0b649f9a5c2f38d3018e
+
+COCOAPODS: 1.9.2
