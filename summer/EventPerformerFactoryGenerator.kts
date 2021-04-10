@@ -21,7 +21,7 @@ ${
         @JvmName("perform${arity}")
         get() = EventPerformer<TView, (${formatTypes(arity)}) -> Unit>(
             performViewEvent = { view, ps ->
-                val event = getViewEvent(view)
+                val event = this.getViewEvent(view)
                 event(${formatParams(arity)})
             },
             createInvokeProxyAdapter = { proxy ->

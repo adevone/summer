@@ -36,8 +36,8 @@ interface StateProxyFactory<TView> : ProxyFactory<TView> {
             owner,
             listener,
             strategy,
-            proxyCreated = { delegate ->
-                stateProxyCreated(delegate)
+            proxyCreated = { proxy ->
+                stateProxyCreated(proxy)
             }
         )
     }

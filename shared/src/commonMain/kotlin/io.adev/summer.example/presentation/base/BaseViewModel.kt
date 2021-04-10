@@ -1,7 +1,7 @@
 package io.adev.summer.example.presentation.base
 
 import kotlinx.coroutines.CoroutineScope
-import summer.ArchViewModel
+import summer.arch.ArchViewModel
 import kotlin.js.JsExport
 
 expect abstract class BaseViewModel<TView>() : ArchViewModel<TView>, BaseInput<TView> {

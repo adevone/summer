@@ -9,7 +9,7 @@ import summer.events.EventPerformance
  * Performs event on each invoke of [EventProxy] if view exists and
  * repeats last performance on each view creation.
  */
-class RepeatLastStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
+class LastOnEachAttachStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
     private var lastPerformance: EventPerformance<TView>? = null
 

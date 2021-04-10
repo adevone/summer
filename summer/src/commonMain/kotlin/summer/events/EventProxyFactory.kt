@@ -13,42 +13,59 @@ import summer.events.strategies.ExactlyOnceStrategy
  */
 interface EventProxyFactory<TView> : ProxyFactory<TView>, EventPerformerFactory {
     /**
-     * Generic factory method to build [EventProxy] with any [EventProxyStrategy].
+     * Generic factory method to create [EventProxy] with any [EventProxyStrategy].
      *
      * Example of based on the example in [ViewProxyProvider] usage:
-     * override val method = event { it.method }.perform.build(ExactlyOnceStrategy(), owner = null)
+     * override val method = event { it.method }.perform.using(ExactlyOnceStrategy(), owner = null)
      *
      * Also can be used for custom [EventProxyFactory].
      * See an example in [ExactlyOnceStrategy.ProxyFactory]
      *
      * [TOwner] see [EventProxyStrategy]
      */
-    fun <TOwner, TEvent> EventPerformer<TView, TEvent>.build(
+    fun <TOwner, TEvent> EventPerformer<TView, TEvent>.using(
         strategy: EventProxyStrategy<TView, TOwner>,
         owner: TOwner,
         listener: EventProxyListener<TView, TOwner>? = null,
     ): TEvent {
         val proxy = EventProxy(
-            performViewEvent,
+            this.performViewEvent,
             owner,
             getViewProvider(),
             listener,
             strategy
-        ).also { event ->
-            eventProxyCreated(event)
-        }
+        )
+        eventProxyCreated(proxy)
         return this.createInvokeProxyAdapter(proxy)
     }
 
     /**
-     * Convenient [build] shorthand for [EventProxyStrategy] without owner.
+     * Convenient [using] shorthand for [EventProxyStrategy] without owner.
      */
-    fun <TEvent> EventPerformer<TView, TEvent>.build(
+    fun <TEvent> EventPerformer<TView, TEvent>.using(
         strategy: EventProxyStrategy<TView, Nothing?>,
-    ) = build(
+    ) = using(
         strategy = strategy,
         owner = null
     )
+
+    @Deprecated(
+        replaceWith = ReplaceWith("this.perform.exactlyOnce()"),
+        message = "use .perform.exactlyOnce()",
+        level = DeprecationLevel.ERROR
+    )
+    fun GetViewEventHolder<*, *>.doExactlyOnce(): Nothing {
+        throw AssertionError("deprecated")
+    }
+
+    @Deprecated(
+        replaceWith = ReplaceWith("this.perform.onlyWhenAttached()"),
+        message = "use .perform.onlyWhenAttached()",
+        level = DeprecationLevel.ERROR
+    )
+    fun GetViewEventHolder<*, *>.doOnlyWhenAttached(): Nothing {
+        throw AssertionError("deprecated")
+    }
 
     /**
      * First step of [EventProxy] creation. See [ViewProxyProvider].

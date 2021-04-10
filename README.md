@@ -5,7 +5,7 @@ Arch: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-arc
 
 Summer is a presentation level library with kotlin-multiplatform support. It can be used to share viewModels between iOS, Android and Web apps.  
 Summer does not use code generation and thus have not significant effort on compilation time and odd build-time errors.  
-Project aims to have out-of-box support of Android Framework, Jetpack Compose, UIKit, SwiftUI and React without any adapters and platform-specific limitations.  
+Project aims to have out-of-box support of Android Framework, Jetpack Compose, UIKit and SwiftUI without any adapters and platform-specific limitations.  
 
 Example of feature written using Summer:
 
@@ -196,12 +196,12 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:1.0.0-beta6-perform-10")
+    implementation("com.github.adevone.summer:summer:1.0.0-beta8")
 
     // contains ArchViewModel that allows using of bindView function on Android (see example)
-    implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta6-perform-10")
+    implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta8")
 
     // based on old support lib of 28.0.0 version, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta6-perform-10")
+    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta8")
 }
 ```
