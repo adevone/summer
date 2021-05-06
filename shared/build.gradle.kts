@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(targetVersion)
+    compileSdk = targetVersion
 
     defaultConfig {
-        minSdkVersion(minVersion)
-        targetSdkVersion(targetVersion)
+        minSdk = minVersion
+        targetSdk = targetVersion
     }
 
     compileOptions {

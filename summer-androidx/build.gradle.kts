@@ -10,13 +10,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(targetVersion)
+    compileSdk = targetVersion
 
     defaultConfig {
-        minSdkVersion(14)
-        targetSdkVersion(targetVersion)
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = 14
+        targetSdk = targetVersion
     }
 
     buildTypes {

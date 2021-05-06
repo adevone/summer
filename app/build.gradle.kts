@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(targetVersion)
+    compileSdk = targetVersion
 
     defaultConfig {
         applicationId = "io.adev.summer.example"
-        minSdkVersion(minVersion)
-        targetSdkVersion(targetVersion)
+        minSdk = minVersion
+        targetSdk = targetVersion
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -24,7 +24,6 @@ android {
 
         getByName("release") {
             isMinifyEnabled = true
-            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
 

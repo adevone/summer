@@ -10,13 +10,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(targetVersion)
+    compileSdk = targetVersion
 
     defaultConfig {
-        minSdkVersion(21) // Some Bundle methods requires 21 version
-        targetSdkVersion(targetVersion)
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = 21 // Some Bundle methods requires 21 version
+        targetSdk = targetVersion
     }
 
     buildTypes {

@@ -11,14 +11,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(targetVersion)
+    compileSdk = targetVersion
 
     defaultConfig {
         // bundlizer requires minSdk >= 16
-        minSdkVersion(16)
-        targetSdkVersion(targetVersion)
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = 16
+        targetSdk = targetVersion
     }
 
     buildTypes {

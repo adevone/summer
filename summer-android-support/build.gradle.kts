@@ -10,16 +10,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion(28)
+    compileSdk = 28
 
     defaultConfig {
-        minSdkVersion(14)
-        targetSdkVersion(28)
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = 14
+        targetSdk = 28
     }
 
-    lintOptions {
+    lint {
         isAbortOnError = false
     }
 
