@@ -1,9 +1,7 @@
-import java.util.*
-
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("kotlinx-serialization")
-    id("maven-publish")
+    id("convention.publication.multiplatform")
 }
 
 kotlin {
@@ -36,25 +34,6 @@ kotlin {
 
 group = summerGroup
 version = summerVersion
-
-val propsFile = File(rootProject.rootDir, "bintray.properties")
-if (propsFile.exists()) {
-    publishing {
-        val bintrayProps = Properties().apply {
-            load(propsFile.inputStream())
-        }
-        repositories {
-            maven("https://api.bintray.com/maven/summermpp/summer/${project.name}/;publish=0;override=1") {
-                this.name = "bintray"
-
-                credentials {
-                    this.username = bintrayProps.getProperty("USERNAME")
-                    this.password = bintrayProps.getProperty("API_KEY")
-                }
-            }
-        }
-    }
-}
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {

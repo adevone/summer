@@ -1,3 +1,5 @@
+includeBuild("convention-plugins")
+
 include(":app")
 include(":composeApp")
 include(":shared")

@@ -1,5 +1,5 @@
-Common: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer/images/download.svg) ](https://bintray.com/summermpp/summer/summer/_latestVersion)
-Arch: [ ![Download](https://api.bintray.com/packages/summermpp/summer/summer-arch-lifecycle/images/download.svg) ](https://bintray.com/summermpp/summer/summer-arch-lifecycle/_latestVersion)
+Common: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer)
+Arch: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer-arch-lifecycle/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer-arch-lifecycle)
 
 # About Summer
 
@@ -189,19 +189,19 @@ struct NewsUI: View {
 allprojects {
     repositories {
         // ...
-        maven { url = uri("https://dl.bintray.com/summermpp/summer") }
+        mavenCentral()
     }
 }
 
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:1.0.0-beta8")
+    implementation("com.github.adevone.summer:summer:1.0.0-beta9")
 
     // contains ArchViewModel that allows using of bindView function on Android (see example)
-    implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta8")
+    implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta9")
 
     // based on old support lib of 28.0.0 version, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta8")
+    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta9")
 }
 ```
