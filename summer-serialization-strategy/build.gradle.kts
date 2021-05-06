@@ -8,20 +8,7 @@ plugins {
 
 kotlin {
     jvm()
-    js(IR) {
-        browser()
-    }
-    iosArm64 {
-        binaries {
-            framework()
-        }
-    }
-    iosArm32 {
-        binaries {
-            framework()
-        }
-    }
-    iosX64 {
+    ios {
         binaries {
             framework()
         }
@@ -40,12 +27,10 @@ kotlin {
             dependencies {
             }
         }
-        getByName("iosArm64Main") {
+        getByName("iosMain") {
             dependencies {
             }
         }
-        getByName("iosArm32Main").dependsOn(getByName("iosArm64Main"))
-        getByName("iosX64Main").dependsOn(getByName("iosArm64Main"))
     }
 }
 

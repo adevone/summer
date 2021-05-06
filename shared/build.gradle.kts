@@ -32,16 +32,6 @@ project.version = summerVersion
 
 kotlin {
     android()
-    js(IR) {
-        // TODO does not work with current Kotlin 1.4.21 (will be fixed in 1.4.30)
-        //      https://youtrack.jetbrains.com/issue/KT-41076#focus=Comments-27-4619722.0-0
-//        browser {
-//            webpackTask {
-//                output.libraryTarget = "commonjs2"
-//            }
-//        }
-//        binaries.library()
-    }
     iosArm64()
     iosX64()
 
@@ -73,11 +63,6 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
                 implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
-            }
-        }
-        val jsMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-client-js:$ktorVersion")
             }
         }
         val iosArm64Main by getting {

@@ -7,20 +7,7 @@ plugins {
 
 kotlin {
     jvm()
-    js(IR) {
-        browser()
-    }
-    iosArm64 {
-        binaries {
-            framework()
-        }
-    }
-    iosArm32 {
-        binaries {
-            framework()
-        }
-    }
-    iosX64 {
+    ios {
         binaries {
             framework()
         }
@@ -44,21 +31,10 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
             }
         }
-        val jsMain by getting {
+        val iosMain by getting {
             dependencies {
 
             }
-        }
-        val iosArm64Main by getting {
-            dependencies {
-
-            }
-        }
-        val iosX64Main by getting {
-            dependsOn(iosArm64Main)
-        }
-        val iosArm32Main by getting {
-            dependsOn(iosArm64Main)
         }
     }
 }
