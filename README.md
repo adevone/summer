@@ -1,5 +1,5 @@
-Common: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer)
-Arch: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer-arch-lifecycle/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer-arch-lifecycle)
+Common: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer/badge.svg?gav=true)](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer)
+Arch: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer-arch-lifecycle/badge.svg?gav=true)](https://maven-badges.herokuapp.com/maven-central/com.github.adevone.summer/summer-arch-lifecycle)
 
 # About Summer
 
