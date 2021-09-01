@@ -2,7 +2,6 @@ package io.adev.summer.example.compose.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -17,7 +16,6 @@ import io.adev.summer.example.presentation.FrameworkDetailsView
 import io.adev.summer.example.presentation.FrameworkDetailsViewModel
 import kotlinx.coroutines.launch
 
-@ExperimentalMaterialApi
 @Composable
 fun FrameworkDetailsUI(
     initialFramework: Framework,
@@ -26,7 +24,7 @@ fun FrameworkDetailsUI(
     val coroutineScope = rememberCoroutineScope()
     val viewModel = getViewModel<FrameworkDetailsViewModel>()
     val view = viewModel.bind(object : FrameworkDetailsView {
-        override var framework: FullFramework? by mutableStateOf(null)
+        override var framework: FullFramework? by remember { mutableStateOf(null) }
         override val notifyAboutName: (String) -> Unit = { frameworkName ->
             coroutineScope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(frameworkName)

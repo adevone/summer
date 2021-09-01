@@ -2,12 +2,9 @@ package io.adev.summer.example.compose.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import io.adev.summer.example.AppNavigator
@@ -27,7 +24,6 @@ private enum class Destination {
     Details
 }
 
-@ExperimentalMaterialApi
 @Composable
 fun MainUI() {
     val viewModel = getViewModel<MainViewModel>()
@@ -44,8 +40,8 @@ fun MainUI() {
         }
     }
     val view = viewModel.bind(object : MainView {
-        override var tabs: List<Tab> by mutableStateOf(emptyList())
-        override var selectedTab: Tab? by mutableStateOf(null)
+        override var tabs: List<Tab> by remember { mutableStateOf(emptyList()) }
+        override var selectedTab: Tab? by remember { mutableStateOf(null) }
     })
     val scaffoldState = rememberScaffoldState()
     Scaffold(
@@ -109,7 +105,10 @@ fun TabImage(tab: Tab) {
         Tab.About -> R.drawable.menu_about
         Tab.Basket -> R.drawable.menu_basket
     }
-    Image(imageVector = vectorResource(id = imageId))
+    Image(
+        painter = painterResource(imageId),
+        contentDescription = null,
+    )
 }
 
 @Composable

@@ -10,7 +10,7 @@ android {
     compileSdk = targetVersion
 
     defaultConfig {
-        minSdk = minVersion
+        minSdk = 1
         targetSdk = targetVersion
     }
 

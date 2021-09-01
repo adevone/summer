@@ -10,14 +10,14 @@ android {
 
     defaultConfig {
         applicationId = "io.adev.summer.example"
-        minSdk = minVersion
+        minSdk = 21
         targetSdk = targetVersion
         vectorDrawables.useSupportLibrary = true
     }
 
     compileOptions {
-        targetCompatibility = JavaVersion.VERSION_1_6
-        sourceCompatibility = JavaVersion.VERSION_1_6
+        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
     }
 
     buildTypes {

@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "io.adev.summer.example.compose"
-        minSdk = minVersion
+        minSdk = 31
         targetSdk = targetVersion
         vectorDrawables.useSupportLibrary = true
     }
@@ -20,8 +20,8 @@ android {
     }
 
     compileOptions {
-        targetCompatibility = JavaVersion.VERSION_1_6
-        sourceCompatibility = JavaVersion.VERSION_1_6
+        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
@@ -54,10 +54,11 @@ dependencies {
     implementation("androidx.appcompat:appcompat:$appCompatVersion")
 
     implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.activity:activity-compose:1.3.1")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.material:material:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:1.0.0-alpha04")
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha07")
 
     implementation("com.github.bumptech.glide:glide:4.11.0")
 

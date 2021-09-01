@@ -23,7 +23,6 @@ android {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
-    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
     api("androidx.appcompat:appcompat:$appCompatVersion")
 
     api("com.github.adevone.summer:summer:$summerVersion")

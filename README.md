@@ -136,8 +136,8 @@ Jetpack Compose, Kotlin:
 fun NewsUI() {
     val viewModel = viewModel<NewsViewModel>()
     val view = viewModel.bind(object : NewsView {
-        override var isLoading: Boolean by mutableStateOf(false)
-        override var news: String by mutableStateOf("")
+        override var isLoading: Boolean by remember { mutableStateOf(false) }
+        override var news: String by remember { mutableStateOf("") }
         override val toAuth: () -> Unit = {
             // navigate to auth
         }
@@ -196,12 +196,12 @@ allprojects {
 dependencies {
 
     // library itself
-    implementation("com.github.adevone.summer:summer:1.0.0-beta9")
+    implementation("com.github.adevone.summer:summer:1.0.0-beta10")
 
     // contains ArchViewModel that allows using of bindView function on Android (see example)
-    implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta9")
+    implementation("com.github.adevone.summer:summer-arch-lifecycle:1.0.0-beta10")
 
     // based on old support lib of 28.0.0 version, contains SummerActivity and SummerFragment
-    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta9")
+    implementation("com.github.adevone.summer:summer-android-support:1.0.0-beta10")
 }
 ```

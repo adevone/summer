@@ -6,29 +6,26 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.adev.summer.example.compose.bind
 import io.adev.summer.example.compose.getViewModel
 import io.adev.summer.example.entity.Basket
-import io.adev.summer.example.entity.Framework
 import io.adev.summer.example.presentation.FrameworksView
 import io.adev.summer.example.presentation.FrameworksViewModel
 import io.adev.summer.example.presentation.base.NavigationView
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 @Composable
 fun FrameworksUI(navigationView: NavigationView) {
     val viewModel = getViewModel<FrameworksViewModel>()
     val view = viewModel.bind(object : FrameworksView, NavigationView by navigationView {
-        override var items: List<Basket.Item> by mutableStateOf(emptyList())
+        override var items: List<Basket.Item> by remember { mutableStateOf(emptyList()) }
     })
     LazyColumn(content = {
         items(view.items) { item ->
