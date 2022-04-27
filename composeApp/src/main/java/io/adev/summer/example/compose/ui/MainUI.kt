@@ -1,12 +1,26 @@
 package io.adev.summer.example.compose.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavType
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import io.adev.summer.example.AppNavigator
 import io.adev.summer.example.compose.R
 import io.adev.summer.example.compose.bind
@@ -63,9 +77,13 @@ fun MainUI() {
                     )
                 }
             }
-        }
-    ) {
-        NavHost(navController, startDestination = Destination.Main.name) {
+        },
+    ) { padding ->
+        NavHost(
+            navController,
+            startDestination = Destination.Main.name,
+            modifier = Modifier.padding(padding)
+        ) {
             composable(Destination.Main.name) {
                 val selectedTab = view.selectedTab
                 if (selectedTab != null) {

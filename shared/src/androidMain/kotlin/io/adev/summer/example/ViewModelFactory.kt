@@ -7,7 +7,7 @@ import io.adev.summer.example.presentation.*
 class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
             AboutViewModel::class.java -> {
                 ServiceLocator.aboutViewModel() as T
