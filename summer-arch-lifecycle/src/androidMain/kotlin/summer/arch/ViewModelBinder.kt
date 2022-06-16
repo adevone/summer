@@ -1,9 +1,8 @@
 package summer.arch
 
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
 import summer.DefaultSummerViewModel
 import summer.DefaultSummerViewModelImpl
 import summer.LifecycleViewModel
@@ -28,8 +27,8 @@ open class BindViewModelImpl<TView> :
 }
 
 class SummerViewBinder<TView>(
-    private val getLifecycleViewModel: () -> LifecycleViewModel<TView>
-) : LifecycleObserver, ViewModelBinder<TView> {
+    private val getLifecycleViewModel: () -> LifecycleViewModel<TView>,
+) : LifecycleEventObserver, ViewModelBinder<TView> {
 
     private var bindGetView: () -> TView? = { null }
     override fun bindView(owner: LifecycleOwner, provideView: () -> TView?) {
@@ -47,13 +46,11 @@ class SummerViewBinder<TView>(
 
     private var isViewCreating = false
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun startCreating() {
+    private fun startCreating() {
         isViewCreating = true
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun attachViewIfNeeded() {
+    private fun attachViewIfNeeded() {
         if (isViewCreating) {
             getLifecycleViewModel().getView = bindGetView
             getLifecycleViewModel().viewCreated()
@@ -61,9 +58,17 @@ class SummerViewBinder<TView>(
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun detachView() {
+    private fun detachView() {
         getLifecycleViewModel().getView = { null }
         isViewCreating = false
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when (event) {
+            Lifecycle.Event.ON_CREATE -> startCreating()
+            Lifecycle.Event.ON_START -> attachViewIfNeeded()
+            Lifecycle.Event.ON_DESTROY -> detachView()
+            else -> Unit
+        }
     }
 }
