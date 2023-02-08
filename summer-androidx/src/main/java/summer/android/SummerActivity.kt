@@ -46,6 +46,16 @@ abstract class BaseSummerActivity<TViewModelProvider : SummerViewModelProvider<*
         viewModelProvider?.viewDestroyed()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModelProvider?.viewAppeared()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModelProvider?.viewDisappeared()
+    }
+
     protected var viewModelProvider: TViewModelProvider? = null
 
     protected fun requireViewModelProvider(): TViewModelProvider {

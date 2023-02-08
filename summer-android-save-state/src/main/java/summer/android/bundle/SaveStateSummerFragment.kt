@@ -49,6 +49,16 @@ abstract class SaveStateSummerFragment : PopListenerFragment {
         viewModelProvider?.viewDestroyed()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModelProvider?.viewAppeared()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModelProvider?.viewDisappeared()
+    }
+
     private var viewModelProvider: SaveStateViewModelProvider<*, *>? = null
     fun <TView, TViewModel : SaveStateSummerViewModel<TView>> TView.bindViewModel(
         createViewModel: () -> TViewModel

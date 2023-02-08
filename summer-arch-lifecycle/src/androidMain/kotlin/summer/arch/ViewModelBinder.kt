@@ -63,10 +63,20 @@ class SummerViewBinder<TView>(
         isViewCreating = false
     }
 
+    private fun viewAppeared() {
+        getLifecycleViewModel().viewAppeared()
+    }
+
+    private fun viewDisappeared() {
+        getLifecycleViewModel().viewDisappeared()
+    }
+
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         when (event) {
             Lifecycle.Event.ON_CREATE -> startCreating()
             Lifecycle.Event.ON_START -> attachViewIfNeeded()
+            Lifecycle.Event.ON_RESUME -> viewAppeared()
+            Lifecycle.Event.ON_PAUSE -> viewDisappeared()
             Lifecycle.Event.ON_DESTROY -> detachView()
             else -> Unit
         }

@@ -28,7 +28,17 @@ class BaseController: UIViewController, NavigationView {
         
         controller.viewCreated()
     }
-    
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        controller.viewAppeared()
+    }
+
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        controller.viewDisappeared()
+    }
+
     deinit {
         controller.onDestroy()
     }
@@ -57,6 +67,16 @@ class BaseTabBarController: UITabBarController {
         }
         
         controller.viewCreated()
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        controller.viewAppeared()
+    }
+
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        controller.viewDisappeared()
     }
     
     deinit {

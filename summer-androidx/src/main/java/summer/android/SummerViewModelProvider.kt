@@ -26,6 +26,14 @@ open class SummerViewModelProvider<TView, out TViewModel : LifecycleViewModel<TV
         viewModel?.getView = { null }
     }
 
+    fun viewAppeared() {
+        viewModel?.viewAppeared()
+    }
+
+    fun viewDisappeared() {
+        viewModel?.viewDisappeared()
+    }
+
     override fun getValue(thisRef: Any?, property: KProperty<*>): TViewModel {
         return requireViewModel()
     }
