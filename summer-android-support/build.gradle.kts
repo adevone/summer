@@ -29,8 +29,7 @@ dependencies {
 
     api("com.android.support:appcompat-v7:28.0.0")
 
-    api("com.github.adevone.summer:summer:$summerVersion")
-//    implementation(project(":summer"))
+    api(project(":summer"))
 }
 
 group = summerGroup

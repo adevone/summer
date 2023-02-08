@@ -26,9 +26,9 @@ dependencies {
 
     api("androidx.appcompat:appcompat:$appCompatVersion")
 
-    api("com.github.adevone.summer:summer:$summerVersion")
-    api("com.github.adevone.summer:summer-androidx:$summerVersion")
-    api("com.github.adevone.summer:summer-serialization-strategy:$summerVersion")
+    api(project(":summer"))
+    api(project(":summer-androidx"))
+    api(project(":summer-serialization-strategy"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
     implementation("dev.ahmedmourad.bundlizer:bundlizer-core:0.3.0")

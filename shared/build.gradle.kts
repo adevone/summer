@@ -52,9 +52,8 @@ kotlin {
 
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
-                implementation("com.github.adevone.summer:summer:$exampleSummerVersion")
-                implementation("com.github.adevone.summer:summer-arch-lifecycle:$exampleSummerVersion")
-//                implementation(project(":summer"))
+                implementation(project(":summer"))
+                implementation(project(":summer-arch-lifecycle"))
             }
         }
         val androidMain by getting {

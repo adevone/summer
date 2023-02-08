@@ -1,5 +1,3 @@
-import java.util.*
-
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
@@ -46,7 +44,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common:$kotlinVersion")
-                implementation("com.github.adevone.summer:summer:$summerVersion")
+                implementation(project(":summer"))
             }
         }
         val androidMain by getting {

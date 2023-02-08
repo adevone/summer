@@ -9,7 +9,6 @@ const val serializationVersion = "1.3.2"
 const val targetVersion = 31
 
 // example dependencies
-const val exampleSummerVersion = summerVersion
 const val ktorVersion = "1.6.8"
 const val coroutinesVersion = "1.6.1-native-mt"
 const val composeVersion = "1.2.0-alpha08"

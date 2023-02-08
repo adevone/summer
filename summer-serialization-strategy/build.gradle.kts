@@ -17,8 +17,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-                implementation("com.github.adevone.summer:summer:$summerVersion")
-//                implementation(project(":summer"))
+                implementation(project(":summer"))
             }
         }
         getByName("jvmMain") {
