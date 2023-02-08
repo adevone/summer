@@ -7,6 +7,7 @@ plugins {
 
 android {
     compileSdk = targetVersion
+    namespace = "io.adev.summer.example"
 
     defaultConfig {
         applicationId = "io.adev.summer.example"
@@ -29,7 +30,7 @@ android {
 
         getByName("debug") {
             isDebuggable = true
-            isTestCoverageEnabled = false
+            enableAndroidTestCoverage = false
         }
     }
 

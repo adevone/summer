@@ -6,6 +6,7 @@ plugins {
 
 android {
     compileSdk = targetVersion
+    namespace = "io.adev.summer.example.compose"
 
     defaultConfig {
         applicationId = "io.adev.summer.example.compose"
@@ -41,7 +42,7 @@ android {
 
         getByName("debug") {
             isDebuggable = true
-            isTestCoverageEnabled = false
+            enableAndroidTestCoverage = false
         }
     }
 }

@@ -31,7 +31,9 @@ fun FrameworkDetailsUI(
             }
         }
     })
-    viewModel.init(initialFramework)
+    LaunchedEffect(Unit) {
+        viewModel.init(initialFramework)
+    }
     view.framework?.let { framework ->
         Column(modifier = Modifier.padding(all = 16.dp)) {
             Text(text = framework.name, fontSize = 22.sp)

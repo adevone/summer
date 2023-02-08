@@ -7,6 +7,7 @@ plugins {
 
 android {
     compileSdk = targetVersion
+    namespace = "io.adev.summer.example.lib"
 
     defaultConfig {
         minSdk = 21
@@ -38,7 +39,9 @@ kotlin {
     cocoapods {
         summary = "Some description for a Kotlin/Native module"
         homepage = "Link to a Kotlin/Native module homepage"
-        frameworkName = "shared"
+        framework {
+            baseName = "shared"
+        }
     }
 
     @Suppress("UNUSED_VARIABLE")

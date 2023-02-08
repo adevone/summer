@@ -7,6 +7,7 @@ plugins {
 
 android {
     compileSdk = targetVersion
+    namespace = "summer.androidx.serialization.bundle"
 
     defaultConfig {
         // bundlizer requires minSdk >= 16

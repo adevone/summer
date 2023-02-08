@@ -6,7 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,9 +31,11 @@ fun AboutUI() {
     })
     val about = view.about
     if (about != null) {
-        Column(modifier = Modifier
-            .padding(all = 16.dp)
-            .fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .padding(all = 16.dp)
+                .fillMaxSize()
+        ) {
             Text(text = about.author, fontSize = 25.sp)
             Text(text = about.frameworkName, fontSize = 20.sp)
             GlideImage(url = about.logoUrl)
