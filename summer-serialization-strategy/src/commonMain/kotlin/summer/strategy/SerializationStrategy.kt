@@ -1,7 +1,7 @@
 package summer.strategy
 
 import kotlinx.serialization.KSerializer
-import summer.GetViewProvider
+import summer.ViewStateProvider
 import summer.state.*
 import kotlin.reflect.KProperty
 
@@ -14,7 +14,7 @@ class SerializationStrategy<T, TView>(
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: SerializationStore,
-        getViewProvider: GetViewProvider<TView>
+        viewStateProvider: ViewStateProvider<TView>
     ): T {
         val key = proxyProperty.name
         return if (owner.isInit(key)) {
@@ -30,10 +30,10 @@ class SerializationStrategy<T, TView>(
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: SerializationStore,
-        getViewProvider: GetViewProvider<TView>
+        viewStateProvider: ViewStateProvider<TView>
     ) {
         owner.set(key = proxyProperty.name, value, serializer)
-        val view = getViewProvider.getView()
+        val view = viewStateProvider.getView()
         if (view != null) {
             viewPropertySetter.setIfExists(value, view)
         }
@@ -44,9 +44,9 @@ class SerializationStrategy<T, TView>(
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: SerializationStore,
-        getViewProvider: GetViewProvider<TView>
+        viewStateProvider: ViewStateProvider<TView>
     ) {
-        val view = getViewProvider.getView()
+        val view = viewStateProvider.getView()
         if (view != null) {
             val key = proxyProperty.name
             if (owner.isInit(key)) {

@@ -1,7 +1,7 @@
 package summer.arch
 
 import summer.DefaultSummerViewModel
-import summer.GetViewProvider
+import summer.ViewStateProvider
 import summer.ViewProxyProvider
 import summer.events.EventProxy
 import summer.state.StateProxy
@@ -12,7 +12,7 @@ expect abstract class ArchViewModel<TView> constructor() :
 
     override fun eventProxyCreated(proxy: EventProxy<*, *>)
     override fun stateProxyCreated(proxy: StateProxy<*, *, *>)
-    override fun getViewProvider(): GetViewProvider<TView>
+    override fun getViewProvider(): ViewStateProvider<TView>
     override fun viewCreated()
     override var getView: () -> TView?
 }

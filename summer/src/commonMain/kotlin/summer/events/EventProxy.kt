@@ -1,6 +1,6 @@
 package summer.events
 
-import summer.GetViewProvider
+import summer.ViewStateProvider
 import summer.ViewProxyProvider
 
 /**
@@ -11,7 +11,7 @@ import summer.ViewProxyProvider
 class EventProxy<out TView, in TOwner>(
     private val performViewEvent: (TView, params: Array<out Any?>) -> Unit,
     private val owner: TOwner,
-    private val getViewProvider: GetViewProvider<TView>,
+    private val viewStateProvider: ViewStateProvider<TView>,
     private val listener: EventProxyListener<TView, TOwner>?,
     private val strategy: EventProxyStrategy<TView, TOwner>,
 ) {
@@ -23,11 +23,15 @@ class EventProxy<out TView, in TOwner>(
                 listener?.viewEventExecuted(view, strategy, execution, owner)
             }
         )
-        strategy.proxyInvoked(performance, owner, getViewProvider)
+        strategy.proxyInvoked(performance, owner, viewStateProvider)
         listener?.proxyInvoked(strategy, performance, owner)
     }
 
     fun viewCreated() {
-        strategy.viewCreated(owner, getViewProvider)
+        strategy.viewCreated(owner, viewStateProvider)
+    }
+
+    fun viewAppeared() {
+        strategy.viewAppeared(owner, viewStateProvider)
     }
 }

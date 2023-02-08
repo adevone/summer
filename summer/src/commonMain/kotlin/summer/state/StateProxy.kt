@@ -1,6 +1,6 @@
 package summer.state
 
-import summer.GetViewProvider
+import summer.ViewStateProvider
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
@@ -10,7 +10,7 @@ class StateProxy<T, out TView, in TOwner>(
     private val proxyProperty: KProperty<*>,
     getViewProperty: GetViewProperty<T, TView>?,
     private val initial: T,
-    private val getViewProvider: GetViewProvider<TView>,
+    private val viewStateProvider: ViewStateProvider<TView>,
     private val owner: TOwner,
     private val listener: StateProxyListener<TView, TOwner>?,
     private val strategy: StateProxyStrategy<T, TView, TOwner>,
@@ -24,22 +24,22 @@ class StateProxy<T, out TView, in TOwner>(
     )
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return strategy.getValue(initial, viewProperty, proxyProperty, owner, getViewProvider)
+        return strategy.getValue(initial, viewProperty, proxyProperty, owner, viewStateProvider)
     }
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        strategy.setValue(value, initial, viewProperty, proxyProperty, owner, getViewProvider)
+        strategy.setValue(value, initial, viewProperty, proxyProperty, owner, viewStateProvider)
         listener?.proxySet(value, initial, property, owner, strategy)
     }
 
     fun viewCreated() {
-        strategy.viewCreated(initial, viewProperty, proxyProperty, owner, getViewProvider)
+        strategy.viewCreated(initial, viewProperty, proxyProperty, owner, viewStateProvider)
     }
 
     class Provider<T, TView, TOwner>(
         private val getViewProperty: GetViewProperty<T, TView>?,
         private val initial: T,
-        private val getViewProvider: GetViewProvider<TView>,
+        private val viewStateProvider: ViewStateProvider<TView>,
         private val owner: TOwner,
         private val listener: StateProxyListener<TView, TOwner>?,
         private val strategy: StateProxyStrategy<T, TView, TOwner>,
@@ -54,7 +54,7 @@ class StateProxy<T, out TView, in TOwner>(
                 property,
                 getViewProperty,
                 initial,
-                getViewProvider,
+                viewStateProvider,
                 owner,
                 listener,
                 strategy

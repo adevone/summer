@@ -1,6 +1,6 @@
 package summer.events.strategies
 
-import summer.GetViewProvider
+import summer.ViewStateProvider
 import summer.events.EventProxy
 import summer.events.EventProxyStrategy
 import summer.events.EventPerformance
@@ -16,9 +16,9 @@ class AllOnEachAttachStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
     override fun proxyInvoked(
         performance: EventPerformance<TView>,
         owner: Nothing?,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     ) {
-        val view = getViewProvider.getView()
+        val view = viewStateProvider.getView()
         if (view != null) {
             performance.performEvent(view)
         }
@@ -27,9 +27,9 @@ class AllOnEachAttachStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
     override fun viewCreated(
         owner: Nothing?,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     ) {
-        val view = getViewProvider.getView()
+        val view = viewStateProvider.getView()
         if (view != null) {
             performances.forEach { executor ->
                 executor.performEvent(view)

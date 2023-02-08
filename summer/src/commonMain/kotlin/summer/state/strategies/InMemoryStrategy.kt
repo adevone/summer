@@ -1,6 +1,6 @@
 package summer.state.strategies
 
-import summer.GetViewProvider
+import summer.ViewStateProvider
 import summer.state.*
 import kotlin.reflect.KProperty
 
@@ -20,7 +20,7 @@ class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, Nothing?> {
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: Nothing?,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     ): T {
         return if (wasSet) {
             @Suppress("UNCHECKED_CAST")
@@ -36,11 +36,11 @@ class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, Nothing?> {
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: Nothing?,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     ) {
         wasSet = true
         currentValue = value
-        val view = getViewProvider.getView()
+        val view = viewStateProvider.getView()
         if (view != null) {
             viewPropertySetter.setIfExists(value, view)
         }
@@ -51,9 +51,9 @@ class InMemoryStrategy<T, TView> : StateProxyStrategy<T, TView, Nothing?> {
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: Nothing?,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     ) {
-        val view = getViewProvider.getView()
+        val view = viewStateProvider.getView()
         if (view != null) {
             if (wasSet) {
                 @Suppress("UNCHECKED_CAST")

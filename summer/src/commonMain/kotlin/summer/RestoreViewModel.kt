@@ -9,7 +9,7 @@ import summer.state.StateProxyFactory
  * Extent from this class if you want to implement
  * custom [EventProxyFactory] or [StateProxyFactory]
  *
- * @param [TView] see [GetViewProvider]
+ * @param [TView] see [ViewStateProvider]
  */
 abstract class RestoreViewModel<TView> :
     LifecycleViewModel<TView>,
@@ -17,6 +17,7 @@ abstract class RestoreViewModel<TView> :
     StateProxyFactory<TView> {
 
     override var getView: () -> TView? = { null }
+    override var isViewAppeared: Boolean = false
 
     /**
      * Do not override to listen lifecycle see [ViewLifecycleListener.viewCreated]
@@ -24,6 +25,15 @@ abstract class RestoreViewModel<TView> :
     override fun viewCreated() {
         stateProxies.forEach { it.viewCreated() }
         eventProxies.forEach { it.viewCreated() }
+    }
+
+    override fun viewAppeared() {
+        isViewAppeared = true
+        eventProxies.forEach { it.viewAppeared() }
+    }
+
+    override fun viewDisappeared() {
+        isViewAppeared = false
     }
 
     private val eventProxies = mutableListOf<EventProxy<*, *>>()
@@ -36,7 +46,7 @@ abstract class RestoreViewModel<TView> :
         stateProxies.add(proxy)
     }
 
-    override fun getViewProvider(): GetViewProvider<TView> = this
+    override fun getViewProvider(): ViewStateProvider<TView> = this
 }
 
 @Deprecated(

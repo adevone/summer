@@ -1,6 +1,6 @@
 package summer.events
 
-import summer.GetViewProvider
+import summer.ViewStateProvider
 import summer.LifecycleViewModel
 import summer.ViewLifecycleListener
 
@@ -13,7 +13,7 @@ import summer.ViewLifecycleListener
  *
  * [TOwner]
  *   is strategy dependencies container. If you want to pass some dependencies to
- *   strategy than define it on your custom interface, extend it from [GetViewProvider]
+ *   strategy than define it on your custom interface, extend it from [ViewStateProvider]
  *   and implement on your [LifecycleViewModel].
  */
 interface EventProxyStrategy<TView, TOwner> {
@@ -23,7 +23,7 @@ interface EventProxyStrategy<TView, TOwner> {
     fun proxyInvoked(
         performance: EventPerformance<TView>,
         owner: TOwner,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     )
 
     /**
@@ -31,7 +31,17 @@ interface EventProxyStrategy<TView, TOwner> {
      */
     fun viewCreated(
         owner: TOwner,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
+    ) {
+        // do nothing by default
+    }
+
+    /**
+     * [ViewLifecycleListener.viewAppeared] was called
+     */
+    fun viewAppeared(
+        owner: TOwner,
+        viewStateProvider: ViewStateProvider<TView>,
     ) {
         // do nothing by default
     }
