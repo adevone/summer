@@ -1,7 +1,7 @@
 package summer.android.bundle.strategies
 
 import android.os.Bundle
-import summer.GetViewProvider
+import summer.ViewStateProvider
 import summer.android.bundle.BundleProvider
 import summer.android.bundle.BundleStateProxyProvider
 import summer.state.GetViewProperty
@@ -20,7 +20,7 @@ abstract class BundleStateStrategy<T, TView>(
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: BundleProvider,
-        getViewProvider: GetViewProvider<TView>
+        viewStateProvider: ViewStateProvider<TView>
     ): T {
         val key = proxyProperty.name
         return if (owner.bundle.containsKey(key)) {
@@ -36,10 +36,10 @@ abstract class BundleStateStrategy<T, TView>(
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: BundleProvider,
-        getViewProvider: GetViewProvider<TView>
+        viewStateProvider: ViewStateProvider<TView>
     ) {
         owner.bundle.setValue(proxyProperty.name, value)
-        val view = getViewProvider.getView()
+        val view = viewStateProvider.getView()
         if (view != null) {
             viewPropertySetter.setIfExists(value, view)
         }
@@ -50,9 +50,9 @@ abstract class BundleStateStrategy<T, TView>(
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: BundleProvider,
-        getViewProvider: GetViewProvider<TView>
+        viewStateProvider: ViewStateProvider<TView>
     ) {
-        val view = getViewProvider.getView()
+        val view = viewStateProvider.getView()
         if (view != null) {
             val key = proxyProperty.name
             if (owner.bundle.containsKey(key)) {

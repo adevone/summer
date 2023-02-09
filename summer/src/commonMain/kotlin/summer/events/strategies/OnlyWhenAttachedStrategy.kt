@@ -1,23 +1,23 @@
 package summer.events.strategies
 
-import summer.GetViewProvider
+import summer.ViewStateProvider
+import summer.events.EventPerformance
 import summer.events.EventPerformer
 import summer.events.EventProxyFactory
 import summer.events.EventProxyStrategy
-import summer.events.EventPerformance
 
 /**
- * Event will be performed only if view exists.
+ * Event will be performed only if view exists and appeared.
  */
 class OnlyWhenAttachedStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
     override fun proxyInvoked(
         performance: EventPerformance<TView>,
         owner: Nothing?,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     ) {
-        val view = getViewProvider.getView()
-        if (view != null) {
+        val view = viewStateProvider.getView()
+        if (view != null && viewStateProvider.isViewAppeared) {
             performance.performEvent(view)
         }
     }

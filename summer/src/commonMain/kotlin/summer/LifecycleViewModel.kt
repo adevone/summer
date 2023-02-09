@@ -7,11 +7,11 @@ import summer.state.StateProxy
  * Extent from this class if you want to call [EventProxy.viewCreated] or
  * [StateProxy.viewCreated] on a custom place.
  *
- * @param [TView] see [GetViewProvider]
+ * @param [TView] see [ViewStateProvider]
  */
 interface LifecycleViewModel<TView> :
     ViewModelController,
-    GetViewHolder<TView> {
+    ViewStateHolder<TView> {
 
     override fun setViewProviderUnsafe(unsafeGetView: () -> Any?) {
         getView = {
@@ -22,8 +22,9 @@ interface LifecycleViewModel<TView> :
     }
 }
 
-interface GetViewHolder<TView> : GetViewProvider<TView> {
+interface ViewStateHolder<TView> : ViewStateProvider<TView> {
     override var getView: () -> TView?
+    override var isViewAppeared: Boolean
 }
 
 /**
@@ -32,7 +33,7 @@ interface GetViewHolder<TView> : GetViewProvider<TView> {
  */
 interface ViewModelController : ViewLifecycleListener {
     /**
-     * Provide untyped view provider. It will be force converted to typed [GetViewProvider.getView].
+     * Provide untyped view provider. It will be force converted to typed [ViewStateProvider.getView].
      */
     fun setViewProviderUnsafe(unsafeGetView: () -> Any?)
 }
@@ -47,8 +48,32 @@ interface ViewLifecycleListener {
      * You can use it to implement your own base view model (for example with custom strategies).
      */
     fun viewCreated() {}
+
+    /**
+     * Must be called when view is appeared to a user.
+     * May be called multiple times after one call of [viewCreated].
+     *
+     * Important:
+     * Do not override this method to listen view model lifecycle.
+     * It will disable delegate for example [RestoreViewModel] if it used as a type delegate.
+     * You can use it to implement your own base view model (for example with custom strategies).
+     */
+    fun viewAppeared() {}
+
+    /**
+     * Must be called when view is disappeared to a user.
+     * May be called multiple times after one call of [viewCreated]
+     * independently with [viewAppeared].
+     *
+     * Important:
+     * Do not override this method to listen view model lifecycle.
+     * It will disable delegate for example [RestoreViewModel] if it used as a type delegate.
+     * You can use it to implement your own base view model (for example with custom strategies).
+     */
+    fun viewDisappeared() {}
 }
 
 open class LifecycleViewModelImpl<TView> : LifecycleViewModel<TView> {
     override var getView: () -> TView? = { null }
+    override var isViewAppeared: Boolean = false
 }

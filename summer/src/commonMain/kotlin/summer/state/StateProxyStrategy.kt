@@ -1,6 +1,6 @@
 package summer.state
 
-import summer.GetViewProvider
+import summer.ViewStateProvider
 import summer.LifecycleViewModel
 import summer.ViewLifecycleListener
 import kotlin.reflect.KProperty
@@ -25,7 +25,7 @@ interface StateProxyStrategy<T, TView, TOwner> {
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: TOwner,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     ): T
 
     /**
@@ -37,7 +37,7 @@ interface StateProxyStrategy<T, TView, TOwner> {
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: TOwner,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     )
 
     /**
@@ -48,6 +48,6 @@ interface StateProxyStrategy<T, TView, TOwner> {
         viewPropertySetter: ViewPropertySetter<T, TView>,
         proxyProperty: KProperty<*>,
         owner: TOwner,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     )
 }

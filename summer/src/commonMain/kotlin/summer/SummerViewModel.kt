@@ -7,7 +7,7 @@ import summer.state.StateProxy
  * Base viewModel. Helps with view state restoring (see [StateProxy])
  * and performing of events (see [EventProxy]).
  *
- * @param [TView] see [GetViewProvider]
+ * @param [TView] see [ViewStateProvider]
  */
 abstract class SummerViewModel<TView> :
     DefaultSummerViewModelImpl<TView>(),

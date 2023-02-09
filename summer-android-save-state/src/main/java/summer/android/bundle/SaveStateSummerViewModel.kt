@@ -2,7 +2,6 @@ package summer.android.bundle
 
 import android.os.Bundle
 import android.os.Parcelable
-import summer.GetViewProvider
 import summer.RestoreViewModel
 import summer.ViewProxyProvider
 import summer.android.bundle.strategies.*

@@ -1,14 +1,14 @@
 package summer.events.strategies
 
-import summer.GetViewProvider
+import summer.ViewStateProvider
 import summer.events.EventProxyFactory
 import summer.events.EventProxyStrategy
 import summer.events.EventPerformance
 import summer.events.EventPerformer
 
 /**
- * If view exists then event will be performed right now.
- * If view does not exist then event will be performed on view creation.
+ * If view exists and appeared event will be performed right now.
+ * If view does not exist and appeared event will be performed on view appearance.
  */
 class ExactlyOnceStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
 
@@ -17,21 +17,21 @@ class ExactlyOnceStrategy<TView> : EventProxyStrategy<TView, Nothing?> {
     override fun proxyInvoked(
         performance: EventPerformance<TView>,
         owner: Nothing?,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     ) {
-        val view = getViewProvider.getView()
-        if (view != null) {
+        val view = viewStateProvider.getView()
+        if (view != null && viewStateProvider.isViewAppeared) {
             performance.performEvent(view)
         } else {
             notPerformed.add(performance)
         }
     }
 
-    override fun viewCreated(
+    override fun viewAppeared(
         owner: Nothing?,
-        getViewProvider: GetViewProvider<TView>,
+        viewStateProvider: ViewStateProvider<TView>,
     ) {
-        val view = getViewProvider.getView()
+        val view = viewStateProvider.getView()
         if (view != null) {
             notPerformed.forEach { executor ->
                 executor.performEvent(view)

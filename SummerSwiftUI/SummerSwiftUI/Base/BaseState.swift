@@ -17,10 +17,12 @@ class SummerBinder: NavigationView {
             return self
         })
         controller.viewCreated()
+        controller.viewAppeared()
         self.controller = controller
     }
 
     deinit {
+        controller.viewDisappeared()
         controller?.onDestroy()
     }
 
