@@ -34,6 +34,7 @@ project.version = summerVersion
 kotlin {
     android()
     iosArm64()
+    iosSimulatorArm64()
     iosX64()
 
     cocoapods {
@@ -73,6 +74,9 @@ kotlin {
             }
         }
         val iosX64Main by getting {
+            dependsOn(iosArm64Main)
+        }
+        val iosSimulatorArm64Main by getting {
             dependsOn(iosArm64Main)
         }
     }
