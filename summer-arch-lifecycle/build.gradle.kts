@@ -39,6 +39,11 @@ kotlin {
             framework()
         }
     }
+    iosSimulatorArm64 {
+        binaries {
+            framework()
+        }
+    }
 
     @Suppress("UNUSED_VARIABLE")
     sourceSets {
@@ -65,6 +70,9 @@ kotlin {
             dependencies {
 
             }
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
         }
     }
 }
